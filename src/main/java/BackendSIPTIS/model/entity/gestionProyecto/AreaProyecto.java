@@ -20,6 +20,6 @@ public class AreaProyecto {
 
     private String nombre;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "areas")
     private Collection<ProyectoGrado> proyectosDeGrado;
 }

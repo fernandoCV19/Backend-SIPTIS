@@ -17,6 +17,7 @@ public class Revision {
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
+    @Column(name = "dir_documento")
     private String dirDocumento;
     private String comentario;
 

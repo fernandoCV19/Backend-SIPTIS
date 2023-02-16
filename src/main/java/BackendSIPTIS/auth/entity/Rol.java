@@ -16,9 +16,9 @@ public class Rol {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, unique = true)
-    private Integer id;
+    private Long id;
     private String nombre;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "roles")
     private Collection<Usuario> usuarios;
 }

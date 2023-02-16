@@ -20,8 +20,14 @@ public class ProyectoGrado {
     private Long id;
 
     private String nombre;
+
+    @Column(name = "dir_perfil")
     private String dirPerfil;
+
+    @Column(name = "dir_libro_azul")
     private String dirLibroAzul;
+
+    @Column(name = "dir_proyecto")
     private String dirProyecto;
     private String fase;
 
@@ -31,10 +37,18 @@ public class ProyectoGrado {
     @ManyToOne
     private Modalidad modalidad;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
+    @JoinTable(name = "proyecto_grado_sub_area", joinColumns = @JoinColumn(name = "proyecto_grado_id"), inverseJoinColumns = @JoinColumn(name = "sub_area_id"))
     private Collection<SubArea> subAreas;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
+    @JoinTable(name = "proyecto_grado_area", joinColumns = @JoinColumn(name = "proyecto_grado_id"), inverseJoinColumns = @JoinColumn(name = "area_id"))
     private Collection<AreaProyecto> areas;
 
     @OneToMany

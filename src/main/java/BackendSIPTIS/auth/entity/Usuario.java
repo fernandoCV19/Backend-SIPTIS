@@ -21,7 +21,7 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, unique = true)
-    private Integer id;
+    private Long id;
 
     private String nombres;
     private String apellidos;
@@ -30,16 +30,24 @@ public class Usuario {
     private String email;
     private String codSIS;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
+    @JoinTable(name = "usuario_rol", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "rol_id"))
     private Collection<Rol> roles;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
+    @JoinTable(name = "usuario_area", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "area_id"))
     private Collection<AreaUsuario> areas;
 
     @OneToMany
     private Collection<Horario> horariosDisponibles;
 
-    @OneToMany
+    @OneToMany(mappedBy = "usuario")
     private Collection<Documento> documentos;
 
     @OneToMany

@@ -16,7 +16,10 @@ public class Defensa {
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
+    @Column(name = "lugar_defensa")
     private String lugarDefensa;
+
+    @Column(name = "hora_defensa")
     private String horaDefensa;
 
     @OneToOne

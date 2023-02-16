@@ -20,6 +20,6 @@ public class AreaUsuario {
     private Long id;
     private String nombre;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "areas")
     private Collection<Usuario> usuarios;
 }

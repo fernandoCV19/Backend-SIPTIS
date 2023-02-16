@@ -18,7 +18,10 @@ public class Presentacion {
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
+    @Column(name = "dir_libro_azul")
     private String dirLibroAzul;
+
+    @Column(name = "dir_proyecto")
     private String dirProyecto;
     private String fase;
 
