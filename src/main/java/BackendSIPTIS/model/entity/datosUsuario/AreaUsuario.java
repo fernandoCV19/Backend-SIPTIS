@@ -1,7 +1,10 @@
 package BackendSIPTIS.model.entity.datosUsuario;
 
+import BackendSIPTIS.auth.entity.Usuario;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.Collection;
 
 @Entity
 @Table(name = "area_usuario")
@@ -16,4 +19,7 @@ public class AreaUsuario {
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
     private String nombre;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Collection<Usuario> usuarios;
 }
