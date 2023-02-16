@@ -1,5 +1,7 @@
 package BackendSIPTIS.model.entity.editoresYRevisores;
 
+import BackendSIPTIS.auth.entity.Usuario;
+import BackendSIPTIS.model.entity.gestionProyecto.ProyectoGrado;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,7 +18,10 @@ public class DocenteTG2Proyecto {
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
-    private Long idDocente;
-    private Long idProyecto;
+    @ManyToOne
+    private Usuario docente;
+
+    @ManyToOne
+    private ProyectoGrado proyectoGrado;
     private Boolean aceptado;
 }

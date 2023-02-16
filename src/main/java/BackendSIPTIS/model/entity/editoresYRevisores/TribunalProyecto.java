@@ -1,5 +1,7 @@
 package BackendSIPTIS.model.entity.editoresYRevisores;
 
+import BackendSIPTIS.auth.entity.Usuario;
+import BackendSIPTIS.model.entity.gestionProyecto.ProyectoGrado;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,8 +18,12 @@ public class TribunalProyecto {
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
-    private Long idTribunal;
-    private Long idProyecto;
+    @ManyToOne
+    private ProyectoGrado proyectoGrado;
+
+    @ManyToOne
+    private Usuario tribunal;
+
     private Boolean aceptado;
 
     @Column(name = "nota_defensa")
