@@ -21,4 +21,7 @@ public class Actividad {
     private String descripcionActividad;
     private Date fechaActividad;
     private String recordatorioWpp;
+
+    @ManyToOne
+    private ProyectoGrado proyectoGrado;
 }
