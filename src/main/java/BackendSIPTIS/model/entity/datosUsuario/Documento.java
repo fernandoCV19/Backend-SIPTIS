@@ -1,5 +1,6 @@
 package BackendSIPTIS.model.entity.datosUsuario;
 
+import BackendSIPTIS.auth.entity.Usuario;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,4 +19,7 @@ public class Documento {
     private String direccion;
     private String tipo;
     private String descripcion;
+
+    @ManyToOne
+    private Usuario usuario;
 }
