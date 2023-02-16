@@ -18,4 +18,7 @@ public class Defensa {
 
     private String lugarDefensa;
     private String horaDefensa;
+
+    @OneToOne
+    private ProyectoGrado proyectoGrado;
 }
