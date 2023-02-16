@@ -3,6 +3,8 @@ package BackendSIPTIS.model.entity.gestionProyecto;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Collection;
+
 @Entity
 @Table(name = "area_proyecto")
 @Getter
@@ -17,4 +19,7 @@ public class AreaProyecto {
     private Long id;
 
     private String nombre;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Collection<ProyectoGrado> proyectosDeGrado;
 }
