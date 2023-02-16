@@ -1,5 +1,6 @@
 package BackendSIPTIS.model.entity.datosUsuario;
 
+import BackendSIPTIS.auth.entity.Usuario;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,4 +18,7 @@ public class Horario {
     private Long id;
     private String dia;
     private String hora;
+
+    @ManyToOne
+    private Usuario usuario;
 }
