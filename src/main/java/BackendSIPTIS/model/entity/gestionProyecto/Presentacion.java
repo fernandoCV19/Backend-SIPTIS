@@ -26,8 +26,9 @@ public class Presentacion {
     private String fase;
 
     @ManyToOne
+    @JoinColumn(name = "id_proyecto_grado", nullable = false)
     private ProyectoGrado proyectoGrado;
 
-    @OneToMany
+    @OneToMany(mappedBy = "presentacion")
     private Collection<Revision> revisiones;
 }

@@ -35,6 +35,7 @@ public class ProyectoGrado {
     private Defensa defensa;
 
     @ManyToOne
+    @JoinColumn(name = "id_modalidad", nullable = false)
     private Modalidad modalidad;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {
@@ -51,28 +52,29 @@ public class ProyectoGrado {
     @JoinTable(name = "proyecto_grado_area", joinColumns = @JoinColumn(name = "proyecto_grado_id"), inverseJoinColumns = @JoinColumn(name = "area_id"))
     private Collection<AreaProyecto> areas;
 
-    @OneToMany
+    @OneToMany(mappedBy = "proyectoGrado")
     private Collection<Presentacion> presentaciones;
 
     @ManyToOne
+    @JoinColumn(name = "id_estado", nullable = false)
     private Estado estado;
 
-    @OneToMany
+    @OneToMany(mappedBy = "proyectoGrado")
     private Collection<Actividad> actividades;
 
-    @OneToMany
+    @OneToMany(mappedBy = "proyecto")
     private Collection<EstudianteProyecto> estudiantes;
 
-    @OneToMany
+    @OneToMany(mappedBy = "proyecto")
     private Collection<SupervisorProyecto> supervisores;
 
-    @OneToMany
+    @OneToMany(mappedBy = "proyecto")
     private Collection<TutorProyecto> tutores;
 
-    @OneToMany
+    @OneToMany(mappedBy = "proyecto")
     private Collection<DocenteTG2Proyecto> docentes;
 
-    @OneToMany
+    @OneToMany(mappedBy = "proyecto")
     private Collection<TribunalProyecto> tribunales;
 
 }

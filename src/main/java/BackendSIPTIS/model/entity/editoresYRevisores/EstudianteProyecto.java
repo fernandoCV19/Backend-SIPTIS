@@ -19,8 +19,10 @@ public class EstudianteProyecto {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario estudiante;
 
     @ManyToOne
+    @JoinColumn(name = "id_proyecto_grado", nullable = false)
     private ProyectoGrado proyecto;
 }

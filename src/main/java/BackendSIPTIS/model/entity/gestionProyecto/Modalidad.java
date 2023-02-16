@@ -20,6 +20,6 @@ public class Modalidad {
 
     private String nombre;
 
-    @OneToMany
+    @OneToMany(mappedBy = "modalidad")
     private Collection<ProyectoGrado> proyectosDeGrado;
 }

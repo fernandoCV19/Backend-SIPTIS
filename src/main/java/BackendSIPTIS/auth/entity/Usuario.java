@@ -44,27 +44,27 @@ public class Usuario {
     @JoinTable(name = "usuario_area", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "area_id"))
     private Collection<AreaUsuario> areas;
 
-    @OneToMany
+    @OneToMany(mappedBy = "usuario")
     private Collection<Horario> horariosDisponibles;
 
     @OneToMany(mappedBy = "usuario")
     private Collection<Documento> documentos;
 
-    @OneToMany
+    @OneToMany(mappedBy = "estudiante")
     private Collection<EstudianteProyecto> estudiantes;
 
-    @OneToMany
+    @OneToMany(mappedBy = "supervisor")
     private Collection<SupervisorProyecto> supervisores;
 
-    @OneToMany
+    @OneToMany(mappedBy = "tutor")
     private Collection<TutorProyecto> tutores;
 
-    @OneToMany
+    @OneToMany(mappedBy = "docente")
     private Collection<DocenteTG2Proyecto> docentes;
 
-    @OneToMany
+    @OneToMany(mappedBy = "tribunal")
     private Collection<TribunalProyecto> tribunales;
 
-    @OneToMany
+    @OneToMany(mappedBy = "usuario")
     private Collection<Revision> revisiones;
 }

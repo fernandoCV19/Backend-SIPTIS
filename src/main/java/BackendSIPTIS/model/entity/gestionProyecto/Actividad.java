@@ -26,5 +26,6 @@ public class Actividad {
     private String recordatorioWpp;
 
     @ManyToOne
+    @JoinColumn(name = "id_proyecto_grado", nullable = false)
     private ProyectoGrado proyectoGrado;
 }
