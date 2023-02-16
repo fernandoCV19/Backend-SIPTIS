@@ -3,6 +3,8 @@ package BackendSIPTIS.model.entity.gestionProyecto;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Collection;
+
 @Entity
 @Table(name = "presentacion")
 @Getter
@@ -19,4 +21,10 @@ public class Presentacion {
     private String dirLibroAzul;
     private String dirProyecto;
     private String fase;
+
+    @ManyToOne
+    private ProyectoGrado proyectoGrado;
+
+    @OneToMany
+    private Collection<Revision> revisiones;
 }

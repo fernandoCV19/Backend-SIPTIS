@@ -1,5 +1,6 @@
 package BackendSIPTIS.model.entity.gestionProyecto;
 
+import BackendSIPTIS.auth.entity.Usuario;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,4 +19,10 @@ public class Revision {
 
     private String dirDocumento;
     private String comentario;
+
+    @ManyToOne
+    private Usuario usuario;
+
+    @ManyToOne
+    private Presentacion presentacion;
 }
