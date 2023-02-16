@@ -3,6 +3,8 @@ package BackendSIPTIS.model.entity.gestionProyecto;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Collection;
+
 @Entity
 @Table(name = "modalidad")
 @Getter
@@ -17,4 +19,7 @@ public class Modalidad {
     private Long id;
 
     private String nombre;
+
+    @OneToMany
+    private Collection<ProyectoGrado> proyectosDeGrado;
 }
