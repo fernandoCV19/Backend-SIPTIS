@@ -19,11 +19,11 @@ public class SupervisorProyecto {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "id_usuario", nullable = false)
+    @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario supervisor;
 
     @ManyToOne
-    @JoinColumn(name = "id_proyecto_grado", nullable = false)
+    @JoinColumn(name = "proyecto_grado_id", nullable = false)
     private ProyectoGrado proyecto;
     private Boolean aceptado;
 }

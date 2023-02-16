@@ -35,7 +35,7 @@ public class ProyectoGrado {
     private Defensa defensa;
 
     @ManyToOne
-    @JoinColumn(name = "id_modalidad", nullable = false)
+    @JoinColumn(name = "modalidad_id", nullable = false)
     private Modalidad modalidad;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {
@@ -56,7 +56,7 @@ public class ProyectoGrado {
     private Collection<Presentacion> presentaciones;
 
     @ManyToOne
-    @JoinColumn(name = "id_estado", nullable = false)
+    @JoinColumn(name = "estado_id", nullable = false)
     private Estado estado;
 
     @OneToMany(mappedBy = "proyectoGrado")

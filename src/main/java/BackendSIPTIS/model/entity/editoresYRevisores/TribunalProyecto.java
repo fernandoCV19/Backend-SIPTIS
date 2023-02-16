@@ -19,11 +19,11 @@ public class TribunalProyecto {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "id_usuario", nullable = false)
+    @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario tribunal;
 
     @ManyToOne
-    @JoinColumn(name = "id_proyecto_grado", nullable = false)
+    @JoinColumn(name = "proyecto_grado_id", nullable = false)
     private ProyectoGrado proyecto;
 
     private Boolean aceptado;

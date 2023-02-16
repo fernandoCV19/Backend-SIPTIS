@@ -22,10 +22,10 @@ public class Revision {
     private String comentario;
 
     @ManyToOne
-    @JoinColumn(name = "id_usuario", nullable = false)
+    @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
     @ManyToOne
-    @JoinColumn(name = "id_presentacion", nullable = false)
+    @JoinColumn(name = "presentacion_id", nullable = false)
     private Presentacion presentacion;
 }

@@ -26,7 +26,7 @@ public class Presentacion {
     private String fase;
 
     @ManyToOne
-    @JoinColumn(name = "id_proyecto_grado", nullable = false)
+    @JoinColumn(name = "proyecto_grado_id", nullable = false)
     private ProyectoGrado proyectoGrado;
 
     @OneToMany(mappedBy = "presentacion")
