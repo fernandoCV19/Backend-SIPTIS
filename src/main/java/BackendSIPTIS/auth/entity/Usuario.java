@@ -51,19 +51,19 @@ public class Usuario {
     private Collection<Documento> documentos;
 
     @OneToMany(mappedBy = "estudiante")
-    private Collection<EstudianteProyecto> estudiantes;
+    private Collection<EstudianteProyecto> estudianteDe;
 
     @OneToMany(mappedBy = "supervisor")
-    private Collection<SupervisorProyecto> supervisores;
+    private Collection<SupervisorProyecto> supervisoreDe;
 
     @OneToMany(mappedBy = "tutor")
-    private Collection<TutorProyecto> tutores;
+    private Collection<TutorProyecto> tutoreDe;
 
     @OneToMany(mappedBy = "docente")
-    private Collection<DocenteTG2Proyecto> docentes;
+    private Collection<DocenteTG2Proyecto> docenteDe;
 
     @OneToMany(mappedBy = "tribunal")
-    private Collection<TribunalProyecto> tribunales;
+    private Collection<TribunalProyecto> tribunaleDe;
 
     @OneToMany(mappedBy = "usuario")
     private Collection<Revision> revisiones;

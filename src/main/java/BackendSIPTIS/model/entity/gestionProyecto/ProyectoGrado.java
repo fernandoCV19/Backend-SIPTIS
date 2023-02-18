@@ -1,5 +1,6 @@
 package BackendSIPTIS.model.entity.gestionProyecto;
 
+import BackendSIPTIS.commons.FaseProyecto;
 import BackendSIPTIS.model.entity.editoresYRevisores.*;
 import jakarta.persistence.*;
 import lombok.*;
@@ -29,7 +30,7 @@ public class ProyectoGrado {
 
     @Column(name = "dir_proyecto")
     private String dirProyecto;
-    private String fase;
+    private FaseProyecto fase;
 
     @OneToOne
     private Defensa defensa;

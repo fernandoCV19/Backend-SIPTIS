@@ -30,4 +30,5 @@ public class TribunalProyecto {
 
     @Column(name = "nota_defensa")
     private Double notaDefensa;
+    private Boolean revisado;
 }

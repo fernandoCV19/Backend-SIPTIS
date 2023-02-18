@@ -1,4 +1,5 @@
 package BackendSIPTIS.commons;
 
-public class CommonClass {
+public enum FaseProyecto {
+
 }
