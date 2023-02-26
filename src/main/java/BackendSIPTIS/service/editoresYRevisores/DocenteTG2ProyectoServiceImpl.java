@@ -18,29 +18,32 @@ public class DocenteTG2ProyectoServiceImpl implements DocenteTG2ProyectoService{
     private final DocenteTG2ProyectoRepository docenteTG2ProyectoRepository;
 
     @Override
-    public RespuestaServicio obtenerTodosLosProyectosSinAceptarPorIdDocente(Long id) {
-        List<DocenteTG2Proyecto> listaProyectos = docenteTG2ProyectoRepository.findByUsuario_idAndAceptadoIsFalse(id);
-        if(listaProyectos.isEmpty()){
-            return RespuestaServicio.builder().mensajeServicio(MensajeServicio.SIN_PROYECTOS).data(listaProyectos).build();
-        }
+    public RespuestaServicio obtenerTodosLosProyectosSinAceptarRevisadosPorIdDocente(Long id) {
+        List<DocenteTG2Proyecto> listaProyectos = docenteTG2ProyectoRepository.findByUsuario_idAndAceptadoIsFalseAndRevisadoIsTrue(id);
+        return obtenerProyectos(listaProyectos);
+    }
 
-        List<ProyectoGradoMenuPrincipalDTO> data = listaProyectos
-                .stream()
-                .map(aux -> new ProyectoGradoMenuPrincipalDTO(aux.getProyecto(), false, aux.getRevisado()))
-                .collect(Collectors.toList());
 
-        return RespuestaServicio.builder().mensajeServicio(MensajeServicio.OK).data(data).build();    }
+    @Override
+    public RespuestaServicio obtenerTodosLosProyectosSinAceptarSinRevisarPorIdDocente(Long id) {
+        List<DocenteTG2Proyecto> listaProyectos = docenteTG2ProyectoRepository.findByUsuario_idAndAceptadoIsFalseAndRevisadoIsFalse(id);
+        return obtenerProyectos(listaProyectos);
+    }
 
     @Override
     public RespuestaServicio obtenerTodosLosProyectosAceptadosPorIdDocente(Long id) {
         List<DocenteTG2Proyecto> listaProyectos = docenteTG2ProyectoRepository.findByUsuario_idAndAceptadoIsTrue(id);
+        return obtenerProyectos(listaProyectos);
+    }
+
+    private RespuestaServicio obtenerProyectos(List<DocenteTG2Proyecto> listaProyectos){
         if(listaProyectos.isEmpty()){
             return RespuestaServicio.builder().mensajeServicio(MensajeServicio.SIN_PROYECTOS).data(listaProyectos).build();
         }
 
         List<ProyectoGradoMenuPrincipalDTO> data = listaProyectos
                 .stream()
-                .map(aux -> new ProyectoGradoMenuPrincipalDTO(aux.getProyecto(), true, aux.getRevisado()))
+                .map(aux -> new ProyectoGradoMenuPrincipalDTO(aux.getProyecto(), aux.getAceptado(), aux.getRevisado()))
                 .collect(Collectors.toList());
 
         return RespuestaServicio.builder().mensajeServicio(MensajeServicio.OK).data(data).build();

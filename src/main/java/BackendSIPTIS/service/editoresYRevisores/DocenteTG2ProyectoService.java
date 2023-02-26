@@ -4,7 +4,9 @@ import BackendSIPTIS.commons.RespuestaServicio;
 
 public interface DocenteTG2ProyectoService {
 
-    RespuestaServicio obtenerTodosLosProyectosSinAceptarPorIdDocente(Long id);
+    RespuestaServicio obtenerTodosLosProyectosSinAceptarRevisadosPorIdDocente(Long id);
+
+    RespuestaServicio obtenerTodosLosProyectosSinAceptarSinRevisarPorIdDocente(Long id);
 
     RespuestaServicio obtenerTodosLosProyectosAceptadosPorIdDocente(Long id);
 }

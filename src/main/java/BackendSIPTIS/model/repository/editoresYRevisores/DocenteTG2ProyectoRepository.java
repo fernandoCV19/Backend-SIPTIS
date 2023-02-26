@@ -9,7 +9,9 @@ import java.util.List;
 @Repository
 public interface DocenteTG2ProyectoRepository extends JpaRepository<DocenteTG2Proyecto, Long> {
 
-    List<DocenteTG2Proyecto> findByUsuario_idAndAceptadoIsFalse(Long id);
+    List<DocenteTG2Proyecto> findByUsuario_idAndAceptadoIsFalseAndRevisadoIsTrue(Long id);
+
+    List<DocenteTG2Proyecto> findByUsuario_idAndAceptadoIsFalseAndRevisadoIsFalse(Long id);
 
     List<DocenteTG2Proyecto> findByUsuario_idAndAceptadoIsTrue(Long id);
 }
