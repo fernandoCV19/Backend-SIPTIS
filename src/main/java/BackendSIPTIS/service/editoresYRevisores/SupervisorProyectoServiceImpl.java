@@ -3,6 +3,7 @@ package BackendSIPTIS.service.editoresYRevisores;
 import BackendSIPTIS.commons.MensajeServicio;
 import BackendSIPTIS.commons.RespuestaServicio;
 import BackendSIPTIS.model.entity.editoresYRevisores.DocenteTG2Proyecto;
+import BackendSIPTIS.model.entity.editoresYRevisores.SupervisorProyecto;
 import BackendSIPTIS.model.pjo.dto.gestionProyecto.ProyectoGradoMenuPrincipalDTO;
 import BackendSIPTIS.model.repository.editoresYRevisores.SupervisorProyectoRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,23 +20,35 @@ public class SupervisorProyectoServiceImpl implements SupervisorProyectoService{
 
     @Override
     public RespuestaServicio obtenerTodosLosProyectosSinAceptarRevisadosPorIdSupervisor(Long id) {
-        List<DocenteTG2Proyecto> listaProyectos = supervisorProyectoRepository.findByUsuario_idAndAceptadoIsFalseAndRevisadoIsTrue(id);
+        if(supervisorProyectoRepository.findById(id).isEmpty()) {
+            return RespuestaServicio.builder().mensajeServicio(MensajeServicio.ID_NO_EXISTE).data(null).build();
+        }
+
+        List<SupervisorProyecto> listaProyectos = supervisorProyectoRepository.findByUsuario_idAndAceptadoIsFalseAndRevisadoIsTrue(id);
         return obtenerProyectos(listaProyectos);
     }
 
     @Override
     public RespuestaServicio obtenerTodosLosProyectosSinAceptarSinRevisarPorIdSupervisor(Long id) {
-        List<DocenteTG2Proyecto> listaProyectos = supervisorProyectoRepository.findByUsuario_idAndAceptadoIsFalseAndRevisadoIsFalse(id);
+        if(supervisorProyectoRepository.findById(id).isEmpty()) {
+            return RespuestaServicio.builder().mensajeServicio(MensajeServicio.ID_NO_EXISTE).data(null).build();
+        }
+
+        List<SupervisorProyecto> listaProyectos = supervisorProyectoRepository.findByUsuario_idAndAceptadoIsFalseAndRevisadoIsFalse(id);
         return obtenerProyectos(listaProyectos);
     }
 
     @Override
     public RespuestaServicio obtenerTodosLosProyectosAceptadosPorIdSupervisor(Long id) {
-        List<DocenteTG2Proyecto> listaProyectos = supervisorProyectoRepository.findByUsuario_idAndAceptadoIsTrue(id);
+        if(supervisorProyectoRepository.findById(id).isEmpty()) {
+            return RespuestaServicio.builder().mensajeServicio(MensajeServicio.ID_NO_EXISTE).data(null).build();
+        }
+
+        List<SupervisorProyecto> listaProyectos = supervisorProyectoRepository.findByUsuario_idAndAceptadoIsTrue(id);
         return obtenerProyectos(listaProyectos);
     }
 
-    private RespuestaServicio obtenerProyectos(List<DocenteTG2Proyecto> listaProyectos){
+    private RespuestaServicio obtenerProyectos(List<SupervisorProyecto> listaProyectos){
         if(listaProyectos.isEmpty()){
             return RespuestaServicio.builder().mensajeServicio(MensajeServicio.SIN_PROYECTOS).data(listaProyectos).build();
         }

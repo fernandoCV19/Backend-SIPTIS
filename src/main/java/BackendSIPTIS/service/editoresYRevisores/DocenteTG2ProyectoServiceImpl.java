@@ -19,6 +19,10 @@ public class DocenteTG2ProyectoServiceImpl implements DocenteTG2ProyectoService{
 
     @Override
     public RespuestaServicio obtenerTodosLosProyectosSinAceptarRevisadosPorIdDocente(Long id) {
+        if(docenteTG2ProyectoRepository.findById(id).isEmpty()){
+            return RespuestaServicio.builder().mensajeServicio(MensajeServicio.ID_NO_EXISTE).data(null).build();
+        }
+
         List<DocenteTG2Proyecto> listaProyectos = docenteTG2ProyectoRepository.findByUsuario_idAndAceptadoIsFalseAndRevisadoIsTrue(id);
         return obtenerProyectos(listaProyectos);
     }
@@ -26,12 +30,20 @@ public class DocenteTG2ProyectoServiceImpl implements DocenteTG2ProyectoService{
 
     @Override
     public RespuestaServicio obtenerTodosLosProyectosSinAceptarSinRevisarPorIdDocente(Long id) {
+        if(docenteTG2ProyectoRepository.findById(id).isEmpty()){
+            return RespuestaServicio.builder().mensajeServicio(MensajeServicio.ID_NO_EXISTE).data(null).build();
+        }
+
         List<DocenteTG2Proyecto> listaProyectos = docenteTG2ProyectoRepository.findByUsuario_idAndAceptadoIsFalseAndRevisadoIsFalse(id);
         return obtenerProyectos(listaProyectos);
     }
 
     @Override
     public RespuestaServicio obtenerTodosLosProyectosAceptadosPorIdDocente(Long id) {
+        if(docenteTG2ProyectoRepository.findById(id).isEmpty()){
+            return RespuestaServicio.builder().mensajeServicio(MensajeServicio.ID_NO_EXISTE).data(null).build();
+        }
+
         List<DocenteTG2Proyecto> listaProyectos = docenteTG2ProyectoRepository.findByUsuario_idAndAceptadoIsTrue(id);
         return obtenerProyectos(listaProyectos);
     }

@@ -2,7 +2,7 @@ package BackendSIPTIS.service.editoresYRevisores;
 
 import BackendSIPTIS.commons.MensajeServicio;
 import BackendSIPTIS.commons.RespuestaServicio;
-import BackendSIPTIS.model.entity.editoresYRevisores.DocenteTG2Proyecto;
+import BackendSIPTIS.model.entity.editoresYRevisores.TutorProyecto;
 import BackendSIPTIS.model.pjo.dto.gestionProyecto.ProyectoGradoMenuPrincipalDTO;
 import BackendSIPTIS.model.repository.editoresYRevisores.TutorProyectoRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,23 +19,35 @@ public class TutorProyectoServiceImpl implements TutorProyectoService{
 
     @Override
     public RespuestaServicio obtenerTodosLosProyectosSinAceptarRevisadosPorIdTutor(Long id) {
-        List<DocenteTG2Proyecto> listaProyectos = tutorProyectoRepository.findByUsuario_idAndAceptadoIsFalseAndRevisadoIsTrue(id);
+        if(tutorProyectoRepository.findById(id).isEmpty()) {
+            return RespuestaServicio.builder().mensajeServicio(MensajeServicio.ID_NO_EXISTE).data(null).build();
+        }
+
+        List<TutorProyecto> listaProyectos = tutorProyectoRepository.findByUsuario_idAndAceptadoIsFalseAndRevisadoIsTrue(id);
         return obtenerProyectos(listaProyectos);
     }
 
     @Override
     public RespuestaServicio obtenerTodosLosProyectosSinAceptarSinRevisarPorIdTutor(Long id) {
-        List<DocenteTG2Proyecto> listaProyectos = tutorProyectoRepository.findByUsuario_idAndAceptadoIsFalseAndRevisadoIsFalse(id);
+        if(tutorProyectoRepository.findById(id).isEmpty()) {
+            return RespuestaServicio.builder().mensajeServicio(MensajeServicio.ID_NO_EXISTE).data(null).build();
+        }
+
+        List<TutorProyecto> listaProyectos = tutorProyectoRepository.findByUsuario_idAndAceptadoIsFalseAndRevisadoIsFalse(id);
         return obtenerProyectos(listaProyectos);
     }
 
     @Override
     public RespuestaServicio obtenerTodosLosProyectosAceptadosPorIdTutor(Long id) {
-        List<DocenteTG2Proyecto> listaProyectos = tutorProyectoRepository.findByUsuario_idAndAceptadoIsTrue(id);
+        if(tutorProyectoRepository.findById(id).isEmpty()) {
+            return RespuestaServicio.builder().mensajeServicio(MensajeServicio.ID_NO_EXISTE).data(null).build();
+        }
+
+        List<TutorProyecto> listaProyectos = tutorProyectoRepository.findByUsuario_idAndAceptadoIsTrue(id);
         return obtenerProyectos(listaProyectos);
     }
 
-    private RespuestaServicio obtenerProyectos(List<DocenteTG2Proyecto> listaProyectos){
+    private RespuestaServicio obtenerProyectos(List<TutorProyecto> listaProyectos){
         if(listaProyectos.isEmpty()){
             return RespuestaServicio.builder().mensajeServicio(MensajeServicio.SIN_PROYECTOS).data(listaProyectos).build();
         }

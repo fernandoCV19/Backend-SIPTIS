@@ -4,6 +4,12 @@ import BackendSIPTIS.commons.RespuestaServicio;
 
 public interface TribunalProyectoService {
 
-    RespuestaServicio obtenerTodosLosProyectosPorIdTribunal(Long id);
+    RespuestaServicio obtenerTodosLosProyectosSinRevisarPorIdTribunal(Long id);
+
+    RespuestaServicio obtenerTodosLosProyectosRevisadosSinAceptarPorIdTribunal(Long id);
+
+    RespuestaServicio obtenerTodosLosProyectosAceptadosSinDefenderPorIdTribunal(Long id);
+
+    RespuestaServicio obtenerTodosLosProyectosDefendidosPorIdTribunal(Long id);
 
 }

@@ -10,9 +10,9 @@ import java.util.List;
 @Repository
 public interface TutorProyectoRepository extends JpaRepository<TutorProyecto, Long> {
 
-    List<DocenteTG2Proyecto> findByUsuario_idAndAceptadoIsFalseAndRevisadoIsTrue(Long id);
+    List<TutorProyecto> findByUsuario_idAndAceptadoIsFalseAndRevisadoIsTrue(Long id);
 
-    List<DocenteTG2Proyecto> findByUsuario_idAndAceptadoIsFalseAndRevisadoIsFalse(Long id);
+    List<TutorProyecto> findByUsuario_idAndAceptadoIsFalseAndRevisadoIsFalse(Long id);
 
-    List<DocenteTG2Proyecto> findByUsuario_idAndAceptadoIsTrue(Long id);
+    List<TutorProyecto> findByUsuario_idAndAceptadoIsTrue(Long id);
 }
