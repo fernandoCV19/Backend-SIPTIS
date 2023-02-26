@@ -4,6 +4,9 @@ import BackendSIPTIS.commons.RespuestaServicio;
 
 public interface SupervisorProyectoService {
 
-    RespuestaServicio obtenerTodosLosProyectosPorIdSupervisor(Long id);
+    RespuestaServicio obtenerTodosLosProyectosSinAceptarRevisadosPorIdSupervisor(Long id);
 
+    RespuestaServicio obtenerTodosLosProyectosSinAceptarSinRevisarPorIdSupervisor(Long id);
+
+    RespuestaServicio obtenerTodosLosProyectosAceptadosPorIdSupervisor(Long id);
 }
