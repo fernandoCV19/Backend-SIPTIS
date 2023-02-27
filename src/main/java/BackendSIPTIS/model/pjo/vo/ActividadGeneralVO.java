@@ -1,0 +1,13 @@
+package BackendSIPTIS.model.pjo.vo;
+
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.Date;
+
+@Getter
+@Setter
+public class ActividadGeneralVO {
+    private String descripcionActividad;
+    private Date fechaActividad;
+}

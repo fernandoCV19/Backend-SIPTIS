@@ -22,6 +22,4 @@ public class ActividadGeneral {
     private String descripcionActividad;
     @Column(name = "fecha_actividad")
     private Date fechaActividad;
-    @Column(name = "recordatorio_wpp")
-    private String recordatorioWpp;
 }
