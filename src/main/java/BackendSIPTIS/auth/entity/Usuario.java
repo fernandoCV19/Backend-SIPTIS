@@ -7,8 +7,13 @@ import BackendSIPTIS.model.entity.editoresYRevisores.*;
 import BackendSIPTIS.model.entity.gestionProyecto.Revision;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "usuario")
@@ -17,7 +22,7 @@ import java.util.Collection;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Usuario {
+public class Usuario implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, unique = true)
@@ -28,13 +33,17 @@ public class Usuario {
     private String celular;
     private String ci;
     private String email;
+    private String contrasena;
     private String codSIS;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE
     })
-    @JoinTable(name = "usuario_rol", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "rol_id"))
+    @JoinTable(
+            name = "usuario_rol",
+            joinColumns = @JoinColumn(name = "usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "rol_id"))
     private Collection<Rol> roles;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {
@@ -67,4 +76,50 @@ public class Usuario {
 
     @OneToMany(mappedBy = "usuario")
     private Collection<Revision> revisiones;
+
+    //-------------------------------------------------------------------
+    public void addRol(Rol rol){
+        this.roles.add(rol);
+    }
+
+    //-------------------------------------------------------------------
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        for(Rol rol: roles){
+            authorities.add(new SimpleGrantedAuthority(rol.getNombre()));
+        }
+        return authorities;
+    }
+
+    @Override
+    public String getPassword() {
+        return contrasena;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+        //return codigoSis;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
