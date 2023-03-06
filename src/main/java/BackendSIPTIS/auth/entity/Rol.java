@@ -21,4 +21,8 @@ public class Rol {
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "roles")
     private Collection<Usuario> usuarios;
+
+    public Rol(String nombre){
+        this.nombre = nombre;
+    }
 }

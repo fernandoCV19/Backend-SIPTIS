@@ -1,8 +1,13 @@
 package BackendSIPTIS.auth.jwt;
 
+import BackendSIPTIS.auth.entity.Rol;
+import BackendSIPTIS.auth.entity.Usuario;
 import BackendSIPTIS.auth.service.UserDetailImp;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwt;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.security.core.userdetails.UserDetails;
 
 
 import java.util.Date;
@@ -24,6 +29,33 @@ public class JWTokenUtils {
     }
 
 
+
+    public static UserDetails getUserDetails(String token){
+        Usuario userDetails =new Usuario();
+        Claims claims = getClaims(token);
+        String subject =claims.getSubject();
+        String roles = (String) claims.get("roles");
+
+        roles = roles.replace("[", "").replace("]", "");
+        String[] roleNames = roles.split(",");
+
+        for (String aRoleName : roleNames) {
+
+            aRoleName = aRoleName.trim();
+            System.out.println("rol actual: "+ aRoleName);
+            userDetails.addRol(new Rol(aRoleName));
+
+            userDetails.setEmail(subject);
+        }
+
+        return userDetails;
+    }
+
+    public static Claims getClaims(String token){
+        return Jwts.parserBuilder()
+                .setSigningKey(ACCESS_TOKEN_SECRET.getBytes())
+                .build().parseClaimsJws(token).getBody();
+    }
 
 
 }
