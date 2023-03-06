@@ -4,14 +4,12 @@ import BackendSIPTIS.auth.entity.Rol;
 import BackendSIPTIS.auth.entity.Usuario;
 import BackendSIPTIS.auth.service.UserDetailImp;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwt;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
 
 
 import java.util.Date;
-import java.util.Map;
 
 public class JWTokenUtils {
 
