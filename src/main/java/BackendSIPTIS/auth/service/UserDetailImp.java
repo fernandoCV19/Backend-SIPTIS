@@ -9,7 +9,7 @@ import java.util.Collection;
 
 
 @AllArgsConstructor
-public class UserDetailService implements UserDetails {
+public class UserDetailImp implements UserDetails {
     private Usuario usuario;
 
     @Override
@@ -50,4 +50,6 @@ public class UserDetailService implements UserDetails {
     public String getRoles(){
         return usuario.getRoles().toString();
     }
+
+
 }
