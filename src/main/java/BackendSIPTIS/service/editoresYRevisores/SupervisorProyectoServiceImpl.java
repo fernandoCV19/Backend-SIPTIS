@@ -2,7 +2,6 @@ package BackendSIPTIS.service.editoresYRevisores;
 
 import BackendSIPTIS.commons.MensajeServicio;
 import BackendSIPTIS.commons.RespuestaServicio;
-import BackendSIPTIS.model.entity.editoresYRevisores.DocenteTG2Proyecto;
 import BackendSIPTIS.model.entity.editoresYRevisores.SupervisorProyecto;
 import BackendSIPTIS.model.pjo.dto.gestionProyecto.ProyectoGradoMenuPrincipalDTO;
 import BackendSIPTIS.model.repository.editoresYRevisores.SupervisorProyectoRepository;
@@ -24,7 +23,7 @@ public class SupervisorProyectoServiceImpl implements SupervisorProyectoService{
             return RespuestaServicio.builder().mensajeServicio(MensajeServicio.ID_NO_EXISTE).data(null).build();
         }
 
-        List<SupervisorProyecto> listaProyectos = supervisorProyectoRepository.findByUsuario_idAndAceptadoIsFalseAndRevisadoIsTrue(id);
+        List<SupervisorProyecto> listaProyectos = supervisorProyectoRepository.findBySupervisorAndAceptadoIsFalseAndRevisadoIsTrue(id);
         return obtenerProyectos(listaProyectos);
     }
 
@@ -34,7 +33,7 @@ public class SupervisorProyectoServiceImpl implements SupervisorProyectoService{
             return RespuestaServicio.builder().mensajeServicio(MensajeServicio.ID_NO_EXISTE).data(null).build();
         }
 
-        List<SupervisorProyecto> listaProyectos = supervisorProyectoRepository.findByUsuario_idAndAceptadoIsFalseAndRevisadoIsFalse(id);
+        List<SupervisorProyecto> listaProyectos = supervisorProyectoRepository.findBySupervisorAndAceptadoIsFalseAndRevisadoIsFalse(id);
         return obtenerProyectos(listaProyectos);
     }
 
@@ -44,7 +43,7 @@ public class SupervisorProyectoServiceImpl implements SupervisorProyectoService{
             return RespuestaServicio.builder().mensajeServicio(MensajeServicio.ID_NO_EXISTE).data(null).build();
         }
 
-        List<SupervisorProyecto> listaProyectos = supervisorProyectoRepository.findByUsuario_idAndAceptadoIsTrue(id);
+        List<SupervisorProyecto> listaProyectos = supervisorProyectoRepository.findBySupervisorAndAceptadoIsTrue(id);
         return obtenerProyectos(listaProyectos);
     }
 

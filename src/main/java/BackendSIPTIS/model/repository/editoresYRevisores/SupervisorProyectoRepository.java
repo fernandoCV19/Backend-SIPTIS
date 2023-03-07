@@ -9,9 +9,9 @@ import java.util.List;
 @Repository
 public interface SupervisorProyectoRepository extends JpaRepository<SupervisorProyecto, Long> {
 
-    List<SupervisorProyecto> findByUsuario_idAndAceptadoIsFalseAndRevisadoIsTrue(Long id);
+    List<SupervisorProyecto> findBySupervisorAndAceptadoIsFalseAndRevisadoIsTrue(Long id);
 
-    List<SupervisorProyecto> findByUsuario_idAndAceptadoIsFalseAndRevisadoIsFalse(Long id);
+    List<SupervisorProyecto> findBySupervisorAndAceptadoIsFalseAndRevisadoIsFalse(Long id);
 
-    List<SupervisorProyecto> findByUsuario_idAndAceptadoIsTrue(Long id);
+    List<SupervisorProyecto> findBySupervisorAndAceptadoIsTrue(Long id);
 }

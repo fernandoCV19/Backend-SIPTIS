@@ -23,7 +23,7 @@ public class TutorProyectoServiceImpl implements TutorProyectoService{
             return RespuestaServicio.builder().mensajeServicio(MensajeServicio.ID_NO_EXISTE).data(null).build();
         }
 
-        List<TutorProyecto> listaProyectos = tutorProyectoRepository.findByUsuario_idAndAceptadoIsFalseAndRevisadoIsTrue(id);
+        List<TutorProyecto> listaProyectos = tutorProyectoRepository.findByTutorAndAceptadoIsFalseAndRevisadoIsTrue(id);
         return obtenerProyectos(listaProyectos);
     }
 
@@ -33,7 +33,7 @@ public class TutorProyectoServiceImpl implements TutorProyectoService{
             return RespuestaServicio.builder().mensajeServicio(MensajeServicio.ID_NO_EXISTE).data(null).build();
         }
 
-        List<TutorProyecto> listaProyectos = tutorProyectoRepository.findByUsuario_idAndAceptadoIsFalseAndRevisadoIsFalse(id);
+        List<TutorProyecto> listaProyectos = tutorProyectoRepository.findByTutorAndAceptadoIsFalseAndRevisadoIsFalse(id);
         return obtenerProyectos(listaProyectos);
     }
 
@@ -43,7 +43,7 @@ public class TutorProyectoServiceImpl implements TutorProyectoService{
             return RespuestaServicio.builder().mensajeServicio(MensajeServicio.ID_NO_EXISTE).data(null).build();
         }
 
-        List<TutorProyecto> listaProyectos = tutorProyectoRepository.findByUsuario_idAndAceptadoIsTrue(id);
+        List<TutorProyecto> listaProyectos = tutorProyectoRepository.findByTutorAndAceptadoIsTrue(id);
         return obtenerProyectos(listaProyectos);
     }
 

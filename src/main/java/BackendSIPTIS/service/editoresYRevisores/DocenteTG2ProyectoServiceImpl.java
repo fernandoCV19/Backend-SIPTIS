@@ -23,7 +23,7 @@ public class DocenteTG2ProyectoServiceImpl implements DocenteTG2ProyectoService{
             return RespuestaServicio.builder().mensajeServicio(MensajeServicio.ID_NO_EXISTE).data(null).build();
         }
 
-        List<DocenteTG2Proyecto> listaProyectos = docenteTG2ProyectoRepository.findByUsuario_idAndAceptadoIsFalseAndRevisadoIsTrue(id);
+        List<DocenteTG2Proyecto> listaProyectos = docenteTG2ProyectoRepository.findByDocenteAndAceptadoIsFalseAndRevisadoIsTrue(id);
         return obtenerProyectos(listaProyectos);
     }
 
@@ -34,7 +34,7 @@ public class DocenteTG2ProyectoServiceImpl implements DocenteTG2ProyectoService{
             return RespuestaServicio.builder().mensajeServicio(MensajeServicio.ID_NO_EXISTE).data(null).build();
         }
 
-        List<DocenteTG2Proyecto> listaProyectos = docenteTG2ProyectoRepository.findByUsuario_idAndAceptadoIsFalseAndRevisadoIsFalse(id);
+        List<DocenteTG2Proyecto> listaProyectos = docenteTG2ProyectoRepository.findByDocenteAndAceptadoIsFalseAndRevisadoIsFalse(id);
         return obtenerProyectos(listaProyectos);
     }
 
@@ -44,7 +44,7 @@ public class DocenteTG2ProyectoServiceImpl implements DocenteTG2ProyectoService{
             return RespuestaServicio.builder().mensajeServicio(MensajeServicio.ID_NO_EXISTE).data(null).build();
         }
 
-        List<DocenteTG2Proyecto> listaProyectos = docenteTG2ProyectoRepository.findByUsuario_idAndAceptadoIsTrue(id);
+        List<DocenteTG2Proyecto> listaProyectos = docenteTG2ProyectoRepository.findByDocenteAndAceptadoIsTrue(id);
         return obtenerProyectos(listaProyectos);
     }
 

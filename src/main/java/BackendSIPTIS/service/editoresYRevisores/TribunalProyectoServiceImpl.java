@@ -23,7 +23,7 @@ public class TribunalProyectoServiceImpl implements TribunalProyectoService{
             return RespuestaServicio.builder().mensajeServicio(MensajeServicio.ID_NO_EXISTE).data(null).build();
         }
 
-        List<TribunalProyecto> listaProyectos = tribunalProyectoRepository.findByUsuario_idAndAceptadoIsFalseAndRevisadoIsFalse(id);
+        List<TribunalProyecto> listaProyectos = tribunalProyectoRepository.findByTribunalAndAceptadoIsFalseAndRevisadoIsFalse(id);
 
         return obtenerProyectos(listaProyectos);
     }
@@ -34,7 +34,7 @@ public class TribunalProyectoServiceImpl implements TribunalProyectoService{
             return RespuestaServicio.builder().mensajeServicio(MensajeServicio.ID_NO_EXISTE).data(null).build();
         }
 
-        List<TribunalProyecto> listaProyectos = tribunalProyectoRepository.findByUsuario_idAndAceptadoIsFalseAndRevisadoIsTrue(id);
+        List<TribunalProyecto> listaProyectos = tribunalProyectoRepository.findByTribunalAndAceptadoIsFalseAndRevisadoIsTrue(id);
 
         return obtenerProyectos(listaProyectos);
     }
@@ -45,7 +45,7 @@ public class TribunalProyectoServiceImpl implements TribunalProyectoService{
             return RespuestaServicio.builder().mensajeServicio(MensajeServicio.ID_NO_EXISTE).data(null).build();
         }
 
-        List<TribunalProyecto> listaProyectos = tribunalProyectoRepository.findByUsuario_idAndAceptadoIsTrueAndNotaDefensaIsNull(id);
+        List<TribunalProyecto> listaProyectos = tribunalProyectoRepository.findByTribunalAndAceptadoIsTrueAndNotaDefensaIsNull(id);
 
         return obtenerProyectos(listaProyectos);
     }
@@ -56,7 +56,7 @@ public class TribunalProyectoServiceImpl implements TribunalProyectoService{
             return RespuestaServicio.builder().mensajeServicio(MensajeServicio.ID_NO_EXISTE).data(null).build();
         }
 
-        List<TribunalProyecto> listaProyectos = tribunalProyectoRepository.findByUsuario_idAndNotaDefensaIsNotNull(id);
+        List<TribunalProyecto> listaProyectos = tribunalProyectoRepository.findByTribunalAndNotaDefensaIsNotNull(id);
 
         return obtenerProyectos(listaProyectos);
     }
