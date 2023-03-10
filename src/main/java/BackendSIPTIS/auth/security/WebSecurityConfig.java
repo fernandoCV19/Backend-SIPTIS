@@ -1,13 +1,22 @@
 package BackendSIPTIS.auth.security;
 
+import BackendSIPTIS.auth.jwt.JWTAuthenticationFilter;
+import BackendSIPTIS.auth.jwt.JWTAuthorizationFilter;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableMethodSecurity
@@ -15,6 +24,34 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @AllArgsConstructor
 public class WebSecurityConfig {
     private UserDetailsService userDetailsService;
+    private JWTAuthorizationFilter jwtAuthorizationFilter;
+
+
+    @Bean
+    SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager manager)
+    throws Exception{
+        JWTAuthenticationFilter jwtAuthenticationFilter =new JWTAuthenticationFilter();
+        jwtAuthenticationFilter.setAuthenticationManager(manager);
+        jwtAuthenticationFilter.setFilterProcessesUrl("/login");
+
+        return http
+                .cors().and()
+                .csrf().disable()
+                .authorizeHttpRequests()
+                .requestMatchers("/login").permitAll()
+                .anyRequest().authenticated()
+                .and().sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().addFilter(jwtAuthenticationFilter)
+                .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
+    }
+
+
+    AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder){
+        return http.getSharedObject(AuthenticationManager.class)
+                .userDetailsService
+    }
 
 
     @Bean
