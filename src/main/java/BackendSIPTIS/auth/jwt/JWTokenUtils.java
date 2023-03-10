@@ -6,6 +6,7 @@ import BackendSIPTIS.auth.service.UserDetailImp;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 
 
@@ -53,6 +54,24 @@ public class JWTokenUtils {
         return Jwts.parserBuilder()
                 .setSigningKey(ACCESS_TOKEN_SECRET.getBytes())
                 .build().parseClaimsJws(token).getBody();
+    }
+
+    public static UsernamePasswordAuthenticationToken getAuthentication(String token){
+        try {
+            Claims claims = Jwts.parserBuilder()
+                    .setSigningKey(ACCESS_TOKEN_SECRET.getBytes())
+                    .build().parseClaimsJws(token).getBody();
+
+            UserDetails userDetails = getUserDetails(token);
+
+            String correo =claims.getSubject();
+
+            return new UsernamePasswordAuthenticationToken(
+                    userDetails, null,userDetails.getAuthorities()
+            );
+        }catch (Exception e){
+            return null;
+        }
     }
 
 
