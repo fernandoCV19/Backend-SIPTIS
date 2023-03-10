@@ -1,37 +1,67 @@
 package BackendSIPTIS.service;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Date;
+import java.util.UUID;
 
-import com.dropbox.core.DbxException;
-import com.dropbox.core.DbxRequestConfig;
-import com.dropbox.core.v2.DbxClientV2;
-import com.dropbox.core.v2.files.UploadBuilder;
-import com.dropbox.core.v2.files.WriteMode;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
+import com.amazonaws.util.IOUtils;
+
+@Service
 public class BorradorUploadService {
-    private static final String ACCESS_TOKEN = "sl.BaIPpbHhUkEnC7FpE6_M6qoMp2dUHP0jw5IbDN1zse6vMsoPml14WzehfBCwxxMe2bSGAJIIz6tWXsL2R9rJQXlNROvsbJpIYs43dSFspUL4016ddt31Y7ffQ5p2dfXmVUtt074p";
+    private final static String BUCKET = "siptiscloudbucket";
+    
+    @Autowired
+    private AmazonS3 s3Client;
 
-    public static void main(String[] args) throws DbxException, IOException {
-        // Create Dropbox client
-        DbxRequestConfig config = DbxRequestConfig.newBuilder("dropbox/Siptis-Cloud").build();
-        DbxClientV2 client = new DbxClientV2(config, ACCESS_TOKEN);
+    public String putObject(MultipartFile multipartFile){
+        String extension = StringUtils.getFilenameExtension(multipartFile.getOriginalFilename());
+        String key = String.format("%s.%s", UUID.randomUUID(), extension);
 
-        System.out.println(client.users().getCurrentAccount().getEmail());
+        ObjectMetadata objectMetadata  = new ObjectMetadata();
+        objectMetadata.setContentType("multipartFile.getContentType()");
 
-        File archivo = new File("D:\\Descargas\\HORA_PABLO-2-2022.xlsx");
-        InputStream inputStream = new FileInputStream(archivo);
+        try{
+            PutObjectRequest putObjectRequest = new PutObjectRequest(BUCKET, key, multipartFile.getInputStream(), objectMetadata);
+            s3Client.putObject(putObjectRequest);
+            return key;
+        }catch(IOException e){
+            throw new RuntimeException(e);
+        }
 
-        UploadBuilder uploadBuilder = client.files().uploadBuilder("/Borradores/"+ archivo.getName());
-        uploadBuilder.withClientModified(new Date(archivo.lastModified()));
-        uploadBuilder.withMode(WriteMode.ADD);
-        uploadBuilder.withAutorename(true);
 
-        uploadBuilder.uploadAndFinish(inputStream);
-        inputStream.close();
+    }
+
+    public String getObject(String key){
+        S3Object s3Object = s3Client.getObject(BUCKET,key);
+        //ObjectMetadata metadata = s3Object.getObjectMetadata();
+
+        S3ObjectInputStream inputStream = s3Object.getObjectContent();
+
+        try {
+            byte[] bytes = IOUtils.toByteArray(inputStream);
+            return bytes.toString();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        
+
+    }
+
+    public void deleteObject(String key){
+        s3Client.deleteObject(BUCKET,key);
+    }
+
+    public String getObjectURL(String key){
+        return String.format("https://%s.s3.amazonaws.com/%s", BUCKET, key);
     }
 }
