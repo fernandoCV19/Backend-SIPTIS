@@ -77,6 +77,16 @@ public class Usuario implements UserDetails {
     @OneToMany(mappedBy = "usuario")
     private Collection<Revision> revisiones;
 
+    public Usuario(String nombres, String apellidos, String celular,
+                   String ci, String email, String contrasena, String codSIS) {
+        this.nombres = nombres;
+        this.apellidos = apellidos;
+        this.celular = celular;
+        this.ci =  ci;
+        this.contrasena = contrasena;
+        this.codSIS = codSIS;
+    }
+
     //-------------------------------------------------------------------
     public void addRol(Rol rol){
         this.roles.add(rol);
