@@ -16,7 +16,7 @@ public class Rol {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, unique = true)
-    private Long id;
+    private Integer id;
     private String nombre;
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "roles")
@@ -24,5 +24,10 @@ public class Rol {
 
     public Rol(String nombre){
         this.nombre = nombre;
+    }
+
+    public Rol(Integer id) {
+        super();
+        this.id = id;
     }
 }
