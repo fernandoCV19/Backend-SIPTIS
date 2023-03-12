@@ -30,4 +30,8 @@ public class Rol {
         super();
         this.id = id;
     }
+
+    public String toString(){
+        return nombre;
+    }
 }

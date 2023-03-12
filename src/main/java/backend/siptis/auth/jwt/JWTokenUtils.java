@@ -15,7 +15,7 @@ import java.util.Date;
 public class JWTokenUtils {
 
     private static final long EXPIRE_TIME_DURATION = 2 * 60 * 60* 1000; //2horas.
-    private static final String ACCESS_TOKEN_SECRET= "abcdefghijklmnOPQRSTUVWXYZ";
+    private static final String ACCESS_TOKEN_SECRET= "$2a$12$JTfIoPcl28jeEFio3aHBa.rcqtBUgvykiKYgKxvikVzzxVAt82CEu\n";
 
     public static String createToken(UserDetailImp usuarioI){
         Date fechaExpiracion =new Date(System.currentTimeMillis() + EXPIRE_TIME_DURATION);
@@ -32,7 +32,8 @@ public class JWTokenUtils {
     public static UserDetails getUserDetails(String token){
         Usuario userDetails =new Usuario();
         Claims claims = getClaims(token);
-        String subject =claims.getSubject();
+        //String subject =claims.getSubject();
+        String subject = (String) claims.get(Claims.SUBJECT);
         String roles = (String) claims.get("roles");
 
         roles = roles.replace("[", "").replace("]", "");

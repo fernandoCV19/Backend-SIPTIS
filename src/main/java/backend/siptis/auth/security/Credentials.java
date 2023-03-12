@@ -1,13 +1,11 @@
 package backend.siptis.auth.security;
 
-import lombok.AllArgsConstructor;
+
 import lombok.Data;
-import lombok.NoArgsConstructor;
+
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class Credentials {
-    private String correo;
+    private String email;
     private String contrasena;
 }

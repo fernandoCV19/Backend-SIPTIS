@@ -19,21 +19,30 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     public Authentication attemptAuthentication(
             HttpServletRequest request,
-            HttpServletResponse response) throws AuthenticationException {
+            HttpServletResponse response)  {
         Credentials authCredentials =new Credentials();
         try {
+            System.out.println("esta intentando");
             authCredentials = new ObjectMapper().readValue(
                     request.getReader(), Credentials.class
             );
         } catch (Exception e){
         }
 
-        UsernamePasswordAuthenticationToken PAToken =
-                new UsernamePasswordAuthenticationToken(
-                        authCredentials.getCorreo(),
-                        authCredentials.getContrasena(),
-                        Collections.emptyList());
-        return getAuthenticationManager().authenticate(PAToken);
+        try {
+            UsernamePasswordAuthenticationToken PAToken =
+                    new UsernamePasswordAuthenticationToken(
+                            authCredentials.getEmail(),
+                            authCredentials.getContrasena(),
+                            Collections.emptyList());
+            System.out.println("CORREO: "+authCredentials.getEmail());
+            System.out.println("CONTRASENA: "+authCredentials.getContrasena());
+            return getAuthenticationManager().authenticate(PAToken);
+        }catch (
+    AuthenticationException e){
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 
 
@@ -44,8 +53,10 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             FilterChain filterChain,
             Authentication authentication
     ) throws IOException {
+        System.out.println("ENTRA AL SUCCESS ");
         UserDetailImp userDetails= (UserDetailImp) authentication.getPrincipal();
         String token = JWTokenUtils.createToken(userDetails);
+        System.out.println("token: "+token);
         response.addHeader("Authorization", "Bearer "+ token);
         response.getWriter().flush();
     }
