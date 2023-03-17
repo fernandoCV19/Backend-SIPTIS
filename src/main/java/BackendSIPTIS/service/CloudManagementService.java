@@ -32,7 +32,9 @@ public class CloudManagementService {
         String key = carpeta + String.format("%s.%s", UUID.randomUUID(), extension);
 
         ObjectMetadata objectMetadata = new ObjectMetadata();
-        objectMetadata.setContentType("multipartFile.getContentType()");
+        objectMetadata.setContentType(multipartFile.getContentType());
+
+        objectMetadata.setContentLength(multipartFile.getSize());
 
         try {
             PutObjectRequest putObjectRequest = new PutObjectRequest(BUCKET, key, multipartFile.getInputStream(),
