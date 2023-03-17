@@ -40,4 +40,15 @@ public class AsignarRolesTest {
         Usuario usuarioActualizado = repository.save(usuario2);
         assertThat(usuarioActualizado.getRoles()).hasSize(1);
     }
+
+    @Test
+    public void testAsignarMasRolesUsuario2(){
+        int usuario2id = 103;
+        Integer rolDocenteId = 1;
+        Usuario usuario2 = repository.findById(usuario2id).get();
+        usuario2.addRol(new Rol(rolDocenteId));
+
+        Usuario usuarioActualizado = repository.save(usuario2);
+        assertThat(usuarioActualizado.getRoles()).hasSize(2);
+    }
 }

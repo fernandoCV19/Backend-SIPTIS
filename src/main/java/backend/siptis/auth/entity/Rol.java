@@ -9,7 +9,6 @@ import java.util.Collection;
 @Table(name = "rol")
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class Rol {

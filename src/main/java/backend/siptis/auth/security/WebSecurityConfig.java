@@ -33,7 +33,7 @@ public class WebSecurityConfig {
         jwtAuthenticationFilter.setAuthenticationManager(manager);
         jwtAuthenticationFilter.setFilterProcessesUrl("/login");
 
-        return http
+        return http.cors().and()
                 .csrf().disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/login").permitAll()

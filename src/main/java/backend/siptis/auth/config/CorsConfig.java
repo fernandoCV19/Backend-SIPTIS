@@ -19,7 +19,7 @@ public class CorsConfig {
                         .allowedMethods("*")
                         .exposedHeaders("*");
 
-                registry.addMapping("/api/**")
+                registry.addMapping("/todos")
                         .allowedOrigins("http://localhost:4200/")
                         .allowedMethods("*");
             }
