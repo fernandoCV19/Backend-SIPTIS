@@ -44,7 +44,7 @@ public class DocumentGenerator {
             
             document.add(fecha);
 
-            Paragraph presentación = 
+            Paragraph presentación ;
 
 
 
