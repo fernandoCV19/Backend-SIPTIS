@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import BackendSIPTIS.commons.MensajeServicio;
 import BackendSIPTIS.commons.RespuestaController;
 import BackendSIPTIS.commons.RespuestaServicio;
+import BackendSIPTIS.model.entity.gestionProyecto.Presentacion;
 import BackendSIPTIS.service.CloudManagementService;
 import BackendSIPTIS.service.PresentacionService;
 
@@ -30,16 +31,14 @@ public class PresentacionController {
 
     @GetMapping("/get")
     String prueba() {
-
         return "hola";
-
     }
 
     @PostMapping("/subir")
     ResponseEntity <?> upload(@RequestParam MultipartFile libroAzul, @RequestParam MultipartFile proyecto, @RequestParam String fase, @RequestParam Long proyecto_id) {
         RespuestaServicio respuestaServicio= presentacionService.createPresentacion(libroAzul, proyecto, fase, proyecto_id);
-        ResponseEntity<?> respuesta = crearResponseEntityConPresentacion(respuestaServicio);
-        return respuesta;
+        //ResponseEntity <Presentacion> respuesta = new ResponseEntity<> ((Presentacion)respuestaServicio.getData(), HttpStatus.OK);
+        return crearResponseEntityConPresentacion(respuestaServicio);
     }
 
     @GetMapping(value = "/get-object", params = "key")
@@ -72,8 +71,13 @@ public class PresentacionController {
 
     private ResponseEntity<?> crearResponseEntityConPresentacion(RespuestaServicio respuestaServicio){
         Object data = respuestaServicio.getData();
+        System.out.println(data.getClass());
         MensajeServicio mensajeServicio = respuestaServicio.getMensajeServicio();
         HttpStatus httpStatus = HttpStatus.resolve(201);
+
+        if(mensajeServicio == MensajeServicio.NOT_FOUND)
+            httpStatus = HttpStatus.NOT_FOUND;
+
         RespuestaController respuestaController = RespuestaController.builder().data(data).message(mensajeServicio.toString()).build();
         return new ResponseEntity<>(respuestaController, httpStatus);
     }

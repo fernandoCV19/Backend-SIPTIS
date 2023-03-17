@@ -3,7 +3,6 @@ package BackendSIPTIS.service;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,30 +26,23 @@ public class PresentacionService {
     private ProyectoDeGradoRepository proyectoGradoRepository;
 
     public RespuestaServicio createPresentacion(MultipartFile libroAzul, MultipartFile proyecto, String fasePresentacion, Long id_proyecto){
-        System.out.println("Inicio servicio : "+ id_proyecto);
         Presentacion presentacion = new Presentacion();
         Optional<ProyectoGrado> oproyectoGrado = proyectoGradoRepository.findById(id_proyecto);
-        if (oproyectoGrado.isPresent()){
-            System.out.println("Proyecto Encontrado");
-            ProyectoGrado proyectoGrado = oproyectoGrado.get();
-            presentacion.setProyectoGrado(proyectoGrado);
+        if (!oproyectoGrado.isPresent()){
+            return RespuestaServicio.builder().mensajeServicio(MensajeServicio.NOT_FOUND).data(null).build();
         }
-
+        ProyectoGrado proyectoGrado = oproyectoGrado.get();
+        presentacion.setProyectoGrado(proyectoGrado);
         presentacion.setFase(fasePresentacion);
         if (!libroAzul.isEmpty()){
             String dirLibroAzul = nube.putObject(libroAzul, "Libro-Azul/");
-            System.out.println("dir libro"+ dirLibroAzul);
             presentacion.setDirLibroAzul(dirLibroAzul);
         }
         if (!proyecto.isEmpty()){
             String dirProyectoGrado = nube.putObject(libroAzul, "Trabajos-Grado/");
-            System.out.println("dir proy"+ dirProyectoGrado);
             presentacion.setDirProyecto(dirProyectoGrado);
         }
         presentacionRepository.save(presentacion);
-
         return RespuestaServicio.builder().mensajeServicio(MensajeServicio.PRESENTACION_CREADA).data(presentacion).build();
     }
-
-
 }
