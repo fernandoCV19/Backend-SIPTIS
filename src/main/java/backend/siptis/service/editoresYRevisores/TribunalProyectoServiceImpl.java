@@ -4,7 +4,7 @@ import backend.siptis.commons.MensajeServicio;
 import backend.siptis.commons.RespuestaServicio;
 import backend.siptis.model.entity.editoresYRevisores.TribunalProyecto;
 import backend.siptis.model.pjo.dto.gestionProyecto.ProyectoGradoMenuPrincipalFaseTribunalesDTO;
-import BackendSIPTIS.model.repository.editoresYRevisores.TribunalProyectoRepository;
+import backend.siptis.model.repository.editoresYRevisores.TribunalProyectoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

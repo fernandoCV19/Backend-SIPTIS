@@ -1,6 +1,6 @@
 package backend.siptis.model.entity.gestionProyecto;
 
-import BackendSIPTIS.commons.FaseProyecto;
+import backend.siptis.commons.FaseProyecto;
 import jakarta.persistence.*;
 import lombok.*;
 

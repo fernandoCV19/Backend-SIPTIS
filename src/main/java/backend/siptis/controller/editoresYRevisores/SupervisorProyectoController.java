@@ -4,7 +4,7 @@ import backend.siptis.commons.MensajeServicio;
 import backend.siptis.commons.RespuestaController;
 import backend.siptis.commons.RespuestaServicio;
 import backend.siptis.service.editoresYRevisores.DocenteTG2ProyectoService;
-import BackendSIPTIS.service.editoresYRevisores.SupervisorProyectoService;
+import backend.siptis.service.editoresYRevisores.SupervisorProyectoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

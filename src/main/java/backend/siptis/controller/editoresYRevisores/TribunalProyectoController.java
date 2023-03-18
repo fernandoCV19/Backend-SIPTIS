@@ -3,7 +3,7 @@ package backend.siptis.controller.editoresYRevisores;
 import backend.siptis.commons.MensajeServicio;
 import backend.siptis.commons.RespuestaController;
 import backend.siptis.commons.RespuestaServicio;
-import BackendSIPTIS.service.editoresYRevisores.TribunalProyectoService;
+import backend.siptis.service.editoresYRevisores.TribunalProyectoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
