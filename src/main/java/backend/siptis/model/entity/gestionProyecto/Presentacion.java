@@ -1,5 +1,6 @@
 package backend.siptis.model.entity.gestionProyecto;
 
+import BackendSIPTIS.commons.FaseProyecto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,7 +24,7 @@ public class Presentacion {
 
     @Column(name = "dir_proyecto")
     private String dirProyecto;
-    private String fase;
+    private FaseProyecto fase;
 
     @ManyToOne
     @JoinColumn(name = "proyecto_grado_id", nullable = false)

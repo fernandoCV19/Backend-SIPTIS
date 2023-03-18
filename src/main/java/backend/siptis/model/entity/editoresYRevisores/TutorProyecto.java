@@ -26,4 +26,5 @@ public class TutorProyecto {
     @JoinColumn(name = "proyecto_grado_id", nullable = false)
     private ProyectoGrado proyecto;
     private Boolean aceptado;
+    private Boolean revisado;
 }
