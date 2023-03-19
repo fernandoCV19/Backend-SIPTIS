@@ -1,5 +1,7 @@
 package BackendSIPTIS.model.entity.gestionProyecto;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,8 +31,10 @@ public class Presentacion {
 
     @ManyToOne
     @JoinColumn(name = "proyecto_grado_id", nullable = false)
+    @JsonBackReference
     private ProyectoGrado proyectoGrado;
 
     @OneToMany(mappedBy = "presentacion",  fetch = FetchType.LAZY)
+    @JsonManagedReference
     private Collection<Revision> revisiones;
 }

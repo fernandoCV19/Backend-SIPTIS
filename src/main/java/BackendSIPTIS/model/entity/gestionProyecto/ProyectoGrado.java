@@ -1,6 +1,8 @@
 package BackendSIPTIS.model.entity.gestionProyecto;
 
 import BackendSIPTIS.model.entity.editoresYRevisores.*;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -38,6 +40,7 @@ public class ProyectoGrado {
 
     @ManyToOne
     @JoinColumn(name = "modalidad_id", nullable = false)
+    @JsonBackReference
     private Modalidad modalidad;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {
@@ -55,28 +58,36 @@ public class ProyectoGrado {
     private Collection<AreaProyecto> areas;
 
     @OneToMany(mappedBy = "proyectoGrado", fetch = FetchType.LAZY)
+    @JsonManagedReference
     private Collection<Presentacion> presentaciones;
 
     @ManyToOne
     @JoinColumn(name = "estado_id", nullable = false)
+    @JsonBackReference
     private Estado estado;
 
     @OneToMany(mappedBy = "proyectoGrado", fetch = FetchType.LAZY)
+    @JsonManagedReference
     private Collection<Actividad> actividades;
 
     @OneToMany(mappedBy = "proyecto", fetch = FetchType.LAZY)
+    @JsonManagedReference
     private Collection<EstudianteProyecto> estudiantes;
 
     @OneToMany(mappedBy = "proyecto", fetch = FetchType.LAZY)
+    @JsonManagedReference
     private Collection<SupervisorProyecto> supervisores;
 
     @OneToMany(mappedBy = "proyecto", fetch = FetchType.LAZY)
+    @JsonManagedReference
     private Collection<TutorProyecto> tutores;
 
     @OneToMany(mappedBy = "proyecto", fetch = FetchType.LAZY)
+    @JsonManagedReference
     private Collection<DocenteTG2Proyecto> docentes;
 
     @OneToMany(mappedBy = "proyecto", fetch = FetchType.LAZY)
+    @JsonManagedReference
     private Collection<TribunalProyecto> tribunales;
 
 }
