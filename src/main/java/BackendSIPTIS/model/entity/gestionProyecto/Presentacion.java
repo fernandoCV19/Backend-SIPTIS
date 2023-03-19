@@ -23,12 +23,14 @@ public class Presentacion {
 
     @Column(name = "dir_proyecto")
     private String dirProyecto;
+
+    @Column(name = "fase")
     private String fase;
 
     @ManyToOne
     @JoinColumn(name = "proyecto_grado_id", nullable = false)
     private ProyectoGrado proyectoGrado;
 
-    @OneToMany(mappedBy = "presentacion")
+    @OneToMany(mappedBy = "presentacion",  fetch = FetchType.LAZY)
     private Collection<Revision> revisiones;
 }

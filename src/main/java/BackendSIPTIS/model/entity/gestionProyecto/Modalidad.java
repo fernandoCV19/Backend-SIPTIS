@@ -12,14 +12,18 @@ import java.util.Collection;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class Modalidad {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
+    @Column(name = "nombre")
     private String nombre;
 
-    @OneToMany(mappedBy = "modalidad")
+
+    @OneToMany(mappedBy = "modalidad", fetch = FetchType.LAZY )
     private Collection<ProyectoGrado> proyectosDeGrado;
+
 }

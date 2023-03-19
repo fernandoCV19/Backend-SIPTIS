@@ -29,6 +29,8 @@ public class ProyectoGrado {
 
     @Column(name = "dir_proyecto")
     private String dirProyecto;
+
+    @Column(name = "fase")
     private String fase;
 
     @OneToOne
@@ -52,29 +54,29 @@ public class ProyectoGrado {
     @JoinTable(name = "proyecto_grado_area", joinColumns = @JoinColumn(name = "proyecto_grado_id"), inverseJoinColumns = @JoinColumn(name = "area_id"))
     private Collection<AreaProyecto> areas;
 
-    @OneToMany(mappedBy = "proyectoGrado")
+    @OneToMany(mappedBy = "proyectoGrado", fetch = FetchType.LAZY)
     private Collection<Presentacion> presentaciones;
 
     @ManyToOne
     @JoinColumn(name = "estado_id", nullable = false)
     private Estado estado;
 
-    @OneToMany(mappedBy = "proyectoGrado")
+    @OneToMany(mappedBy = "proyectoGrado", fetch = FetchType.LAZY)
     private Collection<Actividad> actividades;
 
-    @OneToMany(mappedBy = "proyecto")
+    @OneToMany(mappedBy = "proyecto", fetch = FetchType.LAZY)
     private Collection<EstudianteProyecto> estudiantes;
 
-    @OneToMany(mappedBy = "proyecto")
+    @OneToMany(mappedBy = "proyecto", fetch = FetchType.LAZY)
     private Collection<SupervisorProyecto> supervisores;
 
-    @OneToMany(mappedBy = "proyecto")
+    @OneToMany(mappedBy = "proyecto", fetch = FetchType.LAZY)
     private Collection<TutorProyecto> tutores;
 
-    @OneToMany(mappedBy = "proyecto")
+    @OneToMany(mappedBy = "proyecto", fetch = FetchType.LAZY)
     private Collection<DocenteTG2Proyecto> docentes;
 
-    @OneToMany(mappedBy = "proyecto")
+    @OneToMany(mappedBy = "proyecto", fetch = FetchType.LAZY)
     private Collection<TribunalProyecto> tribunales;
 
 }

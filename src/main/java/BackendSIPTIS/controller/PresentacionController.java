@@ -3,7 +3,6 @@ package BackendSIPTIS.controller;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-//import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,7 +34,7 @@ public class PresentacionController {
     }
 
     @PostMapping("/subir")
-    ResponseEntity <?> upload(@RequestParam MultipartFile libroAzul, @RequestParam MultipartFile proyecto, @RequestParam String fase, @RequestParam Long proyecto_id) {
+    ResponseEntity<?> upload(@RequestParam MultipartFile libroAzul, @RequestParam MultipartFile proyecto, @RequestParam String fase, @RequestParam Long proyecto_id) {
         RespuestaServicio respuestaServicio= presentacionService.createPresentacion(libroAzul, proyecto, fase, proyecto_id);
         //ResponseEntity <Presentacion> respuesta = new ResponseEntity<> ((Presentacion)respuestaServicio.getData(), HttpStatus.OK);
         return crearResponseEntityConPresentacion(respuestaServicio);
@@ -73,7 +72,7 @@ public class PresentacionController {
         Object data = respuestaServicio.getData();
         System.out.println(data.getClass());
         MensajeServicio mensajeServicio = respuestaServicio.getMensajeServicio();
-        HttpStatus httpStatus = HttpStatus.resolve(201);
+        HttpStatus httpStatus = HttpStatus.OK;
 
         if(mensajeServicio == MensajeServicio.NOT_FOUND)
             httpStatus = HttpStatus.NOT_FOUND;
