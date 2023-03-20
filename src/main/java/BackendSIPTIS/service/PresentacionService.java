@@ -16,7 +16,6 @@ import BackendSIPTIS.model.entity.gestionProyecto.ProyectoGrado;
 import BackendSIPTIS.model.repository.PresentacionRepository;
 import BackendSIPTIS.model.repository.ProyectoDeGradoRepository;
 
-//https://www.baeldung.com/jackson-bidirectional-relationships-and-infinite-recursion
 @Service
 public class PresentacionService {
     
