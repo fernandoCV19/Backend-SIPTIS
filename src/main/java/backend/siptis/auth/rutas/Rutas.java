@@ -26,9 +26,16 @@ public class Rutas {
 
     @GetMapping("/todos")
 
-    public List<Usuario> verTodos(){
+    public List<Contacto> verTodos(){
 
-        List<Usuario> lista  = usuarioRepository.findAll();
+        List<Contacto> lista  = contactoRepository.findAll();
+        return lista;
+    }
+
+    @GetMapping("/contactos")
+    @PreAuthorize("hasAuthority('DOCENTE')")
+    public List<Contacto> verContactos(){
+        List<Contacto> lista  = contactoRepository.findAll();
         return lista;
     }
 
