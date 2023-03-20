@@ -1,6 +1,6 @@
 package backend.siptis.service.datosUsuario;
 
-import BackendSIPTIS.auth.entity.Usuario;
+import backend.siptis.auth.entity.Usuario;
 import backend.siptis.commons.MensajeServicio;
 import backend.siptis.commons.RespuestaServicio;
 import backend.siptis.model.repository.datosUsuario.UsuarioCommonRepository;

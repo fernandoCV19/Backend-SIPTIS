@@ -96,6 +96,7 @@ public class Usuario implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        System.out.println("roles:" + roles.toString());
         for(Rol rol: roles){
             authorities.add(new SimpleGrantedAuthority(rol.getNombre()));
         }
