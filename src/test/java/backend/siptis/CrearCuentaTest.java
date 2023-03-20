@@ -25,18 +25,13 @@ public class CrearCuentaTest {
 
     @Test
     public void testCrearUsuario1(){
-        String nombres = "ADMIN";
-        String apellidos = "M";
-        String celular = "4";
-        String ci = "111";
+
         String email = "admin@gmail.com";
-        String codSIS = "2019";
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String contrasena = passwordEncoder.encode("123");
 
-        Usuario usuario = new Usuario(nombres,apellidos,celular,
-                ci,email,contrasena,codSIS);
+        Usuario usuario = new Usuario(email,contrasena);
 
         Usuario usuarioGuardado = repo.save(usuario);
 
@@ -47,18 +42,13 @@ public class CrearCuentaTest {
 
     @Test
     public void testCrearUsuario2(){
-        String nombres = "Mauricio";
-        String apellidos = "Vargas";
-        String celular = "7777777";
-        String ci = "123";
+
         String email = "maury.vargasl@gmail.com";
-        String codSIS = "201900188";
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String contrasena = passwordEncoder.encode("mavl");
 
-        Usuario usuario = new Usuario(nombres,apellidos,celular,
-                ci,email,contrasena,codSIS);
+        Usuario usuario = new Usuario(email,contrasena);
 
         Usuario usuarioGuardado = repo.save(usuario);
 

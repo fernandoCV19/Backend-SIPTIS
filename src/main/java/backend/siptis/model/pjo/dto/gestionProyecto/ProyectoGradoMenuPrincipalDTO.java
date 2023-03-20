@@ -25,7 +25,7 @@ public class ProyectoGradoMenuPrincipalDTO {
 
 
     public ProyectoGradoMenuPrincipalDTO(ProyectoGrado proyectoGrado, Boolean aceptado, Boolean revisado) {
-        idProyecto = proyectoGrado.getId();
+        /*idProyecto = proyectoGrado.getId();
         nombreProyecto = proyectoGrado.getNombre();
         tutores = proyectoGrado.getTutores()
                 .stream()
@@ -51,6 +51,6 @@ public class ProyectoGradoMenuPrincipalDTO {
         subAreas = proyectoGrado.getSubAreas()
                 .stream()
                 .map(aux -> aux.getNombre())
-                .toList();
+                .toList();*/
     }
 }

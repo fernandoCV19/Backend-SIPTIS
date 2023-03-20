@@ -20,6 +20,7 @@ public class CarreraUsuario {
     private Long id;
     private String nombre;
 
-    @OneToOne(fetch = FetchType.EAGER, mappedBy = "carrera")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "usuario_id", referencedColumnName = "id")
     private Usuario usuario;
 }

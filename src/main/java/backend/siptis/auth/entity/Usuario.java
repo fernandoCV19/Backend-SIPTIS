@@ -1,8 +1,6 @@
 package backend.siptis.auth.entity;
 
-import backend.siptis.model.entity.datosUsuario.AreaUsuario;
-import backend.siptis.model.entity.datosUsuario.Documento;
-import backend.siptis.model.entity.datosUsuario.Horario;
+import backend.siptis.model.entity.datosUsuario.*;
 import backend.siptis.model.entity.editoresYRevisores.*;
 import backend.siptis.model.entity.gestionProyecto.Revision;
 import jakarta.persistence.*;
@@ -25,14 +23,9 @@ public class Usuario implements UserDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
-
-    private String nombres;
-    private String apellidos;
-    private String celular;
-    private String ci;
     private String email;
     private String contrasena;
-    private String codSIS;
+
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {
             CascadeType.PERSIST,
@@ -50,6 +43,12 @@ public class Usuario implements UserDetails {
     })
     @JoinTable(name = "usuario_area", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "area_id"))
     private Collection<AreaUsuario> areas;
+
+    @OneToOne(mappedBy = "usuario")
+    private CarreraUsuario carrera;
+
+    @OneToOne(mappedBy = "usuario")
+    private InformacionUsuario informacionUsuario;
 
     @OneToMany(mappedBy = "usuario")
     private Collection<Horario> horariosDisponibles;
@@ -75,16 +74,9 @@ public class Usuario implements UserDetails {
     @OneToMany(mappedBy = "usuario")
     private Collection<Revision> revisiones;
 
-    public Usuario(String nombres, String apellidos, String celular,
-                   String ci, String email, String contrasena, String codSIS) {
-        this.nombres = nombres;
-        this.apellidos = apellidos;
-        this.celular = celular;
-        this.ci =  ci;
+    public Usuario(String email, String contrasena) {
         this.email = email;
         this.contrasena = contrasena;
-        this.codSIS = codSIS;
-
     }
 
     //-------------------------------------------------------------------
