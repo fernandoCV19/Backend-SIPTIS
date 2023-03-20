@@ -13,7 +13,9 @@ public class UsuarioController {
 
 
     @PostMapping("/registrar/estudiante")
-    public ResponseEntity<?> registrarEstudiante(@RequestBody RegistrarEstudianteDTO estudianteDTO){
+    public String registrarEstudiante(
+            @RequestBody RegistrarEstudianteDTO estudianteDTO){
 
+        return estudianteDTO.getEmail();
     }
 }
