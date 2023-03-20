@@ -29,6 +29,9 @@ public class Presentacion {
     @Column(name = "fase")
     private String fase;
 
+    @Column(name = "entregado")
+    private Boolean entregado = false;
+
     @ManyToOne
     @JoinColumn(name = "proyecto_grado_id", nullable = false)
     @JsonBackReference

@@ -1,15 +1,12 @@
 package BackendSIPTIS.controller;
 
 import java.util.List;
+
+import BackendSIPTIS.model.repository.ProyectoDeGradoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import BackendSIPTIS.commons.MensajeServicio;
@@ -33,53 +30,74 @@ public class PresentacionController {
         return "hola";
     }
 
-    @PostMapping("/subir")
-    ResponseEntity<?> upload(@RequestParam MultipartFile libroAzul, @RequestParam MultipartFile proyecto, @RequestParam String fase, @RequestParam Long proyecto_id) {
-        RespuestaServicio respuestaServicio= presentacionService.createPresentacion(libroAzul, proyecto, fase, proyecto_id);
-        //ResponseEntity <Presentacion> respuesta = new ResponseEntity<> ((Presentacion)respuestaServicio.getData(), HttpStatus.OK);
+    @GetMapping("/crear/{idProyecto}")
+    ResponseEntity<?> create(@PathVariable("idProyecto") Long idProyecto){
+        RespuestaServicio respuestaServicio = presentacionService.generateNew(idProyecto);
         return crearResponseEntityConPresentacion(respuestaServicio);
     }
 
-    @GetMapping(value = "/get-object", params = "key")
-    ResponseEntity<String> getObject(@RequestParam String key) {
-        String content = s3Service.getObject(key);
-
-        return (ResponseEntity<String>) ResponseEntity
-                .ok()
-                .body(content);
-
+    @DeleteMapping("/{id}")
+    ResponseEntity<?> deletePresentacion(@PathVariable("id") Long idPresentacion){
+        RespuestaServicio respuestaServicio = presentacionService.delete(idPresentacion);
+        return crearResponseEntityConPresentacion(respuestaServicio);
     }
 
-    @DeleteMapping(value = "/delete-object", params = "key")
-    void deleteObject(@RequestParam String key) {
-        s3Service.deleteObject(key);
+    @PostMapping("/enviar")
+    ResponseEntity<?> entregar( @RequestParam Long idPresentacion, @RequestParam String fase) {
+        RespuestaServicio respuestaServicio= presentacionService.entregarPresentacion(idPresentacion, fase);
+        return crearResponseEntityConPresentacion(respuestaServicio);
     }
 
-    @PostMapping("/upload-object")
-    void  uploadObject(@RequestParam MultipartFile file, @RequestParam String key) {
-    
+    @PostMapping("/libro")
+    ResponseEntity<?> subirLibro(@RequestParam Long idPresentacion, @RequestParam MultipartFile libroAzul) {
+        RespuestaServicio respuestaServicio= presentacionService.subirLibroAzul(idPresentacion, libroAzul);
+        return crearResponseEntityConPresentacion(respuestaServicio);
     }
 
-    @GetMapping(value = "/get-object-list", params = "folder")
-    ResponseEntity<Object> getObjectList(@RequestParam String folder) {
-        List <String> content = s3Service.getObjectslistFromFolder(folder);
-
-        return new ResponseEntity<Object>(content, HttpStatus.OK);
-
+    @PostMapping("/trabajo")
+    ResponseEntity<?> subirTrabajo(@RequestParam Long idPresentacion, @RequestParam MultipartFile trabajo) {
+        RespuestaServicio respuestaServicio= presentacionService.subirProyecto(idPresentacion, trabajo);
+        return crearResponseEntityConPresentacion(respuestaServicio);
     }
+
+    @DeleteMapping("/libro/{id}")
+    ResponseEntity<?> quitarLibro(@PathVariable("id") Long idPresentacion){
+        RespuestaServicio respuestaServicio = presentacionService.quitarLibroAzul(idPresentacion);
+        return crearResponseEntityConPresentacion(respuestaServicio);
+    }
+    @DeleteMapping("/trabajo/{id}")
+    ResponseEntity<?> quitarProyecto(@PathVariable("id") Long idPresentacion){
+        RespuestaServicio respuestaServicio = presentacionService.quitarTrabajoGrado(idPresentacion);
+        return crearResponseEntityConPresentacion(respuestaServicio);
+    }
+
+
+    //@PostMapping("/subir")
+    //ResponseEntity<?> upload(@RequestParam MultipartFile libroAzul, @RequestParam MultipartFile proyecto, @RequestParam String fase, @RequestParam Long proyecto_id) {
+        //RespuestaServicio respuestaServicio= presentacionService.createPresentacion(libroAzul, proyecto, fase, proyecto_id);
+        //return null;
+    //}
+
+
 
     private ResponseEntity<?> crearResponseEntityConPresentacion(RespuestaServicio respuestaServicio){
         Object data = respuestaServicio.getData();
-        System.out.println(data.getClass());
         MensajeServicio mensajeServicio = respuestaServicio.getMensajeServicio();
         HttpStatus httpStatus = HttpStatus.OK;
 
-        if(mensajeServicio == MensajeServicio.NOT_FOUND)
+        if (mensajeServicio == MensajeServicio.PRESENTACION_PENDIENTE){
+            RespuestaController respuestaController = RespuestaController.builder().data(data).message(mensajeServicio.toString()).build();
+            return new ResponseEntity<>(respuestaController, httpStatus);
+        }
+
+        if(mensajeServicio == MensajeServicio.NOT_FOUND || mensajeServicio == MensajeServicio.ERROR)
             httpStatus = HttpStatus.NOT_FOUND;
 
         RespuestaController respuestaController = RespuestaController.builder().data(data).message(mensajeServicio.toString()).build();
         return new ResponseEntity<>(respuestaController, httpStatus);
     }
+
+
 
 
 }

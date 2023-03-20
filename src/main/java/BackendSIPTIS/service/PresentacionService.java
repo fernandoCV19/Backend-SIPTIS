@@ -1,6 +1,9 @@
 package BackendSIPTIS.service;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +16,7 @@ import BackendSIPTIS.model.entity.gestionProyecto.ProyectoGrado;
 import BackendSIPTIS.model.repository.PresentacionRepository;
 import BackendSIPTIS.model.repository.ProyectoDeGradoRepository;
 
+//https://www.baeldung.com/jackson-bidirectional-relationships-and-infinite-recursion
 @Service
 public class PresentacionService {
     
@@ -25,24 +29,103 @@ public class PresentacionService {
     @Autowired
     private ProyectoDeGradoRepository proyectoGradoRepository;
 
-    public RespuestaServicio createPresentacion(MultipartFile libroAzul, MultipartFile proyecto, String fasePresentacion, Long id_proyecto){
+    public RespuestaServicio generateNew (Long idProyecto){
+        Optional <Presentacion> presentacionesNoEntregadas = presentacionRepository.findTopByProyectoGradoIdAndEntregado(idProyecto, false);
+        if (presentacionesNoEntregadas.isPresent()){
+            return RespuestaServicio.builder().mensajeServicio(MensajeServicio.PRESENTACION_PENDIENTE).data(null).build();
+        }
         Presentacion presentacion = new Presentacion();
-        Optional<ProyectoGrado> oproyectoGrado = proyectoGradoRepository.findById(id_proyecto);
-        if (!oproyectoGrado.isPresent()){
+        Optional<ProyectoGrado> oproyectoGrado = proyectoGradoRepository.findById(idProyecto);
+        if (oproyectoGrado.isEmpty()){
             return RespuestaServicio.builder().mensajeServicio(MensajeServicio.NOT_FOUND).data(null).build();
         }
         ProyectoGrado proyectoGrado = oproyectoGrado.get();
         presentacion.setProyectoGrado(proyectoGrado);
-        presentacion.setFase(fasePresentacion);
-        if (!libroAzul.isEmpty()){
-            String dirLibroAzul = nube.putObject(libroAzul, "Libro-Azul/");
-            presentacion.setDirLibroAzul(dirLibroAzul);
-        }
-        if (!proyecto.isEmpty()){
-            String dirProyectoGrado = nube.putObject(libroAzul, "Trabajos-Grado/");
-            presentacion.setDirProyecto(dirProyectoGrado);
-        }
         presentacionRepository.save(presentacion);
         return RespuestaServicio.builder().mensajeServicio(MensajeServicio.PRESENTACION_CREADA).data(presentacion).build();
     }
+    public RespuestaServicio delete (Long idPresentacion){
+        Optional <Presentacion> presentacion = presentacionRepository.findById(idPresentacion);
+        if (presentacion.isPresent()){
+            presentacionRepository.deleteById(idPresentacion);
+            return RespuestaServicio.builder().mensajeServicio(MensajeServicio.PRESENTACION_ELIMINADA).data(null).build();
+        }
+        return RespuestaServicio.builder().mensajeServicio(MensajeServicio.NOT_FOUND).data(null).build();
+    }
+    public RespuestaServicio entregarPresentacion(Long idPresentacion, String fase){
+        Optional <Presentacion> opresentacion = presentacionRepository.findById(idPresentacion);
+        if (opresentacion.isEmpty()){
+            return RespuestaServicio.builder().mensajeServicio(MensajeServicio.NOT_FOUND).data(null).build();
+        }
+        Presentacion presentacion = opresentacion.get();
+        if(presentacion.getEntregado()){
+            return RespuestaServicio.builder().mensajeServicio(MensajeServicio.ERROR).data(null).build();
+        }
+        ProyectoGrado proyecto = presentacion.getProyectoGrado();
+        presentacion.setFase(fase);
+        if (presentacion.getDirProyecto() != null)
+            proyecto.setDirProyecto(presentacion.getDirProyecto());
+        if (presentacion.getDirLibroAzul() != null)
+            proyecto.setDirLibroAzul(presentacion.getDirLibroAzul());
+        proyecto.setFase(fase);
+        presentacion.setEntregado(true);
+        proyectoGradoRepository.saveAndFlush(proyecto);
+        presentacionRepository.saveAndFlush(presentacion);
+        return RespuestaServicio.builder().mensajeServicio(MensajeServicio.PRESENTACION_ENTREGADA).data(presentacion).build();
+    }
+    public RespuestaServicio subirLibroAzul(Long idPresentacion,MultipartFile libroAzul ){
+        Optional <Presentacion> opresentacion = presentacionRepository.findById(idPresentacion);
+        if (opresentacion.isEmpty()){
+            return RespuestaServicio.builder().mensajeServicio(MensajeServicio.NOT_FOUND).data(null).build();
+        }
+        Presentacion presentacion = opresentacion.get();
+        String key = nube.putObject(libroAzul,"Libro-Azul/");
+        presentacion.setDirLibroAzul(key);
+        presentacionRepository.saveAndFlush(presentacion);
+        return RespuestaServicio.builder().mensajeServicio(MensajeServicio.OPERACION_DE_NUBE_COMPLETADA).data(presentacion).build();
+    }
+    public RespuestaServicio subirProyecto(Long idPresentacion,MultipartFile proyecto ){
+        Optional <Presentacion> opresentacion = presentacionRepository.findById(idPresentacion);
+        if (opresentacion.isEmpty()){
+            return RespuestaServicio.builder().mensajeServicio(MensajeServicio.NOT_FOUND).data(null).build();
+        }
+        Presentacion presentacion = opresentacion.get();
+        String key = nube.putObject(proyecto,"Trabajos-Grado/");
+        presentacion.setDirProyecto(key);
+        presentacionRepository.saveAndFlush(presentacion);
+        return RespuestaServicio.builder().mensajeServicio(MensajeServicio.OPERACION_DE_NUBE_COMPLETADA).data(presentacion).build();
+    }
+
+    public RespuestaServicio quitarLibroAzul(Long idPresentacion){
+        Optional <Presentacion> opresentacion = presentacionRepository.findById(idPresentacion);
+        if (opresentacion.isEmpty()){
+            return RespuestaServicio.builder().mensajeServicio(MensajeServicio.NOT_FOUND).data(null).build();
+        }
+        Presentacion presentacion = opresentacion.get();
+        String key = presentacion.getDirLibroAzul();
+        if(key == null){
+            return RespuestaServicio.builder().mensajeServicio(MensajeServicio.NOT_FOUND).data(null).build();
+        }
+        nube.deleteObject(key);
+        presentacion.setDirLibroAzul(null);
+        presentacionRepository.saveAndFlush(presentacion);
+        return RespuestaServicio.builder().mensajeServicio(MensajeServicio.OPERACION_DE_NUBE_COMPLETADA).data(presentacion).build();
+    }
+
+    public RespuestaServicio quitarTrabajoGrado(Long idPresentacion){
+        Optional <Presentacion> opresentacion = presentacionRepository.findById(idPresentacion);
+        if (opresentacion.isEmpty()){
+            return RespuestaServicio.builder().mensajeServicio(MensajeServicio.NOT_FOUND).data(null).build();
+        }
+        Presentacion presentacion = opresentacion.get();
+        String key = presentacion.getDirProyecto();
+        if(key == null){
+            return RespuestaServicio.builder().mensajeServicio(MensajeServicio.NOT_FOUND).data(null).build();
+        }
+        nube.deleteObject(key);
+        presentacion.setDirProyecto(null);
+        presentacionRepository.saveAndFlush(presentacion);
+        return RespuestaServicio.builder().mensajeServicio(MensajeServicio.OPERACION_DE_NUBE_COMPLETADA).data(presentacion).build();
+    }
+
 }
