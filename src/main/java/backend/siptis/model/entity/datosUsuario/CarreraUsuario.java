@@ -10,7 +10,6 @@ import java.util.Collection;
 @Table(name = "carrera_usuario")
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class CarreraUsuario {
