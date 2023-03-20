@@ -26,20 +26,10 @@ public class Rutas {
 
     @GetMapping("/todos")
 
-    public List<Contacto> verTodos(){
-        Rol usuario1 = new Rol("uno");
-        Rol usuario2 = new Rol("dos");
-        Rol usuario3 = new Rol("tres");
-        List<Rol> roles = new ArrayList<>();
-        roles.add(usuario1);
-        roles.add(usuario2);
-        roles.add(usuario3);
-        List<Rol> rols = rolRepository.findAll();
-        System.out.println(rols.size());
-        for (Rol user : rols ) {
-            System.out.println(user);
-        }
-        return contactoRepository.findAll();
+    public List<Usuario> verTodos(){
+
+        List<Usuario> lista  = usuarioRepository.findAll();
+        return lista;
     }
 
     @GetMapping("/hola")

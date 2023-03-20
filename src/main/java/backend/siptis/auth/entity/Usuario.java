@@ -41,7 +41,9 @@ public class Usuario implements UserDetails {
             CascadeType.PERSIST,
             CascadeType.MERGE
     })
-    @JoinTable(name = "usuario_area", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "area_id"))
+    @JoinTable(name = "usuario_area",
+            joinColumns = @JoinColumn(name = "usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "area_id"))
     private Collection<AreaUsuario> areas;
 
     @OneToOne(mappedBy = "usuario")
