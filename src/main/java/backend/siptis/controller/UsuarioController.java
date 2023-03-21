@@ -1,5 +1,6 @@
 package backend.siptis.controller;
 
+import backend.siptis.auth.service.InformacionUsuarioService;
 import backend.siptis.auth.service.UsuarioAuthService;
 import backend.siptis.model.pjo.dto.InformacionEstudianteDTO;
 import backend.siptis.model.pjo.dto.RegistrarEstudianteDTO;
@@ -17,6 +18,7 @@ public class UsuarioController {
 
     @Autowired
     private final UsuarioAuthService usuarioAuthService;
+
 
 
 

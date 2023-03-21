@@ -20,6 +20,9 @@ public class UsuarioAuthServiceImpl implements UsuarioAuthService {
 
     @Autowired
     private final UsuarioRepository usuarioRepository;
+    @Autowired
+    private final InformacionUsuarioService informacionUsuarioService;
+
 
 
 
@@ -37,7 +40,10 @@ public class UsuarioAuthServiceImpl implements UsuarioAuthService {
         String contrasena = encoder.encode(estudianteDTO.getContrasena());
         usuario.setContrasena(contrasena);
         usuarioRepository.save(usuario);
-        InformacionEstudianteDTO estudiante = new InformacionEstudianteDTO();
+        //InformacionEstudianteDTO estudiante = new InformacionEstudianteDTO();
+
+        InformacionEstudianteDTO estudiante = informacionUsuarioService
+                .registrarEstudiante(estudianteDTO, usuario);
         estudiante.setEmail(usuario.getEmail());
         return estudiante;
     }
