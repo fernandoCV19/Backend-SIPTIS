@@ -1,6 +1,10 @@
 package backend.siptis.auth.entity;
 
 import backend.siptis.model.entity.datosUsuario.*;
+import backend.siptis.model.entity.datosUsuario.AreaUsuario;
+import backend.siptis.model.entity.datosUsuario.Documento;
+import backend.siptis.model.entity.datosUsuario.Horario;
+import BackendSIPTIS.model.entity.editoresYRevisores.*;
 import backend.siptis.model.entity.editoresYRevisores.*;
 import backend.siptis.model.entity.gestionProyecto.Revision;
 import jakarta.persistence.*;
@@ -10,6 +14,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
+
+import java.util.Collection;
 
 @Entity
 @Table(name = "usuario")

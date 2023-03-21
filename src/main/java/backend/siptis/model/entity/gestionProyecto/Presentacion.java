@@ -1,6 +1,7 @@
 package backend.siptis.model.entity.gestionProyecto;
 
-import backend.siptis.commons.FaseProyecto;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,12 +25,19 @@ public class Presentacion {
 
     @Column(name = "dir_proyecto")
     private String dirProyecto;
-    private FaseProyecto fase;
+
+    @Column(name = "fase")
+    private String fase;
+
+    @Column(name = "entregado")
+    private Boolean entregado = false;
 
     @ManyToOne
     @JoinColumn(name = "proyecto_grado_id", nullable = false)
+    @JsonBackReference
     private ProyectoGrado proyectoGrado;
 
-    @OneToMany(mappedBy = "presentacion")
+    @OneToMany(mappedBy = "presentacion",  fetch = FetchType.LAZY)
+    @JsonManagedReference
     private Collection<Revision> revisiones;
 }

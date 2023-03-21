@@ -1,5 +1,6 @@
 package backend.siptis.model.entity.gestionProyecto;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,8 +19,10 @@ public class Estado {
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
+    @Column(name = "nombre")
     private String nombre;
 
-    @OneToMany(mappedBy = "estado")
+    @OneToMany(mappedBy = "estado", fetch = FetchType.LAZY)
+    @JsonManagedReference
     private Collection<ProyectoGrado> proyectosDeGrado;
 }
