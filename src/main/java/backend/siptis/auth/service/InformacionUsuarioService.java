@@ -10,6 +10,7 @@ public interface InformacionUsuarioService {
 
     List<Usuario> findAll();
 
-    InformacionEstudianteDTO registrarEstudiante(RegistrarEstudianteDTO estudianteDTO);
+    InformacionEstudianteDTO registrarEstudiante(
+            RegistrarEstudianteDTO estudianteDTO, Usuario usuario);
 
 }
