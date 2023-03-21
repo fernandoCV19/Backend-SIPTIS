@@ -1,6 +1,5 @@
 package BackendSIPTIS.controller;
 
-
 import BackendSIPTIS.commons.MensajeServicio;
 import BackendSIPTIS.commons.RespuestaController;
 import BackendSIPTIS.commons.RespuestaServicio;
@@ -22,6 +21,11 @@ public class ProyectoGradoController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getPresentaciones(@PathVariable ("id") Long idProyecto){
         RespuestaServicio respuestaServicio = proyectoGradoService.obtenerPresentaciones(idProyecto);
+        return crearResponseEntity(respuestaServicio);
+    }
+    @GetMapping("/")
+    public ResponseEntity<?> getProyectos(){
+        RespuestaServicio respuestaServicio = proyectoGradoService.obtenerProyectos();
         return crearResponseEntity(respuestaServicio);
     }
     private ResponseEntity<?> crearResponseEntity(RespuestaServicio respuestaServicio){

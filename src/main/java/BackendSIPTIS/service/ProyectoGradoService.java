@@ -6,6 +6,7 @@ import BackendSIPTIS.model.entity.gestionProyecto.Presentacion;
 import BackendSIPTIS.model.entity.gestionProyecto.ProyectoGrado;
 import BackendSIPTIS.model.repository.ProyectoDeGradoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +17,10 @@ public class ProyectoGradoService {
     @Autowired
     private ProyectoDeGradoRepository proyectoDeGradoRepository;
 
+    public RespuestaServicio obtenerProyectos(){
+        List<ProyectoGrado> proyectos = proyectoDeGradoRepository.findAll();
+        return RespuestaServicio.builder().mensajeServicio(MensajeServicio.OK).data(proyectos).build();
+    }
     public RespuestaServicio obtenerPresentaciones (Long idProyecto){
         Optional<ProyectoGrado> oProyectoGrado = proyectoDeGradoRepository.findById(idProyecto);
         if(oProyectoGrado.isEmpty()){
