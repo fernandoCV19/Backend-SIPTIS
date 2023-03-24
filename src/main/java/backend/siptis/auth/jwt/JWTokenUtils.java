@@ -1,7 +1,7 @@
 package backend.siptis.auth.jwt;
 
-import backend.siptis.auth.entity.Rol;
-import backend.siptis.auth.entity.Usuario;
+import backend.siptis.auth.entity.Role;
+import backend.siptis.auth.entity.User;
 import backend.siptis.auth.service.UserDetailImp;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -30,7 +30,7 @@ public class JWTokenUtils {
 
 
     public static UserDetails getUserDetails(String token){
-        Usuario userDetails =new Usuario();
+        User userDetails =new User();
         Claims claims = getClaims(token);
         //String subject =claims.getSubject();
         String subject = (String) claims.get(Claims.SUBJECT);
@@ -43,7 +43,7 @@ public class JWTokenUtils {
 
             aRoleName = aRoleName.trim();
             System.out.println("rol actual: "+ aRoleName);
-            userDetails.addRol(new Rol(aRoleName));
+            userDetails.addRol(new Role(aRoleName));
 
             userDetails.setEmail(subject);
         }

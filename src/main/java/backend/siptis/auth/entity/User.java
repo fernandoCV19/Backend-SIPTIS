@@ -1,7 +1,7 @@
 package backend.siptis.auth.entity;
 
 import backend.siptis.model.entity.datosUsuario.*;
-import backend.siptis.model.entity.datosUsuario.AreaUsuario;
+import backend.siptis.model.entity.datosUsuario.UserArea;
 import backend.siptis.model.entity.datosUsuario.Documento;
 import backend.siptis.model.entity.datosUsuario.Horario;
 import backend.siptis.model.entity.editoresYRevisores.*;
@@ -17,19 +17,19 @@ import java.util.*;
 import java.util.Collection;
 
 @Entity
-@Table(name = "usuario")
+@Table(name = "user")
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Usuario implements UserDetails {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
     private String email;
-    private String contrasena;
+    private String password;
 
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {
@@ -37,30 +37,30 @@ public class Usuario implements UserDetails {
             CascadeType.MERGE
     })
     @JoinTable(
-            name = "usuario_rol",
-            joinColumns = @JoinColumn(name = "usuario_id"),
-            inverseJoinColumns = @JoinColumn(name = "rol_id"))
-    private Set<Rol> roles = new HashSet<>();
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE
     })
-    @JoinTable(name = "usuario_area",
-            joinColumns = @JoinColumn(name = "usuario_id"),
+    @JoinTable(name = "user_area",
+            joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "area_id"))
-    private Collection<AreaUsuario> areas;
+    private Collection<UserArea> areas;
 
-    @OneToOne(mappedBy = "usuario")
-    private CarreraUsuario carrera;
+    @OneToOne(mappedBy = "user")
+    private CarreraUsuario career;
 
-    @OneToOne(mappedBy = "usuario")
-    private InformacionUsuario informacionUsuario;
+    @OneToOne(mappedBy = "user")
+    private InformacionUsuario userInformation;
 
-    @OneToMany(mappedBy = "usuario")
+    @OneToMany(mappedBy = "user")
     private Collection<Horario> horariosDisponibles;
 
-    @OneToMany(mappedBy = "usuario")
+    @OneToMany(mappedBy = "user")
     private Collection<Documento> documentos;
 
     @OneToMany(mappedBy = "estudiante")
@@ -78,17 +78,17 @@ public class Usuario implements UserDetails {
     @OneToMany(mappedBy = "tribunal")
     private Collection<TribunalProyecto> tribunales;
 
-    @OneToMany(mappedBy = "usuario")
+    @OneToMany(mappedBy = "user")
     private Collection<Revision> revisiones;
 
-    public Usuario(String email, String contrasena) {
+    public User(String email, String password) {
         this.email = email;
-        this.contrasena = contrasena;
+        this.password = password;
     }
 
     //-------------------------------------------------------------------
-    public void addRol(Rol rol){
-        this.roles.add(rol);
+    public void addRol(Role role){
+        this.roles.add(role);
     }
 
     //-------------------------------------------------------------------
@@ -96,21 +96,20 @@ public class Usuario implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         System.out.println("roles:" + roles.toString());
-        for(Rol rol: roles){
-            authorities.add(new SimpleGrantedAuthority(rol.getNombre()));
+        for(Role role : roles){
+            authorities.add(new SimpleGrantedAuthority(role.getRolName()));
         }
         return authorities;
     }
 
     @Override
     public String getPassword() {
-        return contrasena;
+        return password;
     }
 
     @Override
     public String getUsername() {
         return email;
-        //return codigoSis;
     }
 
     @Override

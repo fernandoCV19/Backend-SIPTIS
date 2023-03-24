@@ -1,8 +1,7 @@
 package backend.siptis.auth.rutas;
 
 import backend.siptis.auth.entity.Contacto;
-import backend.siptis.auth.entity.Rol;
-import backend.siptis.auth.entity.Usuario;
+import backend.siptis.auth.entity.User;
 import backend.siptis.auth.repository.ContactoRepository;
 import backend.siptis.auth.repository.RolRepository;
 import backend.siptis.auth.repository.UsuarioRepository;
@@ -11,7 +10,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -40,7 +38,7 @@ public class Rutas {
     }
 
     @GetMapping("/hola")
-    public List<Usuario> verTodosAuth(){
+    public List<User> verTodosAuth(){
         return usuarioRepository.findAll();
     }
 

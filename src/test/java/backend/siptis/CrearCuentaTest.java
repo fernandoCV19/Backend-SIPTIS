@@ -1,6 +1,6 @@
 package backend.siptis;
 
-import backend.siptis.auth.entity.Usuario;
+import backend.siptis.auth.entity.User;
 import backend.siptis.auth.repository.UsuarioRepository;
 
 import org.junit.jupiter.api.Test;
@@ -31,12 +31,12 @@ public class CrearCuentaTest {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String contrasena = passwordEncoder.encode("123");
 
-        Usuario usuario = new Usuario(email,contrasena);
+        User user = new User(email,contrasena);
 
-        Usuario usuarioGuardado = repo.save(usuario);
+        User userGuardado = repo.save(user);
 
-        assertThat(usuarioGuardado).isNotNull();
-        assertThat(usuarioGuardado.getId()).isGreaterThan(0);
+        assertThat(userGuardado).isNotNull();
+        assertThat(userGuardado.getId()).isGreaterThan(0);
 
     }
 
@@ -48,12 +48,12 @@ public class CrearCuentaTest {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String contrasena = passwordEncoder.encode("mavl");
 
-        Usuario usuario = new Usuario(email,contrasena);
+        User user = new User(email,contrasena);
 
-        Usuario usuarioGuardado = repo.save(usuario);
+        User userGuardado = repo.save(user);
 
-        assertThat(usuarioGuardado).isNotNull();
-        assertThat(usuarioGuardado.getId()).isGreaterThan(0);
+        assertThat(userGuardado).isNotNull();
+        assertThat(userGuardado.getId()).isGreaterThan(0);
 
     }
 }

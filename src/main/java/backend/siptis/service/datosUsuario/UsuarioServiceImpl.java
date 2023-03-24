@@ -1,6 +1,6 @@
 package backend.siptis.service.datosUsuario;
 
-import backend.siptis.auth.entity.Usuario;
+import backend.siptis.auth.entity.User;
 import backend.siptis.commons.MensajeServicio;
 import backend.siptis.commons.RespuestaServicio;
 import backend.siptis.model.repository.datosUsuario.UsuarioCommonRepository;
@@ -17,7 +17,7 @@ public class UsuarioServiceImpl implements UsuarioCommonService{
 
     @Override
     public RespuestaServicio obtenerProyectosSupervisorParaMenuPrincipalPorIdUsuario(Long id) {
-        Optional<Usuario> usuarioOptional = usuarioCommonRepository.findById(id);
+        Optional<User> usuarioOptional = usuarioCommonRepository.findById(id);
         if(usuarioOptional.isEmpty()){
             return RespuestaServicio.builder().mensajeServicio(MensajeServicio.NOT_FOUND).data(null).build();
         }

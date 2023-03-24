@@ -6,31 +6,31 @@ import lombok.*;
 import java.util.Collection;
 
 @Entity
-@Table(name = "rol")
+@Table(name = "role")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Rol {
+public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, unique = true)
     private Integer id;
-    private String nombre;
+    private String rolName;
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "roles")
-    private Collection<Usuario> usuarios;
+    private Collection<User> users;
 
-    public Rol(String nombre){
-        this.nombre = nombre;
+    public Role(String rolName){
+        this.rolName = rolName;
     }
 
-    public Rol(Integer id) {
+    public Role(Integer id) {
         super();
         this.id = id;
     }
 
     public String toString(){
-        return nombre;
+        return rolName;
     }
 }
