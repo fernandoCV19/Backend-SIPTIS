@@ -1,6 +1,6 @@
 package backend.siptis.model.entity.datosUsuario;
 
-import backend.siptis.auth.entity.User;
+import backend.siptis.auth.entity.SiptisUser;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,5 +20,5 @@ public class UserCareer {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    private SiptisUser siptisUser;
 }

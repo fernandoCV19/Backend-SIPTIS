@@ -1,6 +1,6 @@
 package backend.siptis.auth.service;
 
-import backend.siptis.auth.entity.User;
+import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.auth.repository.UsuarioRepository;
 import backend.siptis.model.pjo.dto.InformacionEstudianteDTO;
 import backend.siptis.model.pjo.dto.RegistrarEstudianteDTO;
@@ -27,24 +27,24 @@ public class UsuarioAuthServiceImpl implements UsuarioAuthService {
 
 
     @Override
-    public List<User> findAll() {
+    public List<SiptisUser> findAll() {
         return usuarioRepository.findAll();
     }
 
     @Override
     public InformacionEstudianteDTO registrarEstudiante(RegistrarEstudianteDTO estudianteDTO) {
 
-        User user = new User();
-        user.setEmail(estudianteDTO.getEmail());
+        SiptisUser siptisUser = new SiptisUser();
+        siptisUser.setEmail(estudianteDTO.getEmail());
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String contrasena = encoder.encode(estudianteDTO.getContrasena());
-        user.setPassword(contrasena);
-        usuarioRepository.save(user);
+        siptisUser.setPassword(contrasena);
+        usuarioRepository.save(siptisUser);
         //InformacionEstudianteDTO estudiante = new InformacionEstudianteDTO();
 
         InformacionEstudianteDTO estudiante = informacionUsuarioService
-                .registrarEstudiante(estudianteDTO, user);
-        estudiante.setEmail(user.getEmail());
+                .registrarEstudiante(estudianteDTO, siptisUser);
+        estudiante.setEmail(siptisUser.getEmail());
         return estudiante;
     }
 }

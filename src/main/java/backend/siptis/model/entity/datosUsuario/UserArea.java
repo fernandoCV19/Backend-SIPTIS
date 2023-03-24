@@ -1,6 +1,6 @@
 package backend.siptis.model.entity.datosUsuario;
 
-import backend.siptis.auth.entity.User;
+import backend.siptis.auth.entity.SiptisUser;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,5 +23,5 @@ UserArea {
 
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "areas")
-    private Collection<User> users;
+    private Collection<SiptisUser> siptisUsers;
 }

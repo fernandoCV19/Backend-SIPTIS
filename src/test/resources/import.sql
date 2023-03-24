@@ -1,68 +1,68 @@
-INSERT INTO user(
+INSERT INTO siptisUser(
 	id, nombres, apellidos, celular, ci, codsis, email)
 	VALUES (1, "Supervisor1", "S", "1234567", "54321", "111222333", "mail@mail.com");
 
-INSERT INTO user(
+INSERT INTO siptisUser(
 	id, nombres, apellidos, celular, ci, codsis, email)
 	VALUES (2, "Tutor1", "T", "1234567", "54321", "111222333", "mail@mail.com");
 
-INSERT INTO user(
+INSERT INTO siptisUser(
 	id, nombres, apellidos, celular, ci, codsis, email)
 	VALUES (3, "Docente1", "D", "1234567", "54321", "111222333", "mail@mail.com");
 
-INSERT INTO user(
+INSERT INTO siptisUser(
 	id, nombres, apellidos, celular, ci, codsis, email)
 	VALUES (4, "Tribunal1", "T", "1234567", "54321", "111222333", "mail@mail.com");
 
-INSERT INTO user(
+INSERT INTO siptisUser(
 	id, nombres, apellidos, celular, ci, codsis, email)
 	VALUES (5, "Estudiante1", "E", "1234567", "54321", "111222333", "mail@mail.com");
 
-INSERT INTO user(
+INSERT INTO siptisUser(
 	id, nombres, apellidos, celular, ci, codsis, email)
 	VALUES (6, "Estudiante2", "E", "1234567", "54321", "111222333", "mail@mail.com");
 
-INSERT INTO user(
+INSERT INTO siptisUser(
 	id, nombres, apellidos, celular, ci, codsis, email)
 	VALUES (7, "Estudiante3", "E", "1234567", "54321", "111222333", "mail@mail.com");
 
-INSERT INTO user(
+INSERT INTO siptisUser(
 	id, nombres, apellidos, celular, ci, codsis, email)
 	VALUES (8, "Estudiante4", "E", "1234567", "54321", "111222333", "mail@mail.com");
 
-INSERT INTO user(
+INSERT INTO siptisUser(
 	id, nombres, apellidos, celular, ci, codsis, email)
 	VALUES (9, "Estudiante5", "E", "1234567", "54321", "111222333", "mail@mail.com");
 
-INSERT INTO user(
+INSERT INTO siptisUser(
 	id, nombres, apellidos, celular, ci, codsis, email)
 	VALUES (10, "Estudiante6", "E", "1234567", "54321", "111222333", "mail@mail.com");
 
-INSERT INTO user(
+INSERT INTO siptisUser(
 	id, nombres, apellidos, celular, ci, codsis, email)
 	VALUES (11, "Estudiante7", "E", "1234567", "54321", "111222333", "mail@mail.com");
 
-INSERT INTO user(
+INSERT INTO siptisUser(
 	id, nombres, apellidos, celular, ci, codsis, email)
 	VALUES (12, "Estudiante8", "E", "1234567", "54321", "111222333", "mail@mail.com");
 
-INSERT INTO user(
+INSERT INTO siptisUser(
 	id, nombres, apellidos, celular, ci, codsis, email)
 	VALUES (13, "Estudiante9", "E", "1234567", "54321", "111222333", "mail@mail.com");
 
-INSERT INTO user(
+INSERT INTO siptisUser(
 	id, nombres, apellidos, celular, ci, codsis, email)
 	VALUES (14, "Estudiante10", "E", "1234567", "54321", "111222333", "mail@mail.com");
 
-INSERT INTO user(
+INSERT INTO siptisUser(
 	id, nombres, apellidos, celular, ci, codsis, email)
 	VALUES (15, "Estudiante11", "E", "1234567", "54321", "111222333", "mail@mail.com");
 
-INSERT INTO user(
+INSERT INTO siptisUser(
 	id, nombres, apellidos, celular, ci, codsis, email)
 	VALUES (16, "Estudiante12", "E", "1234567", "54321", "111222333", "mail@mail.com");
 
-INSERT INTO user(
+INSERT INTO siptisUser(
 	id, nombres, apellidos, celular, ci, codsis, email)
 	VALUES (17, "Estudiante13", "E", "1234567", "54321", "111222333", "mail@mail.com");
 

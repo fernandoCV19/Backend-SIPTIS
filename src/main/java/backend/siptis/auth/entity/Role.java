@@ -19,7 +19,7 @@ public class Role {
     private String rolName;
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "roles")
-    private Collection<User> users;
+    private Collection<SiptisUser> siptisUsers;
 
     public Role(String rolName){
         this.rolName = rolName;

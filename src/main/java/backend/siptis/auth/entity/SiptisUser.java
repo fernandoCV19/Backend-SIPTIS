@@ -17,13 +17,13 @@ import java.util.*;
 import java.util.Collection;
 
 @Entity
-@Table(name = "user")
+@Table(name = "siptis_user")
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class User implements UserDetails {
+public class SiptisUser implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, unique = true)
@@ -37,8 +37,8 @@ public class User implements UserDetails {
             CascadeType.MERGE
     })
     @JoinTable(
-            name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id"),
+            name = "siptisUser_role",
+            joinColumns = @JoinColumn(name = "siptisUser_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
@@ -46,21 +46,21 @@ public class User implements UserDetails {
             CascadeType.PERSIST,
             CascadeType.MERGE
     })
-    @JoinTable(name = "user_area",
-            joinColumns = @JoinColumn(name = "user_id"),
+    @JoinTable(name = "siptisUser_area",
+            joinColumns = @JoinColumn(name = "siptisuser_id"),
             inverseJoinColumns = @JoinColumn(name = "area_id"))
     private Collection<UserArea> areas;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "siptisUser")
     private UserCareer career;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "siptisUser")
     private UserInformation userInformation;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "siptisUser")
     private Collection<Horario> horariosDisponibles;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "siptisUser")
     private Collection<Documento> documentos;
 
     @OneToMany(mappedBy = "estudiante")
@@ -78,10 +78,10 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "tribunal")
     private Collection<TribunalProyecto> tribunales;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "siptisUser")
     private Collection<Revision> revisiones;
 
-    public User(String email, String password) {
+    public SiptisUser(String email, String password) {
         this.email = email;
         this.password = password;
     }

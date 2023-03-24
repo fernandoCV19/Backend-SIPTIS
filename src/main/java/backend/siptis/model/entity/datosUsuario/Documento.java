@@ -1,6 +1,6 @@
 package backend.siptis.model.entity.datosUsuario;
 
-import backend.siptis.auth.entity.User;
+import backend.siptis.auth.entity.SiptisUser;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,5 +22,5 @@ public class Documento {
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
-    private User user;
+    private SiptisUser siptisUser;
 }

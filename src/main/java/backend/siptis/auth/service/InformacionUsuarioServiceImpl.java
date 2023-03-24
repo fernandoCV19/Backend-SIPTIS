@@ -1,6 +1,6 @@
 package backend.siptis.auth.service;
 
-import backend.siptis.auth.entity.User;
+import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.auth.repository.InformacionUsuarioRepository;
 import backend.siptis.model.entity.datosUsuario.UserInformation;
 import backend.siptis.model.pjo.dto.InformacionEstudianteDTO;
@@ -19,22 +19,22 @@ public class InformacionUsuarioServiceImpl implements InformacionUsuarioService{
     private final InformacionUsuarioRepository informacionUsuarioRepository;
 
     @Override
-    public List<User> findAll() {
+    public List<SiptisUser> findAll() {
         return null;
     }
 
     @Override
     public InformacionEstudianteDTO registrarEstudiante(
-            RegistrarEstudianteDTO estudianteDTO, User user) {
+            RegistrarEstudianteDTO estudianteDTO, SiptisUser siptisUser) {
 
         UserInformation userInformation = new UserInformation();
-        userInformation.setUser(user);
-        userInformation.setApellidos(estudianteDTO.getApellidos());
-        userInformation.setNombres(estudianteDTO.getNombres());
+        userInformation.setSiptisUser(siptisUser);
+        userInformation.setLastnames(estudianteDTO.getApellidos());
+        userInformation.setNames(estudianteDTO.getNombres());
         userInformation.setCi(estudianteDTO.getCi());
         userInformation.setCodSIS(estudianteDTO.getCodSIS());
-        userInformation.setFechaNac(estudianteDTO.getFechaNac());
-        userInformation.setCelular(estudianteDTO.getCelular());
+        //userInformation.setFechaNac(estudianteDTO.getFechaNac());
+        userInformation.setCelNumber(estudianteDTO.getCelular());
 
         informacionUsuarioRepository.save(userInformation);
 

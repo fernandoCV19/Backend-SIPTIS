@@ -1,7 +1,7 @@
 package backend.siptis;
 
 import backend.siptis.auth.entity.Role;
-import backend.siptis.auth.entity.User;
+import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.auth.repository.UsuarioRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,32 +23,32 @@ public class AsignarRolesTest {
     public void testAsignarRolUsuario1(){
         int usuario1id = 102;
         Integer rolAdminId = 1;
-        User user1 = repository.findById(usuario1id).get();
-        user1.addRol(new Role(rolAdminId));
+        SiptisUser siptisUser1 = repository.findById(usuario1id).get();
+        siptisUser1.addRol(new Role(rolAdminId));
 
-        User userActualizado = repository.save(user1);
-        assertThat(userActualizado.getRoles()).hasSize(1);
+        SiptisUser siptisUserActualizado = repository.save(siptisUser1);
+        assertThat(siptisUserActualizado.getRoles()).hasSize(1);
     }
 
     @Test
     public void testAsignarRolUsuario2(){
         int usuario2id = 103;
         Integer rolDocenteId = 2;
-        User user2 = repository.findById(usuario2id).get();
-        user2.addRol(new Role(rolDocenteId));
+        SiptisUser siptisUser2 = repository.findById(usuario2id).get();
+        siptisUser2.addRol(new Role(rolDocenteId));
 
-        User userActualizado = repository.save(user2);
-        assertThat(userActualizado.getRoles()).hasSize(1);
+        SiptisUser siptisUserActualizado = repository.save(siptisUser2);
+        assertThat(siptisUserActualizado.getRoles()).hasSize(1);
     }
 
     @Test
     public void testAsignarMasRolesUsuario2(){
         int usuario2id = 103;
         Integer rolDocenteId = 1;
-        User user2 = repository.findById(usuario2id).get();
-        user2.addRol(new Role(rolDocenteId));
+        SiptisUser siptisUser2 = repository.findById(usuario2id).get();
+        siptisUser2.addRol(new Role(rolDocenteId));
 
-        User userActualizado = repository.save(user2);
-        assertThat(userActualizado.getRoles()).hasSize(2);
+        SiptisUser siptisUserActualizado = repository.save(siptisUser2);
+        assertThat(siptisUserActualizado.getRoles()).hasSize(2);
     }
 }

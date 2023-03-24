@@ -1,6 +1,6 @@
 package backend.siptis.auth.service;
 
-import backend.siptis.auth.entity.User;
+import backend.siptis.auth.entity.SiptisUser;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,21 +10,21 @@ import java.util.Collection;
 
 @AllArgsConstructor
 public class UserDetailImp implements UserDetails {
-    private User user;
+    private SiptisUser siptisUser;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return user.getAuthorities();
+        return siptisUser.getAuthorities();
     }
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return siptisUser.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return siptisUser.getUsername();
     }
 
     @Override
@@ -48,7 +48,7 @@ public class UserDetailImp implements UserDetails {
     }
 
     public String getRoles(){
-        return user.getRoles().toString();
+        return siptisUser.getRoles().toString();
     }
 
 

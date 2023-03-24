@@ -1,13 +1,11 @@
 package backend.siptis.model.entity.datosUsuario;
 
-import backend.siptis.auth.entity.User;
+import backend.siptis.auth.entity.SiptisUser;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.Date;
 
 @Entity
 @Table(name = "user_information")
@@ -31,5 +29,5 @@ public class UserInformation {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    private SiptisUser siptisUser;
 }

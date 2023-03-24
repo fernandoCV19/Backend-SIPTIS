@@ -1,6 +1,6 @@
 package backend.siptis.model.entity.gestionProyecto;
 
-import backend.siptis.auth.entity.User;
+import backend.siptis.auth.entity.SiptisUser;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,7 +23,7 @@ public class Revision {
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
-    private User user;
+    private SiptisUser siptisUser;
 
     @ManyToOne
     @JoinColumn(name = "presentacion_id", nullable = false)

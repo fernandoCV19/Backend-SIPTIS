@@ -1,7 +1,7 @@
 package backend.siptis.auth.rutas;
 
 import backend.siptis.auth.entity.Contacto;
-import backend.siptis.auth.entity.User;
+import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.auth.repository.ContactoRepository;
 import backend.siptis.auth.repository.RolRepository;
 import backend.siptis.auth.repository.UsuarioRepository;
@@ -38,7 +38,7 @@ public class Rutas {
     }
 
     @GetMapping("/hola")
-    public List<User> verTodosAuth(){
+    public List<SiptisUser> verTodosAuth(){
         return usuarioRepository.findAll();
     }
 
