@@ -38,7 +38,7 @@ public class UsuarioAuthServiceImpl implements UsuarioAuthService {
         user.setEmail(estudianteDTO.getEmail());
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String contrasena = encoder.encode(estudianteDTO.getContrasena());
-        user.setContrasena(contrasena);
+        user.setPassword(contrasena);
         usuarioRepository.save(user);
         //InformacionEstudianteDTO estudiante = new InformacionEstudianteDTO();
 

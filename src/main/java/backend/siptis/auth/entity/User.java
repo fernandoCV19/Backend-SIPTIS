@@ -52,10 +52,10 @@ public class User implements UserDetails {
     private Collection<UserArea> areas;
 
     @OneToOne(mappedBy = "user")
-    private CarreraUsuario career;
+    private UserCareer career;
 
     @OneToOne(mappedBy = "user")
-    private InformacionUsuario userInformation;
+    private UserInformation userInformation;
 
     @OneToMany(mappedBy = "user")
     private Collection<Horario> horariosDisponibles;

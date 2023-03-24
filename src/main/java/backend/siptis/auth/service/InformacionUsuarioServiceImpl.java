@@ -2,7 +2,7 @@ package backend.siptis.auth.service;
 
 import backend.siptis.auth.entity.User;
 import backend.siptis.auth.repository.InformacionUsuarioRepository;
-import backend.siptis.model.entity.datosUsuario.InformacionUsuario;
+import backend.siptis.model.entity.datosUsuario.UserInformation;
 import backend.siptis.model.pjo.dto.InformacionEstudianteDTO;
 import backend.siptis.model.pjo.dto.RegistrarEstudianteDTO;
 import lombok.AllArgsConstructor;
@@ -27,16 +27,16 @@ public class InformacionUsuarioServiceImpl implements InformacionUsuarioService{
     public InformacionEstudianteDTO registrarEstudiante(
             RegistrarEstudianteDTO estudianteDTO, User user) {
 
-        InformacionUsuario informacionUsuario = new InformacionUsuario();
-        informacionUsuario.setUser(user);
-        informacionUsuario.setApellidos(estudianteDTO.getApellidos());
-        informacionUsuario.setNombres(estudianteDTO.getNombres());
-        informacionUsuario.setCi(estudianteDTO.getCi());
-        informacionUsuario.setCodSIS(estudianteDTO.getCodSIS());
-        informacionUsuario.setFechaNac(estudianteDTO.getFechaNac());
-        informacionUsuario.setCelular(estudianteDTO.getCelular());
+        UserInformation userInformation = new UserInformation();
+        userInformation.setUser(user);
+        userInformation.setApellidos(estudianteDTO.getApellidos());
+        userInformation.setNombres(estudianteDTO.getNombres());
+        userInformation.setCi(estudianteDTO.getCi());
+        userInformation.setCodSIS(estudianteDTO.getCodSIS());
+        userInformation.setFechaNac(estudianteDTO.getFechaNac());
+        userInformation.setCelular(estudianteDTO.getCelular());
 
-        informacionUsuarioRepository.save(informacionUsuario);
+        informacionUsuarioRepository.save(userInformation);
 
         InformacionEstudianteDTO informacionEstudianteDTO = new InformacionEstudianteDTO();
 

@@ -33,10 +33,10 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             UsernamePasswordAuthenticationToken PAToken =
                     new UsernamePasswordAuthenticationToken(
                             authCredentials.getEmail(),
-                            authCredentials.getContrasena(),
+                            authCredentials.getPassword(),
                             Collections.emptyList());
             System.out.println("CORREO: "+authCredentials.getEmail());
-            System.out.println("CONTRASENA: "+authCredentials.getContrasena());
+            System.out.println("CONTRASENA: "+authCredentials.getPassword());
             return getAuthenticationManager().authenticate(PAToken);
         }catch (
     AuthenticationException e){

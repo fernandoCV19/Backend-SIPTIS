@@ -5,20 +5,20 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "carrera_usuario")
+@Table(name = "user_career")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CarreraUsuario {
+public class UserCareer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
-    private String nombre;
+    private String CareerName;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "usuario_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 }
