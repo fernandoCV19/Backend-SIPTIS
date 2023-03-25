@@ -1,8 +1,8 @@
 package backend.siptis.controller;
 
 import backend.siptis.auth.service.UserAuthService;
-import backend.siptis.model.pjo.dto.InformacionEstudianteDTO;
-import backend.siptis.model.pjo.dto.RegistrarEstudianteDTO;
+import backend.siptis.model.pjo.dto.StudentInformationDTO;
+import backend.siptis.model.pjo.dto.StudentRegisterDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,10 +22,10 @@ public class UsuarioController {
 
 
     @PostMapping("/registrar/estudiante")
-    public InformacionEstudianteDTO registrarEstudiante(
-            @RequestBody RegistrarEstudianteDTO estudianteDTO){
+    public StudentInformationDTO registrarEstudiante(
+            @RequestBody StudentRegisterDTO estudianteDTO){
 
-        InformacionEstudianteDTO estudiante = userAuthService.registerStudent(estudianteDTO);
+        StudentInformationDTO estudiante = userAuthService.registerStudent(estudianteDTO);
         return estudiante;
     }
 }

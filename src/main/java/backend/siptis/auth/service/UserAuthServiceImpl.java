@@ -2,8 +2,8 @@ package backend.siptis.auth.service;
 
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.auth.repository.UsuarioRepository;
-import backend.siptis.model.pjo.dto.InformacionEstudianteDTO;
-import backend.siptis.model.pjo.dto.RegistrarEstudianteDTO;
+import backend.siptis.model.pjo.dto.StudentInformationDTO;
+import backend.siptis.model.pjo.dto.StudentRegisterDTO;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,17 +32,17 @@ public class UserAuthServiceImpl implements UserAuthService {
     }
 
     @Override
-    public InformacionEstudianteDTO registerStudent(RegistrarEstudianteDTO estudianteDTO) {
+    public StudentInformationDTO registerStudent(StudentRegisterDTO estudianteDTO) {
 
         SiptisUser siptisUser = new SiptisUser();
         siptisUser.setEmail(estudianteDTO.getEmail());
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        String contrasena = encoder.encode(estudianteDTO.getContrasena());
+        String contrasena = encoder.encode(estudianteDTO.getPassword());
         siptisUser.setPassword(contrasena);
         usuarioRepository.save(siptisUser);
         //InformacionEstudianteDTO estudiante = new InformacionEstudianteDTO();
 
-        InformacionEstudianteDTO estudiante = userInformationService
+        StudentInformationDTO estudiante = userInformationService
                 .registerStudent(estudianteDTO, siptisUser);
         estudiante.setEmail(siptisUser.getEmail());
         return estudiante;
