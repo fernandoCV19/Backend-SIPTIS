@@ -16,12 +16,12 @@ import java.util.List;
 @Service
 @Transactional
 @AllArgsConstructor
-public class UsuarioAuthServiceImpl implements UsuarioAuthService {
+public class UserAuthServiceImpl implements UserAuthService {
 
     @Autowired
     private final UsuarioRepository usuarioRepository;
     @Autowired
-    private final InformacionUsuarioService informacionUsuarioService;
+    private final UserInformationService userInformationService;
 
 
 
@@ -32,7 +32,7 @@ public class UsuarioAuthServiceImpl implements UsuarioAuthService {
     }
 
     @Override
-    public InformacionEstudianteDTO registrarEstudiante(RegistrarEstudianteDTO estudianteDTO) {
+    public InformacionEstudianteDTO registerStudent(RegistrarEstudianteDTO estudianteDTO) {
 
         SiptisUser siptisUser = new SiptisUser();
         siptisUser.setEmail(estudianteDTO.getEmail());
@@ -42,8 +42,8 @@ public class UsuarioAuthServiceImpl implements UsuarioAuthService {
         usuarioRepository.save(siptisUser);
         //InformacionEstudianteDTO estudiante = new InformacionEstudianteDTO();
 
-        InformacionEstudianteDTO estudiante = informacionUsuarioService
-                .registrarEstudiante(estudianteDTO, siptisUser);
+        InformacionEstudianteDTO estudiante = userInformationService
+                .registerStudent(estudianteDTO, siptisUser);
         estudiante.setEmail(siptisUser.getEmail());
         return estudiante;
     }

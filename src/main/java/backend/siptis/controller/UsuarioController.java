@@ -1,7 +1,6 @@
 package backend.siptis.controller;
 
-import backend.siptis.auth.service.InformacionUsuarioService;
-import backend.siptis.auth.service.UsuarioAuthService;
+import backend.siptis.auth.service.UserAuthService;
 import backend.siptis.model.pjo.dto.InformacionEstudianteDTO;
 import backend.siptis.model.pjo.dto.RegistrarEstudianteDTO;
 import lombok.AllArgsConstructor;
@@ -17,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UsuarioController {
 
     @Autowired
-    private final UsuarioAuthService usuarioAuthService;
+    private final UserAuthService userAuthService;
 
 
 
@@ -26,7 +25,7 @@ public class UsuarioController {
     public InformacionEstudianteDTO registrarEstudiante(
             @RequestBody RegistrarEstudianteDTO estudianteDTO){
 
-        InformacionEstudianteDTO estudiante = usuarioAuthService.registrarEstudiante(estudianteDTO);
+        InformacionEstudianteDTO estudiante = userAuthService.registerStudent(estudianteDTO);
         return estudiante;
     }
 }

@@ -63,7 +63,7 @@ public class WebSecurityConfig {
 
     public static void main(String[] args){
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String contrasena = passwordEncoder.encode("mavl");
-        System.out.println(contrasena);
+        String password = passwordEncoder.encode("mavl");
+        System.out.println(password);
     }
 }

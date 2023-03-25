@@ -6,11 +6,11 @@ import backend.siptis.model.pjo.dto.RegistrarEstudianteDTO;
 
 import java.util.List;
 
-public interface InformacionUsuarioService {
+public interface UserInformationService {
 
     List<SiptisUser> findAll();
 
-    InformacionEstudianteDTO registrarEstudiante(
+    InformacionEstudianteDTO registerStudent(
             RegistrarEstudianteDTO estudianteDTO, SiptisUser siptisUser);
 
 }

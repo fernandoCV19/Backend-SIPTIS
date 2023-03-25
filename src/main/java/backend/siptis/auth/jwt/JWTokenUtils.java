@@ -17,12 +17,12 @@ public class JWTokenUtils {
     private static final long EXPIRE_TIME_DURATION = 2 * 60 * 60* 1000; //2horas.
     private static final String ACCESS_TOKEN_SECRET= "$2a$12$JTfIoPcl28jeEFio3aHBa.rcqtBUgvykiKYgKxvikVzzxVAt82CEu\n";
 
-    public static String createToken(UserDetailImp usuarioI){
+    public static String createToken(UserDetailImp userDI){
         Date fechaExpiracion =new Date(System.currentTimeMillis() + EXPIRE_TIME_DURATION);
 
-        return Jwts.builder().setSubject(usuarioI.getUsername())
+        return Jwts.builder().setSubject(userDI.getUsername())
                 .setExpiration(fechaExpiracion)
-                .claim("roles", usuarioI.getRoles())
+                .claim("roles", userDI.getRoles())
                 .signWith(Keys.hmacShaKeyFor(ACCESS_TOKEN_SECRET.getBytes()))
                 .compact();
     }
@@ -65,7 +65,7 @@ public class JWTokenUtils {
 
             UserDetails userDetails = getUserDetails(token);
 
-            String correo =claims.getSubject();
+            //String correo =claims.getSubject();
 
             return new UsernamePasswordAuthenticationToken(
                     userDetails, null,userDetails.getAuthorities()

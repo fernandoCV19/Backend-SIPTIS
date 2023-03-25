@@ -6,8 +6,8 @@ import backend.siptis.model.pjo.dto.RegistrarEstudianteDTO;
 
 import java.util.List;
 
-public interface UsuarioAuthService {
+public interface UserAuthService {
     List<SiptisUser> findAll();
 
-    InformacionEstudianteDTO registrarEstudiante(RegistrarEstudianteDTO estudianteDTO);
+    InformacionEstudianteDTO registerStudent(RegistrarEstudianteDTO estudianteDTO);
 }

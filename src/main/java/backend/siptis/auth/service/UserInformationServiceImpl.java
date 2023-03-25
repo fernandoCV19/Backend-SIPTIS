@@ -13,7 +13,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class InformacionUsuarioServiceImpl implements InformacionUsuarioService{
+public class UserInformationServiceImpl implements UserInformationService {
 
     @Autowired
     private final InformacionUsuarioRepository informacionUsuarioRepository;
@@ -24,7 +24,7 @@ public class InformacionUsuarioServiceImpl implements InformacionUsuarioService{
     }
 
     @Override
-    public InformacionEstudianteDTO registrarEstudiante(
+    public InformacionEstudianteDTO registerStudent(
             RegistrarEstudianteDTO estudianteDTO, SiptisUser siptisUser) {
 
         UserInformation userInformation = new UserInformation();
