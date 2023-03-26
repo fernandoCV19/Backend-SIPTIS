@@ -1,6 +1,7 @@
 package backend.siptis.model.entity.gestionProyecto;
 
 import backend.siptis.model.entity.editoresYRevisores.*;
+import backend.siptis.model.entity.records.Activity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -68,7 +69,7 @@ public class ProyectoGrado {
 
     @OneToMany(mappedBy = "proyectoGrado", fetch = FetchType.LAZY)
     @JsonManagedReference
-    private Collection<Actividad> actividades;
+    private Collection<Activity> actividades;
 
     @OneToMany(mappedBy = "proyecto", fetch = FetchType.LAZY)
     @JsonManagedReference

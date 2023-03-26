@@ -1,4 +1,4 @@
-package backend.siptis.model.entity.gestionProyecto;
+package backend.siptis.model.entity.records;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -12,7 +12,7 @@ import java.util.Date;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class ActividadGeneral {
+public class GeneralActivity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, unique = true)

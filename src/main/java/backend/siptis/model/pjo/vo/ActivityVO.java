@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class ActividadGeneralVO {
+public class ActivityVO {
     private String descripcionActividad;
     private Date fechaActividad;
 }
