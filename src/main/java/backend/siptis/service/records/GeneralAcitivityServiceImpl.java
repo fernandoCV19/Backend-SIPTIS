@@ -8,11 +8,13 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class GeneralAcitivityServiceImpl implements GeneralAcitivityService{
 
     private final GeneralActivityRepository generalActivityRepository;
@@ -21,15 +23,15 @@ public class GeneralAcitivityServiceImpl implements GeneralAcitivityService{
         this.generalActivityRepository = generalActivityRepository;
     }
     @Override
-    public Optional<GeneralActivity> findById(int id) {
+    public Optional<GeneralActivity> findById(long id) {
         return generalActivityRepository.findById(id);
     }
 
     @Override
     public GeneralActivityVO persistGeneralActivity(GeneralActivityDTO generalActivityDTO) {
         GeneralActivity generalActivity = new GeneralActivity();
-        generalActivity.setDescripcionActividad(generalActivityDTO.getActivityDescription());
-        generalActivity.setFechaActividad(generalActivityDTO.getActivityDate());
+        generalActivity.setActivityDescription(generalActivityDTO.getActivityDescription());
+        generalActivity.setActivityDate(generalActivityDTO.getActivityDate());
         generalActivity =  generalActivityRepository.save(generalActivity);
 
         return entityToVO(generalActivity);
@@ -52,13 +54,20 @@ public class GeneralAcitivityServiceImpl implements GeneralAcitivityService{
     }
 
     @Override
-    public void update(GeneralActivity generalActivity) {
-
+    public void update(GeneralActivityDTO generalActivityDTO, long id) {
+        Optional<GeneralActivity> optionalGeneralActivity = generalActivityRepository.findById(id);
+        if(!optionalGeneralActivity.isEmpty()){
+            GeneralActivity generalActivity = optionalGeneralActivity.get();
+            generalActivity.setActivityDescription(generalActivityDTO.getActivityDescription());
+            generalActivity.setActivityDate(generalActivityDTO.getActivityDate());
+        }
     }
 
     @Override
-    public void delete(GeneralActivity generalActivity) {
-
+    public void delete(long id) {
+        Optional<GeneralActivity> generalActivity = generalActivityRepository.findById(id);
+        if(!generalActivity.isEmpty())
+            generalActivityRepository.deleteById(id);
     }
 
     @Override
