@@ -18,8 +18,8 @@ public class GeneralActivity {
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
-    @Column(name = "descripcion_actividad")
-    private String descripcionActividad;
-    @Column(name = "fecha_actividad")
-    private Date fechaActividad;
+    @Column(name = "activity_description")
+    private String activityDescription;
+    @Column(name = "activity_date")
+    private Date activityDate;
 }
