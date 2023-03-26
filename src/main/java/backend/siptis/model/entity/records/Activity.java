@@ -19,12 +19,10 @@ public class Activity {
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
-    @Column(name = "descripcion_actividad")
-    private String descripcionActividad;
-    @Column(name = "fecha_actividad")
-    private Date fechaActividad;
-    @Column(name = "recordatorio_wpp")
-    private String recordatorioWpp;
+    @Column(name = "activity_description")
+    private String activityDescription;
+    @Column(name = "activity_date")
+    private Date activityDate;
 
     @ManyToOne
     @JoinColumn(name = "proyecto_grado_id", nullable = false)
