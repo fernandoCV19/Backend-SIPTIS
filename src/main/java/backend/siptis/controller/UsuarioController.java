@@ -37,8 +37,8 @@ public class UsuarioController {
     public ResponseEntity<?> registerAdmin(
             @RequestBody AdminRegisterDTO adminRegisterDTO){
 
-        RespuestaServicio estudiante = userAuthService.registerStudent(estudianteDTO);
-        return crearResponseEntityRegistrar(estudiante);
+        RespuestaServicio admin = userAuthService.registerAdmin(adminRegisterDTO);
+        return crearResponseEntityRegistrar(admin);
     }
 
 

@@ -4,6 +4,7 @@ import backend.siptis.auth.entity.Role;
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.MensajeServicio;
 import backend.siptis.commons.RespuestaServicio;
+import backend.siptis.model.pjo.dto.AdminRegisterDTO;
 import backend.siptis.model.repository.datosUsuario.UsuarioRepository;
 import backend.siptis.model.pjo.dto.StudentInformationDTO;
 import backend.siptis.model.pjo.dto.StudentRegisterDTO;
@@ -37,7 +38,6 @@ public class UserAuthServiceImpl implements UserAuthService {
 
     @Override
     public RespuestaServicio findAll() {
-        //return usuarioRepository.findAll();
         return RespuestaServicio.builder().mensajeServicio(MensajeServicio.OK).data(usuarioRepository.findAll()).build();
 
     }
@@ -67,5 +67,23 @@ public class UserAuthServiceImpl implements UserAuthService {
         estudiante.setEmail(siptisUser.getEmail());
         //return estudiante;
         return RespuestaServicio.builder().mensajeServicio(MensajeServicio.OK).data(estudiante).build();
+    }
+
+    @Override
+    public RespuestaServicio registerAdmin(AdminRegisterDTO adminDTO) {
+        SiptisUser adminUser = new SiptisUser();
+        adminUser.setEmail(adminDTO.getEmail());
+        Role role = roleRepository.findById(2)
+                .orElseThrow(() -> new UsernameNotFoundException(
+                        "El rol no existe"
+                ));
+
+        adminUser.addRol(role);
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String contrasena = encoder.encode(adminDTO.getPassword());
+        adminUser.setPassword(contrasena);
+        usuarioRepository.save(adminUser);
+        return RespuestaServicio.builder().mensajeServicio(MensajeServicio.OK).data(adminUser).build();
     }
 }
