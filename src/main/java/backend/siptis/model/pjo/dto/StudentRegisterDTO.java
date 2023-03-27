@@ -14,7 +14,7 @@ public class StudentRegisterDTO {
     private String lastnames;
     private String celNumber;
     private String ci;
-    //private Date fechaNac;
+    private Date birthDate;
     private String codSIS;
     private String career;
 }

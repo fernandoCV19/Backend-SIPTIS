@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/usuario")
+@RequestMapping("/user")
 @AllArgsConstructor
 public class UsuarioController {
 
@@ -21,8 +21,8 @@ public class UsuarioController {
 
 
 
-    @PostMapping("/registrar/estudiante")
-    public StudentInformationDTO registrarEstudiante(
+    @PostMapping("/register/student")
+    public StudentInformationDTO registerStudent(
             @RequestBody StudentRegisterDTO estudianteDTO){
 
         StudentInformationDTO estudiante = userAuthService.registerStudent(estudianteDTO);

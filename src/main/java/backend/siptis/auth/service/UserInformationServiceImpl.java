@@ -1,7 +1,7 @@
 package backend.siptis.auth.service;
 
 import backend.siptis.auth.entity.SiptisUser;
-import backend.siptis.auth.repository.InformacionUsuarioRepository;
+import backend.siptis.model.repository.datosUsuario.InformacionUsuarioRepository;
 import backend.siptis.model.entity.datosUsuario.UserInformation;
 import backend.siptis.model.pjo.dto.StudentInformationDTO;
 import backend.siptis.model.pjo.dto.StudentRegisterDTO;

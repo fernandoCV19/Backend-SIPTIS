@@ -1,7 +1,7 @@
 package backend.siptis;
 
 import backend.siptis.auth.entity.SiptisUser;
-import backend.siptis.auth.repository.UsuarioRepository;
+import backend.siptis.model.repository.datosUsuario.UsuarioRepository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

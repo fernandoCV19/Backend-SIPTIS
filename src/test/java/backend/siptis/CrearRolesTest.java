@@ -1,7 +1,7 @@
 package backend.siptis;
 
 import backend.siptis.auth.entity.Role;
-import backend.siptis.auth.repository.RolRepository;
+import backend.siptis.model.repository.general.RolRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
