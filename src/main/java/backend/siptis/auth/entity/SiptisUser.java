@@ -58,7 +58,7 @@ public class SiptisUser implements UserDetails {
     @JoinTable(name = "siptisUser_career",
             joinColumns = @JoinColumn(name = "siptisuser_id"),
             inverseJoinColumns = @JoinColumn(name = "career_id"))
-    private Collection<UserCareer> career;
+    private Set<UserCareer> career = new HashSet<>();
 
     /*@OneToOne(mappedBy = "siptisUser")
     private UserCareer career;*/

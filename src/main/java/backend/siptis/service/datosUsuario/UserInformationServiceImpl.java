@@ -47,12 +47,12 @@ public class UserInformationServiceImpl implements UserInformationService {
         userInformation.setBirthDate(estudianteDTO.getBirthDate());
         userInformation.setCelNumber(estudianteDTO.getCelNumber());
 
-        UserCareer userCareer = userCareerRepository.findById(2)
+        UserCareer userCareer = userCareerRepository.findById(estudianteDTO.getCareer())
                 .orElseThrow(() -> new UsernameNotFoundException(
                         "La carrera solicitada no existe"
                 ));
 
-        //siptisUser.add();
+        siptisUser.addCareer(userCareer);
 
         informacionUsuarioRepository.save(userInformation);
 

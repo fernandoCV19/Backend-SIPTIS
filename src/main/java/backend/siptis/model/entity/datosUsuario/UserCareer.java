@@ -26,4 +26,8 @@ public class UserCareer {
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "career")
     private Collection<SiptisUser> siptisUsers;
+
+    public String toString(){
+        return name;
+    }
 }
