@@ -3,6 +3,7 @@ package backend.siptis.controller;
 import backend.siptis.commons.MensajeServicio;
 import backend.siptis.commons.RespuestaController;
 import backend.siptis.commons.RespuestaServicio;
+import backend.siptis.model.pjo.dto.AdminRegisterDTO;
 import backend.siptis.service.datosUsuario.UserAuthService;
 import backend.siptis.model.pjo.dto.StudentInformationDTO;
 import backend.siptis.model.pjo.dto.StudentRegisterDTO;
@@ -24,11 +25,17 @@ public class UsuarioController {
     private final UserAuthService userAuthService;
 
 
-
-
     @PostMapping("/register/student")
     public ResponseEntity<?> registerStudent(
             @RequestBody StudentRegisterDTO estudianteDTO){
+
+        RespuestaServicio estudiante = userAuthService.registerStudent(estudianteDTO);
+        return crearResponseEntityRegistrar(estudiante);
+    }
+
+    @PostMapping("/register/admin")
+    public ResponseEntity<?> registerAdmin(
+            @RequestBody AdminRegisterDTO adminRegisterDTO){
 
         RespuestaServicio estudiante = userAuthService.registerStudent(estudianteDTO);
         return crearResponseEntityRegistrar(estudiante);
