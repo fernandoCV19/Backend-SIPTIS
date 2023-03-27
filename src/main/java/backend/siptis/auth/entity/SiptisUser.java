@@ -97,7 +97,7 @@ public class SiptisUser implements UserDetails {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         System.out.println("roles:" + roles.toString());
         for(Role role : roles){
-            authorities.add(new SimpleGrantedAuthority(role.getRolName()));
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
         }
         return authorities;
     }

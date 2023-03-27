@@ -1,6 +1,6 @@
 package backend.siptis.auth.rutas;
 
-import backend.siptis.model.repository.general.RolRepository;
+import backend.siptis.model.repository.general.RoleRepository;
 import backend.siptis.model.repository.datosUsuario.UsuarioRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class Rutas {
 
-    private final UsuarioRepository usuarioRepository;
-    private final RolRepository rolRepository;
 
 
     /*@GetMapping("/todos")

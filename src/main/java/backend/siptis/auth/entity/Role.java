@@ -16,13 +16,13 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, unique = true)
     private Integer id;
-    private String rolName;
+    private String name;
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "roles")
     private Collection<SiptisUser> siptisUsers;
 
     public Role(String rolName){
-        this.rolName = rolName;
+        this.name = rolName;
     }
 
     public Role(Integer id) {
@@ -31,6 +31,6 @@ public class Role {
     }
 
     public String toString(){
-        return rolName;
+        return name;
     }
 }
