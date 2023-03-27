@@ -20,5 +20,5 @@ public class StudentInformationDTO {
     private String ci;
     private Date fechaNac;
     private String codSIS;
-    private String career;
+    private int career;
 }

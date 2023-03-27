@@ -2,7 +2,7 @@ package backend.siptis.auth.jwt;
 
 import backend.siptis.auth.entity.Role;
 import backend.siptis.auth.entity.SiptisUser;
-import backend.siptis.auth.service.UserDetailImp;
+import backend.siptis.service.datosUsuario.UserDetailImp;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;

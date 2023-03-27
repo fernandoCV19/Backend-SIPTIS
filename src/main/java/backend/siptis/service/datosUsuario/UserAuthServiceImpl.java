@@ -1,6 +1,8 @@
-package backend.siptis.auth.service;
+package backend.siptis.service.datosUsuario;
 
 import backend.siptis.auth.entity.SiptisUser;
+import backend.siptis.commons.MensajeServicio;
+import backend.siptis.commons.RespuestaServicio;
 import backend.siptis.model.repository.datosUsuario.UsuarioRepository;
 import backend.siptis.model.pjo.dto.StudentInformationDTO;
 import backend.siptis.model.pjo.dto.StudentRegisterDTO;
@@ -27,12 +29,14 @@ public class UserAuthServiceImpl implements UserAuthService {
 
 
     @Override
-    public List<SiptisUser> findAll() {
-        return usuarioRepository.findAll();
+    public RespuestaServicio findAll() {
+        //return usuarioRepository.findAll();
+        return RespuestaServicio.builder().mensajeServicio(MensajeServicio.OK).data(usuarioRepository.findAll()).build();
+
     }
 
     @Override
-    public StudentInformationDTO registerStudent(StudentRegisterDTO estudianteDTO) {
+    public RespuestaServicio registerStudent(StudentRegisterDTO estudianteDTO) {
 
         SiptisUser siptisUser = new SiptisUser();
         siptisUser.setEmail(estudianteDTO.getEmail());
@@ -42,9 +46,12 @@ public class UserAuthServiceImpl implements UserAuthService {
         usuarioRepository.save(siptisUser);
         //InformacionEstudianteDTO estudiante = new InformacionEstudianteDTO();
 
-        StudentInformationDTO estudiante = userInformationService
+        RespuestaServicio respuesta = userInformationService
                 .registerStudent(estudianteDTO, siptisUser);
+
+        StudentInformationDTO estudiante = (StudentInformationDTO) respuesta.getData();
         estudiante.setEmail(siptisUser.getEmail());
-        return estudiante;
+        //return estudiante;
+        return RespuestaServicio.builder().mensajeServicio(MensajeServicio.OK).data(estudiante).build();
     }
 }

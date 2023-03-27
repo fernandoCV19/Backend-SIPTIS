@@ -16,5 +16,5 @@ public class StudentRegisterDTO {
     private String ci;
     private Date birthDate;
     private String codSIS;
-    private String career;
+    private int career;
 }

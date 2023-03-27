@@ -1,7 +1,7 @@
 package backend.siptis.auth.jwt;
 
 import backend.siptis.auth.security.Credentials;
-import backend.siptis.auth.service.UserDetailImp;
+import backend.siptis.service.datosUsuario.UserDetailImp;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;

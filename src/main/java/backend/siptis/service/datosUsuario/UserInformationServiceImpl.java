@@ -1,6 +1,8 @@
-package backend.siptis.auth.service;
+package backend.siptis.service.datosUsuario;
 
 import backend.siptis.auth.entity.SiptisUser;
+import backend.siptis.commons.MensajeServicio;
+import backend.siptis.commons.RespuestaServicio;
 import backend.siptis.model.repository.datosUsuario.InformacionUsuarioRepository;
 import backend.siptis.model.entity.datosUsuario.UserInformation;
 import backend.siptis.model.pjo.dto.StudentInformationDTO;
@@ -19,12 +21,13 @@ public class UserInformationServiceImpl implements UserInformationService {
     private final InformacionUsuarioRepository informacionUsuarioRepository;
 
     @Override
-    public List<SiptisUser> findAll() {
-        return null;
+    public RespuestaServicio findAll() {
+        return RespuestaServicio.builder().mensajeServicio(MensajeServicio.NOT_FOUND).data(null).build();
+        //return null;
     }
 
     @Override
-    public StudentInformationDTO registerStudent(
+    public RespuestaServicio registerStudent(
             StudentRegisterDTO estudianteDTO, SiptisUser siptisUser) {
 
         UserInformation userInformation = new UserInformation();
@@ -47,6 +50,7 @@ public class UserInformationServiceImpl implements UserInformationService {
         studentInformationDTO.setFechaNac(estudianteDTO.getBirthDate());
         studentInformationDTO.setCelNumber(estudianteDTO.getCelNumber());
 
-        return studentInformationDTO;
+        //return studentInformationDTO;
+        return RespuestaServicio.builder().mensajeServicio(MensajeServicio.OK).data(studentInformationDTO).build();
     }
 }

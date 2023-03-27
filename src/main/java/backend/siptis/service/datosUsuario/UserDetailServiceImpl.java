@@ -1,4 +1,4 @@
-package backend.siptis.auth.service;
+package backend.siptis.service.datosUsuario;
 
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.model.repository.datosUsuario.UsuarioRepository;

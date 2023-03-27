@@ -1,13 +1,14 @@
-package backend.siptis.auth.service;
+package backend.siptis.service.datosUsuario;
 
 import backend.siptis.auth.entity.SiptisUser;
+import backend.siptis.commons.RespuestaServicio;
 import backend.siptis.model.pjo.dto.StudentInformationDTO;
 import backend.siptis.model.pjo.dto.StudentRegisterDTO;
 
 import java.util.List;
 
 public interface UserAuthService {
-    List<SiptisUser> findAll();
+    RespuestaServicio findAll();
 
-    StudentInformationDTO registerStudent(StudentRegisterDTO estudianteDTO);
+    RespuestaServicio registerStudent(StudentRegisterDTO estudianteDTO);
 }

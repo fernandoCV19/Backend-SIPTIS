@@ -1,6 +1,6 @@
 package backend.siptis.controller;
 
-import backend.siptis.auth.service.UserAuthService;
+import backend.siptis.service.datosUsuario.UserAuthService;
 import backend.siptis.model.pjo.dto.StudentInformationDTO;
 import backend.siptis.model.pjo.dto.StudentRegisterDTO;
 import lombok.AllArgsConstructor;
