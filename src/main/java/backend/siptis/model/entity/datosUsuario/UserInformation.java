@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "user_information")
 @Getter
@@ -24,7 +26,7 @@ public class UserInformation {
     private String lastnames;
     private String celNumber;
     private String ci;
-    //private Date fechaNac;
+    private Date birthDate;
     private String codSIS;
 
     @OneToOne(cascade = CascadeType.ALL)

@@ -33,7 +33,7 @@ public class UserInformationServiceImpl implements UserInformationService {
         userInformation.setNames(estudianteDTO.getNames());
         userInformation.setCi(estudianteDTO.getCi());
         userInformation.setCodSIS(estudianteDTO.getCodSIS());
-        //userInformation.setFechaNac(estudianteDTO.getFechaNac());
+        userInformation.setBirthDate(estudianteDTO.getBirthDate());
         userInformation.setCelNumber(estudianteDTO.getCelNumber());
 
         informacionUsuarioRepository.save(userInformation);
@@ -44,7 +44,7 @@ public class UserInformationServiceImpl implements UserInformationService {
         studentInformationDTO.setNames(estudianteDTO.getNames());
         studentInformationDTO.setCi(estudianteDTO.getCi());
         studentInformationDTO.setCodSIS(estudianteDTO.getCodSIS());
-        //studentInformationDTO.setFechaNac(estudianteDTO.getFechaNac());
+        studentInformationDTO.setFechaNac(estudianteDTO.getBirthDate());
         studentInformationDTO.setCelNumber(estudianteDTO.getCelNumber());
 
         return studentInformationDTO;
