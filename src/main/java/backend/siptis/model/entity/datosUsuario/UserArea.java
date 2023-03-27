@@ -19,7 +19,7 @@ UserArea {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
-    private String areaName;
+    private String name;
 
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "areas")

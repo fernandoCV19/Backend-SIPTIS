@@ -51,8 +51,17 @@ public class SiptisUser implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "area_id"))
     private Collection<UserArea> areas;
 
-    @OneToOne(mappedBy = "siptisUser")
-    private UserCareer career;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
+    @JoinTable(name = "siptisUser_career",
+            joinColumns = @JoinColumn(name = "siptisuser_id"),
+            inverseJoinColumns = @JoinColumn(name = "career_id"))
+    private Collection<UserCareer> career;
+
+    /*@OneToOne(mappedBy = "siptisUser")
+    private UserCareer career;*/
 
     @OneToOne(mappedBy = "siptisUser")
     private UserInformation userInformation;
@@ -89,6 +98,10 @@ public class SiptisUser implements UserDetails {
     //-------------------------------------------------------------------
     public void addRol(Role role){
         this.roles.add(role);
+    }
+
+    public void addCareer(UserCareer career){
+        this.career.add(career);
     }
 
     //-------------------------------------------------------------------

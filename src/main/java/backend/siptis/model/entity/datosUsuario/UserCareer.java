@@ -4,6 +4,8 @@ import backend.siptis.auth.entity.SiptisUser;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Collection;
+
 @Entity
 @Table(name = "user_career")
 @Getter
@@ -16,9 +18,12 @@ public class UserCareer {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
-    private String CareerName;
+    private String name;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    /*@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private SiptisUser siptisUser;
+    private SiptisUser siptisUser;*/
+
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "career")
+    private Collection<SiptisUser> siptisUsers;
 }
