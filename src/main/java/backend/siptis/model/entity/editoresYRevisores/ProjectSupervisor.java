@@ -12,7 +12,7 @@ import lombok.*;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class SupervisorProyecto {
+public class ProjectSupervisor {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, unique = true)
@@ -24,7 +24,7 @@ public class SupervisorProyecto {
 
     @ManyToOne
     @JoinColumn(name = "proyecto_grado_id", nullable = false)
-    private ProyectoGrado proyecto;
-    private Boolean aceptado;
-    private Boolean revisado;
+    private ProyectoGrado project;
+    private Boolean accepted;
+    private Boolean reviewed;
 }

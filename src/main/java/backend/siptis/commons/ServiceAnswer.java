@@ -7,7 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RespuestaServicio {
-    private MensajeServicio mensajeServicio;
+public class ServiceAnswer {
+    private ServiceMessage serviceMessage;
     private Object data;
 }

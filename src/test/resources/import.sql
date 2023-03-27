@@ -359,7 +359,7 @@ INSERT INTO proyecto_grado_sub_area(
 	proyecto_grado_id, sub_area_id)
 	VALUES (12, 1);
 
-INSERT INTO defensa(
+INSERT INTO defense(
 	id, hora_defensa, lugar_defensa, proyecto_grado_id)
 	VALUES (1, "Hora1", "Defensa1", 12);
 
@@ -377,6 +377,6 @@ INSERT INTO proyecto_grado_sub_area(
 	proyecto_grado_id, sub_area_id)
 	VALUES (13, 1);
 
-INSERT INTO defensa(
+INSERT INTO defense(
 	id, hora_defensa, lugar_defensa, proyecto_grado_id)
 	VALUES (2, "Hora2", "Defensa2", 13);

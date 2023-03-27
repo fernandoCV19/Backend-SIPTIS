@@ -10,40 +10,40 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProyectoGradoMenuPrincipalDTO {
-    private Long idProyecto;
-    private String nombreProyecto;
-    private List<String> tutores;
-    private List<String> docentes;
-    private List<String> estudiantes;
-    private List<String> supervisores;
-    private String masInformacion;
+public class ProjectToHomePageDTO {
+    private Long projectID;
+    private String projectName;
+    private List<String> tutors;
+    private List<String> teachers;
+    private List<String> students;
+    private List<String> supervisors;
+    private String moreInfo;
     private List<String> areas;
     private List<String> subAreas;
-    private Boolean aceptado;
-    private Boolean revisado;
+    private Boolean accepted;
+    private Boolean reviewed;
 
 
-    public ProyectoGradoMenuPrincipalDTO(ProyectoGrado proyectoGrado, Boolean aceptado, Boolean revisado) {
-        /*idProyecto = proyectoGrado.getId();
-        nombreProyecto = proyectoGrado.getNombre();
-        tutores = proyectoGrado.getTutores()
+    public ProjectToHomePageDTO(ProyectoGrado proyectoGrado, Boolean accepted, Boolean reviewed) {
+        projectID = proyectoGrado.getId();
+        projectName = proyectoGrado.getNombre();
+        tutors = proyectoGrado.getTutores()
                 .stream()
                 .map(aux -> aux.getTutor().getNombres())
                 .toList();
-        docentes = proyectoGrado.getDocentes()
+        teachers = proyectoGrado.getDocentes()
                 .stream()
                 .map(aux -> aux.getDocente().getNombres())
                 .toList();
-        estudiantes = proyectoGrado.getEstudiantes()
+        students = proyectoGrado.getEstudiantes()
                 .stream()
                 .map(aux -> aux.getEstudiante().getNombres())
                 .toList();
-        supervisores = proyectoGrado.getSupervisores()
+        supervisors = proyectoGrado.getSupervisores()
                 .stream()
                 .map(aux -> aux.getSupervisor().getNombres())
                 .toList();
-        masInformacion = "";
+        moreInfo = "";
         areas = proyectoGrado.getAreas()
                 .stream()
                 .map(aux -> aux.getNombre())
@@ -51,6 +51,6 @@ public class ProyectoGradoMenuPrincipalDTO {
         subAreas = proyectoGrado.getSubAreas()
                 .stream()
                 .map(aux -> aux.getNombre())
-                .toList();*/
+                .toList();
     }
 }
