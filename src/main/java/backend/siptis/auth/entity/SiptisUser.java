@@ -1,11 +1,11 @@
 package backend.siptis.auth.entity;
 
-import backend.siptis.model.entity.datosUsuario.*;
-import backend.siptis.model.entity.datosUsuario.UserArea;
-import backend.siptis.model.entity.datosUsuario.Documento;
-import backend.siptis.model.entity.datosUsuario.Horario;
-import backend.siptis.model.entity.editoresYRevisores.*;
-import backend.siptis.model.entity.gestionProyecto.Revision;
+import backend.siptis.model.entity.userData.*;
+import backend.siptis.model.entity.userData.UserArea;
+import backend.siptis.model.entity.userData.Document;
+import backend.siptis.model.entity.userData.Schedule;
+import backend.siptis.model.entity.editorsAndReviewers.*;
+import backend.siptis.model.entity.projectManagement.Review;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -67,28 +67,28 @@ public class SiptisUser implements UserDetails {
     private UserInformation userInformation;
 
     @OneToMany(mappedBy = "siptisUser")
-    private Collection<Horario> horariosDisponibles;
+    private Collection<Schedule> availablesSchedule;
 
     @OneToMany(mappedBy = "siptisUser")
-    private Collection<Documento> documentos;
+    private Collection<Document> documents;
 
-    @OneToMany(mappedBy = "estudiante")
-    private Collection<EstudianteProyecto> estudiantes;
+    @OneToMany(mappedBy = "student")
+    private Collection<ProjectStudent> students;
 
     @OneToMany(mappedBy = "supervisor")
-    private Collection<ProjectSupervisor> supervisores;
+    private Collection<ProjectSupervisor> supervisors;
 
     @OneToMany(mappedBy = "tutor")
-    private Collection<ProjectTutor> tutores;
+    private Collection<ProjectTutor> tutors;
 
     @OneToMany(mappedBy = "teacher")
-    private Collection<ProjectTeacher> docentes;
+    private Collection<ProjectTeacher> teachers;
 
     @OneToMany(mappedBy = "tribunal")
-    private Collection<ProjectTribunal> tribunales;
+    private Collection<ProjectTribunal> tribunals;
 
     @OneToMany(mappedBy = "siptisUser")
-    private Collection<Revision> revisiones;
+    private Collection<Review> reviews;
 
     public SiptisUser(String email, String password) {
         this.email = email;

@@ -1,7 +1,7 @@
 package backend.siptis;
 
 import backend.siptis.auth.entity.SiptisUser;
-import backend.siptis.model.repository.datosUsuario.UsuarioRepository;
+import backend.siptis.model.repository.userData.SiptisUserRepository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class CrearCuentaTest {
 
 
     @Autowired
-    private UsuarioRepository repo;
+    private SiptisUserRepository repo;
 
     @Test
     public void testCrearUsuario1(){

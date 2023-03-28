@@ -2,7 +2,7 @@ package backend.siptis;
 
 import backend.siptis.auth.entity.Role;
 import backend.siptis.auth.entity.SiptisUser;
-import backend.siptis.model.repository.datosUsuario.UsuarioRepository;
+import backend.siptis.model.repository.userData.SiptisUserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class AsignarRolesTest {
 
     @Autowired
-    private UsuarioRepository repository;
+    private SiptisUserRepository repository;
 
     @Test
     public void testAsignarRolUsuario1(){
