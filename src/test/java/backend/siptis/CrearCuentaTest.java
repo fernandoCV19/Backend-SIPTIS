@@ -1,7 +1,7 @@
 package backend.siptis;
 
-import backend.siptis.auth.entity.Usuario;
-import backend.siptis.auth.repository.UsuarioRepository;
+import backend.siptis.auth.entity.SiptisUser;
+import backend.siptis.model.repository.userData.SiptisUserRepository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class CrearCuentaTest {
 
 
     @Autowired
-    private UsuarioRepository repo;
+    private SiptisUserRepository repo;
 
     @Test
     public void testCrearUsuario1(){
@@ -31,12 +31,12 @@ public class CrearCuentaTest {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String contrasena = passwordEncoder.encode("123");
 
-        Usuario usuario = new Usuario(email,contrasena);
+        SiptisUser siptisUser = new SiptisUser(email,contrasena);
 
-        Usuario usuarioGuardado = repo.save(usuario);
+        SiptisUser siptisUserGuardado = repo.save(siptisUser);
 
-        assertThat(usuarioGuardado).isNotNull();
-        assertThat(usuarioGuardado.getId()).isGreaterThan(0);
+        assertThat(siptisUserGuardado).isNotNull();
+        assertThat(siptisUserGuardado.getId()).isGreaterThan(0);
 
     }
 
@@ -48,12 +48,12 @@ public class CrearCuentaTest {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String contrasena = passwordEncoder.encode("mavl");
 
-        Usuario usuario = new Usuario(email,contrasena);
+        SiptisUser siptisUser = new SiptisUser(email,contrasena);
 
-        Usuario usuarioGuardado = repo.save(usuario);
+        SiptisUser siptisUserGuardado = repo.save(siptisUser);
 
-        assertThat(usuarioGuardado).isNotNull();
-        assertThat(usuarioGuardado.getId()).isGreaterThan(0);
+        assertThat(siptisUserGuardado).isNotNull();
+        assertThat(siptisUserGuardado.getId()).isGreaterThan(0);
 
     }
 }

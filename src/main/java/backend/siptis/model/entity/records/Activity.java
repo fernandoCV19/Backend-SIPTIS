@@ -1,6 +1,6 @@
 package backend.siptis.model.entity.records;
 
-import backend.siptis.model.entity.gestionProyecto.ProyectoGrado;
+import backend.siptis.model.entity.projectManagement.Project;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,5 +26,5 @@ public class Activity {
 
     @ManyToOne
     @JoinColumn(name = "proyecto_grado_id", nullable = false)
-    private ProyectoGrado proyectoGrado;
+    private Project project;
 }

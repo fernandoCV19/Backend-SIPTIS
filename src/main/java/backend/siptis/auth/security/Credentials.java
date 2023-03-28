@@ -7,5 +7,5 @@ import lombok.Data;
 @Data
 public class Credentials {
     private String email;
-    private String contrasena;
+    private String password;
 }

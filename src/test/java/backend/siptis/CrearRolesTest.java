@@ -1,7 +1,7 @@
 package backend.siptis;
 
-import backend.siptis.auth.entity.Rol;
-import backend.siptis.auth.repository.RolRepository;
+import backend.siptis.auth.entity.Role;
+import backend.siptis.model.repository.general.RoleRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -16,14 +16,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class CrearRolesTest {
 
     @Autowired
-    private RolRepository repository;
+    private RoleRepository repository;
 
 
     @Test
     public void testCrearRoles(){
-        Rol admin = new Rol("ADMIN");
-        Rol docente = new Rol("DOCENTE");
-        Rol estudiante = new Rol("ESTUDIANTE");
+        Role admin = new Role("ADMIN");
+        Role docente = new Role("DOCENTE");
+        Role estudiante = new Role("ESTUDIANTE");
         repository.save(admin);
         repository.save(docente);
         repository.save(estudiante);

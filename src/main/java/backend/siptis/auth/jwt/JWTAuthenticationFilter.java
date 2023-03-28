@@ -1,7 +1,7 @@
 package backend.siptis.auth.jwt;
 
 import backend.siptis.auth.security.Credentials;
-import backend.siptis.auth.service.UserDetailImp;
+import backend.siptis.service.userData.UserDetailImp;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,10 +33,10 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             UsernamePasswordAuthenticationToken PAToken =
                     new UsernamePasswordAuthenticationToken(
                             authCredentials.getEmail(),
-                            authCredentials.getContrasena(),
+                            authCredentials.getPassword(),
                             Collections.emptyList());
             System.out.println("CORREO: "+authCredentials.getEmail());
-            System.out.println("CONTRASENA: "+authCredentials.getContrasena());
+            System.out.println("CONTRASENA: "+authCredentials.getPassword());
             return getAuthenticationManager().authenticate(PAToken);
         }catch (
     AuthenticationException e){
