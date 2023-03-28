@@ -1,7 +1,7 @@
 package backend.siptis.service;
 
-import backend.siptis.commons.MensajeServicio;
-import backend.siptis.commons.RespuestaServicio;
+import backend.siptis.commons.ServiceMessage;
+import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.model.entity.gestionProyecto.Presentacion;
 import backend.siptis.model.entity.gestionProyecto.ProyectoGrado;
 import backend.siptis.model.repository.ProyectoDeGradoRepository;
@@ -16,21 +16,21 @@ public class ProyectoGradoService {
     @Autowired
     private ProyectoDeGradoRepository proyectoDeGradoRepository;
 
-    public RespuestaServicio obtenerProyectos(){
+    public ServiceAnswer obtenerProyectos(){
         List<ProyectoGrado> proyectos = proyectoDeGradoRepository.findAll();
-        return RespuestaServicio.builder().mensajeServicio(MensajeServicio.OK).data(proyectos).build();
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(proyectos).build();
     }
-    public RespuestaServicio obtenerPresentaciones (Long idProyecto){
+    public ServiceAnswer obtenerPresentaciones (Long idProyecto){
         Optional<ProyectoGrado> oProyectoGrado = proyectoDeGradoRepository.findById(idProyecto);
         if(oProyectoGrado.isEmpty()){
-            return RespuestaServicio.builder().mensajeServicio(MensajeServicio.NOT_FOUND).data(null).build();
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
         }
         ProyectoGrado  proyecto = oProyectoGrado.get();
         List<Presentacion> presentaciones = proyecto.getPresentaciones().stream().toList();
         if (presentaciones.size()==0){
-            return RespuestaServicio.builder().mensajeServicio(MensajeServicio.SIN_PRESENTACIONES).data(null).build();
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.SIN_PRESENTACIONES).data(null).build();
         }
-        return RespuestaServicio.builder().mensajeServicio(MensajeServicio.OK).data(presentaciones).build();
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(presentaciones).build();
     }
 
 }

@@ -10,18 +10,18 @@ import lombok.*;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Defensa {
+public class Defense {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
     @Column(name = "lugar_defensa")
-    private String lugarDefensa;
+    private String place;
 
     @Column(name = "hora_defensa")
-    private String horaDefensa;
+    private String hour;
 
     @OneToOne
-    private ProyectoGrado proyectoGrado;
+    private ProyectoGrado project;
 }

@@ -67,16 +67,16 @@ public class Usuario implements UserDetails {
     private Collection<EstudianteProyecto> estudiantes;
 
     @OneToMany(mappedBy = "supervisor")
-    private Collection<SupervisorProyecto> supervisores;
+    private Collection<ProjectSupervisor> supervisores;
 
     @OneToMany(mappedBy = "tutor")
-    private Collection<TutorProyecto> tutores;
+    private Collection<ProjectTutor> tutores;
 
-    @OneToMany(mappedBy = "docente")
-    private Collection<DocenteTG2Proyecto> docentes;
+    @OneToMany(mappedBy = "teacher")
+    private Collection<ProjectTeacher> docentes;
 
     @OneToMany(mappedBy = "tribunal")
-    private Collection<TribunalProyecto> tribunales;
+    private Collection<ProjectTribunal> tribunales;
 
     @OneToMany(mappedBy = "usuario")
     private Collection<Revision> revisiones;

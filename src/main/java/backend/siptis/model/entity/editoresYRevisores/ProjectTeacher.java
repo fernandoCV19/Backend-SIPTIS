@@ -6,13 +6,13 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "tutor_proyecto")
+@Table(name = "docente_tg2_proyecto")
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class TutorProyecto {
+public class ProjectTeacher {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, unique = true)
@@ -20,11 +20,11 @@ public class TutorProyecto {
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
-    private Usuario tutor;
+    private Usuario teacher;
 
     @ManyToOne
     @JoinColumn(name = "proyecto_grado_id", nullable = false)
-    private ProyectoGrado proyecto;
-    private Boolean aceptado;
-    private Boolean revisado;
+    private ProyectoGrado project;
+    private Boolean accepted;
+    private Boolean reviewed;
 }

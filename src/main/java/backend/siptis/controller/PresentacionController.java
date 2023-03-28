@@ -1,8 +1,8 @@
 package backend.siptis.controller;
 
-import backend.siptis.commons.MensajeServicio;
+import backend.siptis.commons.ServiceMessage;
 import backend.siptis.commons.RespuestaController;
-import backend.siptis.commons.RespuestaServicio;
+import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.service.CloudManagementService;
 import backend.siptis.service.PresentacionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,43 +27,43 @@ public class PresentacionController {
 
     @GetMapping("/crear/{idProyecto}")
     ResponseEntity<?> create(@PathVariable("idProyecto") Long idProyecto){
-        RespuestaServicio respuestaServicio = presentacionService.generateNew(idProyecto);
-        return crearResponseEntityConPresentacion(respuestaServicio);
+        ServiceAnswer serviceAnswer = presentacionService.generateNew(idProyecto);
+        return crearResponseEntityConPresentacion(serviceAnswer);
     }
 
     @DeleteMapping("/{id}")
     ResponseEntity<?> deletePresentacion(@PathVariable("id") Long idPresentacion){
-        RespuestaServicio respuestaServicio = presentacionService.delete(idPresentacion);
-        return crearResponseEntityConPresentacion(respuestaServicio);
+        ServiceAnswer serviceAnswer = presentacionService.delete(idPresentacion);
+        return crearResponseEntityConPresentacion(serviceAnswer);
     }
 
     @PostMapping("/enviar")
     ResponseEntity<?> entregar( @RequestParam Long idPresentacion, @RequestParam String fase) {
-        RespuestaServicio respuestaServicio= presentacionService.entregarPresentacion(idPresentacion, fase);
-        return crearResponseEntityConPresentacion(respuestaServicio);
+        ServiceAnswer serviceAnswer = presentacionService.entregarPresentacion(idPresentacion, fase);
+        return crearResponseEntityConPresentacion(serviceAnswer);
     }
 
     @PostMapping("/libro")
     ResponseEntity<?> subirLibro(@RequestParam Long idPresentacion, @RequestParam MultipartFile libroAzul) {
-        RespuestaServicio respuestaServicio= presentacionService.subirLibroAzul(idPresentacion, libroAzul);
-        return crearResponseEntityConPresentacion(respuestaServicio);
+        ServiceAnswer serviceAnswer = presentacionService.subirLibroAzul(idPresentacion, libroAzul);
+        return crearResponseEntityConPresentacion(serviceAnswer);
     }
 
     @PostMapping("/trabajo")
     ResponseEntity<?> subirTrabajo(@RequestParam Long idPresentacion, @RequestParam MultipartFile trabajo) {
-        RespuestaServicio respuestaServicio= presentacionService.subirProyecto(idPresentacion, trabajo);
-        return crearResponseEntityConPresentacion(respuestaServicio);
+        ServiceAnswer serviceAnswer = presentacionService.subirProyecto(idPresentacion, trabajo);
+        return crearResponseEntityConPresentacion(serviceAnswer);
     }
 
     @DeleteMapping("/libro/{id}")
     ResponseEntity<?> quitarLibro(@PathVariable("id") Long idPresentacion){
-        RespuestaServicio respuestaServicio = presentacionService.quitarLibroAzul(idPresentacion);
-        return crearResponseEntityConPresentacion(respuestaServicio);
+        ServiceAnswer serviceAnswer = presentacionService.quitarLibroAzul(idPresentacion);
+        return crearResponseEntityConPresentacion(serviceAnswer);
     }
     @DeleteMapping("/trabajo/{id}")
     ResponseEntity<?> quitarProyecto(@PathVariable("id") Long idPresentacion){
-        RespuestaServicio respuestaServicio = presentacionService.quitarTrabajoGrado(idPresentacion);
-        return crearResponseEntityConPresentacion(respuestaServicio);
+        ServiceAnswer serviceAnswer = presentacionService.quitarTrabajoGrado(idPresentacion);
+        return crearResponseEntityConPresentacion(serviceAnswer);
     }
 
 
@@ -75,20 +75,20 @@ public class PresentacionController {
 
 
 
-    private ResponseEntity<?> crearResponseEntityConPresentacion(RespuestaServicio respuestaServicio){
-        Object data = respuestaServicio.getData();
-        MensajeServicio mensajeServicio = respuestaServicio.getMensajeServicio();
+    private ResponseEntity<?> crearResponseEntityConPresentacion(ServiceAnswer serviceAnswer){
+        Object data = serviceAnswer.getData();
+        ServiceMessage serviceMessage = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.OK;
 
-        if (mensajeServicio == MensajeServicio.PRESENTACION_PENDIENTE){
-            RespuestaController respuestaController = RespuestaController.builder().data(data).message(mensajeServicio.toString()).build();
+        if (serviceMessage == ServiceMessage.PRESENTACION_PENDIENTE){
+            RespuestaController respuestaController = RespuestaController.builder().data(data).message(serviceMessage.toString()).build();
             return new ResponseEntity<>(respuestaController, httpStatus);
         }
 
-        if(mensajeServicio == MensajeServicio.NOT_FOUND || mensajeServicio == MensajeServicio.ERROR)
+        if(serviceMessage == ServiceMessage.NOT_FOUND || serviceMessage == ServiceMessage.ERROR)
             httpStatus = HttpStatus.NOT_FOUND;
 
-        RespuestaController respuestaController = RespuestaController.builder().data(data).message(mensajeServicio.toString()).build();
+        RespuestaController respuestaController = RespuestaController.builder().data(data).message(serviceMessage.toString()).build();
         return new ResponseEntity<>(respuestaController, httpStatus);
     }
 
