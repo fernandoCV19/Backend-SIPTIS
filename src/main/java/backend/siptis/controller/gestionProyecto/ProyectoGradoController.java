@@ -1,9 +1,9 @@
-package backend.siptis.controller;
+package backend.siptis.controller.gestionProyecto;
 
 import backend.siptis.commons.MensajeServicio;
 import backend.siptis.commons.RespuestaController;
 import backend.siptis.commons.RespuestaServicio;
-import backend.siptis.service.ProyectoGradoService;
+import backend.siptis.service.gestionProyecto.ProyectoGradoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

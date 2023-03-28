@@ -1,6 +1,5 @@
 package backend.siptis.model.entity.gestionProyecto;
 
-import BackendSIPTIS.model.entity.editoresYRevisores.*;
 import backend.siptis.model.entity.editoresYRevisores.*;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
