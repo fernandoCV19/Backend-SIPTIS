@@ -1,5 +1,11 @@
 package backend.siptis.service.gestionProyecto;
 
-public interface ProyectoGradoService{
+import backend.siptis.commons.RespuestaServicio;
+
+public interface ProyectoGradoService {
+
+    RespuestaServicio obtenerProyectos();
+
+    RespuestaServicio obtenerPresentaciones (Long idProyecto);
 
 }

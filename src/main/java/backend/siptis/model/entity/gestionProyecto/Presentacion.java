@@ -29,8 +29,8 @@ public class Presentacion {
     @Column(name = "fase")
     private String fase;
 
-    @Column(name = "entregado")
-    private Boolean entregado = false;
+    @Column(name = "revisado")
+    private Boolean revisado = false;
 
     @ManyToOne
     @JoinColumn(name = "proyecto_grado_id", nullable = false)

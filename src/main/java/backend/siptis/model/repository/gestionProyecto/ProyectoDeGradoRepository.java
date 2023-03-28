@@ -1,4 +1,4 @@
-package backend.siptis.model.repository;
+package backend.siptis.model.repository.gestionProyecto;
 
 import java.util.Optional;
 
