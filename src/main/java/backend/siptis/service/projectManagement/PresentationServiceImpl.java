@@ -28,7 +28,7 @@ public class PresentationServiceImpl implements PresentationService {
 
     @Override
     public ServiceAnswer createPresentation (Long idProyecto, String fase){
-        Optional <Presentation> presentacionesNoEntregadas = presentationRepository.findTopByProyectoGradoIdAndRevisado(idProyecto, false);
+        Optional <Presentation> presentacionesNoEntregadas = presentationRepository.findTopByProjectIdAndReviewed(idProyecto, false);
         if (presentacionesNoEntregadas.isPresent()){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PRESENTACION_PENDIENTE).data(null).build();
         }
