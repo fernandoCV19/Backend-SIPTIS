@@ -11,13 +11,14 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class InformacionEstudianteDTO {
+public class StudentInformationDTO {
 
     private String email;
-    private String nombres;
-    private String apellidos;
-    private String celular;
+    private String names;
+    private String lastnames;
+    private String celNumber;
     private String ci;
     private Date fechaNac;
     private String codSIS;
+    private int career;
 }

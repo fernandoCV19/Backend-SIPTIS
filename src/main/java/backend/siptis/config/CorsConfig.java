@@ -15,7 +15,18 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
 
+
                 registry.addMapping("/login")
+                        .allowedOrigins("http://localhost:3000/")
+                        .allowedMethods("*")
+                        .exposedHeaders("*");
+
+                registry.addMapping("/user/register/admin")
+                        .allowedOrigins("http://localhost:3000/")
+                        .allowedMethods("*")
+                        .exposedHeaders("*");
+
+                registry.addMapping("/user/test")
                         .allowedOrigins("http://localhost:3000/")
                         .allowedMethods("*")
                         .exposedHeaders("*");

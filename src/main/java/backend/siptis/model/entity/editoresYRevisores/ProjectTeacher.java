@@ -1,6 +1,6 @@
 package backend.siptis.model.entity.editoresYRevisores;
 
-import backend.siptis.auth.entity.Usuario;
+import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.model.entity.gestionProyecto.ProyectoGrado;
 import jakarta.persistence.*;
 import lombok.*;
@@ -20,7 +20,7 @@ public class ProjectTeacher {
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
-    private Usuario teacher;
+    private SiptisUser docente;
 
     @ManyToOne
     @JoinColumn(name = "proyecto_grado_id", nullable = false)

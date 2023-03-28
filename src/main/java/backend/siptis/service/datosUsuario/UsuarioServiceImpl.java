@@ -17,7 +17,7 @@ public class UsuarioServiceImpl implements UsuarioCommonService{
 
     @Override
     public ServiceAnswer obtenerProyectosSupervisorParaMenuPrincipalPorIdUsuario(Long id) {
-        Optional<Usuario> usuarioOptional = usuarioCommonRepository.findById(id);
+        Optional<SiptisUser> usuarioOptional = usuarioCommonRepository.findById(id);
         if(usuarioOptional.isEmpty()){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
         }

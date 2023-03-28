@@ -1,6 +1,6 @@
 package backend.siptis.model.entity.datosUsuario;
 
-import backend.siptis.auth.entity.Usuario;
+import backend.siptis.auth.entity.SiptisUser;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,5 +21,5 @@ public class Horario {
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
-    private Usuario usuario;
+    private SiptisUser siptisUser;
 }

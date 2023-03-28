@@ -1,7 +1,7 @@
-package backend.siptis.auth.service;
+package backend.siptis.service.datosUsuario;
 
-import backend.siptis.auth.entity.Usuario;
-import backend.siptis.auth.repository.UsuarioRepository;
+import backend.siptis.auth.entity.SiptisUser;
+import backend.siptis.model.repository.datosUsuario.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,11 +15,11 @@ public class UserDetailServiceImpl implements UserDetailsService {
     private UsuarioRepository usuarioRepository;
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Usuario usuario = usuarioRepository.findOneByEmail(email)
+        SiptisUser siptisUser = usuarioRepository.findOneByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException(
                         "El usuario con el nombre "+email+" no existe"
                 ));
 
-        return new UserDetailImp(usuario);
+        return new UserDetailImp(siptisUser);
     }
 }

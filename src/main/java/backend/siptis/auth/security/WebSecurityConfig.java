@@ -36,7 +36,8 @@ public class WebSecurityConfig {
         return http.cors().and()
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/login").permitAll()
+                .requestMatchers("/user/register/student", "/user/register/admin" ,  "/user/test")
+                .permitAll()
                 .anyRequest().authenticated()
                 .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -63,7 +64,7 @@ public class WebSecurityConfig {
 
     public static void main(String[] args){
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String contrasena = passwordEncoder.encode("mavl");
-        System.out.println(contrasena);
+        String password = passwordEncoder.encode("mavl");
+        System.out.println(password);
     }
 }
