@@ -38,8 +38,19 @@ public class UsuarioController {
             @RequestBody AdminRegisterDTO adminRegisterDTO){
 
         RespuestaServicio admin = userAuthService.registerAdmin(adminRegisterDTO);
-        return crearResponseEntityRegistrar(admin);
+        //return crearResponseEntityRegistrar(admin);
+        return new ResponseEntity<>("Exito" +
+                "", HttpStatus.OK);
     }
+
+    @PostMapping("/test")
+    public ResponseEntity<?> test(
+            @RequestBody AdminRegisterDTO adminRegisterDTO){
+
+        //RespuestaServicio admin = userAuthService.registerAdmin(adminRegisterDTO);
+        return new ResponseEntity<>("hola", HttpStatus.OK);
+    }
+
 
 
     private ResponseEntity<?> crearResponseEntityRegistrar(RespuestaServicio respuestaServicio){
