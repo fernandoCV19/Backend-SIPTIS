@@ -17,12 +17,12 @@ public class CorsConfig {
 
 
                 registry.addMapping("/login")
-                        .allowedOrigins("http://localhost:3000/")
+                        .allowedOrigins("http://127.0.0.1:5173/")
                         .allowedMethods("*")
                         .exposedHeaders("*");
 
                 registry.addMapping("/user/register/admin")
-                        .allowedOrigins("http://localhost:3000/")
+                        .allowedOrigins("http://127.0.0.1:5173/")
                         .allowedMethods("*")
                         .exposedHeaders("*");
 
@@ -34,6 +34,16 @@ public class CorsConfig {
                 registry.addMapping("/todos")
                         .allowedOrigins("http://localhost:3000/")
                         .allowedMethods("*");
+
+                registry.addMapping("/presentation")
+                        .allowedOrigins("http://127.0.0.1:5173/")
+                        .allowedMethods("*")
+                        .exposedHeaders("*");
+
+                registry.addMapping("/proyecto/presentations")
+                        .allowedOrigins("http://127.0.0.1:5173/")
+                        .allowedMethods("*")
+                        .exposedHeaders("*");
             }
         };
     }

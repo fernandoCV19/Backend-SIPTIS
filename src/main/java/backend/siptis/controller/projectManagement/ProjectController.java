@@ -18,7 +18,7 @@ public class ProjectController {
     @Autowired
     public ProjectService proyectoGradoService;
 
-    @GetMapping("/{id}")
+    @GetMapping("/presentations/{id}")
     public ResponseEntity<?> getPresentaciones(@PathVariable ("id") Long idProyecto){
         ServiceAnswer serviceAnswer = proyectoGradoService.obtenerPresentaciones(idProyecto);
         return crearResponseEntity(serviceAnswer);
