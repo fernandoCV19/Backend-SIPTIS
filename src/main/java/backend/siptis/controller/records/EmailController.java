@@ -15,7 +15,9 @@ public class EmailController {
         this.emailService = emailService;
     }
     @GetMapping("")
-    public void sendEmail(){
+    public String sendEmail(){
+
         emailService.send("prueba", "dilanantezana@gmail.com", "algo", "esta es una prueba");
+        return "ok";
     }
 }
