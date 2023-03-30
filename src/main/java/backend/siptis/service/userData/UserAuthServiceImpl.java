@@ -56,12 +56,12 @@ public class UserAuthServiceImpl implements UserAuthService {
         siptisUser.setPassword(contrasena);
         siptisUserRepository.save(siptisUser);
         //InformacionEstudianteDTO estudiante = new InformacionEstudianteDTO();
-
         ServiceAnswer respuesta = userInformationService
                 .registerStudent(estudianteDTO, siptisUser);
 
         StudentInformationDTO estudiante = (StudentInformationDTO) respuesta.getData();
         estudiante.setEmail(siptisUser.getEmail());
+
         //return estudiante;
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(estudiante).build();
     }
