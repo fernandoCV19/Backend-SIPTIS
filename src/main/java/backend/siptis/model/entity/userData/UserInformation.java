@@ -28,7 +28,7 @@ public class UserInformation {
     private String ci;
     private Date birthDate;
     private String codSIS;
-    private boolean wppMessages = Boolean.FALSE;
+    //private boolean wppMessages = Boolean.FALSE;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
