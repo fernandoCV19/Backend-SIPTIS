@@ -24,13 +24,13 @@ import java.util.List;
 public class EmailService {
     private JavaMailSender mailSender;
     private final ActivityService activityService;
-    private final GeneralAcitivityService generalAcitivityService;
+    private final GeneralActivityService generalActivityService;
 
     @Autowired
-    public EmailService(JavaMailSender mailSender, ActivityService activityService, GeneralAcitivityService generalActivityService) {
+    public EmailService(JavaMailSender mailSender, ActivityService activityService, GeneralActivityService generalActivityService) {
         this.mailSender = mailSender;
         this.activityService = activityService;
-        this.generalAcitivityService = generalActivityService;
+        this.generalActivityService = generalActivityService;
     }
 
     public void send(String from, String to, String subject, String text) {
@@ -48,7 +48,7 @@ public class EmailService {
         int mesActual = LocalDateTime.now().getMonthValue();
         int diaActual = LocalDateTime.now().getDayOfMonth();
 
-        List<GeneralActivityVO> generalActivityList = generalAcitivityService.findAllVO();
+        List<GeneralActivityVO> generalActivityList = generalActivityService.findAllVO();
         for(GeneralActivityVO vo: generalActivityList){
             Date date =  vo.getFechaActividad();
             if(date.getMonth() == mesActual &&
