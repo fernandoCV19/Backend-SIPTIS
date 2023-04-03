@@ -19,6 +19,8 @@ public class Activity {
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
+    @Column(name = "activity_name")
+    private String activityName;
     @Column(name = "activity_description")
     private String activityDescription;
     @Column(name = "activity_date")
