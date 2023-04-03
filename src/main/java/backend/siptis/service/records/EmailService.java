@@ -7,11 +7,9 @@ import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.InputStreamSource;
 import org.springframework.core.io.Resource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +17,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -83,7 +80,7 @@ public class EmailService {
         message.setRecipients(MimeMessage.RecipientType.TO, arrayTO);
         message.setSubject("Test email for SIPTIS");
 
-        String htmlTemplate = readFile("plantilla.html");
+        String htmlTemplate = readFile("template.html");
         message.setContent(htmlTemplate, "text/html; charset=utf-8");
 
         mailSender.send(message);
@@ -96,7 +93,7 @@ public class EmailService {
         message.setRecipients(MimeMessage.RecipientType.TO, to);
         message.setSubject("Test email for SIPTIS");
 
-        String htmlTemplate = readFile("plantilla.html");
+        String htmlTemplate = readFile("template.html");
         message.setContent(htmlTemplate, "text/html; charset=utf-8");
 
         mailSender.send(message);
