@@ -19,7 +19,7 @@ public class GeneralActivity {
     private Long id;
 
     @Column (name = "activity_name")
-    private String generalActivityName;
+    private String activityName;
     @Column(name = "activity_description")
     private String activityDescription;
     @Column(name = "activity_date")
