@@ -15,11 +15,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class GeneralAcitivityServiceImpl implements GeneralAcitivityService{
+public class GeneralActivityServiceImpl implements GeneralActivityService {
 
     private final GeneralActivityRepository generalActivityRepository;
     @Autowired
-    public GeneralAcitivityServiceImpl(GeneralActivityRepository generalActivityRepository) {
+    public GeneralActivityServiceImpl(GeneralActivityRepository generalActivityRepository) {
         this.generalActivityRepository = generalActivityRepository;
     }
     @Override
@@ -32,6 +32,7 @@ public class GeneralAcitivityServiceImpl implements GeneralAcitivityService{
         GeneralActivity generalActivity = new GeneralActivity();
         generalActivity.setActivityDescription(generalActivityDTO.getActivityDescription());
         generalActivity.setActivityDate(generalActivityDTO.getActivityDate());
+        generalActivity.setActivityName(generalActivityDTO.getGeneralActivityName());
         generalActivity =  generalActivityRepository.save(generalActivity);
 
         return entityToVO(generalActivity);
@@ -58,6 +59,7 @@ public class GeneralAcitivityServiceImpl implements GeneralAcitivityService{
         Optional<GeneralActivity> optionalGeneralActivity = generalActivityRepository.findById(id);
         if(!optionalGeneralActivity.isEmpty()){
             GeneralActivity generalActivity = optionalGeneralActivity.get();
+            generalActivity.setActivityName(generalActivityDTO.getGeneralActivityName());
             generalActivity.setActivityDescription(generalActivityDTO.getActivityDescription());
             generalActivity.setActivityDate(generalActivityDTO.getActivityDate());
         }

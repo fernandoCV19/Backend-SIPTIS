@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.Optional;
 import java.util.List;
 
-public interface GeneralAcitivityService {
+public interface GeneralActivityService {
     Optional<GeneralActivity> findById(long id);
     GeneralActivityVO persistGeneralActivity(GeneralActivityDTO generalActivityDTO);
     List<GeneralActivityVO> findAllVO();
