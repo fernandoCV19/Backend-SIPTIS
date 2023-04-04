@@ -35,7 +35,7 @@ public class GeneralActivityServiceImpl implements GeneralActivityService {
                     .build();
         }
         return ServiceAnswer.builder()
-                .serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST)
+                .serviceMessage(ServiceMessage.NOT_FOUND)
                 .build();
     }
 
@@ -48,7 +48,7 @@ public class GeneralActivityServiceImpl implements GeneralActivityService {
         generalActivity = generalActivityRepository.save(generalActivity);
 
         return ServiceAnswer.builder()
-                .serviceMessage(ServiceMessage.ACTIVITY_CREATED)
+                .serviceMessage(ServiceMessage.OK)
                 .data(entityToVO(generalActivity))
                 .build();
     }
@@ -87,7 +87,7 @@ public class GeneralActivityServiceImpl implements GeneralActivityService {
                     .build();
         }
         return ServiceAnswer.builder()
-                .serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST)
+                .serviceMessage(ServiceMessage.NOT_FOUND)
                 .build();
     }
 
@@ -103,7 +103,7 @@ public class GeneralActivityServiceImpl implements GeneralActivityService {
                     .build();
         }
         return ServiceAnswer.builder()
-                .serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST)
+                .serviceMessage(ServiceMessage.NOT_FOUND)
                 .build();
     }
 
