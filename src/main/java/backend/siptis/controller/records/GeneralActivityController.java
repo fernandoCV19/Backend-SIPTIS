@@ -1,6 +1,8 @@
 package backend.siptis.controller.records;
 
 import backend.siptis.commons.ControllerAnswer;
+import backend.siptis.commons.ServiceAnswer;
+import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.records.GeneralActivityDTO;
 import backend.siptis.service.records.GeneralActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,27 +20,15 @@ public class GeneralActivityController {
     }
     @PostMapping()
     public ResponseEntity<?> persistGeneralActivity(@RequestBody GeneralActivityDTO generalActivityDTO) {
-        return new ResponseEntity<>(
-                ControllerAnswer.builder()
-                        .data(generalActivityService.persistGeneralActivity(generalActivityDTO))
-                        .message("General activity persisted successfully")
-                        .build(), null, 200);
+        return createResponse(generalActivityService.persistGeneralActivity(generalActivityDTO));
     }
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateGeneralActivity(@RequestBody GeneralActivityDTO generalActivityDTO, long id) {
-        generalActivityService.update(generalActivityDTO, id);
-        return new ResponseEntity<>(
-                ControllerAnswer.builder()
-                        .message("General activity updated successfully")
-                        .build(), null, 200);
+    public ResponseEntity<?> updateGeneralActivity(@RequestBody GeneralActivityDTO generalActivityDTO, @PathVariable long id) {
+        return createResponse(generalActivityService.update(generalActivityDTO, id));
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteGeneralActivity(long id) {
-        generalActivityService.delete(id);
-        return new ResponseEntity<>(
-                ControllerAnswer.builder()
-                        .message("General activity deleted successfully")
-                        .build(), null, 200);
+    public ResponseEntity<?> deleteGeneralActivity(@PathVariable long id) {
+        return createResponse(generalActivityService.delete(id));
     }
     @GetMapping()
     public ResponseEntity<?> findAllGeneralActivity() {
@@ -47,5 +37,22 @@ public class GeneralActivityController {
                         .data(generalActivityService.findAllVO())
                         .message("General activities found successfully")
                         .build(), null, 200);
+    }
+    private ResponseEntity<?> createResponse(ServiceAnswer serviceAnswer){
+        ServiceMessage serviceMessage = serviceAnswer.getServiceMessage();
+        if(serviceMessage == ServiceMessage.NOT_FOUND)
+            return new ResponseEntity<>(
+                    ControllerAnswer.builder()
+                            .data(null)
+                            .message("NOT FOUND").build(), null, 404);
+        else if (serviceMessage == ServiceMessage.OK)
+            return new ResponseEntity<>(
+                    ControllerAnswer.builder()
+                            .data(serviceAnswer.getData())
+                            .message("OK").build(), null, 200);
+        else return new ResponseEntity<>(
+                    ControllerAnswer.builder()
+                            .data(null)
+                            .message("SERVER ERROR").build(), null, 500);
     }
 }
