@@ -1,5 +1,7 @@
 package backend.siptis.service.records;
 
+import backend.siptis.commons.ServiceAnswer;
+import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.records.GeneralActivity;
 import backend.siptis.model.pjo.dto.records.GeneralActivityDTO;
 import backend.siptis.model.pjo.vo.GeneralActivityVO;
@@ -23,19 +25,32 @@ public class GeneralActivityServiceImpl implements GeneralActivityService {
         this.generalActivityRepository = generalActivityRepository;
     }
     @Override
-    public Optional<GeneralActivity> findById(long id) {
-        return generalActivityRepository.findById(id);
+    public ServiceAnswer findById(long id) {
+        Optional<GeneralActivity> generalActivityOptional = generalActivityRepository.findById(id);
+
+        if(!generalActivityOptional.isEmpty()){
+            return ServiceAnswer.builder()
+                    .serviceMessage(ServiceMessage.OK)
+                    .data(entityToVO(generalActivityOptional.get()))
+                    .build();
+        }
+        return ServiceAnswer.builder()
+                .serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST)
+                .build();
     }
 
     @Override
-    public GeneralActivityVO persistGeneralActivity(GeneralActivityDTO generalActivityDTO) {
+    public ServiceAnswer persistGeneralActivity(GeneralActivityDTO generalActivityDTO) {
         GeneralActivity generalActivity = new GeneralActivity();
         generalActivity.setActivityDescription(generalActivityDTO.getActivityDescription());
         generalActivity.setActivityDate(generalActivityDTO.getActivityDate());
         generalActivity.setActivityName(generalActivityDTO.getGeneralActivityName());
-        generalActivity =  generalActivityRepository.save(generalActivity);
+        generalActivity = generalActivityRepository.save(generalActivity);
 
-        return entityToVO(generalActivity);
+        return ServiceAnswer.builder()
+                .serviceMessage(ServiceMessage.ACTIVITY_CREATED)
+                .data(entityToVO(generalActivity))
+                .build();
     }
 
     @Override
@@ -55,21 +70,41 @@ public class GeneralActivityServiceImpl implements GeneralActivityService {
     }
 
     @Override
-    public void update(GeneralActivityDTO generalActivityDTO, long id) {
+    public ServiceAnswer update(GeneralActivityDTO generalActivityDTO, long id) {
         Optional<GeneralActivity> optionalGeneralActivity = generalActivityRepository.findById(id);
+
         if(!optionalGeneralActivity.isEmpty()){
             GeneralActivity generalActivity = optionalGeneralActivity.get();
             generalActivity.setActivityName(generalActivityDTO.getGeneralActivityName());
             generalActivity.setActivityDescription(generalActivityDTO.getActivityDescription());
             generalActivity.setActivityDate(generalActivityDTO.getActivityDate());
+
+            generalActivity = generalActivityRepository.findById(id).get();
+
+            return ServiceAnswer.builder()
+                    .serviceMessage(ServiceMessage.OK)
+                    .data(generalActivity)
+                    .build();
         }
+        return ServiceAnswer.builder()
+                .serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST)
+                .build();
     }
 
     @Override
-    public void delete(long id) {
+    public ServiceAnswer delete(long id) {
         Optional<GeneralActivity> generalActivity = generalActivityRepository.findById(id);
-        if(!generalActivity.isEmpty())
+        if(!generalActivity.isEmpty()) {
             generalActivityRepository.deleteById(id);
+            generalActivity = generalActivityRepository.findById(id);
+            return ServiceAnswer.builder()
+                    .serviceMessage(ServiceMessage.OK)
+                    .data(entityToVO(generalActivity.get()))
+                    .build();
+        }
+        return ServiceAnswer.builder()
+                .serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST)
+                .build();
     }
 
     @Override

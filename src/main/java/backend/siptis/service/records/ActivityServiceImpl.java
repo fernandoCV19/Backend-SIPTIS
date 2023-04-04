@@ -1,9 +1,13 @@
 package backend.siptis.service.records;
 
+import backend.siptis.commons.ServiceAnswer;
+import backend.siptis.commons.ServiceMessage;
+import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.entity.records.Activity;
 import backend.siptis.model.entity.records.GeneralActivity;
 import backend.siptis.model.pjo.dto.records.ActivityDTO;
 import backend.siptis.model.pjo.vo.ActivityVO;
+import backend.siptis.model.repository.projectManagement.ProjectRepository;
 import backend.siptis.model.repository.records.ActivityRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +23,11 @@ import java.util.Optional;
 public class ActivityServiceImpl implements ActivityService{
 
     public final ActivityRepository acitivityRepository;
+    private final ProjectRepository projectRepository;
     @Autowired
-    public ActivityServiceImpl(ActivityRepository acitivityRepository) {
+    public ActivityServiceImpl(ActivityRepository acitivityRepository, ProjectRepository projectRepository) {
         this.acitivityRepository = acitivityRepository;
+        this.projectRepository = projectRepository;
     }
     @Override
     public Optional<Activity> findById(long id) {
@@ -29,12 +35,22 @@ public class ActivityServiceImpl implements ActivityService{
     }
 
     @Override
-    public ActivityVO persistActivity(ActivityDTO activityDTO) {
+    public ServiceAnswer persistActivity(ActivityDTO activityDTO) {
         Activity activity = new Activity();
-        activity.setActivityDescription(activityDTO.getActivityDescription());
-        activity.setActivityDate(activityDTO.getActivityDate());
-        activity =  acitivityRepository.save(activity);
-        return entityToVO(activity);
+        Optional<Project> project = projectRepository.findById(activityDTO.getIdProject());
+
+        if (!project.isEmpty()){
+            activity.setActivityDescription(activityDTO.getActivityDescription());
+            activity.setActivityDate(activityDTO.getActivityDate());
+            activity =  acitivityRepository.save(activity);
+
+            return ServiceAnswer.builder()
+                    .serviceMessage(ServiceMessage.OK)
+                    .data(entityToVO(activity)).build();
+        }
+        return ServiceAnswer.builder()
+                .serviceMessage(ServiceMessage.NOT_FOUND)
+                .data(null).build();
     }
 
     @Override
@@ -54,22 +70,38 @@ public class ActivityServiceImpl implements ActivityService{
     }
 
     @Override
-    public void update(ActivityDTO activityDTO, long id) {
+    public ServiceAnswer update(ActivityDTO activityDTO, long id) {
         Optional <Activity> optionalActivity = acitivityRepository.findById(id);
+
         if(!optionalActivity.isEmpty()){
             Activity activity = optionalActivity.get();
             activity.setActivityDescription(activityDTO.getActivityDescription());
             activity.setActivityDate(activityDTO.getActivityDate());
-            acitivityRepository.save(activity);
+            activity = acitivityRepository.save(activity);
+
+            return ServiceAnswer.builder()
+                    .serviceMessage(ServiceMessage.OK)
+                    .data(entityToVO(activity)).build();
         }
+        return ServiceAnswer.builder()
+                .serviceMessage(ServiceMessage.NOT_FOUND)
+                .data(null).build();
     }
 
     @Override
-    public void delete(long id) {
+    public ServiceAnswer delete(long id) {
         Optional <Activity> optionalActivity = acitivityRepository.findById(id);
+
         if(!optionalActivity.isEmpty()){
             acitivityRepository.deleteById(id);
+            optionalActivity = acitivityRepository.findById(id);
+            return ServiceAnswer.builder()
+                    .serviceMessage(ServiceMessage.OK)
+                    .data(entityToVO(optionalActivity.get())).build();
         }
+        return ServiceAnswer.builder()
+                .serviceMessage(ServiceMessage.NOT_FOUND)
+                .data(null).build();
     }
 
     @Override
