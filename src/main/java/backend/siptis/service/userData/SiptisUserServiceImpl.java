@@ -24,4 +24,10 @@ public class SiptisUserServiceImpl implements SiptisUserService {
 
         return null;
     }
+    @Override
+    public ServiceAnswer getAllUsers() {
+        return usuarioCommonRepository.findAll().isEmpty() ?
+                ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build() :
+                ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(usuarioCommonRepository.findAll()).build();
+    }
 }
