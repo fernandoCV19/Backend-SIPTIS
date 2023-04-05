@@ -1,382 +1,241 @@
-INSERT INTO siptisUser(
-	id, nombres, apellidos, celular, ci, codsis, email)
-	VALUES (1, "Supervisor1", "S", "1234567", "54321", "111222333", "mail@mail.com");
+-- Proyecto
 
-INSERT INTO siptisUser(
-	id, nombres, apellidos, celular, ci, codsis, email)
-	VALUES (2, "Tutor1", "T", "1234567", "54321", "111222333", "mail@mail.com");
+INSERT INTO area(id, name) VALUES (1, 'Area1');
 
-INSERT INTO siptisUser(
-	id, nombres, apellidos, celular, ci, codsis, email)
-	VALUES (3, "Docente1", "D", "1234567", "54321", "111222333", "mail@mail.com");
+INSERT INTO area(id, name) VALUES (2, 'Area2');
 
-INSERT INTO siptisUser(
-	id, nombres, apellidos, celular, ci, codsis, email)
-	VALUES (4, "Tribunal1", "T", "1234567", "54321", "111222333", "mail@mail.com");
+INSERT INTO sub_area(id, name) VALUES (1, 'SubArea1');
 
-INSERT INTO siptisUser(
-	id, nombres, apellidos, celular, ci, codsis, email)
-	VALUES (5, "Estudiante1", "E", "1234567", "54321", "111222333", "mail@mail.com");
+INSERT INTO sub_area(id, name) VALUES (2, 'SubArea2');
 
-INSERT INTO siptisUser(
-	id, nombres, apellidos, celular, ci, codsis, email)
-	VALUES (6, "Estudiante2", "E", "1234567", "54321", "111222333", "mail@mail.com");
+INSERT INTO modality(id, name) VALUES (1, 'Adscripcion');
 
-INSERT INTO siptisUser(
-	id, nombres, apellidos, celular, ci, codsis, email)
-	VALUES (7, "Estudiante3", "E", "1234567", "54321", "111222333", "mail@mail.com");
 
-INSERT INTO siptisUser(
-	id, nombres, apellidos, celular, ci, codsis, email)
-	VALUES (8, "Estudiante4", "E", "1234567", "54321", "111222333", "mail@mail.com");
+INSERT INTO project(id, blue_book_path, perfil_path, project_path, phase, name, defense_id, state_id, modality_id) VALUES (1, 'Libro1', 'Perfil1', 'Proyecto1', 'Fase1', 'ProyectoGrado1', null, null, 1);
 
-INSERT INTO siptisUser(
-	id, nombres, apellidos, celular, ci, codsis, email)
-	VALUES (9, "Estudiante5", "E", "1234567", "54321", "111222333", "mail@mail.com");
+INSERT INTO project_area(project_id, area_id) VALUES (1, 1);
 
-INSERT INTO siptisUser(
-	id, nombres, apellidos, celular, ci, codsis, email)
-	VALUES (10, "Estudiante6", "E", "1234567", "54321", "111222333", "mail@mail.com");
+INSERT INTO project_sub_area(project_id, sub_area_id) VALUES (1, 1);
 
-INSERT INTO siptisUser(
-	id, nombres, apellidos, celular, ci, codsis, email)
-	VALUES (11, "Estudiante7", "E", "1234567", "54321", "111222333", "mail@mail.com");
 
-INSERT INTO siptisUser(
-	id, nombres, apellidos, celular, ci, codsis, email)
-	VALUES (12, "Estudiante8", "E", "1234567", "54321", "111222333", "mail@mail.com");
+INSERT INTO project(id, blue_book_path, perfil_path, project_path, phase, name, defense_id, state_id, modality_id)VALUES (2, 'Libro2', 'Perfil2', 'Proyecto2', 'Fase2', 'ProyectoGrado2', null, null, 1);
 
-INSERT INTO siptisUser(
-	id, nombres, apellidos, celular, ci, codsis, email)
-	VALUES (13, "Estudiante9", "E", "1234567", "54321", "111222333", "mail@mail.com");
+INSERT INTO project_area(project_id, area_id) VALUES (2, 1);
 
-INSERT INTO siptisUser(
-	id, nombres, apellidos, celular, ci, codsis, email)
-	VALUES (14, "Estudiante10", "E", "1234567", "54321", "111222333", "mail@mail.com");
+INSERT INTO project_sub_area(project_id, sub_area_id) VALUES (2, 1);
 
-INSERT INTO siptisUser(
-	id, nombres, apellidos, celular, ci, codsis, email)
-	VALUES (15, "Estudiante11", "E", "1234567", "54321", "111222333", "mail@mail.com");
 
-INSERT INTO siptisUser(
-	id, nombres, apellidos, celular, ci, codsis, email)
-	VALUES (16, "Estudiante12", "E", "1234567", "54321", "111222333", "mail@mail.com");
+INSERT INTO project(id, blue_book_path, perfil_path, project_path, phase, name, defense_id, state_id, modality_id) VALUES (3, 'Libro3', 'Perfil3', 'Proyecto3', 'Fase3', 'ProyectoGrado3', null, null, 1);
 
-INSERT INTO siptisUser(
-	id, nombres, apellidos, celular, ci, codsis, email)
-	VALUES (17, "Estudiante13", "E", "1234567", "54321", "111222333", "mail@mail.com");
+INSERT INTO project_area(project_id, area_id) VALUES (3, 1);
+
+INSERT INTO project_sub_area(project_id, sub_area_id) VALUES (3, 1);
+
+--
+
+INSERT INTO project(id, blue_book_path, perfil_path, project_path, phase, name, defense_id, state_id, modality_id) VALUES (4, 'Libro4', 'Perfil4', 'Proyecto4', 'Fase4', 'ProyectoGrado4', null, null, 1);
+
+INSERT INTO project_area(project_id, area_id) VALUES (4, 1);
+
+INSERT INTO project_sub_area(project_id, sub_area_id) VALUES (4, 1);
+
+
+INSERT INTO project(id, blue_book_path, perfil_path, project_path, phase, name, defense_id, state_id, modality_id) VALUES (5, 'Libro5', 'Perfil5', 'Proyecto5', 'Fase5', 'ProyectoGrado5', null, null, 1);
+
+INSERT INTO project_area(project_id, area_id) VALUES (5, 1);
+
+INSERT INTO project_sub_area(project_id, sub_area_id) VALUES (5, 1);
+
+
+INSERT INTO project(id, blue_book_path, perfil_path, project_path, phase, name, defense_id, state_id, modality_id) VALUES (6, 'Libro6', 'Perfil6', 'Proyecto6', 'Fase6', 'ProyectoGrado6', null, null, 1);
+
+INSERT INTO project_area(project_id, area_id) VALUES (6, 1);
+
+INSERT INTO project_sub_area(project_id, sub_area_id) VALUES (6, 1);
+
+
+--
+
+INSERT INTO project(id, blue_book_path, perfil_path, project_path, phase, name, defense_id, state_id, modality_id) VALUES (7, 'Libro7', 'Perfil7', 'Proyecto7', 'Fase7', 'ProyectoGrado7', null, null, 1);
+
+INSERT INTO project_area(project_id, area_id) VALUES (7, 1);
+
+INSERT INTO project_sub_area(project_id, sub_area_id) VALUES (7, 1);
+
+
+INSERT INTO project(id, blue_book_path, perfil_path, project_path, phase, name, defense_id, state_id, modality_id) VALUES (8, 'Libro8', 'Perfil8', 'Proyecto8', 'Fase8', 'ProyectoGrado8', null, null, 1);
+
+INSERT INTO project_area(project_id, area_id) VALUES (8, 1);
+
+INSERT INTO project_sub_area(project_id, sub_area_id) VALUES (8, 1);
+
+
+INSERT INTO project(id, blue_book_path, perfil_path, project_path, phase, name, defense_id, state_id, modality_id) VALUES (9, 'Libro9', 'Perfil9', 'Proyecto9', 'Fase9', 'ProyectoGrado9', null, null, 1);
+
+INSERT INTO project_area(project_id, area_id) VALUES (9, 1);
+
+INSERT INTO project_sub_area(project_id, sub_area_id) VALUES (9, 1);
+
+
+INSERT INTO project(id, blue_book_path, perfil_path, project_path, phase, name, defense_id, state_id, modality_id) VALUES (10, 'Libro10', 'Perfil10', 'Proyecto10', 'Fase10', 'ProyectoGrado10', null, null, 1);
+
+INSERT INTO project_area(project_id, area_id) VALUES (10, 1);
+
+INSERT INTO project_sub_area(project_id, sub_area_id) VALUES (10, 1);
+
+
+INSERT INTO project(id, blue_book_path, perfil_path, project_path, phase, name, defense_id, state_id, modality_id) VALUES (11, 'Libro11', 'Perfil11', 'Proyecto11', 'Fase11', 'ProyectoGrado11', null, null, 1);
+
+INSERT INTO project_area(project_id, area_id) VALUES (11, 1);
+
+INSERT INTO project_sub_area(project_id, sub_area_id) VALUES (11, 1);
+
+
+INSERT INTO defense(id, defense_hour, place) VALUES (1, 'Hora1', 'Defensa1');
+
+INSERT INTO project(id, blue_book_path, perfil_path, project_path, phase, name, defense_id, state_id, modality_id) VALUES (12, 'Libro12', 'Perfil12', 'Proyecto12', 'Fase12', 'ProyectoGrado12', 1, null, 1);
+
+INSERT INTO project_area(project_id, area_id) VALUES (12, 1);
+
+INSERT INTO project_sub_area(project_id, sub_area_id) VALUES (12, 1);
+
+
+INSERT INTO defense(id, defense_hour, place) VALUES (2, 'Hora2', 'Defensa2');
+
+INSERT INTO project(id, blue_book_path, perfil_path, project_path, phase, name, defense_id, state_id, modality_id) VALUES (13, 'Libro13', 'Perfil13', 'Proyecto13', 'Fase13', 'ProyectoGrado13', 2, null, 1);
+
+INSERT INTO project_area(project_id, area_id) VALUES (13, 1);
+
+INSERT INTO project_sub_area(project_id, sub_area_id) VALUES (13, 1);
+
+
+--user
+INSERT INTO siptis_user(id, email, password) VALUES (1, 'usuario1@mail.com', '12345678');
+
+INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, wpp_messages, user_id) VALUES (1, '2000-1-19', '1234567', '1000000', '12345670', 'Apellidos1', 'Nombres1', false, 1);
+
+INSERT INTO siptis_user(id, email, password) VALUES (2, 'usuario2@mail.com', '12345678');
+
+INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, wpp_messages, user_id) VALUES (2, '2000-1-19', '1234568', '1000001', '12345671', 'Apellidos2', 'Nombres2', false, 2);
+
+INSERT INTO siptis_user(id, email, password) VALUES (3, 'usuario3@mail.com', '12345678');
+
+INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, wpp_messages, user_id) VALUES (3, '2000-1-19', '1234569', '1000002', '12345672', 'Apellidos3', 'Nombres3', false, 3);
+
+INSERT INTO siptis_user(id, email, password) VALUES (4, 'usuario4@mail.com', '12345678');
+
+INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, wpp_messages, user_id) VALUES (4, '2000-1-19', '1234570', '1000003', '12345673', 'Apellidos4', 'Nombres4', false, 4);
+
+INSERT INTO siptis_user(id, email, password) VALUES (5, 'usuario5@mail.com', '12345678');
+
+INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, wpp_messages, user_id) VALUES (5, '2000-1-19', '1234571', '1000004', '12345674', 'Apellidos5', 'Nombres5', false, 5);
+
+INSERT INTO siptis_user(id, email, password) VALUES (6, 'usuario6@mail.com', '12345678');
+
+INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, wpp_messages, user_id) VALUES (6, '2000-1-19', '1234572', '1000005', '12345675', 'Apellidos6', 'Nombres6', false, 6);
+
+INSERT INTO siptis_user(id, email, password) VALUES (7, 'usuario7@mail.com', '12345678');
+
+INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, wpp_messages, user_id) VALUES (7, '2000-1-19', '1234573', '1000006', '12345676', 'Apellidos7', 'Nombres7', false, 7);
+
+INSERT INTO siptis_user(id, email, password) VALUES (8, 'usuario8@mail.com', '12345678');
+
+INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, wpp_messages, user_id) VALUES (8, '2000-1-19', '1234574', '1000007', '12345677', 'Apellidos8', 'Nombres8', false, 8);
+
+INSERT INTO siptis_user(id, email, password) VALUES (9, 'usuario9@mail.com', '12345678');
+
+INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, wpp_messages, user_id) VALUES (9, '2000-1-19', '1234575', '1000008', '12345678', 'Apellidos9', 'Nombres9', false, 9);
+
+INSERT INTO siptis_user(id, email, password) VALUES (10, 'usuario10@mail.com', '12345678');
+
+INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, wpp_messages, user_id) VALUES (10,'2000-1-19', '1234576', '1000009', '12345679', 'Apellidos10', 'Nombres10', false, 10);
+
+INSERT INTO siptis_user(id, email, password) VALUES (11, 'usuario11@mail.com', '12345678');
+
+INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, wpp_messages, user_id) VALUES (11,'2000-1-19', '1234577', '1000010', '12345680', 'Apellidos11', 'Nombres11', false, 11);
+
+INSERT INTO siptis_user(id, email, password) VALUES (12, 'usuario12@mail.com', '12345678');
+
+INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, wpp_messages, user_id) VALUES (12,'2000-1-19', '1234578', '1000011', '12345681', 'Apellidos12', 'Nombres12', false, 12);
+
+INSERT INTO siptis_user(id, email, password) VALUES (13, 'usuario13@mail.com', '12345678');
+
+INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, wpp_messages, user_id) VALUES (13,'2000-1-19', '1234579', '1000012', '12345682', 'Apellidos13', 'Nombres13', false, 13);
+
+INSERT INTO siptis_user(id, email, password) VALUES (14, 'usuario14@mail.com', '12345678');
+
+INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, wpp_messages, user_id) VALUES (14,'2000-1-19', '1234580', '1000013', '12345683', 'Apellidos14', 'Nombres14', false, 14);
+
+INSERT INTO siptis_user(id, email, password) VALUES (15, 'usuario15@mail.com', '12345678');
+
+INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, wpp_messages, user_id) VALUES (15,'2000-1-19', '1234581', '1000014', '12345684', 'Apellidos15', 'Nombres15', false, 15);
+
+INSERT INTO siptis_user(id, email, password) VALUES (16, 'usuario16@mail.com', '12345678');
+
+INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, wpp_messages, user_id) VALUES (16,'2000-1-19', '1234582', '1000015', '12345685', 'Apellidos16', 'Nombres16', false, 16);
+
+INSERT INTO siptis_user(id, email, password) VALUES (17, 'usuario17@mail.com', '12345678');
+
+INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, wpp_messages, user_id) VALUES (17,'2000-1-19', '1234583', '1000016', '12345686', 'Apellidos17', 'Nombres17', false, 17);
+
+INSERT INTO siptis_user(id, email, password) VALUES (18, 'usuario18@mail.com', '12345678');
+
+INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, wpp_messages, user_id) VALUES (18,'2000-1-19', '1234584', '1000017', '12345687', 'Apellidos18', 'Nombres18', false, 18);
 
 -- Estudiantes y revisores
 
-INSERT INTO supervisor_proyecto(
-	id, aceptado, revisado, proyecto_grado_id, usuario_id)
-	VALUES (1, false, false, 1, 1);
+INSERT INTO project_supervisor(id, accepted, reviewed, project_id, user_id) VALUES (1, false, false, 1, 1);
 
-INSERT INTO supervisor_proyecto(
-	id, aceptado, revisado, proyecto_grado_id, usuario_id)
-	VALUES (2, false, true, 2, 1);
+INSERT INTO project_supervisor(id, accepted, reviewed, project_id, user_id) VALUES (2, false, true, 2, 1);
 
-INSERT INTO supervisor_proyecto(
-	id, aceptado, revisado, proyecto_grado_id, usuario_id)
-	VALUES (3, true, false, 3, 1);
+INSERT INTO project_supervisor(id, accepted, reviewed, project_id, user_id) VALUES (3, true, false, 3, 1);
 
 
-INSERT INTO tutor_proyecto(
-	id, aceptado, revisado, proyecto_grado_id, usuario_id)
-	VALUES (1, false, false, 4, 2);
+INSERT INTO project_tutor(id, accepted, reviewed, project_id, user_id) VALUES (1, false, false, 4, 2);
 
-INSERT INTO tutor_proyecto(
-	id, aceptado, revisado, proyecto_grado_id, usuario_id)
-	VALUES (2, false, true, 5, 2);
+INSERT INTO project_tutor(id, accepted, reviewed, project_id, user_id) VALUES (2, false, true, 5, 2);
 
-INSERT INTO tutor_proyecto(
-	id, aceptado, revisado, proyecto_grado_id, usuario_id)
-	VALUES (3, true, false, 6, 2);
+INSERT INTO project_tutor(id, accepted, reviewed, project_id, user_id) VALUES (3, true, false, 6, 2);
 
 
-INSERT INTO docente_tg2_proyecto(
-	id, aceptado, revisado, usuario_id, proyecto_grado_id)
-	VALUES (1, false, false, 7, 3);
+INSERT INTO project_teacher(id, accepted, reviewed, project_id, user_id) VALUES (1, false, false, 7, 3);
 
-INSERT INTO docente_tg2_proyecto(
-	id, aceptado, revisado, usuario_id, proyecto_grado_id)
-	VALUES (2, false, true, 8, 3);
+INSERT INTO project_teacher(id, accepted, reviewed, project_id, user_id) VALUES (2, false, true, 8, 3);
 
-INSERT INTO docente_tg2_proyecto(
-	id, aceptado, revisado, usuario_id, proyecto_grado_id)
-	VALUES (3, true, false, 9, 3);
+INSERT INTO project_teacher(id, accepted, reviewed, project_id, user_id) VALUES (3, true, false, 9, 3);
 
 
-INSERT INTO tribunal_proyecto(
-	id, aceptado, nota_defensa, revisado, proyecto_grado_id, usuario_id)
-	VALUES (1, false, null, false, 10, 4);
+INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id, user_id) VALUES (1, false, null, false, 10, 4);
 
-INSERT INTO tribunal_proyecto(
-	id, aceptado, nota_defensa, revisado, proyecto_grado_id, usuario_id)
-	VALUES (2, false, null, true, 11, 4);
+INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id, user_id) VALUES (2, false, null, true, 11, 4);
 
-INSERT INTO tribunal_proyecto(
-	id, aceptado, nota_defensa, revisado, proyecto_grado_id, usuario_id)
-	VALUES (3, true, null, false, 12, 4);
+INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id, user_id) VALUES (3, true, null, false, 12, 4);
 
-INSERT INTO tribunal_proyecto(
-	id, aceptado, nota_defensa, revisado, proyecto_grado_id, usuario_id)
-	VALUES (4, true, 100, false, 13, 4);
+INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id, user_id) VALUES (4, true, 100, false, 13, 4);
 
 
-INSERT INTO estudiante_proyecto(
-	id, usuario_id, proyecto_grado_id)
-	VALUES (1, 5, 1);
+INSERT INTO project_student(id, user_id, project_id) VALUES (1, 5, 1);
 
-INSERT INTO estudiante_proyecto(
-	id, usuario_id, proyecto_grado_id)
-	VALUES (2, 6, 2);
+INSERT INTO project_student(id, user_id, project_id) VALUES (2, 6, 2);
 
-INSERT INTO estudiante_proyecto(
-	id, usuario_id, proyecto_grado_id)
-	VALUES (3, 7, 3);
+INSERT INTO project_student(id, user_id, project_id) VALUES (3, 7, 3);
 
-INSERT INTO estudiante_proyecto(
-	id, usuario_id, proyecto_grado_id)
-	VALUES (4, 8, 4);
+INSERT INTO project_student(id, user_id, project_id) VALUES (4, 8, 4);
 
-INSERT INTO estudiante_proyecto(
-	id, usuario_id, proyecto_grado_id)
-	VALUES (5, 9, 5);
+INSERT INTO project_student(id, user_id, project_id) VALUES (5, 9, 5);
 
-INSERT INTO estudiante_proyecto(
-	id, usuario_id, proyecto_grado_id)
-	VALUES (6, 10, 6);
+INSERT INTO project_student(id, user_id, project_id) VALUES (6, 10, 6);
 
-INSERT INTO estudiante_proyecto(
-	id, usuario_id, proyecto_grado_id)
-	VALUES (7, 11, 7);
+INSERT INTO project_student(id, user_id, project_id) VALUES (7, 11, 7);
 
-INSERT INTO estudiante_proyecto(
-	id, usuario_id, proyecto_grado_id)
-	VALUES (8, 12, 8);
+INSERT INTO project_student(id, user_id, project_id) VALUES (8, 12, 8);
 
-INSERT INTO estudiante_proyecto(
-	id, usuario_id, proyecto_grado_id)
-	VALUES (9, 13, 9);
+INSERT INTO project_student(id, user_id, project_id) VALUES (9, 13, 9);
 
-INSERT INTO estudiante_proyecto(
-	id, usuario_id, proyecto_grado_id)
-	VALUES (10, 14, 10);
+INSERT INTO project_student(id, user_id, project_id) VALUES (10, 14, 10);
 
-INSERT INTO estudiante_proyecto(
-	id, usuario_id, proyecto_grado_id)
-	VALUES (11, 15, 11);
+INSERT INTO project_student(id, user_id, project_id) VALUES (11, 15, 11);
 
-INSERT INTO estudiante_proyecto(
-	id, usuario_id, proyecto_grado_id)
-	VALUES (12, 16, 12);
+INSERT INTO project_student(id, user_id, project_id) VALUES (12, 16, 12);
 
-INSERT INTO estudiante_proyecto(
-	id, usuario_id, proyecto_grado_id)
-	VALUES (13, 17, 13);
-
--- Proyecto
-
-INSERT INTO area_proyecto(
-	id, nombre)
-	VALUES (1, "Area1");
-
-INSERT INTO area_proyecto(
-	id, nombre)
-	VALUES (2, "Area2");
-
-INSERT INTO sub_area(
-	id, nombre)
-	VALUES (1, "SubArea1");
-
-INSERT INTO sub_area(
-	id, nombre)
-	VALUES (2, "SubArea2");
-
-INSERT INTO modalidad(
-	id, nombre)
-	VALUES (1, "Adscripcion");
-
-
-INSERT INTO proyecto_grado(
-	id, dir_libro_azul, dir_perfil, dir_proyecto, fase, nombre, defensa_id, estado_id, modalidad_id)
-	VALUES (1, "Libro1", "Perfil1", "Proyecto1", "Fase1", "ProyectoGrado1", null, null, 1);
-
-INSERT INTO proyecto_grado_area(
-	proyecto_grado_id, area_id)
-	VALUES (1, 1);
-
-INSERT INTO proyecto_grado_sub_area(
-	proyecto_grado_id, sub_area_id)
-	VALUES (1, 1);
-
-
-INSERT INTO proyecto_grado(
-	id, dir_libro_azul, dir_perfil, dir_proyecto, fase, nombre, defensa_id, estado_id, modalidad_id)
-	VALUES (2, "Libro2", "Perfil2", "Proyecto2", "Fase2", "ProyectoGrado2", null, null, 1);
-
-INSERT INTO proyecto_grado_area(
-	proyecto_grado_id, area_id)
-	VALUES (2, 1);
-
-INSERT INTO proyecto_grado_sub_area(
-	proyecto_grado_id, sub_area_id)
-	VALUES (2, 1);
-
-
-INSERT INTO proyecto_grado(
-	id, dir_libro_azul, dir_perfil, dir_proyecto, fase, nombre, defensa_id, estado_id, modalidad_id)
-	VALUES (3, "Libro3", "Perfil3", "Proyecto3", "Fase3", "ProyectoGrado3", null, null, 1);
-
-INSERT INTO proyecto_grado_area(
-	proyecto_grado_id, area_id)
-	VALUES (3, 1);
-
-INSERT INTO proyecto_grado_sub_area(
-	proyecto_grado_id, sub_area_id)
-	VALUES (3, 1);
-
-
---
-
-INSERT INTO proyecto_grado(
-	id, dir_libro_azul, dir_perfil, dir_proyecto, fase, nombre, defensa_id, estado_id, modalidad_id)
-	VALUES (4, "Libro4", "Perfil4", "Proyecto4", "Fase4", "ProyectoGrado4", null, null, 1);
-
-INSERT INTO proyecto_grado_area(
-	proyecto_grado_id, area_id)
-	VALUES (4, 1);
-
-INSERT INTO proyecto_grado_sub_area(
-	proyecto_grado_id, sub_area_id)
-	VALUES (4, 1);
-
-
-INSERT INTO proyecto_grado(
-	id, dir_libro_azul, dir_perfil, dir_proyecto, fase, nombre, defensa_id, estado_id, modalidad_id)
-	VALUES (5, "Libro5", "Perfil5", "Proyecto5", "Fase5", "ProyectoGrado5", null, null, 1);
-
-INSERT INTO proyecto_grado_area(
-	proyecto_grado_id, area_id)
-	VALUES (5, 1);
-
-INSERT INTO proyecto_grado_sub_area(
-	proyecto_grado_id, sub_area_id)
-	VALUES (5, 1);
-
-
-INSERT INTO proyecto_grado(
-	id, dir_libro_azul, dir_perfil, dir_proyecto, fase, nombre, defensa_id, estado_id, modalidad_id)
-	VALUES (6, "Libro6", "Perfil6", "Proyecto6", "Fase6", "ProyectoGrado6", null, null, 1);
-
-INSERT INTO proyecto_grado_area(
-	proyecto_grado_id, area_id)
-	VALUES (6, 1);
-
-INSERT INTO proyecto_grado_sub_area(
-	proyecto_grado_id, sub_area_id)
-	VALUES (6, 1);
-
-
---
-
-INSERT INTO proyecto_grado(
-	id, dir_libro_azul, dir_perfil, dir_proyecto, fase, nombre, defensa_id, estado_id, modalidad_id)
-	VALUES (7, "Libro7", "Perfil7", "Proyecto7", "Fase7", "ProyectoGrado7", null, null, 1);
-
-INSERT INTO proyecto_grado_area(
-	proyecto_grado_id, area_id)
-	VALUES (7, 1);
-
-INSERT INTO proyecto_grado_sub_area(
-	proyecto_grado_id, sub_area_id)
-	VALUES (7, 1);
-
-
-INSERT INTO proyecto_grado(
-	id, dir_libro_azul, dir_perfil, dir_proyecto, fase, nombre, defensa_id, estado_id, modalidad_id)
-	VALUES (8, "Libro8", "Perfil8", "Proyecto8", "Fase8", "ProyectoGrado8", null, null, 1);
-
-INSERT INTO proyecto_grado_area(
-	proyecto_grado_id, area_id)
-	VALUES (8, 1);
-
-INSERT INTO proyecto_grado_sub_area(
-	proyecto_grado_id, sub_area_id)
-	VALUES (8, 1);
-
-
-INSERT INTO proyecto_grado(
-	id, dir_libro_azul, dir_perfil, dir_proyecto, fase, nombre, defensa_id, estado_id, modalidad_id)
-	VALUES (9, "Libro9", "Perfil9", "Proyecto9", "Fase9", "ProyectoGrado9", null, null, 1);
-
-INSERT INTO proyecto_grado_area(
-	proyecto_grado_id, area_id)
-	VALUES (9, 1);
-
-INSERT INTO proyecto_grado_sub_area(
-	proyecto_grado_id, sub_area_id)
-	VALUES (9, 1);
-
-
-INSERT INTO proyecto_grado(
-	id, dir_libro_azul, dir_perfil, dir_proyecto, fase, nombre, defensa_id, estado_id, modalidad_id)
-	VALUES (10, "Libro10", "Perfil10", "Proyecto10", "Fase10", "ProyectoGrado10", null, null, 1);
-
-INSERT INTO proyecto_grado_area(
-	proyecto_grado_id, area_id)
-	VALUES (10, 1);
-
-INSERT INTO proyecto_grado_sub_area(
-	proyecto_grado_id, sub_area_id)
-	VALUES (10, 1);
-
-
-INSERT INTO proyecto_grado(
-	id, dir_libro_azul, dir_perfil, dir_proyecto, fase, nombre, defensa_id, estado_id, modalidad_id)
-	VALUES (11, "Libro11", "Perfil11", "Proyecto11", "Fase11", "ProyectoGrado11", null, null, 1);
-
-INSERT INTO proyecto_grado_area(
-	proyecto_grado_id, area_id)
-	VALUES (11, 1);
-
-INSERT INTO proyecto_grado_sub_area(
-	proyecto_grado_id, sub_area_id)
-	VALUES (11, 1);
-
-
-
-INSERT INTO proyecto_grado(
-	id, dir_libro_azul, dir_perfil, dir_proyecto, fase, nombre, defensa_id, estado_id, modalidad_id)
-	VALUES (12, "Libro12", "Perfil12", "Proyecto12", "Fase12", "ProyectoGrado12", 1, null, 1);
-
-INSERT INTO proyecto_grado_area(
-	proyecto_grado_id, area_id)
-	VALUES (12, 1);
-
-INSERT INTO proyecto_grado_sub_area(
-	proyecto_grado_id, sub_area_id)
-	VALUES (12, 1);
-
-INSERT INTO defense(
-	id, hora_defensa, lugar_defensa, proyecto_grado_id)
-	VALUES (1, "Hora1", "Defensa1", 12);
-
-
-
-INSERT INTO proyecto_grado(
-	id, dir_libro_azul, dir_perfil, dir_proyecto, fase, nombre, defensa_id, estado_id, modalidad_id)
-	VALUES (13, "Libro13", "Perfil13", "Proyecto13", "Fase13", "ProyectoGrado13", 2, null, 1);
-
-INSERT INTO proyecto_grado_area(
-	proyecto_grado_id, area_id)
-	VALUES (13, 1);
-
-INSERT INTO proyecto_grado_sub_area(
-	proyecto_grado_id, sub_area_id)
-	VALUES (13, 1);
-
-INSERT INTO defense(
-	id, hora_defensa, lugar_defensa, proyecto_grado_id)
-	VALUES (2, "Hora2", "Defensa2", 13);
+INSERT INTO project_student(id, user_id, project_id) VALUES (13, 17, 13);

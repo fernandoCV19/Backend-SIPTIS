@@ -1,5 +1,6 @@
 package backend.siptis.auth.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,7 +19,8 @@ public class Role {
     private Integer id;
     private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "roles")
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
+    @JsonBackReference
     private Collection<SiptisUser> siptisUsers;
 
     public Role(String rolName){

@@ -10,7 +10,6 @@ import java.util.Collection;
 @Table(name = "modality")
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 
@@ -20,7 +19,7 @@ public class Modality {
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
-    private String names;
+    private String name;
 
     @OneToMany(mappedBy = "modality", fetch = FetchType.LAZY )
     @JsonManagedReference

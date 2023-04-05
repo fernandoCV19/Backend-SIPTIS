@@ -14,12 +14,10 @@ public class Defense {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, unique = true)
-    private Long id;
+    private Integer id;
 
     private String place;
 
-    private String hour;
+    private String defenseHour;
 
-    @OneToOne
-    private Project project;
 }

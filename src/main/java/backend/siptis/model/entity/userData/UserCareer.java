@@ -1,6 +1,7 @@
 package backend.siptis.model.entity.userData;
 
 import backend.siptis.auth.entity.SiptisUser;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,7 +25,8 @@ public class UserCareer {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private SiptisUser siptisUser;*/
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "career")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "career")
+    @JsonBackReference
     private Collection<SiptisUser> siptisUsers;
 
     public String toString(){
