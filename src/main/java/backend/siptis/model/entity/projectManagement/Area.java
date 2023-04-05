@@ -1,18 +1,18 @@
 package backend.siptis.model.entity.projectManagement;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Collection;
 
 @Entity
-@Table(name = "project_area")
+@Table(name = "area")
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProjectArea {
+public class Area {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, unique = true)
@@ -20,6 +20,7 @@ public class ProjectArea {
 
     private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "areas")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "areas")
+    @JsonBackReference
     private Collection<Project> projects;
 }

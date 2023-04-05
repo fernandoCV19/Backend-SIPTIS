@@ -10,7 +10,7 @@ public class ProjectToTribunalHomePageDTO extends ProjectToHomePageDTO {
 
     public ProjectToTribunalHomePageDTO(Project project, Double defensePoints, Boolean accepted, Boolean reviewed) {
         super(project, accepted, reviewed);
-        defense = new DefenseDTO(project.getDefense());
+        defense = project.getDefense() != null?new DefenseDTO(project.getDefense()):null;
         this.defensePoints = defensePoints;
     }
 }

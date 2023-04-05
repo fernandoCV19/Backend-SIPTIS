@@ -5,6 +5,7 @@ import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectSupervisor;
 import backend.siptis.model.pjo.dto.projectManagement.ProjectToHomePageDTO;
 import backend.siptis.model.repository.editorsAndReviewers.ProjectSupervisorRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ProjectSupervisorServiceImpl implements ProjectSupervisorService {
 
     private final ProjectSupervisorRepository projectSupervisorRepository;
@@ -23,7 +25,7 @@ public class ProjectSupervisorServiceImpl implements ProjectSupervisorService {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data(null).build();
         }
 
-        List<ProjectSupervisor> listaProyectos = projectSupervisorRepository.findBySupervisorAndAcceptedIsFalseAndReviewedIsTrue(id);
+        List<ProjectSupervisor> listaProyectos = projectSupervisorRepository.findBySupervisorIdAndAcceptedIsFalseAndReviewedIsTrue(id);
         return getProjects(listaProyectos);
     }
 
@@ -33,7 +35,7 @@ public class ProjectSupervisorServiceImpl implements ProjectSupervisorService {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data(null).build();
         }
 
-        List<ProjectSupervisor> listaProyectos = projectSupervisorRepository.findBySupervisorAndAcceptedIsFalseAndReviewedIsFalse(id);
+        List<ProjectSupervisor> listaProyectos = projectSupervisorRepository.findBySupervisorIdAndAcceptedIsFalseAndReviewedIsFalse(id);
         return getProjects(listaProyectos);
     }
 
@@ -43,7 +45,7 @@ public class ProjectSupervisorServiceImpl implements ProjectSupervisorService {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data(null).build();
         }
 
-        List<ProjectSupervisor> listaProyectos = projectSupervisorRepository.findBySupervisorAndAcceptedIsTrue(id);
+        List<ProjectSupervisor> listaProyectos = projectSupervisorRepository.findBySupervisorIdAndAcceptedIsTrue(id);
         return getProjects(listaProyectos);
     }
 
