@@ -31,7 +31,7 @@ public class ProjectTribunalController {
         return createResponseEntity(serviceAnswer);
     }
 
-    @GetMapping("/projectsReadyToDefense/{id}")
+    @GetMapping("/acceptedProjects/{id}")
     public ResponseEntity<?> getProjectsReadyToDefense(@PathVariable("id") Long id){
         ServiceAnswer serviceAnswer = projectTribunalService.getAllProjectsAcceptedWithoutDefensePointsByTribunalId(id);
         return createResponseEntity(serviceAnswer);
