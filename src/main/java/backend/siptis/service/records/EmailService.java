@@ -10,6 +10,7 @@ import jakarta.mail.Address;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -17,6 +18,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,45 +29,31 @@ import java.util.Date;
 import java.util.List;
 
 @Service
+@Transactional
+@AllArgsConstructor
 public class EmailService {
     private JavaMailSender mailSender;
     private final ActivityService activityService;
     private final GeneralActivityService generalActivityService;
     private final SiptisUserService siptisUserService;
 
-    @Autowired
-    public EmailService(JavaMailSender mailSender, ActivityService activityService, GeneralActivityService generalActivityService, SiptisUserService siptisUserService) {
-        this.mailSender = mailSender;
-        this.activityService = activityService;
-        this.generalActivityService = generalActivityService;
-        this.siptisUserService = siptisUserService;
-    }
-
-    public void send(String from, String to, String subject, String text) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(from);
-        message.setTo(to);
-        message.setSubject(subject);
-        message.setText(text);
-        mailSender.send(message);
-    }
-    @Scheduled(cron = "0 * * * * *")
+    @Scheduled(cron = "0 0 8 * * *")
     public void sendPersonalActivities() throws MessagingException, IOException {
         int mesActual = LocalDateTime.now().getMonthValue();
         int diaActual = LocalDateTime.now().getDayOfMonth();
 
         List<ActivityVO> activityList = activityService.findAllVO();
-        //Address[] addresses = getAllEmails(users);
         for(ActivityVO vo: activityList){
 
             Date date =  vo.getActivityDate();
             int activityDay = date.getDate();
             int activityMonth = date.getMonth()+1;
+
             if(activityMonth == mesActual &&
                     (
                             diaActual == activityDay - 1 ||
-                            diaActual <= activityDay - 3 ||
-                            diaActual <= activityDay - 5
+                            diaActual >= activityDay - 3 ||
+                            diaActual >= activityDay - 5
                             )){
 
                 Project activityProject = vo.getProject();
@@ -77,13 +65,12 @@ public class EmailService {
                     i++;
                 }
                 List<SiptisUser> users = (List)siptisUserService.getAllUsers().getData();
-                //sendEmailFromTemplate(addresses, vo.getActivityName(), vo.getActivityDescription(), vo.getActivityDate());
+                sendEmailFromTemplate(addresses, vo.getActivityName(), vo.getActivityDescription(), vo.getActivityDate());
 
             }
         }
     }
-    //@Scheduled(cron = "0 0 8 * * *")
-    //@Scheduled(cron = "0 * * * * *")
+    @Scheduled(cron = "0 0 8 * * *")
     public void sendGeneralActivities() throws MessagingException, IOException {
         int mesActual = LocalDateTime.now().getMonthValue();
         int diaActual = LocalDateTime.now().getDayOfMonth();
@@ -99,8 +86,8 @@ public class EmailService {
             if(activityMonth == mesActual &&
                     (
                             diaActual == activityDay - 1 ||
-                            diaActual <= activityDay - 3 ||
-                            diaActual <= activityDay - 5
+                            diaActual >= activityDay - 3 ||
+                            diaActual >= activityDay - 5
                             )){
 
                 sendEmailFromTemplate(addresses, vo.getActivityName(), vo.getActivityDescription(), vo.getActivityDate());
