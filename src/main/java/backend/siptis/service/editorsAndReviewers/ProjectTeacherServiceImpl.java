@@ -23,7 +23,7 @@ public class ProjectTeacherServiceImpl implements ProjectTeacherService {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data(null).build();
         }
 
-        List<ProjectTeacher> listaProyectos = projectTeacherRepository.findByTeacherAndAcceptedIsFalseAndReviewedIsTrue(id);
+        List<ProjectTeacher> listaProyectos = projectTeacherRepository.findByTeacherIdAndAcceptedIsFalseAndReviewedIsTrue(id);
         return getProjects(listaProyectos);
     }
 
@@ -34,7 +34,7 @@ public class ProjectTeacherServiceImpl implements ProjectTeacherService {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data(null).build();
         }
 
-        List<ProjectTeacher> listaProyectos = projectTeacherRepository.findByTeacherAndAcceptedIsFalseAndReviewedIsFalse(id);
+        List<ProjectTeacher> listaProyectos = projectTeacherRepository.findByTeacherIdAndAcceptedIsFalseAndReviewedIsFalse(id);
         return getProjects(listaProyectos);
     }
 
@@ -44,7 +44,7 @@ public class ProjectTeacherServiceImpl implements ProjectTeacherService {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data(null).build();
         }
 
-        List<ProjectTeacher> listaProyectos = projectTeacherRepository.findByTeacherAndAcceptedIsTrue(id);
+        List<ProjectTeacher> listaProyectos = projectTeacherRepository.findByTeacherIdAndAcceptedIsTrue(id);
         return getProjects(listaProyectos);
     }
 

@@ -10,7 +10,6 @@ import java.util.Collection;
 @Table(name = "state")
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class State {

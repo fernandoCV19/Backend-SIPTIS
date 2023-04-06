@@ -9,9 +9,9 @@ import java.util.List;
 @Repository
 public interface ProjectTeacherRepository extends JpaRepository<ProjectTeacher, Long> {
 
-    List<ProjectTeacher> findByTeacherAndAcceptedIsFalseAndReviewedIsTrue(Long id);
+    List<ProjectTeacher> findByTeacherIdAndAcceptedIsFalseAndReviewedIsTrue(Long id);
 
-    List<ProjectTeacher> findByTeacherAndAcceptedIsFalseAndReviewedIsFalse(Long id);
+    List<ProjectTeacher> findByTeacherIdAndAcceptedIsFalseAndReviewedIsFalse(Long id);
 
-    List<ProjectTeacher> findByTeacherAndAcceptedIsTrue(Long id);
+    List<ProjectTeacher> findByTeacherIdAndAcceptedIsTrue(Long id);
 }

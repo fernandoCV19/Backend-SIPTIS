@@ -9,11 +9,11 @@ import java.util.List;
 @Repository
 public interface ProjectTribunalRepository extends JpaRepository<ProjectTribunal, Long> {
 
-    List<ProjectTribunal> findByTribunalAndAcceptedIsFalseAndReviewedIsFalse(Long id);
+    List<ProjectTribunal> findByTribunalIdAndAcceptedIsFalseAndReviewedIsFalse(Long id);
 
-    List<ProjectTribunal> findByTribunalAndAcceptedIsFalseAndReviewedIsTrue(Long id);
+    List<ProjectTribunal> findByTribunalIdAndAcceptedIsFalseAndReviewedIsTrue(Long id);
 
-    List<ProjectTribunal> findByTribunalAndAcceptedIsTrueAndDefensePointsIsNull(Long id);
+    List<ProjectTribunal> findByTribunalIdAndAcceptedIsTrueAndDefensePointsIsNull(Long id);
 
-    List<ProjectTribunal> findByTribunalAndDefensePointsIsNotNull(Long id);
+    List<ProjectTribunal> findByTribunalIdAndDefensePointsIsNotNull(Long id);
 }

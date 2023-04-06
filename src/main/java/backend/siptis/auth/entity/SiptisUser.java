@@ -6,6 +6,7 @@ import backend.siptis.model.entity.userData.Document;
 import backend.siptis.model.entity.userData.Schedule;
 import backend.siptis.model.entity.editorsAndReviewers.*;
 import backend.siptis.model.entity.projectManagement.Review;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,7 +21,6 @@ import java.util.Collection;
 @Table(name = "siptis_user")
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class SiptisUser implements UserDetails {
@@ -32,7 +32,7 @@ public class SiptisUser implements UserDetails {
     private String password;
 
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE
     })
@@ -40,54 +40,65 @@ public class SiptisUser implements UserDetails {
             name = "siptisUser_role",
             joinColumns = @JoinColumn(name = "siptisUser_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JsonManagedReference
     private Set<Role> roles = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE
     })
     @JoinTable(name = "siptisUser_area",
             joinColumns = @JoinColumn(name = "siptisuser_id"),
             inverseJoinColumns = @JoinColumn(name = "area_id"))
+    @JsonManagedReference
     private Collection<UserArea> areas;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {
+    @ManyToMany(fetch = FetchType.LAZY,cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE
     })
     @JoinTable(name = "siptisUser_career",
             joinColumns = @JoinColumn(name = "siptisuser_id"),
             inverseJoinColumns = @JoinColumn(name = "career_id"))
+    @JsonManagedReference
     private Set<UserCareer> career = new HashSet<>();
 
     /*@OneToOne(mappedBy = "siptisUser")
     private UserCareer career;*/
 
-    @OneToOne(mappedBy = "siptisUser")
+    @OneToOne(mappedBy = "siptisUser", cascade = CascadeType.ALL, optional = false)
     private UserInformation userInformation;
 
-    @OneToMany(mappedBy = "siptisUser")
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "siptisUser")
+    @JsonManagedReference
     private Collection<Schedule> availablesSchedule;
 
-    @OneToMany(mappedBy = "siptisUser")
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "siptisUser")
+    @JsonManagedReference
     private Collection<Document> documents;
 
-    @OneToMany(mappedBy = "student")
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "student")
+    @JsonManagedReference
     private Collection<ProjectStudent> students;
 
-    @OneToMany(mappedBy = "supervisor")
-    private Collection<ProjectSupervisor> supervisors;
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "supervisor")
+    @JsonManagedReference
+    private Collection<ProjectSupervisor> supervisorOf;
 
-    @OneToMany(mappedBy = "tutor")
-    private Collection<ProjectTutor> tutors;
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "tutor")
+    @JsonManagedReference
+    private Collection<ProjectTutor> tutorOf;
 
-    @OneToMany(mappedBy = "teacher")
-    private Collection<ProjectTeacher> teachers;
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "teacher")
+    @JsonManagedReference
+    private Collection<ProjectTeacher> teacherOf;
 
-    @OneToMany(mappedBy = "tribunal")
-    private Collection<ProjectTribunal> tribunals;
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "tribunal")
+    @JsonManagedReference
+    private Collection<ProjectTribunal> tribunalOf;
 
-    @OneToMany(mappedBy = "siptisUser")
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "siptisUser")
+    @JsonManagedReference
     private Collection<Review> reviews;
 
     public SiptisUser(String email, String password) {

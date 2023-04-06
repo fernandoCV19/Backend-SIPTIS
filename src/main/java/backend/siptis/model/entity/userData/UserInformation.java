@@ -1,6 +1,7 @@
 package backend.siptis.model.entity.userData;
 
 import backend.siptis.auth.entity.SiptisUser;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,7 +31,7 @@ public class UserInformation {
     private String codSIS;
     //private boolean wppMessages = Boolean.FALSE;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private SiptisUser siptisUser;
 }
