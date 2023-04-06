@@ -6,7 +6,7 @@ import lombok.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "actividad_general")
+@Table(name = "general_activity")
 @Getter
 @Setter
 @ToString

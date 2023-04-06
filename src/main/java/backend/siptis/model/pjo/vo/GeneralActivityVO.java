@@ -8,6 +8,7 @@ import java.util.Date;
 @Getter
 @Setter
 public class GeneralActivityVO {
-    private String descripcionActividad;
-    private Date fechaActividad;
+    private String activityName;
+    private String activityDescription;
+    private Date activityDate;
 }

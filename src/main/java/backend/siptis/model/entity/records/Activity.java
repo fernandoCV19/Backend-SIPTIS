@@ -7,7 +7,7 @@ import lombok.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "actividad")
+@Table(name = "activity")
 @Getter
 @Setter
 @ToString
@@ -27,6 +27,6 @@ public class Activity {
     private Date activityDate;
 
     @ManyToOne
-    @JoinColumn(name = "proyecto_grado_id", nullable = false)
+    @JoinColumn(name = "project_id", nullable = false)
     private Project project;
 }
