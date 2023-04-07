@@ -42,6 +42,7 @@ public class UserAuthServiceImpl implements UserAuthService {
     @Override
     public ServiceAnswer registerStudent(StudentRegisterDTO estudianteDTO) {
 
+        //if(siptisUserRepository.){}
         SiptisUser siptisUser = new SiptisUser();
         siptisUser.setEmail(estudianteDTO.getEmail());
         Role role = roleRepository.findById(1)

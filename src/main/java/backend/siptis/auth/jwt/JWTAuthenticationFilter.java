@@ -35,6 +35,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                             authCredentials.getEmail(),
                             authCredentials.getPassword(),
                             Collections.emptyList());
+            System.out.println(authCredentials);
             System.out.println("CORREO: "+authCredentials.getEmail());
             System.out.println("CONTRASENA: "+authCredentials.getPassword());
             return getAuthenticationManager().authenticate(PAToken);

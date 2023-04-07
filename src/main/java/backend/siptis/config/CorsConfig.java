@@ -26,6 +26,11 @@ public class CorsConfig {
                         .allowedMethods("*")
                         .exposedHeaders("*");
 
+                registry.addMapping("/user/register/student")
+                        .allowedOrigins("http://localhost:3000/")
+                        .allowedMethods("*")
+                        .exposedHeaders("*");
+
                 registry.addMapping("/user/test")
                         .allowedOrigins("http://localhost:3000/")
                         .allowedMethods("*")
