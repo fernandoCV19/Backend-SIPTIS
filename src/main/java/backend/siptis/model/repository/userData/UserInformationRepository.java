@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface UserInformationRepository extends JpaRepository<UserInformation, Integer> {
 
 
-    Optional<UserInformation> existsByCi(String ci);
+    boolean existsByCi(String ci);
 
-    Optional<UserInformation> existsByCodSIS(String codSIS);
+    boolean existsByCodSIS(String codSIS);
 }

@@ -43,9 +43,19 @@ public class UserAuthServiceImpl implements UserAuthService {
     public ServiceAnswer registerStudent(StudentRegisterDTO estudianteDTO) {
 
         if(siptisUserRepository.existsByEmail(estudianteDTO.getEmail())){
-            String mensajeError = "El correo ya esta registrado en el sistema";
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR_REGISTRO_CUENTA).data(mensajeError).build();
+            String errorMessage = "El correo ya se encuentra registrado en el sistema";
+            return registerErrorMessage(errorMessage);
         }
+        if(userInformationService.existByCi(estudianteDTO.getCi())){
+            String errorMessage = "El ci ya se encuentra registrado en el sistema";
+            return registerErrorMessage(errorMessage);
+        }
+        if(userInformationService.existByCodSIS(estudianteDTO.getCodSIS())){
+            String errorMessage = "El codigo SIS ya se encuentra registrado en el sistema";
+            return registerErrorMessage(errorMessage);
+        }
+
+
         SiptisUser siptisUser = new SiptisUser();
         siptisUser.setEmail(estudianteDTO.getEmail());
         Role role = roleRepository.findById(1)
@@ -68,6 +78,12 @@ public class UserAuthServiceImpl implements UserAuthService {
 
         //return estudiante;
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(estudiante).build();
+    }
+
+    private ServiceAnswer registerErrorMessage(String errorMessage){
+        return ServiceAnswer.builder().serviceMessage(
+                ServiceMessage.ERROR_REGISTRO_CUENTA).data(errorMessage
+        ).build();
     }
 
     @Override
