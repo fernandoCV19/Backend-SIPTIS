@@ -38,8 +38,9 @@ public class SiptisUserController {
 
         ServiceAnswer admin = userAuthService.registerAdmin(adminRegisterDTO);
         //return crearResponseEntityRegistrar(admin);
-        return new ResponseEntity<>("Exito" +
-                "", HttpStatus.OK);
+        return crearResponseEntityRegistrar(admin);
+        /*return new ResponseEntity<>("Exito" +
+                "", HttpStatus.OK);*/
     }
 
     @PostMapping("/test")
@@ -56,6 +57,10 @@ public class SiptisUserController {
         Object data = respuestaServicio.getData();
         ServiceMessage mensajeServicio = respuestaServicio.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.OK;
+
+        if(mensajeServicio == ServiceMessage.ERROR_REGISTRO_CUENTA){
+            httpStatus = HttpStatus.BAD_REQUEST;
+        }
 
         if(mensajeServicio == ServiceMessage.NOT_FOUND || mensajeServicio == ServiceMessage.ERROR)
             httpStatus = HttpStatus.NOT_FOUND;
