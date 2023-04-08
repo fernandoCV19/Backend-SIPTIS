@@ -50,15 +50,15 @@ public class UserAuthServiceImpl implements UserAuthService {
 
         if(siptisUserRepository.existsByEmail(estudianteDTO.getEmail())){
             String errorMessage = "El correo ya se encuentra registrado en el sistema";
-            return registerErrorMessage(ServiceMessage.ERROR_REGISTRO_CUENTA,errorMessage);
+            return registerErrorMessage(ServiceMessage.ERROR_REGISTRO_CUENTA_EMAIL,errorMessage);
         }
         if(userInformationService.existByCi(estudianteDTO.getCi())){
             String errorMessage = "El ci ya se encuentra registrado en el sistema";
-            return registerErrorMessage(ServiceMessage.ERROR_REGISTRO_CUENTA,errorMessage);
+            return registerErrorMessage(ServiceMessage.ERROR_REGISTRO_CUENTA_CI,errorMessage);
         }
         if(userInformationService.existByCodSIS(estudianteDTO.getCodSIS())){
             String errorMessage = "El codigo SIS ya se encuentra registrado en el sistema";
-            return registerErrorMessage(ServiceMessage.ERROR_REGISTRO_CUENTA,errorMessage);
+            return registerErrorMessage(ServiceMessage.ERROR_REGISTRO_CUENTA_CODSIS,errorMessage);
         }
 
 
@@ -121,7 +121,7 @@ public class UserAuthServiceImpl implements UserAuthService {
 
         if(!siptisUserRepository.existsByEmail(logInDTO.getEmail())){
             String errorMessage = "El correo al que intenta acceder no se encuentra registrado en el sistema";
-            return registerErrorMessage(ServiceMessage.ERROR_INICIO_SESION,errorMessage);
+            return registerErrorMessage(ServiceMessage.ERROR_INICIO_SESION_EMAIL,errorMessage);
         }
 
         try{
@@ -142,7 +142,7 @@ public class UserAuthServiceImpl implements UserAuthService {
         }catch (Exception e){
             System.out.println("Error de autenticación: "+e.getMessage());
             String message = "Contraseña incorrecta.";
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR_INICIO_SESION).data(message).build();
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR_INICIO_SESION_PASSWORD).data(message).build();
 
         }
     }
