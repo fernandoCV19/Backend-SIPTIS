@@ -119,6 +119,7 @@ public class UserAuthServiceImpl implements UserAuthService {
     @Override
     public ServiceAnswer userInfo(Long id){
         Object response = siptisUserRepository.findById(id);
+        System.out.println(response.toString());
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(response).build();
     }
 
@@ -152,5 +153,9 @@ public class UserAuthServiceImpl implements UserAuthService {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR_INICIO_SESION_PASSWORD).data(message).build();
 
         }
+    }
+
+    private StudentInformationDTO convertToStudentInformation(){
+        return null;
     }
 }
