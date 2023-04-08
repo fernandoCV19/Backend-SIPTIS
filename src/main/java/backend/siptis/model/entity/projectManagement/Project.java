@@ -13,7 +13,6 @@ import java.util.Collection;
 @Table(name = "project")
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class Project {
@@ -38,31 +37,33 @@ public class Project {
     @OneToOne
     private Defense defense;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "modality_id", nullable = false)
     @JsonBackReference
     private Modality modality;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE
     })
     @JoinTable(name = "project_sub_area", joinColumns = @JoinColumn(name = "project_id"), inverseJoinColumns = @JoinColumn(name = "sub_area_id"))
+    @JsonManagedReference
     private Collection<SubArea> subAreas;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {
+    @ManyToMany(fetch =  FetchType.LAZY, cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE
     })
     @JoinTable(name = "project_area", joinColumns = @JoinColumn(name = "project_id"), inverseJoinColumns = @JoinColumn(name = "area_id"))
-    private Collection<ProjectArea> areas;
+    @JsonManagedReference
+    private Collection<Area> areas;
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
     @JsonManagedReference
     private Collection<Presentation> presentations;
 
-    @ManyToOne
-    @JoinColumn(name = "state_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "state_id", nullable = true)
     @JsonBackReference
     private State state;
 

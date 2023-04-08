@@ -1,5 +1,6 @@
 package backend.siptis.model.entity.projectManagement;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,7 +10,6 @@ import java.util.Collection;
 @Table(name = "sub_area")
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class SubArea {
@@ -20,6 +20,7 @@ public class SubArea {
 
     private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "subAreas")
-    private Collection<Project> proyectosDeGrado;
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "subAreas")
+    @JsonBackReference
+    private Collection<Project> projects;
 }

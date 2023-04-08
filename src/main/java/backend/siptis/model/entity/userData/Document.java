@@ -1,6 +1,7 @@
 package backend.siptis.model.entity.userData;
 
 import backend.siptis.auth.entity.SiptisUser;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -8,7 +9,6 @@ import lombok.*;
 @Table(name = "document")
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class Document {
@@ -20,7 +20,8 @@ public class Document {
     private String type;
     private String description;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
     private SiptisUser siptisUser;
 }

@@ -6,10 +6,10 @@ import lombok.Data;
 @Data
 public class DefenseDTO {
     private String place;
-    private String hour;
+    private String defenseHour;
 
     public DefenseDTO(Defense defense) {
         place = defense.getPlace();
-        hour = defense.getHour();
+        defenseHour = defense.getDefenseHour();
     }
 }
