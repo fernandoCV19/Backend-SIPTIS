@@ -58,15 +58,18 @@ public class SiptisUserController {
     public ResponseEntity<?> login(
             @RequestBody LogInDTO logInDTO){
 
-        ServiceMessage messageService
+
+        ServiceAnswer answerService = userAuthService.logIn(logInDTO);
+        return crearResponseEntityRegistrar(answerService);
+
         //RespuestaServicio admin = userAuthService.registerAdmin(adminRegisterDTO);
         //return new ResponseEntity<>("hola", HttpStatus.OK);
     }
 
 
-    private ResponseEntity<?> crearResponseEntityRegistrar(ServiceAnswer respuestaServicio){
-        Object data = respuestaServicio.getData();
-        ServiceMessage messageService = respuestaServicio.getServiceMessage();
+    private ResponseEntity<?> crearResponseEntityRegistrar(ServiceAnswer serviceAnswer){
+        Object data = serviceAnswer.getData();
+        ServiceMessage messageService = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.OK;
 
         if(messageService == ServiceMessage.ERROR_REGISTRO_CUENTA){
@@ -76,7 +79,7 @@ public class SiptisUserController {
         if(messageService == ServiceMessage.NOT_FOUND || messageService == ServiceMessage.ERROR)
             httpStatus = HttpStatus.NOT_FOUND;
 
-        ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(data).message(mensajeServicio.toString()).build();
+        ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(data).message(messageService.toString()).build();
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
 }

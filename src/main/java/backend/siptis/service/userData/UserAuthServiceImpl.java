@@ -120,6 +120,7 @@ public class UserAuthServiceImpl implements UserAuthService {
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(adminUser).build();
     }
 
+    @Override
     public ServiceAnswer logIn(LogInDTO logInDTO){
         try{
             Authentication auth = authenticationManager.authenticate(
