@@ -14,6 +14,8 @@ public interface UserAuthService {
 
     ServiceAnswer logIn(LogInDTO logInDTO);
 
+   ServiceAnswer userInfo(Long id);
+
 
 
 }

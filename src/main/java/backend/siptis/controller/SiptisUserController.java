@@ -52,18 +52,28 @@ public class SiptisUserController {
             @RequestBody LogInDTO logInDTO){
 
         ServiceAnswer answerService = userAuthService.logIn(logInDTO);
+
         return crearResponseEntityRegistrar(answerService);
     }
 
+    @GetMapping("/information")
+    public ResponseEntity<?> getInfo(){
+
+        Long id = 1L;
+        ServiceAnswer answerService = userAuthService.userInfo(1L);
+
+        return crearResponseEntityRegistrar(answerService);
+    }
 
     private ResponseEntity<?> crearResponseEntityRegistrar(ServiceAnswer serviceAnswer){
         Object data = serviceAnswer.getData();
         ServiceMessage messageService = serviceAnswer.getServiceMessage();
-        HttpStatus httpStatus = HttpStatus.OK;
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
-        if(messageService == ServiceMessage.ERROR_REGISTRO_CUENTA){
-            httpStatus = HttpStatus.BAD_REQUEST;
+        if(messageService == ServiceMessage.OK){
+            httpStatus = HttpStatus.OK;
         }
+
 
         if(messageService == ServiceMessage.NOT_FOUND || messageService == ServiceMessage.ERROR)
             httpStatus = HttpStatus.NOT_FOUND;

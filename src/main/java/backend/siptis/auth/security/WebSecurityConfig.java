@@ -36,7 +36,8 @@ public class WebSecurityConfig {
         return http.cors().and()
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/user/register/student", "/user/register/admin" ,  "/user/test", "/user/login")
+                .requestMatchers("/user/register/student", "/user/register/admin" ,
+                        "/user/test", "/user/login", "/user/information")
                 .permitAll()
                 .anyRequest().authenticated()
                 .and().sessionManagement()

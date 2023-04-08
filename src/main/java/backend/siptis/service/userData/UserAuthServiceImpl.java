@@ -117,6 +117,12 @@ public class UserAuthServiceImpl implements UserAuthService {
     }
 
     @Override
+    public ServiceAnswer userInfo(Long id){
+        Object response = siptisUserRepository.findById(id);
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(response).build();
+    }
+
+    @Override
     public ServiceAnswer logIn(LogInDTO logInDTO){
 
         if(!siptisUserRepository.existsByEmail(logInDTO.getEmail())){
@@ -133,6 +139,7 @@ public class UserAuthServiceImpl implements UserAuthService {
             if (auth.isAuthenticated()){
                 UserDetailImp userDetails= (UserDetailImp) auth.getPrincipal();
                 String token = JWTokenUtils.createToken(userDetails);
+
                 return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(token).build();
 
             } else {
