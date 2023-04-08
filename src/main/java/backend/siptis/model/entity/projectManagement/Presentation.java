@@ -11,7 +11,6 @@ import java.util.Collection;
 @Table(name = "presentation")
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class Presentation {
@@ -30,7 +29,7 @@ public class Presentation {
 
     private Boolean reviewed = false;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id", nullable = false)
     @JsonBackReference
     private Project project;

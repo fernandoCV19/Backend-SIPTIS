@@ -15,7 +15,19 @@ spring:
     pathmatch:
       matching-strategy: ANT_PATH_MATCHER
 
-app:
-  jwt:
-    secret: secret
-    expiration: 3600
+cloud:
+  aws:
+    region:
+      static: sa-east-1
+    stack:
+      auto: false
+    credentials:
+      access-key: AKIA4O3PHN4JLLTTCSW5
+      secret-key: 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
+
+logging:
+  level:
+    com:
+      amazonaws:
+        util:
+          EC2MetadataUtils: error

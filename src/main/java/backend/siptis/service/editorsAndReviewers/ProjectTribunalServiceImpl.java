@@ -23,7 +23,7 @@ public class ProjectTribunalServiceImpl implements ProjectTribunalService {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data(null).build();
         }
 
-        List<ProjectTribunal> listaProyectos = projectTribunalRepository.findByTribunalAndAcceptedIsFalseAndReviewedIsFalse(id);
+        List<ProjectTribunal> listaProyectos = projectTribunalRepository.findByTribunalIdAndAcceptedIsFalseAndReviewedIsFalse(id);
 
         return getProjects(listaProyectos);
     }
@@ -34,7 +34,7 @@ public class ProjectTribunalServiceImpl implements ProjectTribunalService {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data(null).build();
         }
 
-        List<ProjectTribunal> listaProyectos = projectTribunalRepository.findByTribunalAndAcceptedIsFalseAndReviewedIsTrue(id);
+        List<ProjectTribunal> listaProyectos = projectTribunalRepository.findByTribunalIdAndAcceptedIsFalseAndReviewedIsTrue(id);
 
         return getProjects(listaProyectos);
     }
@@ -45,7 +45,7 @@ public class ProjectTribunalServiceImpl implements ProjectTribunalService {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data(null).build();
         }
 
-        List<ProjectTribunal> listaProyectos = projectTribunalRepository.findByTribunalAndAcceptedIsTrueAndDefensePointsIsNull(id);
+        List<ProjectTribunal> listaProyectos = projectTribunalRepository.findByTribunalIdAndAcceptedIsTrueAndDefensePointsIsNull(id);
 
         return getProjects(listaProyectos);
     }
@@ -56,7 +56,7 @@ public class ProjectTribunalServiceImpl implements ProjectTribunalService {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data(null).build();
         }
 
-        List<ProjectTribunal> listaProyectos = projectTribunalRepository.findByTribunalAndDefensePointsIsNotNull(id);
+        List<ProjectTribunal> listaProyectos = projectTribunalRepository.findByTribunalIdAndDefensePointsIsNotNull(id);
 
         return getProjects(listaProyectos);
     }
