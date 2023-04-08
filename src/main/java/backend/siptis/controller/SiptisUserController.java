@@ -46,24 +46,13 @@ public class SiptisUserController {
                 "", HttpStatus.OK);*/
     }
 
-    @PostMapping("/test")
-    public ResponseEntity<?> test(
-            @RequestBody AdminRegisterDTO adminRegisterDTO){
-
-        //RespuestaServicio admin = userAuthService.registerAdmin(adminRegisterDTO);
-        return new ResponseEntity<>("hola", HttpStatus.OK);
-    }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(
             @RequestBody LogInDTO logInDTO){
 
-
         ServiceAnswer answerService = userAuthService.logIn(logInDTO);
         return crearResponseEntityRegistrar(answerService);
-
-        //RespuestaServicio admin = userAuthService.registerAdmin(adminRegisterDTO);
-        //return new ResponseEntity<>("hola", HttpStatus.OK);
     }
 
 

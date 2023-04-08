@@ -33,14 +33,10 @@ public class UserAuthServiceImpl implements UserAuthService {
     private final SiptisUserRepository siptisUserRepository;
     @Autowired
     private final RoleRepository roleRepository;
-
     @Autowired
     private final UserInformationService userInformationService;
-
     @Autowired
     private final AuthenticationManager authenticationManager;
-
-
 
 
     @Override
@@ -54,15 +50,15 @@ public class UserAuthServiceImpl implements UserAuthService {
 
         if(siptisUserRepository.existsByEmail(estudianteDTO.getEmail())){
             String errorMessage = "El correo ya se encuentra registrado en el sistema";
-            return registerErrorMessage(errorMessage);
+            return registerErrorMessage(ServiceMessage.ERROR_REGISTRO_CUENTA,errorMessage);
         }
         if(userInformationService.existByCi(estudianteDTO.getCi())){
             String errorMessage = "El ci ya se encuentra registrado en el sistema";
-            return registerErrorMessage(errorMessage);
+            return registerErrorMessage(ServiceMessage.ERROR_REGISTRO_CUENTA,errorMessage);
         }
         if(userInformationService.existByCodSIS(estudianteDTO.getCodSIS())){
             String errorMessage = "El codigo SIS ya se encuentra registrado en el sistema";
-            return registerErrorMessage(errorMessage);
+            return registerErrorMessage(ServiceMessage.ERROR_REGISTRO_CUENTA,errorMessage);
         }
 
 
@@ -90,9 +86,9 @@ public class UserAuthServiceImpl implements UserAuthService {
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(estudiante).build();
     }
 
-    private ServiceAnswer registerErrorMessage(String errorMessage){
+    private ServiceAnswer registerErrorMessage(ServiceMessage serviceMessage,String errorMessage){
         return ServiceAnswer.builder().serviceMessage(
-                ServiceMessage.ERROR_REGISTRO_CUENTA).data(errorMessage
+                serviceMessage).data(errorMessage
         ).build();
     }
 
@@ -122,6 +118,12 @@ public class UserAuthServiceImpl implements UserAuthService {
 
     @Override
     public ServiceAnswer logIn(LogInDTO logInDTO){
+
+        if(!siptisUserRepository.existsByEmail(logInDTO.getEmail())){
+            String errorMessage = "El correo al que intenta acceder no se encuentra registrado en el sistema";
+            return registerErrorMessage(ServiceMessage.ERROR_INICIO_SESION,errorMessage);
+        }
+
         try{
             Authentication auth = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -134,13 +136,13 @@ public class UserAuthServiceImpl implements UserAuthService {
                 return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(token).build();
 
             } else {
-                String message = "Ocurrio un error al iniciar Sesión.";
-                return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(message).build();
+                String message = "Ocurrió un error al iniciar Sesión.";
+                return registerErrorMessage(ServiceMessage.ERROR_INICIO_SESION,message);
             }
         }catch (Exception e){
-            System.out.println("Error de autenticacion: "+e.getMessage());
+            System.out.println("Error de autenticación: "+e.getMessage());
             String message = "Contraseña incorrecta.";
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(message).build();
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR_INICIO_SESION).data(message).build();
 
         }
     }
