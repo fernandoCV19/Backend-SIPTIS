@@ -7,11 +7,13 @@ import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.AdminRegisterDTO;
 import backend.siptis.service.userData.UserAuthService;
 import backend.siptis.model.pjo.dto.StudentRegisterDTO;
+import backend.siptis.service.userData.UserDetailImp;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,11 +57,29 @@ public class SiptisUserController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(
-            @RequestParam("email") String email, @RequestParam String password){
+            @RequestBody AdminRegisterDTO adminRegisterDTO){
 
+        System.out.println("entra al controller");
+        try{
+            Authentication auth = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(adminRegisterDTO.getEmail(),adminRegisterDTO.getPassword())
+            );
 
+            if (auth.isAuthenticated()){
+                UserDetailImp userDetails= (UserDetailImp) auth.getPrincipal();
+                String token = JWTokenUtils.createToken(userDetails);
+                System.out.println("token: "+token);
+                return new ResponseEntity<>(token, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("error al registrar", HttpStatus.BAD_REQUEST);
+            }
+        }catch (Exception e){
+            System.out.println("Error de autenticacion: "+e.getMessage());
+            return new ResponseEntity<>("Error de autenticacion: "+e.getMessage(),
+                    HttpStatus.BAD_REQUEST);
+        }
         //RespuestaServicio admin = userAuthService.registerAdmin(adminRegisterDTO);
-        return new ResponseEntity<>("hola", HttpStatus.OK);
+        //return new ResponseEntity<>("hola", HttpStatus.OK);
     }
 
 
