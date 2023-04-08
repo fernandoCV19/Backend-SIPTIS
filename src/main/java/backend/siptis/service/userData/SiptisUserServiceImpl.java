@@ -3,10 +3,12 @@ package backend.siptis.service.userData;
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.commons.ServiceAnswer;
+import backend.siptis.model.pjo.dto.UserGeneralInformationDTO;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,8 +20,14 @@ public class SiptisUserServiceImpl implements SiptisUserService {
 
     @Override
     public ServiceAnswer findAll() {
-        List<SiptisUser> userList = usuarioCommonRepository.findAll();
-        List<>
+        List<SiptisUser> userDBList = usuarioCommonRepository.findAll();
+        List<UserGeneralInformationDTO> userList = new ArrayList<>();
+        for (SiptisUser user: userDBList) {
+            UserGeneralInformationDTO userDTO = convertToDTO(user);
+
+            userList.add(userDTO);
+            
+        }
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(userList).build();
     }
 
@@ -31,5 +39,12 @@ public class SiptisUserServiceImpl implements SiptisUserService {
         }
 
         return null;
+    }
+
+    private UserGeneralInformationDTO convertToDTO(SiptisUser user){
+        UserGeneralInformationDTO userDTO = new UserGeneralInformationDTO();
+        userDTO.setId(user.getId());
+        userDTO.setEmail(user.getEmail());
+        return userDTO;
     }
 }
