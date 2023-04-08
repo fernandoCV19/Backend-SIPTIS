@@ -41,7 +41,7 @@ public class CorsConfig {
                         .allowedMethods("*")
                         .exposedHeaders("*");
 
-                registry.addMapping("/todos")
+                registry.addMapping("/user/todos")
                         .allowedOrigins("http://localhost:3000/")
                         .allowedMethods("*");
             }
