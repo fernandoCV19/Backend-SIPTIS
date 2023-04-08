@@ -60,7 +60,7 @@ public class SiptisUserController {
     public ResponseEntity<?> getInfo(){
 
         Long id = 1L;
-        ServiceAnswer answerService = userAuthService.userInfo(1L);
+        ServiceAnswer answerService = userAuthService.userInfo(2L);
 
         return crearResponseEntityRegistrar(answerService);
     }
