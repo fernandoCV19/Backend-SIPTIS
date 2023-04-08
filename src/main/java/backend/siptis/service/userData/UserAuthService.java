@@ -10,4 +10,6 @@ public interface UserAuthService {
     ServiceAnswer registerStudent(StudentRegisterDTO estudianteDTO);
 
     ServiceAnswer registerAdmin(AdminRegisterDTO adminDTO);
+
+
 }

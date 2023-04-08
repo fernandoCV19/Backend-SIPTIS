@@ -5,6 +5,7 @@ import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.AdminRegisterDTO;
+import backend.siptis.model.pjo.dto.records.LogInDTO;
 import backend.siptis.service.userData.UserAuthService;
 import backend.siptis.model.pjo.dto.StudentRegisterDTO;
 import backend.siptis.service.userData.UserDetailImp;
@@ -24,16 +25,14 @@ public class SiptisUserController {
 
     @Autowired
     private final UserAuthService userAuthService;
-    private final AuthenticationManager authenticationManager;
-    private final JWTokenUtils jwTokenUtils;
 
 
     @PostMapping("/register/student")
     public ResponseEntity<?> registerStudent(
-            @RequestBody StudentRegisterDTO estudianteDTO){
+            @RequestBody StudentRegisterDTO studentDTO){
 
-        ServiceAnswer estudiante = userAuthService.registerStudent(estudianteDTO);
-        return crearResponseEntityRegistrar(estudiante);
+        ServiceAnswer student = userAuthService.registerStudent(studentDTO);
+        return crearResponseEntityRegistrar(student);
     }
 
     @PostMapping("/register/admin")
@@ -57,27 +56,9 @@ public class SiptisUserController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(
-            @RequestBody AdminRegisterDTO adminRegisterDTO){
+            @RequestBody LogInDTO logInDTO){
 
-        System.out.println("entra al controller");
-        try{
-            Authentication auth = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(adminRegisterDTO.getEmail(),adminRegisterDTO.getPassword())
-            );
-
-            if (auth.isAuthenticated()){
-                UserDetailImp userDetails= (UserDetailImp) auth.getPrincipal();
-                String token = JWTokenUtils.createToken(userDetails);
-                System.out.println("token: "+token);
-                return new ResponseEntity<>(token, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>("error al registrar", HttpStatus.BAD_REQUEST);
-            }
-        }catch (Exception e){
-            System.out.println("Error de autenticacion: "+e.getMessage());
-            return new ResponseEntity<>("Error de autenticacion: "+e.getMessage(),
-                    HttpStatus.BAD_REQUEST);
-        }
+        ServiceMessage messageService
         //RespuestaServicio admin = userAuthService.registerAdmin(adminRegisterDTO);
         //return new ResponseEntity<>("hola", HttpStatus.OK);
     }
@@ -85,14 +66,14 @@ public class SiptisUserController {
 
     private ResponseEntity<?> crearResponseEntityRegistrar(ServiceAnswer respuestaServicio){
         Object data = respuestaServicio.getData();
-        ServiceMessage mensajeServicio = respuestaServicio.getServiceMessage();
+        ServiceMessage messageService = respuestaServicio.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.OK;
 
-        if(mensajeServicio == ServiceMessage.ERROR_REGISTRO_CUENTA){
+        if(messageService == ServiceMessage.ERROR_REGISTRO_CUENTA){
             httpStatus = HttpStatus.BAD_REQUEST;
         }
 
-        if(mensajeServicio == ServiceMessage.NOT_FOUND || mensajeServicio == ServiceMessage.ERROR)
+        if(messageService == ServiceMessage.NOT_FOUND || messageService == ServiceMessage.ERROR)
             httpStatus = HttpStatus.NOT_FOUND;
 
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(data).message(mensajeServicio.toString()).build();

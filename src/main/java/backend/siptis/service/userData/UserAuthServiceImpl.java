@@ -2,9 +2,11 @@ package backend.siptis.service.userData;
 
 import backend.siptis.auth.entity.Role;
 import backend.siptis.auth.entity.SiptisUser;
+import backend.siptis.auth.jwt.JWTokenUtils;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.AdminRegisterDTO;
+import backend.siptis.model.pjo.dto.records.LogInDTO;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
 import backend.siptis.model.pjo.dto.StudentInformationDTO;
 import backend.siptis.model.pjo.dto.StudentRegisterDTO;
@@ -12,6 +14,11 @@ import backend.siptis.model.repository.general.RoleRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -29,6 +36,9 @@ public class UserAuthServiceImpl implements UserAuthService {
 
     @Autowired
     private final UserInformationService userInformationService;
+
+    @Autowired
+    private final AuthenticationManager authenticationManager;
 
 
 
@@ -108,5 +118,29 @@ public class UserAuthServiceImpl implements UserAuthService {
         adminUser.setPassword(contrasena);
         siptisUserRepository.save(adminUser);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(adminUser).build();
+    }
+
+    public ServiceAnswer logIn(LogInDTO logInDTO){
+        try{
+            Authentication auth = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            logInDTO.getEmail(),logInDTO.getPassword())
+            );
+
+            if (auth.isAuthenticated()){
+                UserDetailImp userDetails= (UserDetailImp) auth.getPrincipal();
+                String token = JWTokenUtils.createToken(userDetails);
+                return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(token).build();
+
+            } else {
+                String message = "Ocurrio un error al iniciar Sesión.";
+                return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(message).build();
+            }
+        }catch (Exception e){
+            System.out.println("Error de autenticacion: "+e.getMessage());
+            String message = "Contraseña incorrecta.";
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(message).build();
+
+        }
     }
 }
