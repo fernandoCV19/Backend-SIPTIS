@@ -7,6 +7,7 @@ import backend.siptis.model.repository.userData.SiptisUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -14,6 +15,13 @@ import java.util.Optional;
 public class SiptisUserServiceImpl implements SiptisUserService {
 
     private final SiptisUserRepository usuarioCommonRepository;
+
+    @Override
+    public ServiceAnswer findAll() {
+        List<SiptisUser> userList = usuarioCommonRepository.findAll();
+        List<>
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(userList).build();
+    }
 
     @Override
     public ServiceAnswer obtenerProyectosSupervisorParaMenuPrincipalPorIdUsuario(Integer id) {

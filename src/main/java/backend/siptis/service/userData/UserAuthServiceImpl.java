@@ -23,6 +23,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 
 @Service
 @Transactional
@@ -118,9 +120,10 @@ public class UserAuthServiceImpl implements UserAuthService {
 
     @Override
     public ServiceAnswer userInfo(Long id){
-        Object response = siptisUserRepository.findById(id);
-        System.out.println(response.toString());
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(response).build();
+        Optional<SiptisUser> response = siptisUserRepository.findById(id);
+        SiptisUser user = response.get();
+        System.out.println(response.get());
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(user).build();
     }
 
     @Override

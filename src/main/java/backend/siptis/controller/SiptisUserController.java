@@ -6,6 +6,7 @@ import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.AdminRegisterDTO;
 import backend.siptis.model.pjo.dto.records.LogInDTO;
+import backend.siptis.service.userData.SiptisUserService;
 import backend.siptis.service.userData.UserAuthService;
 import backend.siptis.model.pjo.dto.StudentRegisterDTO;
 import backend.siptis.service.userData.UserDetailImp;
@@ -25,6 +26,10 @@ public class SiptisUserController {
 
     @Autowired
     private final UserAuthService userAuthService;
+
+    @Autowired
+    private final SiptisUserService userService;
+
 
 
     @PostMapping("/register/student")
@@ -60,11 +65,16 @@ public class SiptisUserController {
     public ResponseEntity<?> getInfo(){
 
         Long id = 1L;
-        ServiceAnswer answerService = userAuthService.userInfo(2L);
+        ServiceAnswer answerService = userAuthService.userInfo(1L);
 
         return crearResponseEntityRegistrar(answerService);
     }
 
+    @GetMapping("/todos")
+    public ResponseEntity<?> getAll(){
+        ServiceAnswer answerService = userService.findAll();
+        return crearResponseEntityRegistrar(answerService);
+    }
     private ResponseEntity<?> crearResponseEntityRegistrar(ServiceAnswer serviceAnswer){
         Object data = serviceAnswer.getData();
         ServiceMessage messageService = serviceAnswer.getServiceMessage();
