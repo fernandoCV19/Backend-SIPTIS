@@ -1,5 +1,6 @@
 package backend.siptis.controller;
 
+import backend.siptis.auth.jwt.JWTokenUtils;
 import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
@@ -10,10 +11,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
@@ -22,6 +22,8 @@ public class SiptisUserController {
 
     @Autowired
     private final UserAuthService userAuthService;
+    private final AuthenticationManager authenticationManager;
+    private final JWTokenUtils jwTokenUtils;
 
 
     @PostMapping("/register/student")
@@ -51,6 +53,14 @@ public class SiptisUserController {
         return new ResponseEntity<>("hola", HttpStatus.OK);
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<?> login(
+            @RequestParam("email") String email, @RequestParam String password){
+
+
+        //RespuestaServicio admin = userAuthService.registerAdmin(adminRegisterDTO);
+        return new ResponseEntity<>("hola", HttpStatus.OK);
+    }
 
 
     private ResponseEntity<?> crearResponseEntityRegistrar(ServiceAnswer respuestaServicio){

@@ -31,7 +31,7 @@ public class WebSecurityConfig {
     throws Exception{
         JWTAuthenticationFilter jwtAuthenticationFilter =new JWTAuthenticationFilter();
         jwtAuthenticationFilter.setAuthenticationManager(manager);
-        jwtAuthenticationFilter.setFilterProcessesUrl("/login");
+        //jwtAuthenticationFilter.setFilterProcessesUrl("/login");
 
         return http.cors().and()
                 .csrf().disable()
