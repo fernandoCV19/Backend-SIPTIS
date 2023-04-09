@@ -16,6 +16,8 @@ public interface UserAuthService {
 
    ServiceAnswer userInfo(Long id);
 
+   Long getIdFromToken(String token);
+
 
 
 }

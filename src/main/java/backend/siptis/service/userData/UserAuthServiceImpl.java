@@ -166,6 +166,13 @@ public class UserAuthServiceImpl implements UserAuthService {
         }
     }
 
+    @Override
+    public Long getIdFromToken(String token){
+        token = token.replace("Bearer ","");
+        System.out.println("TK: "+token);
+        return JWTokenUtils.getId(token);
+    }
+
     private StudentInformationDTO convertToStudentInformation(SiptisUser user, UserInformation information){
 
         StudentInformationDTO student = new StudentInformationDTO();

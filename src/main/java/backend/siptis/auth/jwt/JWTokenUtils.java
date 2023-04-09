@@ -60,6 +60,14 @@ public class JWTokenUtils {
                 .build().parseClaimsJws(token).getBody();
     }
 
+    public static Long getId(String token){
+        Claims claims = getClaims(token);
+
+        Integer jwtId = (Integer) claims.get("id");
+        Long id = Long.valueOf(jwtId);
+        return id;
+    }
+
     public static UsernamePasswordAuthenticationToken getAuthentication(String token){
         try {
             Claims claims = Jwts.parserBuilder()

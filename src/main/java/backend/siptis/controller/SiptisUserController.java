@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -62,10 +63,10 @@ public class SiptisUserController {
     }
 
     @GetMapping("/information")
-    public ResponseEntity<?> getInfo(){
+    public ResponseEntity<?> getInfo(@RequestHeader (name="Authorization") String token){
 
-        Long id = 1L;
-        ServiceAnswer answerService = userAuthService.userInfo(2L);
+        Long id = userAuthService.getIdFromToken(token);
+        ServiceAnswer answerService = userAuthService.userInfo(id);
 
         return crearResponseEntityRegistrar(answerService);
     }
