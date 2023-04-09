@@ -11,10 +11,8 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -121,11 +119,27 @@ public class EmailService {
         message.setRecipients(MimeMessage.RecipientType.TO, arrayTO);
         message.setSubject("Notificacion de SIPTIS");
 
-        String htmlTemplate = readFile("template.html");
+        String htmlTemplate = readFile("record.html");
 
-        int a = htmlTemplate.indexOf("#nombre");
         htmlTemplate = htmlTemplate.replace("#nombre", activityName);
         htmlTemplate = htmlTemplate.replace("#date", activityDate.toString());
+
+        message.setContent(htmlTemplate, "text/html; charset=utf-8");
+
+        mailSender.send(message);
+    }
+
+    public void sendSpecificEmail(String email, String messageNotification) throws MessagingException, IOException {
+        MimeMessage message = mailSender.createMimeMessage();
+
+        message.setFrom(new InternetAddress("siptis.umss@gmail.com"));
+
+        message.setRecipients(MimeMessage.RecipientType.TO, email);
+        message.setSubject("Notificacion de SIPTIS");
+
+        String htmlTemplate = readFile("notification.html");
+
+        htmlTemplate = htmlTemplate.replace("#message", messageNotification);
 
         message.setContent(htmlTemplate, "text/html; charset=utf-8");
 
