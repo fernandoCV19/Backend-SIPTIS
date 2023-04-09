@@ -128,6 +128,7 @@ public class UserAuthServiceImpl implements UserAuthService {
         Optional<SiptisUser> response = siptisUserRepository.findById(id);
         SiptisUser user = response.get();
         UserInformation information = user.getUserInformation();
+
         StudentInformationDTO dto = convertToStudentInformation(user, information);
         //System.out.println(response.get());
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(dto).build();
@@ -168,21 +169,28 @@ public class UserAuthServiceImpl implements UserAuthService {
     private StudentInformationDTO convertToStudentInformation(SiptisUser user, UserInformation information){
 
         StudentInformationDTO student = new StudentInformationDTO();
+        if(user != null){
 
-        student.setNames(information.getNames());
-        student.setLastnames(information.getLastnames());
-        student.setEmail(user.getEmail());
-        student.setCelNumber(information.getCelNumber());
-        student.setCi(information.getCi());
-        student.setBirthDate(information.getBirthDate());
-        student.setCodSIS(information.getCodSIS());
+            student.setEmail(user.getEmail());
+            if(information != null){
+                student.setNames(information.getNames());
+                student.setLastnames(information.getLastnames());
+                student.setCelNumber(information.getCelNumber());
+                student.setCi(information.getCi());
+                student.setBirthDate(information.getBirthDate());
+                student.setCodSIS(information.getCodSIS());
+                Set<UserCareer> career = user.getCareer();
 
-        Set<UserCareer> career = user.getCareer();
+                for (UserCareer userCareer: career) {
+                    student.setCareer(userCareer.getName());
+                    student.setCareerId(userCareer.getId());
+                }
+            }
 
-        for (UserCareer userCareer: career) {
-            student.setCareer(userCareer.getName());
-            student.setCareerId(userCareer.getId());
+
         }
+
+
         return student;
     }
 }

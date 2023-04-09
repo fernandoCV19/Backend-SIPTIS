@@ -24,6 +24,7 @@ public class JWTokenUtils {
 
         return Jwts.builder().setSubject(userDI.getUsername())
                 .setExpiration(fechaExpiracion)
+                .claim("id", userDI.getId())
                 .claim("roles", userDI.getRoles())
                 .signWith(Keys.hmacShaKeyFor(ACCESS_TOKEN_SECRET.getBytes()))
                 .compact();

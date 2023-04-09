@@ -70,6 +70,15 @@ public class SiptisUserController {
         return crearResponseEntityRegistrar(answerService);
     }
 
+    @GetMapping("/information/{userId}")
+    public ResponseEntity<?> getInfoId(@PathVariable int userId){
+
+        Long idL = Long.valueOf(userId);
+        ServiceAnswer answerService = userAuthService.userInfo(idL);
+
+        return crearResponseEntityRegistrar(answerService);
+    }
+
     @GetMapping("/todos")
     public ResponseEntity<?> getAll(){
         ServiceAnswer answerService = userService.findAll();
