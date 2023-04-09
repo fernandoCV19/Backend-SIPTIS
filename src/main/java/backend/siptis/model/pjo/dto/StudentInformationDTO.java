@@ -18,7 +18,8 @@ public class StudentInformationDTO {
     private String lastnames;
     private String celNumber;
     private String ci;
-    private Date fechaNac;
+    private Date birthDate;
     private String codSIS;
-    private int career;
+    private Long careerId;
+    private String career;
 }

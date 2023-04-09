@@ -5,6 +5,8 @@ import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.auth.jwt.JWTokenUtils;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
+import backend.siptis.model.entity.userData.UserCareer;
+import backend.siptis.model.entity.userData.UserInformation;
 import backend.siptis.model.pjo.dto.AdminRegisterDTO;
 import backend.siptis.model.pjo.dto.records.LogInDTO;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
@@ -23,7 +25,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 
 @Service
@@ -122,8 +127,10 @@ public class UserAuthServiceImpl implements UserAuthService {
     public ServiceAnswer userInfo(Long id){
         Optional<SiptisUser> response = siptisUserRepository.findById(id);
         SiptisUser user = response.get();
-        System.out.println(response.get());
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(user).build();
+        UserInformation information = user.getUserInformation();
+        StudentInformationDTO dto = convertToStudentInformation(user, information);
+        //System.out.println(response.get());
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(dto).build();
     }
 
     @Override
@@ -158,7 +165,24 @@ public class UserAuthServiceImpl implements UserAuthService {
         }
     }
 
-    private StudentInformationDTO convertToStudentInformation(){
-        return null;
+    private StudentInformationDTO convertToStudentInformation(SiptisUser user, UserInformation information){
+
+        StudentInformationDTO student = new StudentInformationDTO();
+
+        student.setNames(information.getNames());
+        student.setLastnames(information.getLastnames());
+        student.setEmail(user.getEmail());
+        student.setCelNumber(information.getCelNumber());
+        student.setCi(information.getCi());
+        student.setBirthDate(information.getBirthDate());
+        student.setCodSIS(information.getCodSIS());
+
+        Set<UserCareer> career = user.getCareer();
+
+        for (UserCareer userCareer: career) {
+            student.setCareer(userCareer.getName());
+            student.setCareerId(userCareer.getId());
+        }
+        return student;
     }
 }

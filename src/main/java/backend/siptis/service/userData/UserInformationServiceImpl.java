@@ -66,7 +66,7 @@ public class UserInformationServiceImpl implements UserInformationService {
         studentInformationDTO.setNames(estudianteDTO.getNames());
         studentInformationDTO.setCi(estudianteDTO.getCi());
         studentInformationDTO.setCodSIS(estudianteDTO.getCodSIS());
-        studentInformationDTO.setFechaNac(estudianteDTO.getBirthDate());
+        studentInformationDTO.setBirthDate(estudianteDTO.getBirthDate());
         studentInformationDTO.setCelNumber(estudianteDTO.getCelNumber());
 
         //return studentInformationDTO;
