@@ -9,6 +9,7 @@ import backend.siptis.model.repository.records.GeneralActivityRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -65,8 +66,9 @@ public class GeneralActivityServiceImpl implements GeneralActivityService {
 
     @Override
     public Page<GeneralActivityVO> findAllVO(Pageable pageable) {
-        Page<GeneralActivity> generalActivities = generalActivityRepository.findAll(pageable);
-        return generalActivities.map(this::entityToVO);
+        Page<GeneralActivity> pageFound = generalActivityRepository.findAll(pageable);
+        List<GeneralActivity> activityList = pageFound.getContent();
+        return new PageImpl(entityToVO(activityList), pageable, pageFound.getTotalElements());
     }
 
     @Override
@@ -83,7 +85,7 @@ public class GeneralActivityServiceImpl implements GeneralActivityService {
 
             return ServiceAnswer.builder()
                     .serviceMessage(ServiceMessage.OK)
-                    .data(generalActivity)
+                    .data(entityToVO(generalActivity))
                     .build();
         }
         return ServiceAnswer.builder()
@@ -96,10 +98,10 @@ public class GeneralActivityServiceImpl implements GeneralActivityService {
         Optional<GeneralActivity> generalActivity = generalActivityRepository.findById(id);
         if(!generalActivity.isEmpty()) {
             generalActivityRepository.deleteById(id);
-            generalActivity = generalActivityRepository.findById(id);
+
             return ServiceAnswer.builder()
                     .serviceMessage(ServiceMessage.OK)
-                    .data(entityToVO(generalActivity.get()))
+                    .data(null)
                     .build();
         }
         return ServiceAnswer.builder()
@@ -112,5 +114,14 @@ public class GeneralActivityServiceImpl implements GeneralActivityService {
         GeneralActivityVO generalActivityVO = new GeneralActivityVO();
         BeanUtils.copyProperties(generalActivity, generalActivityVO);
         return generalActivityVO;
+    }
+    private List<GeneralActivityVO> entityToVO(List<GeneralActivity> list){
+        List<GeneralActivityVO> generalActivityVOList = new ArrayList<>();
+        for (GeneralActivity generalActivity : list) {
+            GeneralActivityVO generalActivityVO = new GeneralActivityVO();
+            BeanUtils.copyProperties(generalActivity, generalActivityVO);
+            generalActivityVOList.add(generalActivityVO);
+        }
+        return generalActivityVOList;
     }
 }
