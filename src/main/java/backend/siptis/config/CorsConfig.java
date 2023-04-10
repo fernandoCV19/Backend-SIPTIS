@@ -35,12 +35,17 @@ public class CorsConfig {
                         .allowedOrigins("http://localhost:3000/")
                         .allowedMethods("*");
 
-                registry.addMapping("/presentation")
+                registry.addMapping("/presentation/**")
                         .allowedOrigins("http://127.0.0.1:5173/")
                         .allowedMethods("*")
                         .exposedHeaders("*");
 
-                registry.addMapping("/proyecto/presentations")
+                registry.addMapping("/project/**")
+                        .allowedOrigins("http://127.0.0.1:5173/")
+                        .allowedMethods("*")
+                        .exposedHeaders("*");
+
+                registry.addMapping("/**")
                         .allowedOrigins("http://127.0.0.1:5173/")
                         .allowedMethods("*")
                         .exposedHeaders("*");
