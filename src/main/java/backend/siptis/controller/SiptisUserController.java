@@ -85,6 +85,12 @@ public class SiptisUserController {
         ServiceAnswer answerService = userService.findAll();
         return crearResponseEntityRegistrar(answerService);
     }
+
+    @PostMapping("/editUser/{userId}")
+    public ResponseEntity<?> editUser(@PathVariable int userId){
+        return null;
+    }
+
     private ResponseEntity<?> crearResponseEntityRegistrar(ServiceAnswer serviceAnswer){
         Object data = serviceAnswer.getData();
         ServiceMessage messageService = serviceAnswer.getServiceMessage();
@@ -101,4 +107,5 @@ public class SiptisUserController {
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(data).message(messageService.toString()).build();
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
+
 }

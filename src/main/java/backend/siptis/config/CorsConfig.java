@@ -48,6 +48,10 @@ public class CorsConfig {
                 registry.addMapping("/user/information/*")
                         .allowedOrigins("http://localhost:3000/")
                         .allowedMethods("*");
+
+                registry.addMapping("/user/information")
+                        .allowedOrigins("http://localhost:3000/")
+                        .allowedMethods("*");
             }
         };
     }
