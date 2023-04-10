@@ -37,7 +37,7 @@ public class WebSecurityConfig {
                 .csrf().disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/user/register/student", "/user/register/admin" ,
-                        "/user/test", "/user/login","/user/todos", "/user/information/*")
+                        "/user/test", "/user/login","/user/todos","/user/editUser/*", "/user/information/*")
                 .permitAll()
                 .anyRequest().authenticated()
                 .and().sessionManagement()

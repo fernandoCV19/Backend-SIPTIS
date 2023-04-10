@@ -13,4 +13,6 @@ public interface UserInformationRepository extends JpaRepository<UserInformation
 
     boolean existsByCodSIS(String codSIS);
 
+
+
 }

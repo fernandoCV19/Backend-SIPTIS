@@ -1,13 +1,20 @@
 package backend.siptis.model.pjo.dto;
 
-public class EditStudentInformation {
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.Date;
+
+@Getter
+@Setter
+public class EditStudentInformationDTO {
 
     private String email;
     private String names;
     private String lastnames;
     private String celNumber;
     private String ci;
-    private String birthDate;
+    private Date birthDate;
     private String codSIS;
     private Long career;
 

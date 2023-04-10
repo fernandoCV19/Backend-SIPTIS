@@ -127,10 +127,8 @@ public class UserAuthServiceImpl implements UserAuthService {
     public ServiceAnswer userInfo(Long id){
         Optional<SiptisUser> response = siptisUserRepository.findById(id);
         SiptisUser user = response.get();
-        UserInformation information = user.getUserInformation();
 
-        StudentInformationDTO dto = convertToStudentInformation(user, information);
-        //System.out.println(response.get());
+        StudentInformationDTO dto = convertToStudentInformation(user);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(dto).build();
     }
 
@@ -173,12 +171,13 @@ public class UserAuthServiceImpl implements UserAuthService {
         return JWTokenUtils.getId(token);
     }
 
-    private StudentInformationDTO convertToStudentInformation(SiptisUser user, UserInformation information){
+    private StudentInformationDTO convertToStudentInformation(SiptisUser user){
 
         StudentInformationDTO student = new StudentInformationDTO();
         if(user != null){
 
             student.setEmail(user.getEmail());
+            UserInformation information = user.getUserInformation();;
             if(information != null){
                 student.setNames(information.getNames());
                 student.setLastnames(information.getLastnames());
