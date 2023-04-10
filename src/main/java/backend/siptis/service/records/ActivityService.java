@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ActivityService {
-    Optional<Activity> findById(long id);
+    ServiceAnswer findById(long id);
     ServiceAnswer persistActivity(ActivityDTO ActivityDTO);
     List<ActivityVO> findAllVO();
     Page<ActivityVO> findAllVO(Pageable pageable);

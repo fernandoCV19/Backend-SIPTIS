@@ -22,16 +22,26 @@ import java.util.Optional;
 @Service
 public class ActivityServiceImpl implements ActivityService{
 
-    public final ActivityRepository acitivityRepository;
+    public final ActivityRepository activityRepository;
     private final ProjectRepository projectRepository;
     @Autowired
-    public ActivityServiceImpl(ActivityRepository acitivityRepository, ProjectRepository projectRepository) {
-        this.acitivityRepository = acitivityRepository;
+    public ActivityServiceImpl(ActivityRepository activityRepository, ProjectRepository projectRepository) {
+        this.activityRepository = activityRepository;
         this.projectRepository = projectRepository;
     }
     @Override
-    public Optional<Activity> findById(long id) {
-        return acitivityRepository.findById(id);
+    public ServiceAnswer findById(long id) {
+        Optional<Activity> activityOptional = activityRepository.findById(id);
+
+        if(!activityOptional.isEmpty()){
+            return ServiceAnswer.builder()
+                    .serviceMessage(ServiceMessage.OK)
+                    .data(entityToVO(activityOptional.get()))
+                    .build();
+        }
+        return ServiceAnswer.builder()
+                .serviceMessage(ServiceMessage.NOT_FOUND)
+                .build();
     }
 
     @Override
@@ -42,7 +52,9 @@ public class ActivityServiceImpl implements ActivityService{
         if (!project.isEmpty()){
             activity.setActivityDescription(activityDTO.getActivityDescription());
             activity.setActivityDate(activityDTO.getActivityDate());
-            activity =  acitivityRepository.save(activity);
+            activity.setActivityName(activityDTO.getActivityName());
+            activity.setProject(project.get());
+            activity =  activityRepository.save(activity);
 
             return ServiceAnswer.builder()
                     .serviceMessage(ServiceMessage.OK)
@@ -55,7 +67,7 @@ public class ActivityServiceImpl implements ActivityService{
 
     @Override
     public List<ActivityVO> findAllVO() {
-        List<Activity> activitiesList = acitivityRepository.findAll();
+        List<Activity> activitiesList = activityRepository.findAll();
         ArrayList<ActivityVO> activityArrayList = new ArrayList<>();
         for (Activity activity : activitiesList){
             activityArrayList.add(entityToVO(activity));
@@ -65,19 +77,19 @@ public class ActivityServiceImpl implements ActivityService{
 
     @Override
     public Page<ActivityVO> findAllVO(Pageable pageable) {
-        Page<Activity> activityList = acitivityRepository.findAll(pageable);
+        Page<Activity> activityList = activityRepository.findAll(pageable);
         return activityList.map(this::entityToVO);
     }
 
     @Override
     public ServiceAnswer update(ActivityDTO activityDTO, long id) {
-        Optional <Activity> optionalActivity = acitivityRepository.findById(id);
+        Optional <Activity> optionalActivity = activityRepository.findById(id);
 
         if(!optionalActivity.isEmpty()){
             Activity activity = optionalActivity.get();
             activity.setActivityDescription(activityDTO.getActivityDescription());
             activity.setActivityDate(activityDTO.getActivityDate());
-            activity = acitivityRepository.save(activity);
+            activity = activityRepository.save(activity);
 
             return ServiceAnswer.builder()
                     .serviceMessage(ServiceMessage.OK)
@@ -90,14 +102,14 @@ public class ActivityServiceImpl implements ActivityService{
 
     @Override
     public ServiceAnswer delete(long id) {
-        Optional <Activity> optionalActivity = acitivityRepository.findById(id);
+        Optional <Activity> optionalActivity = activityRepository.findById(id);
 
         if(!optionalActivity.isEmpty()){
-            acitivityRepository.deleteById(id);
-            optionalActivity = acitivityRepository.findById(id);
+            activityRepository.deleteById(id);
+            optionalActivity = activityRepository.findById(id);
             return ServiceAnswer.builder()
                     .serviceMessage(ServiceMessage.OK)
-                    .data(entityToVO(optionalActivity.get())).build();
+                    .data(null).build();
         }
         return ServiceAnswer.builder()
                 .serviceMessage(ServiceMessage.NOT_FOUND)
