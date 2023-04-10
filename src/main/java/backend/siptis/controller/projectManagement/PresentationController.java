@@ -6,10 +6,14 @@ import backend.siptis.commons.ServiceMessage;
 import backend.siptis.service.projectManagement.CloudManagementService;
 import backend.siptis.service.projectManagement.PresentationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.ByteArrayOutputStream;
 
 @RestController
 @RequestMapping ("/presentation")
@@ -35,6 +39,17 @@ public class PresentationController {
     ResponseEntity<?> grade(@RequestParam Long idPresentacion){
         ServiceAnswer respuestaServicio = presentationService.gradePresentation(idPresentacion);
         return crearResponseEntityConPresentacion(respuestaServicio);
+    }
+
+    @GetMapping("/download-file/{folder}/{file}")
+    ResponseEntity<?> downloadFile(@PathVariable String folder, @PathVariable String file){
+        String key = folder+"/"+file;
+        ServiceAnswer respuestaServicio = presentationService.downloadFileFromCloud(key);
+        ByteArrayOutputStream downloadInputStream = (ByteArrayOutputStream) respuestaServicio.getData();
+        return ResponseEntity.ok()
+                .contentType(contentType(key))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + key + "\"")
+                .body(downloadInputStream.toByteArray());
     }
 
     @DeleteMapping("/{id}")
@@ -68,7 +83,17 @@ public class PresentationController {
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
 
-
+    private MediaType contentType(String filename) {
+        String[] fileArrSplit = filename.split("\\.");
+        String fileExtension = fileArrSplit[fileArrSplit.length - 1];
+        return switch (fileExtension) {
+            case "txt" -> MediaType.TEXT_PLAIN;
+            case "png" -> MediaType.IMAGE_PNG;
+            case "jpg" -> MediaType.IMAGE_JPEG;
+            case "pdf" -> MediaType.APPLICATION_PDF;
+            default -> MediaType.APPLICATION_OCTET_STREAM;
+        };
+    }
 
 
 }

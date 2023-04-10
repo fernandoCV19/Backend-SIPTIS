@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/proyecto")
+@RequestMapping("/project")
 public class ProjectController {
     @Autowired
     public ProjectService proyectoGradoService;
