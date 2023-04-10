@@ -9,8 +9,10 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.apache.commons.io.FileUtils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -45,17 +47,25 @@ public class CloudManagementServiceImpl implements CloudManagementService {
     }
 
     @Override
-    public String getObject(String key) {
+    public ByteArrayOutputStream getObject(String key) {
+        try{
         S3Object s3Object = s3Client.getObject(BUCKET, key);
         // ObjectMetadata metadata = s3Object.getObjectMetadata();
 
-        S3ObjectInputStream inputStream = s3Object.getObjectContent();
-        try{
-            FileUtils.copyInputStreamToFile(inputStream, new File("key"));
-        }catch (IOException e){
-            return null;
+        InputStream is = s3Object.getObjectContent();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        int len;
+        byte[] buffer = new byte[4096];
+        while ((len = is.read(buffer, 0, buffer.length)) != -1) {
+            outputStream.write(buffer, 0, len);
         }
-        return key;
+
+        return outputStream;
+    } catch (IOException ioException) {
+        System.out.println(ioException.toString());
+    }
+
+        return null;
     }
 
     @Override
