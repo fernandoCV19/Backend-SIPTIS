@@ -5,6 +5,7 @@ import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectTribunal;
 import backend.siptis.model.pjo.dto.projectManagement.ProjectToTribunalHomePageDTO;
 import backend.siptis.model.repository.editorsAndReviewers.ProjectTribunalRepository;
+import backend.siptis.model.repository.userData.SiptisUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +17,11 @@ import java.util.stream.Collectors;
 public class ProjectTribunalServiceImpl implements ProjectTribunalService {
 
     private final ProjectTribunalRepository projectTribunalRepository;
+    private final SiptisUserRepository siptisUserRepository;
 
     @Override
     public ServiceAnswer getAllProjectsNotReviewedByTribunalId(Long id) {
-        if(projectTribunalRepository.findById(id).isEmpty()) {
+        if(siptisUserRepository.findById(id).isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data(null).build();
         }
 
@@ -30,7 +32,7 @@ public class ProjectTribunalServiceImpl implements ProjectTribunalService {
 
     @Override
     public ServiceAnswer getAllProjectsReviewedNotAcceptedByTribunalId(Long id) {
-        if(projectTribunalRepository.findById(id).isEmpty()) {
+        if(siptisUserRepository.findById(id).isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data(null).build();
         }
 
@@ -41,7 +43,7 @@ public class ProjectTribunalServiceImpl implements ProjectTribunalService {
 
     @Override
     public ServiceAnswer getAllProjectsAcceptedWithoutDefensePointsByTribunalId(Long id) {
-        if(projectTribunalRepository.findById(id).isEmpty()) {
+        if(siptisUserRepository.findById(id).isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data(null).build();
         }
 
@@ -52,7 +54,7 @@ public class ProjectTribunalServiceImpl implements ProjectTribunalService {
 
     @Override
     public ServiceAnswer getAllProjectsDefendedByTribunalId(Long id) {
-        if(projectTribunalRepository.findById(id).isEmpty()) {
+        if(siptisUserRepository.findById(id).isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data(null).build();
         }
 

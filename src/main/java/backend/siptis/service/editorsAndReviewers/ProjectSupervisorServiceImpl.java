@@ -5,6 +5,7 @@ import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectSupervisor;
 import backend.siptis.model.pjo.dto.projectManagement.ProjectToHomePageDTO;
 import backend.siptis.model.repository.editorsAndReviewers.ProjectSupervisorRepository;
+import backend.siptis.model.repository.userData.SiptisUserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,10 +19,11 @@ import java.util.stream.Collectors;
 public class ProjectSupervisorServiceImpl implements ProjectSupervisorService {
 
     private final ProjectSupervisorRepository projectSupervisorRepository;
+    private final SiptisUserRepository siptisUserRepository;
 
     @Override
     public ServiceAnswer getAllProjectsNotAcceptedReviewedBySupervisorId(Long id) {
-        if(projectSupervisorRepository.findById(id).isEmpty()) {
+        if(siptisUserRepository.findById(id).isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data(null).build();
         }
 
@@ -31,7 +33,7 @@ public class ProjectSupervisorServiceImpl implements ProjectSupervisorService {
 
     @Override
     public ServiceAnswer getAllProjectsNotAcceptedNotReviewedBySupervisorId(Long id) {
-        if(projectSupervisorRepository.findById(id).isEmpty()) {
+        if(siptisUserRepository.findById(id).isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data(null).build();
         }
 
@@ -41,7 +43,7 @@ public class ProjectSupervisorServiceImpl implements ProjectSupervisorService {
 
     @Override
     public ServiceAnswer getAllProjectsAcceptedBySupervisorId(Long id) {
-        if(projectSupervisorRepository.findById(id).isEmpty()) {
+        if(siptisUserRepository.findById(id).isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data(null).build();
         }
 

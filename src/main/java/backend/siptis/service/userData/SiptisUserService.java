@@ -4,6 +4,6 @@ import backend.siptis.commons.ServiceAnswer;
 
 public interface SiptisUserService {
 
-    ServiceAnswer obtenerProyectosSupervisorParaMenuPrincipalPorIdUsuario(Integer id);
+    ServiceAnswer obtenerProyectosSupervisorParaMenuPrincipalPorIdUsuario(Long id);
 
 }

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface SiptisUserRepository extends JpaRepository<SiptisUser, Integer> {
+public interface SiptisUserRepository extends JpaRepository<SiptisUser, Long> {
 
     Optional<SiptisUser> findOneByEmail(String email);
 }

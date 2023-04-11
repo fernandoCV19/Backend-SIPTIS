@@ -5,6 +5,7 @@ import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectTeacher;
 import backend.siptis.model.pjo.dto.projectManagement.ProjectToHomePageDTO;
 import backend.siptis.model.repository.editorsAndReviewers.ProjectTeacherRepository;
+import backend.siptis.model.repository.userData.SiptisUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +17,11 @@ import java.util.stream.Collectors;
 public class ProjectTeacherServiceImpl implements ProjectTeacherService {
 
     private final ProjectTeacherRepository projectTeacherRepository;
+    private final SiptisUserRepository siptisUserRepository;
 
     @Override
     public ServiceAnswer getAllProjectsNotAcceptedReviewedByTeacherId(Long id) {
-        if(projectTeacherRepository.findById(id).isEmpty()){
+        if(siptisUserRepository.findById(id).isEmpty()){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data(null).build();
         }
 
@@ -30,7 +32,7 @@ public class ProjectTeacherServiceImpl implements ProjectTeacherService {
 
     @Override
     public ServiceAnswer getAllProjectsNotAcceptedNotReviewedByTeacherId(Long id) {
-        if(projectTeacherRepository.findById(id).isEmpty()){
+        if(siptisUserRepository.findById(id).isEmpty()){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data(null).build();
         }
 
@@ -40,7 +42,7 @@ public class ProjectTeacherServiceImpl implements ProjectTeacherService {
 
     @Override
     public ServiceAnswer getAllProjectsAcceptedByTeacherId(Long id) {
-        if(projectTeacherRepository.findById(id).isEmpty()){
+        if(siptisUserRepository.findById(id).isEmpty()){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data(null).build();
         }
 
