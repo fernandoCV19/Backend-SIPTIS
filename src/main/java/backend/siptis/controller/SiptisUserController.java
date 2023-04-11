@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/user")
 @AllArgsConstructor
+@CrossOrigin
 public class SiptisUserController {
 
     @Autowired
@@ -93,6 +94,17 @@ public class SiptisUserController {
             @RequestBody EditStudentInformationDTO dto){
 
         Long id = Long.valueOf(userId);
+        ServiceAnswer answer = userService.editStudentInformation(id, dto);
+        return crearResponseEntityRegistrar(answer);
+    }
+
+    @PostMapping("/editUser")
+    public ResponseEntity<?> editMiInformation(
+            @RequestBody EditStudentInformationDTO dto,
+            @RequestHeader (name="Authorization") String token){
+
+        Long id = userAuthService.getIdFromToken(token);
+
         ServiceAnswer answer = userService.editStudentInformation(id, dto);
         return crearResponseEntityRegistrar(answer);
     }

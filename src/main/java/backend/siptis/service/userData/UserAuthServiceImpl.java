@@ -159,7 +159,7 @@ public class UserAuthServiceImpl implements UserAuthService {
         }catch (Exception e){
             System.out.println("Error de autenticación: "+e.getMessage());
             String message = "Contraseña incorrecta.";
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR_INICIO_SESION_PASSWORD).data(message).build();
+            return registerErrorMessage(ServiceMessage.ERROR_INICIO_SESION_PASSWORD,message);
 
         }
     }

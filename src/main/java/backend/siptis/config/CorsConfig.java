@@ -53,7 +53,7 @@ public class CorsConfig {
                         .allowedOrigins("http://localhost:3000/")
                         .allowedMethods("*");
 
-                registry.addMapping("/user/editUSer/*")
+                registry.addMapping("/user/editUser/*")
                         .allowedOrigins("http://localhost:3000/")
                         .allowedMethods("*");
             }
