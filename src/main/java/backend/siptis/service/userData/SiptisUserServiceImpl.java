@@ -6,6 +6,7 @@ import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.model.entity.userData.UserCareer;
 import backend.siptis.model.entity.userData.UserInformation;
 import backend.siptis.model.pjo.dto.EditStudentInformationDTO;
+import backend.siptis.model.pjo.dto.StudentEditPersonalInfoDTO;
 import backend.siptis.model.pjo.dto.StudentInformationDTO;
 import backend.siptis.model.pjo.dto.UserGeneralInformationDTO;
 import backend.siptis.model.repository.general.RoleRepository;
@@ -72,6 +73,25 @@ public class SiptisUserServiceImpl implements SiptisUserService {
         StudentInformationDTO informationDTO = convertToStudentInformation(user1);
 
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(informationDTO).build();
+    }
+
+    public ServiceAnswer studentEditPersonalInfo(Long id, StudentEditPersonalInfoDTO dto){
+        Optional<SiptisUser> user = usuarioCommonRepository.findById(id);
+        SiptisUser siptisUser = user.get();
+
+        siptisUser.setEmail(dto.getEmail());
+        UserInformation userInformation = siptisUser.getUserInformation();
+
+        userInformation.setCelNumber(dto.getCelNumber());
+        userInformation.setCi(dto.getCi());
+        userInformation.setBirthDate(dto.getBirthDate());
+
+        SiptisUser user1 = usuarioCommonRepository.save(siptisUser);
+
+        StudentInformationDTO informationDTO = convertToStudentInformation(user1);
+
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(informationDTO).build();
+
     }
 
     private UserGeneralInformationDTO convertToDTO(SiptisUser user){

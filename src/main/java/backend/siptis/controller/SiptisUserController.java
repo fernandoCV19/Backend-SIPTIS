@@ -6,6 +6,7 @@ import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.AdminRegisterDTO;
 import backend.siptis.model.pjo.dto.EditStudentInformationDTO;
+import backend.siptis.model.pjo.dto.StudentEditPersonalInfoDTO;
 import backend.siptis.model.pjo.dto.records.LogInDTO;
 import backend.siptis.service.userData.SiptisUserService;
 import backend.siptis.service.userData.UserAuthService;
@@ -98,14 +99,14 @@ public class SiptisUserController {
         return crearResponseEntityRegistrar(answer);
     }
 
-    @PostMapping("/editUser")
+        @PostMapping("/editUser")
     public ResponseEntity<?> editMiInformation(
-            @RequestBody EditStudentInformationDTO dto,
+            @RequestBody StudentEditPersonalInfoDTO dto,
             @RequestHeader (name="Authorization") String token){
 
         Long id = userAuthService.getIdFromToken(token);
 
-        ServiceAnswer answer = userService.editStudentInformation(id, dto);
+        ServiceAnswer answer = userService.studentEditPersonalInfo(id, dto);
         return crearResponseEntityRegistrar(answer);
     }
 
