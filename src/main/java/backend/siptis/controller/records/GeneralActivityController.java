@@ -12,12 +12,14 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/general-activity")
+@CrossOrigin
 public class GeneralActivityController {
     private final GeneralActivityService generalActivityService;
     @Autowired
     public GeneralActivityController(GeneralActivityService generalActivityService) {
         this.generalActivityService = generalActivityService;
     }
+
     @PostMapping()
     public ResponseEntity<?> persistGeneralActivity(@RequestBody GeneralActivityDTO generalActivityDTO) {
         return createResponse(generalActivityService.persistGeneralActivity(generalActivityDTO));
