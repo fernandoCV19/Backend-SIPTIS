@@ -16,6 +16,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -37,6 +38,7 @@ public class SiptisUserController {
 
 
     @PostMapping("/register/student")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> registerStudent(
             @RequestBody StudentRegisterDTO studentDTO){
 
@@ -45,6 +47,7 @@ public class SiptisUserController {
     }
 
     @PostMapping("/register/admin")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> registerAdmin(
             @RequestBody AdminRegisterDTO adminRegisterDTO){
 
@@ -66,6 +69,7 @@ public class SiptisUserController {
     }
 
     @GetMapping("/information")
+
     public ResponseEntity<?> getInfo(@RequestHeader (name="Authorization") String token){
 
         Long id = userAuthService.getIdFromToken(token);
@@ -84,6 +88,7 @@ public class SiptisUserController {
     }
 
     @GetMapping("/todos")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> getAll(){
         ServiceAnswer answerService = userService.findAll();
         return crearResponseEntityRegistrar(answerService);
