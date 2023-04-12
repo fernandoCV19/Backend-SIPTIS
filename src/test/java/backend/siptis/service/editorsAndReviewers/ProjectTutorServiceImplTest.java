@@ -2,7 +2,7 @@ package backend.siptis.service.editorsAndReviewers;
 
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.model.pjo.dto.projectManagement.ProjectToHomePageDTO;
+import backend.siptis.model.pjo.vo.projectManagement.ProjectToHomePageVO;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -49,13 +49,13 @@ class ProjectTutorServiceImplTest {
     void getAllProjectsNotAcceptedReviewedByTutorIdWithAndIdThatExistReturnACorrectDTOObject() {
         ServiceAnswer ans = projectTutorService.getAllProjectsNotAcceptedReviewedByTutorId(2L);
         Object data = ans.getData();
-        assertTrue(data instanceof List && ((List<?>) data).get(0) instanceof ProjectToHomePageDTO);
+        assertTrue(data instanceof List && ((List<?>) data).get(0) instanceof ProjectToHomePageVO);
     }
 
     @Test
     void getAllProjectsNotAcceptedReviewedByTutorIdWithAndIdThatExistReturnADTOObjectThatIsNotAcceptedAndReviewed() {
         ServiceAnswer ans = projectTutorService.getAllProjectsNotAcceptedReviewedByTutorId(2L);
-        List<ProjectToHomePageDTO> data = (List<ProjectToHomePageDTO>) ans.getData();
+        List<ProjectToHomePageVO> data = (List<ProjectToHomePageVO>) ans.getData();
         assertTrue(data.get(0).getReviewed() && !data.get(0).getAccepted());
     }
 
@@ -105,13 +105,13 @@ class ProjectTutorServiceImplTest {
     void getAllProjectsNotAcceptedNotReviewedByTutorIdWithAndIdThatExistReturnACorrectDTOObject() {
         ServiceAnswer ans = projectTutorService.getAllProjectsNotAcceptedNotReviewedByTutorId(2L);
         Object data = ans.getData();
-        assertTrue(data instanceof List && ((List<?>) data).get(0) instanceof ProjectToHomePageDTO);
+        assertTrue(data instanceof List && ((List<?>) data).get(0) instanceof ProjectToHomePageVO);
     }
 
     @Test
     void getAllProjectsNotAcceptedNotReviewedByTutorIdWithAndIdThatExistReturnADTOObjectThatIsNotAcceptedAndReviewed() {
         ServiceAnswer ans = projectTutorService.getAllProjectsNotAcceptedNotReviewedByTutorId(2L);
-        List<ProjectToHomePageDTO> data = (List<ProjectToHomePageDTO>) ans.getData();
+        List<ProjectToHomePageVO> data = (List<ProjectToHomePageVO>) ans.getData();
         assertTrue(!data.get(0).getReviewed() && !data.get(0).getAccepted());
     }
 
@@ -161,13 +161,13 @@ class ProjectTutorServiceImplTest {
     void getAllProjectsAcceptedByTutorIdWithAndIdThatExistReturnACorrectDTOObject() {
         ServiceAnswer ans = projectTutorService.getAllProjectsAcceptedByTutorId(2L);
         Object data = ans.getData();
-        assertTrue(data instanceof List && ((List<?>) data).get(0) instanceof ProjectToHomePageDTO);
+        assertTrue(data instanceof List && ((List<?>) data).get(0) instanceof ProjectToHomePageVO);
     }
 
     @Test
     void getAllProjectsAcceptedByTutorIdWithAndIdThatExistReturnADTOObjectThatIsNotAcceptedAndReviewed() {
         ServiceAnswer ans = projectTutorService.getAllProjectsAcceptedByTutorId(2L);
-        List<ProjectToHomePageDTO> data = (List<ProjectToHomePageDTO>) ans.getData();
+        List<ProjectToHomePageVO> data = (List<ProjectToHomePageVO>) ans.getData();
         assertTrue(!data.get(0).getReviewed() && data.get(0).getAccepted());
     }
 

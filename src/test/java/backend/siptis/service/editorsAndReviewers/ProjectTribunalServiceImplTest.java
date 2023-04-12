@@ -2,8 +2,7 @@ package backend.siptis.service.editorsAndReviewers;
 
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.model.pjo.dto.projectManagement.ProjectToHomePageDTO;
-import backend.siptis.model.pjo.dto.projectManagement.ProjectToTribunalHomePageDTO;
+import backend.siptis.model.pjo.vo.projectManagement.ProjectToTribunalHomePageVO;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -50,13 +49,13 @@ class ProjectTribunalServiceImplTest {
     void getAllProjectsNotReviewedByTribunalIdWithAndIdThatExistReturnACorrectDTOObject() {
         ServiceAnswer ans = projectTribunalService.getAllProjectsNotReviewedByTribunalId(4L);
         Object data = ans.getData();
-        assertTrue(data instanceof List && ((List<?>) data).get(0) instanceof ProjectToTribunalHomePageDTO);
+        assertTrue(data instanceof List && ((List<?>) data).get(0) instanceof ProjectToTribunalHomePageVO);
     }
 
     @Test
     void getAllProjectsNotReviewedByTribunalIdWithAndIdThatExistReturnADTOObjectThatIsNotAcceptedAndReviewed() {
         ServiceAnswer ans = projectTribunalService.getAllProjectsNotReviewedByTribunalId(4L);
-        List<ProjectToTribunalHomePageDTO> data = (List<ProjectToTribunalHomePageDTO>) ans.getData();
+        List<ProjectToTribunalHomePageVO> data = (List<ProjectToTribunalHomePageVO>) ans.getData();
         assertTrue(!data.get(0).getReviewed() && !data.get(0).getAccepted());
     }
 
@@ -106,13 +105,13 @@ class ProjectTribunalServiceImplTest {
     void getAllProjectsReviewedNotAcceptedByTribunalIdWithAndIdThatExistReturnACorrectDTOObject() {
         ServiceAnswer ans = projectTribunalService.getAllProjectsReviewedNotAcceptedByTribunalId(4L);
         Object data = ans.getData();
-        assertTrue(data instanceof List && ((List<?>) data).get(0) instanceof ProjectToTribunalHomePageDTO);
+        assertTrue(data instanceof List && ((List<?>) data).get(0) instanceof ProjectToTribunalHomePageVO);
     }
 
     @Test
     void getAllProjectsReviewedNotAcceptedByTribunalIdWithAndIdThatExistReturnADTOObjectThatIsNotAcceptedAndReviewed() {
         ServiceAnswer ans = projectTribunalService.getAllProjectsReviewedNotAcceptedByTribunalId(4L);
-        List<ProjectToTribunalHomePageDTO> data = (List<ProjectToTribunalHomePageDTO>) ans.getData();
+        List<ProjectToTribunalHomePageVO> data = (List<ProjectToTribunalHomePageVO>) ans.getData();
         assertTrue(data.get(0).getReviewed() && !data.get(0).getAccepted());
     }
 
@@ -162,13 +161,13 @@ class ProjectTribunalServiceImplTest {
     void getAllProjectsAcceptedWithoutDefensePointsByTribunalIdWithAndIdThatExistReturnACorrectDTOObject() {
         ServiceAnswer ans = projectTribunalService.getAllProjectsAcceptedWithoutDefensePointsByTribunalId(4L);
         Object data = ans.getData();
-        assertTrue(data instanceof List && ((List<?>) data).get(0) instanceof ProjectToTribunalHomePageDTO);
+        assertTrue(data instanceof List && ((List<?>) data).get(0) instanceof ProjectToTribunalHomePageVO);
     }
 
     @Test
     void getAllProjectsAcceptedWithoutDefensePointsByTribunalIdWithAndIdThatExistReturnADTOObjectThatIsNotAcceptedAndReviewed() {
         ServiceAnswer ans = projectTribunalService.getAllProjectsAcceptedWithoutDefensePointsByTribunalId(4L);
-        List<ProjectToTribunalHomePageDTO> data = (List<ProjectToTribunalHomePageDTO>) ans.getData();
+        List<ProjectToTribunalHomePageVO> data = (List<ProjectToTribunalHomePageVO>) ans.getData();
         assertTrue(!data.get(0).getReviewed() && data.get(0).getAccepted() && data.get(0).getDefensePoints() == null);
     }
 
@@ -218,13 +217,13 @@ class ProjectTribunalServiceImplTest {
     void getAllProjectsDefendedByTribunalIdWithAndIdThatExistReturnACorrectDTOObject() {
         ServiceAnswer ans = projectTribunalService.getAllProjectsDefendedByTribunalId(4L);
         Object data = ans.getData();
-        assertTrue(data instanceof List && ((List<?>) data).get(0) instanceof ProjectToTribunalHomePageDTO);
+        assertTrue(data instanceof List && ((List<?>) data).get(0) instanceof ProjectToTribunalHomePageVO);
     }
 
     @Test
     void getAllProjectsDefendedByTribunalIdWithAndIdThatExistReturnADTOObjectThatIsNotAcceptedAndReviewed() {
         ServiceAnswer ans = projectTribunalService.getAllProjectsDefendedByTribunalId(4L);
-        List<ProjectToTribunalHomePageDTO> data = (List<ProjectToTribunalHomePageDTO>) ans.getData();
+        List<ProjectToTribunalHomePageVO> data = (List<ProjectToTribunalHomePageVO>) ans.getData();
         assertTrue(!data.get(0).getReviewed() && data.get(0).getAccepted() && data.get(0).getDefensePoints() == 100);
     }
 

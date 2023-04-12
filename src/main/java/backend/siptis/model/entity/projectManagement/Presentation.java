@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Collection;
+import java.util.Date;
 
 @Entity
 @Table(name = "presentation")
@@ -37,4 +38,6 @@ public class Presentation {
     @OneToMany(mappedBy = "presentation",  fetch = FetchType.LAZY)
     @JsonManagedReference
     private Collection<Review> reviews;
+
+    private Date date;
 }

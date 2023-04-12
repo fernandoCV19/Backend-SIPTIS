@@ -3,7 +3,7 @@ package backend.siptis.service.editorsAndReviewers;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectTutor;
-import backend.siptis.model.pjo.dto.projectManagement.ProjectToHomePageDTO;
+import backend.siptis.model.pjo.vo.projectManagement.ProjectToHomePageVO;
 import backend.siptis.model.repository.editorsAndReviewers.ProjectTutorRepository;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
 import lombok.RequiredArgsConstructor;
@@ -54,9 +54,9 @@ public class ProjectTutorServiceImpl implements ProjectTutorService {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.WITHOUT_PROJECTS).data(listaProyectos).build();
         }
 
-        List<ProjectToHomePageDTO> data = listaProyectos
+        List<ProjectToHomePageVO> data = listaProyectos
                 .stream()
-                .map(aux -> new ProjectToHomePageDTO(aux.getProject(), aux.getAccepted(), aux.getReviewed()))
+                .map(aux -> new ProjectToHomePageVO(aux.getProject(), aux.getAccepted(), aux.getReviewed()))
                 .collect(Collectors.toList());
 
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(data).build();

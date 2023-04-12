@@ -2,7 +2,7 @@ package backend.siptis.service.editorsAndReviewers;
 
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.model.pjo.dto.projectManagement.ProjectToHomePageDTO;
+import backend.siptis.model.pjo.vo.projectManagement.ProjectToHomePageVO;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,13 +46,13 @@ class ProjectSupervisorServiceImplTest {
     void getAllProjectsNotAcceptedReviewedBySupervisorIdWithAndIdThatExistReturnACorrectDTOObject() {
         ServiceAnswer ans = projectSupervisorService.getAllProjectsNotAcceptedReviewedBySupervisorId(1L);
         Object data = ans.getData();
-        assertTrue(data instanceof List && ((List<?>) data).get(0) instanceof ProjectToHomePageDTO);
+        assertTrue(data instanceof List && ((List<?>) data).get(0) instanceof ProjectToHomePageVO);
     }
 
     @Test
     void getAllProjectsNotAcceptedReviewedBySupervisorIdWithAndIdThatExistReturnADTOObjectThatIsNotAcceptedAndReviewed() {
         ServiceAnswer ans = projectSupervisorService.getAllProjectsNotAcceptedReviewedBySupervisorId(1L);
-        List<ProjectToHomePageDTO> data = (List<ProjectToHomePageDTO>) ans.getData();
+        List<ProjectToHomePageVO> data = (List<ProjectToHomePageVO>) ans.getData();
         assertTrue(data.get(0).getReviewed() && !data.get(0).getAccepted());
     }
 
@@ -102,13 +102,13 @@ class ProjectSupervisorServiceImplTest {
     void getAllProjectsNotAcceptedNotReviewedBySupervisorIdWithAndIdThatExistReturnACorrectDTOObject() {
         ServiceAnswer ans = projectSupervisorService.getAllProjectsNotAcceptedNotReviewedBySupervisorId(1L);
         Object data = ans.getData();
-        assertTrue(data instanceof List && ((List<?>) data).get(0) instanceof ProjectToHomePageDTO);
+        assertTrue(data instanceof List && ((List<?>) data).get(0) instanceof ProjectToHomePageVO);
     }
 
     @Test
     void getAllProjectsNotAcceptedNotReviewedBySupervisorIdWithAndIdThatExistReturnADTOObjectThatIsNotAcceptedAndReviewed() {
         ServiceAnswer ans = projectSupervisorService.getAllProjectsNotAcceptedNotReviewedBySupervisorId(1L);
-        List<ProjectToHomePageDTO> data = (List<ProjectToHomePageDTO>) ans.getData();
+        List<ProjectToHomePageVO> data = (List<ProjectToHomePageVO>) ans.getData();
         assertTrue(!data.get(0).getReviewed() && !data.get(0).getAccepted());
     }
 
@@ -158,13 +158,13 @@ class ProjectSupervisorServiceImplTest {
     void getAllProjectsAcceptedBySupervisorIdWithAndIdThatExistReturnACorrectDTOObject() {
         ServiceAnswer ans = projectSupervisorService.getAllProjectsAcceptedBySupervisorId(1L);
         Object data = ans.getData();
-        assertTrue(data instanceof List && ((List<?>) data).get(0) instanceof ProjectToHomePageDTO);
+        assertTrue(data instanceof List && ((List<?>) data).get(0) instanceof ProjectToHomePageVO);
     }
 
     @Test
     void getAllProjectsAcceptedBySupervisorIdWithAndIdThatExistReturnADTOObjectThatIsNotAcceptedAndReviewed() {
         ServiceAnswer ans = projectSupervisorService.getAllProjectsAcceptedBySupervisorId(1L);
-        List<ProjectToHomePageDTO> data = (List<ProjectToHomePageDTO>) ans.getData();
+        List<ProjectToHomePageVO> data = (List<ProjectToHomePageVO>) ans.getData();
         assertTrue(!data.get(0).getReviewed() && data.get(0).getAccepted());
     }
 

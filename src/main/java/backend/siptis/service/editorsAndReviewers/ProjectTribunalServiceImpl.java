@@ -3,7 +3,7 @@ package backend.siptis.service.editorsAndReviewers;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectTribunal;
-import backend.siptis.model.pjo.dto.projectManagement.ProjectToTribunalHomePageDTO;
+import backend.siptis.model.pjo.vo.projectManagement.ProjectToTribunalHomePageVO;
 import backend.siptis.model.repository.editorsAndReviewers.ProjectTribunalRepository;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
 import lombok.RequiredArgsConstructor;
@@ -68,9 +68,9 @@ public class ProjectTribunalServiceImpl implements ProjectTribunalService {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.WITHOUT_PROJECTS).data(listaProyectos).build();
         }
 
-        List<ProjectToTribunalHomePageDTO> data = listaProyectos
+        List<ProjectToTribunalHomePageVO> data = listaProyectos
                 .stream()
-                .map(aux -> new ProjectToTribunalHomePageDTO(aux.getProject(), aux.getDefensePoints(), aux.getAccepted(), aux.getReviewed()))
+                .map(aux -> new ProjectToTribunalHomePageVO(aux.getProject(), aux.getDefensePoints(), aux.getAccepted(), aux.getReviewed()))
                 .collect(Collectors.toList());
 
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(data).build();
