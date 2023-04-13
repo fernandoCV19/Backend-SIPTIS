@@ -24,7 +24,7 @@ public class Activity {
     @Column(name = "activity_date")
     private Date activityDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "proyecto_grado_id", nullable = false)
     @JsonBackReference
     private Project project;

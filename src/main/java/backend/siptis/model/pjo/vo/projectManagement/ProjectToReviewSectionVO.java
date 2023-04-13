@@ -20,15 +20,16 @@ public class ProjectToReviewSectionVO {
     private String blueBookKey;
     private Boolean studentChanges;
     private Integer numberOfDays;
+    private Boolean reviewed;
 
-    public ProjectToReviewSectionVO(Project project, Boolean studentChanges,Integer numberOfDays) {
+    public ProjectToReviewSectionVO(Project project, Boolean studentChanges,Integer numberOfDays, Boolean reviewed) {
         students = project.getStudents().stream().map((studentProject) -> studentProject.getStudent().getUserInformation().getNames()).toList();
         projectName = project.getName();
         modality = project.getModality().getName();
         projectKey = project.getProjectPath();
         blueBookKey = project.getBlueBookPath();
 
-
+        this.reviewed = reviewed;
         this.studentChanges = studentChanges;
         this.numberOfDays = numberOfDays;
 

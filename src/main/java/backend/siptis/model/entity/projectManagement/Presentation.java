@@ -30,7 +30,7 @@ public class Presentation {
 
     private Boolean reviewed = false;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "project_id", nullable = false)
     @JsonBackReference
     private Project project;

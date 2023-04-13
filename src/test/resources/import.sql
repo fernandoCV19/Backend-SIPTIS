@@ -276,10 +276,9 @@ INSERT INTO project_sub_area(project_id, sub_area_id) VALUES (31, 10);
 INSERT INTO project_teacher(id, accepted, reviewed, project_id, user_id) VALUES (31, false, false, 31, 30);
 
 
-
 INSERT INTO project(id, blue_book_path, perfil_path, project_path, phase, name, defense_id, state_id, modality_id) VALUES (32, 'LibroReview3', null, 'ProyectoReview3', 'FaseReview3', 'ProyectoGradoReview3', null, null, 1);
 
-INSERT INTO presentation (id, blue_book_path, phase, project_path, reviewed, project_id, date) VALUES (2, 'blueBookPath2', 'phase2', 'projectPath2', false, 32, '2022-1-1');
+INSERT INTO presentation (id, blue_book_path, phase, project_path, reviewed, project_id, date) VALUES (2, 'blueBookPath2', 'phase2', 'projectPath2', true, 32, '2022-1-1');
 
 INSERT INTO review(id, commentary, document_path, presentation_id, user_id, date) VALUES (1, 'commentary1', 'documentPath1', 2, 30, '2022-1-7');
 
@@ -288,8 +287,6 @@ INSERT INTO project_area(project_id, area_id) VALUES (32, 10);
 INSERT INTO project_sub_area(project_id, sub_area_id) VALUES (32, 10);
 
 INSERT INTO project_teacher(id, accepted, reviewed, project_id, user_id) VALUES (32,  false, true, 32, 30);
-
-
 
 
 
@@ -313,3 +310,50 @@ INSERT INTO project_sub_area(project_id, sub_area_id) VALUES (33, 10);
 
 INSERT INTO project_teacher(id, accepted, reviewed, project_id, user_id) VALUES (33,  false, true, 33, 30);
 INSERT INTO project_teacher(id, accepted, reviewed, project_id, user_id) VALUES (34,  false, true, 33, 1);
+
+
+
+INSERT INTO project(id, blue_book_path, perfil_path, project_path, phase, name, defense_id, state_id, modality_id) VALUES (34, 'LibroReview5', null, 'ProyectoReview5', 'FaseReview5', 'ProyectoGradoReview5', null, null, 1);
+
+INSERT INTO presentation (id, blue_book_path, phase, project_path, reviewed, project_id, date) VALUES (5, 'blueBookPath5', 'phase5', 'projectPath5', true, 34, '2022-1-1');
+
+INSERT INTO review(id, commentary, document_path, presentation_id, user_id, date) VALUES (6, 'commentary5', 'documentPath5', 5, 1, '2022-1-7');
+
+INSERT INTO project_area(project_id, area_id) VALUES (34, 10);
+
+INSERT INTO project_sub_area(project_id, sub_area_id) VALUES (34, 10);
+
+INSERT INTO project_teacher(id, accepted, reviewed, project_id, user_id) VALUES (35,  false, true, 34, 30);
+
+--//project with all kind of reviewers
+
+INSERT INTO project(id, blue_book_path, perfil_path, project_path, phase, name, defense_id, state_id, modality_id) VALUES (40, 'Libro', 'Perfil', 'Proyecto', 'Fase', 'ProyectoGrado', null, null, 1);
+
+INSERT INTO project_area(project_id, area_id) VALUES (40, 1);
+
+INSERT INTO project_sub_area(project_id, sub_area_id) VALUES (40, 1);
+
+INSERT INTO project_supervisor(id, accepted, reviewed, project_id, user_id) VALUES (40, false, false, 40, 1);
+
+INSERT INTO project_supervisor(id, accepted, reviewed, project_id, user_id) VALUES (41, false, false, 40, 2);
+
+INSERT INTO project_supervisor(id, accepted, reviewed, project_id, user_id) VALUES (42, false, false, 40, 3);
+
+
+INSERT INTO project_tutor(id, accepted, reviewed, project_id, user_id) VALUES (43, false, false, 40, 4);
+
+INSERT INTO project_tutor(id, accepted, reviewed, project_id, user_id) VALUES (44, false, false, 40, 5);
+
+INSERT INTO project_tutor(id, accepted, reviewed, project_id, user_id) VALUES (45, false, false, 40, 6);
+
+
+INSERT INTO project_teacher(id, accepted, reviewed, project_id, user_id) VALUES (46, false, false, 40, 7);
+
+INSERT INTO project_teacher(id, accepted, reviewed, project_id, user_id) VALUES (47, false, false, 40, 8);
+
+INSERT INTO project_teacher(id, accepted, reviewed, project_id, user_id) VALUES (48, false, false, 40, 9);
+
+
+INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id, user_id) VALUES (49, false, null, false, 40, 10);
+
+INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id, user_id) VALUES (50, false, null, false, 40, 11);

@@ -39,7 +39,7 @@ public class Project {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "modality_id", nullable = false)
-    @JsonBackReference
+    @JsonManagedReference
     private Modality modality;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {

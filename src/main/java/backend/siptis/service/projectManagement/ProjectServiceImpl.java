@@ -10,6 +10,7 @@ import backend.siptis.model.repository.projectManagement.PresentationRepository;
 import backend.siptis.model.repository.projectManagement.ProjectRepository;
 import backend.siptis.model.repository.projectManagement.ReviewRepository;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
@@ -51,28 +53,38 @@ public class ProjectServiceImpl implements ProjectService {
     public ServiceAnswer getProjectInfoToReview(Long idProject, Long idReviewer) {
         Optional<Project> query = projectRepository.findById(idProject);
         if(query.isEmpty()){
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_PROJECT_DOES_NOT_EXIST).data(null).build();
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data(null).build();
         }
         if(siptisUserRepository.findById(idReviewer).isEmpty()){
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_USER_DOES_NOT_EXIST).data(null).build();
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.USER_ID_DOES_NOT_EXIST).data(null).build();
         }
-
         Project project = query.get();
-        Presentation presentation = presentationRepository.findTopByProjectIdOrderByDateDesc(idProject);
-        Boolean studentChanges = presentation != null && !presentation.getReviewed();
-        Integer numberOfDays = 0;
 
-        if(Boolean.TRUE.equals(studentChanges)){
-            numberOfDays =  getDaysDifference(presentation.getDate());
-        }else{
-            Review lastReview = reviewRepository.findTopByPresentationProjectIdAndSiptisUserIdOrderByDateDesc(idProject, idReviewer);
-            if(lastReview == null){
-                return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_REVIEWER_DOES_NOT_MATCH_WITH_PROJECT).data(null).build();
-            }
-            numberOfDays = getDaysDifference(lastReview.getDate());
+        List<Long> reviewerIds = projectRepository.getIdsListFromReviewers(idProject);
+        if(!reviewerIds.contains(idReviewer)){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_REVIEWER_DOES_NOT_MATCH_WITH_PROJECT).data(null).build();
         }
 
-        ProjectToReviewSectionVO data = new ProjectToReviewSectionVO(project, studentChanges, numberOfDays);
+        Presentation presentation = presentationRepository.findTopByProjectIdOrderByDateDesc(idProject);
+        if(presentation == null){
+            ProjectToReviewSectionVO data = new ProjectToReviewSectionVO(project, false, -1, false);
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.THERE_IS_NO_PRESENTATION_YET).data(data).build();
+        }
+
+        if(Boolean.FALSE.equals(presentation.getReviewed())){
+            ProjectToReviewSectionVO data = new ProjectToReviewSectionVO(project, true, getDaysDifference(presentation.getDate()), false);
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(data).build();
+        }
+
+        Review lastReview = reviewRepository.findTopByPresentationProjectIdAndSiptisUserIdOrderByDateDesc(idProject, idReviewer);
+
+        if(lastReview == null){
+            ProjectToReviewSectionVO data = new ProjectToReviewSectionVO(project, false, getDaysDifference(presentation.getDate()), false);
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(data).build();
+        }
+
+        Integer numberOfDays = getDaysDifference(lastReview.getDate());
+        ProjectToReviewSectionVO data = new ProjectToReviewSectionVO(project, false, numberOfDays, true);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(data).build();
     }
 
@@ -80,7 +92,7 @@ public class ProjectServiceImpl implements ProjectService {
         Date now = new Date();
 
         // Diferencia en milisegundos
-        long diffMillis = compare.getTime() - now.getTime();
+        long diffMillis = now.getTime() - compare.getTime() ;
 
         // Diferencia en días
         long diffDias = TimeUnit.DAYS.convert(diffMillis, TimeUnit.MILLISECONDS);
