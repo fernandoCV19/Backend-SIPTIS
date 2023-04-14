@@ -42,6 +42,6 @@ class ProjectRepositoryTest {
     @Test
     void getIdsListFromReviewersWithACorrectIdReturnAListWithTheIdOfAllReviewers() {
         List<Long> query = projectRepository.getIdsListFromReviewers(40L);
-        assertEquals(11, query.size());
+        assertEquals(9, query.size());
     }
 }

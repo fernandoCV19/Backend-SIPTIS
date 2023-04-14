@@ -2,7 +2,9 @@ package backend.siptis.service.editorsAndReviewers;
 
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
+import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.pjo.vo.projectManagement.ProjectToHomePageVO;
+import backend.siptis.model.repository.projectManagement.ProjectRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -13,6 +15,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -22,13 +25,15 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
-class ProjectTeacherServiceImplTest {
+class ProjectTeacherServiceTest {
 
     private final ProjectTeacherService projectTeacherService;
+    private final ProjectRepository projectRepository;
 
     @Autowired
-    ProjectTeacherServiceImplTest(ProjectTeacherServiceImpl projectTeacherService) {
+    ProjectTeacherServiceTest(ProjectTeacherServiceImpl projectTeacherService, ProjectRepository projectRepository) {
         this.projectTeacherService = projectTeacherService;
+        this.projectRepository = projectRepository;
     }
 
     @Test
@@ -197,5 +202,114 @@ class ProjectTeacherServiceImplTest {
         ServiceAnswer ans = projectTeacherService.getAllProjectsAcceptedByTeacherId(0L);
         Object data = ans.getData();
         assertNull(data);
+    }
+
+
+
+
+    @Test
+    void acceptProjectWithIncorrectUserIdReturnUserIdDoesNotExist() {
+        ServiceAnswer query = projectTeacherService.acceptProject(0L, 56L);
+        assertEquals(ServiceMessage.USER_ID_DOES_NOT_EXIST, query.getServiceMessage());
+    }
+
+    @Test
+    void acceptProjectWithIncorrectUserIdReturnNullData() {
+        ServiceAnswer query = projectTeacherService.acceptProject(0L, 56L);
+        assertNull(query.getData());
+    }
+
+    @Test
+    void acceptProjectWithIncorrectProjectIdReturnProjectIdDoesNotExist() {
+        ServiceAnswer query = projectTeacherService.acceptProject(53L, 0L);
+        assertEquals(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST, query.getServiceMessage());
+    }
+
+    @Test
+    void acceptProjectWithIncorrectProjectIdReturnNullData() {
+        ServiceAnswer query = projectTeacherService.acceptProject(53L, 0L);
+        assertNull(query.getData());
+    }
+
+    @Test
+    void acceptProjectWithIdReviewerThatDoesNotMatchTheProjectReturnIdReviewerDoesNotMatchWithProject() {
+        ServiceAnswer query = projectTeacherService.acceptProject(53L, 1L);
+        assertEquals(ServiceMessage.ID_REVIEWER_DOES_NOT_MATCH_WITH_PROJECT, query.getServiceMessage());
+    }
+
+    @Test
+    void acceptProjectWithIdReviewerThatDoesNotMatchTheProjectReturnNullData() {
+        ServiceAnswer query = projectTeacherService.acceptProject(53L, 1L);
+        assertNull(query.getData());
+    }
+
+    @Test
+    void acceptProjectWithAProjectThatHasAlreadyBeenAcceptedReturnProjectHasAlreadyBeenAccepted() {
+        projectTeacherService.acceptProject(53L, 56L);
+        ServiceAnswer query = projectTeacherService.acceptProject(53L, 56L);
+        assertEquals(ServiceMessage.PROJECT_HAS_ALREADY_BEEN_ACCEPTED, query.getServiceMessage());
+    }
+
+    @Test
+    void acceptProjectWithAProjectThatHasAlreadyBeenAcceptedReturnNullData() {
+        projectTeacherService.acceptProject(53L, 56L);
+        ServiceAnswer query = projectTeacherService.acceptProject(53L, 56L);
+        assertNull(query.getData());
+    }
+
+    @Test
+    void acceptProjectWithAProjectThatPhaseWillNotChangeReturnOk() {
+        ServiceAnswer query = projectTeacherService.acceptProject(53L, 56L);
+        assertEquals(ServiceMessage.OK, query.getServiceMessage());
+    }
+
+    @Test
+    void acceptProjectWithAProjectThatPhaseWillNotChangeReturnNotNullData() {
+        ServiceAnswer query = projectTeacherService.acceptProject(53L, 56L);
+        assertNotNull(query.getData());
+    }
+
+    @Test
+    void acceptProjectWithAProjectThatPhaseWillNotChangeReturnDataTheProjectHasNotChangeThePhase() {
+        ServiceAnswer query = projectTeacherService.acceptProject(53L, 56L);
+        assertEquals("THE PROJECT HAS NOT CHANGED TO THE PHASE OF TRIBUNALS", query.getData());
+    }
+
+    @Test
+    void acceptProjectWithAProjectThatPhaseWillNotChangeThePaseOfTheProject() {
+        Optional<Project> project = projectRepository.findById(56L);
+        String message1 = project.get().getPhase();
+        ServiceAnswer query = projectTeacherService.acceptProject(53L, 56L);
+        Optional<Project> project2 = projectRepository.findById(56L);
+        String message2 = project.get().getPhase();
+        assertEquals(message1, message2);
+    }
+
+    @Test
+    void acceptProjectWithAProjectThatPhaseWillChangeReturnOk() {
+        ServiceAnswer query = projectTeacherService.acceptProject(53L, 57L);
+        assertEquals(ServiceMessage.OK, query.getServiceMessage());
+    }
+
+    @Test
+    void acceptProjectWithAProjectThatPhaseWillChangeReturnNotNullData() {
+        ServiceAnswer query = projectTeacherService.acceptProject(53L, 57L);
+        assertNotNull(query.getData());
+    }
+
+    @Test
+    void acceptProjectWithAProjectThatPhaseWillChangeReturnDataTheProjectHasChangeThePhase() {
+        ServiceAnswer query = projectTeacherService.acceptProject(53L, 57L);
+        assertEquals("THE PROJECT HAS CHANGED TO THE PHASE OF TRIBUNALS", query.getData());
+    }
+
+    @Test
+    void acceptProjectWithAProjectThatPhaseWillChangeThePaseOfTheProject() {
+        Optional<Project> project = projectRepository.findById(57L);
+        String message1 = project.get().getPhase();
+        ServiceAnswer query = projectTeacherService.acceptProject(53L, 57L);
+        Optional<Project> project2 = projectRepository.findById(57L);
+        String message2 = project.get().getPhase();
+        assertTrue(!message1.equals(message2) && message2.equals("TRIBUNALS_PHASE"));
     }
 }

@@ -9,4 +9,6 @@ public interface ProjectTeacherService {
     ServiceAnswer getAllProjectsNotAcceptedNotReviewedByTeacherId(Long id);
 
     ServiceAnswer getAllProjectsAcceptedByTeacherId(Long id);
+
+    ServiceAnswer acceptProject(Long idTeacher, Long idProject);
 }

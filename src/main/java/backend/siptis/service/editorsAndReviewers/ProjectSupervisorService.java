@@ -9,4 +9,6 @@ public interface ProjectSupervisorService {
     ServiceAnswer getAllProjectsNotAcceptedNotReviewedBySupervisorId(Long id);
 
     ServiceAnswer getAllProjectsAcceptedBySupervisorId(Long id);
+
+    ServiceAnswer acceptProject(Long idSupervisor, Long idProject);
 }

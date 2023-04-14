@@ -67,24 +67,24 @@ public class ProjectServiceImpl implements ProjectService {
 
         Presentation presentation = presentationRepository.findTopByProjectIdOrderByDateDesc(idProject);
         if(presentation == null){
-            ProjectToReviewSectionVO data = new ProjectToReviewSectionVO(project, false, -1, false);
+            ProjectToReviewSectionVO data = new ProjectToReviewSectionVO(project, Boolean.FALSE, -1, Boolean.FALSE);
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.THERE_IS_NO_PRESENTATION_YET).data(data).build();
         }
 
         if(Boolean.FALSE.equals(presentation.getReviewed())){
-            ProjectToReviewSectionVO data = new ProjectToReviewSectionVO(project, true, getDaysDifference(presentation.getDate()), false);
+            ProjectToReviewSectionVO data = new ProjectToReviewSectionVO(project, Boolean.TRUE, getDaysDifference(presentation.getDate()), Boolean.FALSE);
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(data).build();
         }
 
         Review lastReview = reviewRepository.findTopByPresentationProjectIdAndSiptisUserIdOrderByDateDesc(idProject, idReviewer);
 
         if(lastReview == null){
-            ProjectToReviewSectionVO data = new ProjectToReviewSectionVO(project, false, getDaysDifference(presentation.getDate()), false);
+            ProjectToReviewSectionVO data = new ProjectToReviewSectionVO(project, Boolean.FALSE, getDaysDifference(presentation.getDate()), Boolean.FALSE);
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(data).build();
         }
 
         Integer numberOfDays = getDaysDifference(lastReview.getDate());
-        ProjectToReviewSectionVO data = new ProjectToReviewSectionVO(project, false, numberOfDays, true);
+        ProjectToReviewSectionVO data = new ProjectToReviewSectionVO(project, Boolean.FALSE, numberOfDays, Boolean.TRUE);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(data).build();
     }
 

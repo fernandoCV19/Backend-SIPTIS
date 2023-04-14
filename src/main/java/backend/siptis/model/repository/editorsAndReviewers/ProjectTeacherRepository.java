@@ -14,4 +14,6 @@ public interface ProjectTeacherRepository extends JpaRepository<ProjectTeacher, 
     List<ProjectTeacher> findByTeacherIdAndAcceptedIsFalseAndReviewedIsFalse(Long id);
 
     List<ProjectTeacher> findByTeacherIdAndAcceptedIsTrue(Long id);
+
+    ProjectTeacher findByTeacherIdAndProjectId(Long teacherID, Long projectId);
 }

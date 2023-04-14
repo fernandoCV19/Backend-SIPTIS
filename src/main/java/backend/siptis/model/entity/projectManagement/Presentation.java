@@ -1,5 +1,6 @@
 package backend.siptis.model.entity.projectManagement;
 
+import backend.siptis.commons.Phase;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;

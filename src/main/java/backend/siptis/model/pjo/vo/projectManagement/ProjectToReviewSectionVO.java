@@ -5,9 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
@@ -23,7 +21,7 @@ public class ProjectToReviewSectionVO {
     private Boolean reviewed;
 
     public ProjectToReviewSectionVO(Project project, Boolean studentChanges,Integer numberOfDays, Boolean reviewed) {
-        students = project.getStudents().stream().map((studentProject) -> studentProject.getStudent().getUserInformation().getNames()).toList();
+        students = project.getStudents().stream().map((studentProject) -> studentProject.getStudent().getUserInformation().getNames() + " " + studentProject.getStudent().getUserInformation().getLastnames()).toList();
         projectName = project.getName();
         modality = project.getModality().getName();
         projectKey = project.getProjectPath();

@@ -1,10 +1,15 @@
 package backend.siptis.service.editorsAndReviewers;
 
+import backend.siptis.commons.Phase;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.commons.ServiceAnswer;
+import backend.siptis.model.entity.editorsAndReviewers.ProjectSupervisor;
+import backend.siptis.model.entity.editorsAndReviewers.ProjectTeacher;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectTutor;
+import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.pjo.vo.projectManagement.ProjectToHomePageVO;
 import backend.siptis.model.repository.editorsAndReviewers.ProjectTutorRepository;
+import backend.siptis.model.repository.projectManagement.ProjectRepository;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +23,7 @@ public class ProjectTutorServiceImpl implements ProjectTutorService {
 
     private final ProjectTutorRepository projectTutorRepository;
     private final SiptisUserRepository siptisUserRepository;
+    private final ProjectRepository projectRepository;
 
     @Override
     public ServiceAnswer getAllProjectsNotAcceptedReviewedByTutorId(Long id) {
@@ -47,6 +53,41 @@ public class ProjectTutorServiceImpl implements ProjectTutorService {
 
         List<ProjectTutor> listaProyectos = projectTutorRepository.findByTutorIdAndAcceptedIsTrue(id);
         return getProjects(listaProyectos);
+    }
+
+    @Override
+    public ServiceAnswer acceptProject(Long idTutor, Long idProject) {
+        if(siptisUserRepository.findById(idTutor).isEmpty()){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.USER_ID_DOES_NOT_EXIST).data(null).build();
+        }
+        if(projectRepository.findById(idProject).isEmpty()){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data(null).build();
+        }
+        ProjectTutor query = projectTutorRepository.findByTutorIdAndProjectId(idTutor, idProject);
+        if(query == null){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_REVIEWER_DOES_NOT_MATCH_WITH_PROJECT).data(null).build();
+        }
+
+        if(Boolean.TRUE.equals(query.getAccepted())){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_HAS_ALREADY_BEEN_ACCEPTED).data(null).build();
+        }
+
+        query.setAccepted(Boolean.TRUE);
+        projectTutorRepository.save(query);
+        return verifyChangeOfFase(query);
+    }
+
+    private ServiceAnswer verifyChangeOfFase(ProjectTutor query) {
+        Project project = query.getProject();
+        boolean allReviewersHaveAccepted = project.getSupervisors().stream().allMatch(ProjectSupervisor::getAccepted) &&
+                project.getTeachers().stream().allMatch(ProjectTeacher::getAccepted) && project.getTutors().stream().allMatch(ProjectTutor::getAccepted);
+
+        if(allReviewersHaveAccepted){
+            project.setPhase(Phase.TRIBUNALS_PHASE.toString());
+            projectRepository.save(project);
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("THE PROJECT HAS CHANGED TO THE PHASE OF TRIBUNALS").build();
+        }
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("THE PROJECT HAS NOT CHANGED TO THE PHASE OF TRIBUNALS").build();
     }
 
     private ServiceAnswer getProjects(List<ProjectTutor> listaProyectos){
