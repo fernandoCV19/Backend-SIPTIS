@@ -3,6 +3,7 @@ package backend.siptis.service.editorsAndReviewers;
 import backend.siptis.commons.Phase;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.commons.ServiceAnswer;
+import backend.siptis.model.entity.editorsAndReviewers.ProjectTeacher;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectTribunal;
 import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.pjo.vo.projectManagement.ProjectToTribunalHomePageVO;
@@ -87,6 +88,34 @@ public class ProjectTribunalServiceImpl implements ProjectTribunalService {
         query.setAccepted(Boolean.TRUE);
         projectTribunalRepository.save(query);
         return verifyChangeOfFase(query);
+    }
+
+    @Override
+    public ServiceAnswer removeAcceptProject(Long idTribunal, Long idProject) {
+        if(siptisUserRepository.findById(idTribunal).isEmpty()){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.USER_ID_DOES_NOT_EXIST).data(null).build();
+        }
+        if(projectRepository.findById(idProject).isEmpty()){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data(null).build();
+        }
+        ProjectTribunal query = projectTribunalRepository.findByTribunalIdAndProjectId(idTribunal, idProject);
+        if(query == null){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_REVIEWER_DOES_NOT_MATCH_WITH_PROJECT).data(null).build();
+        }
+
+        if(Boolean.FALSE.equals(query.getAccepted())){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_IS_ALREADY_NOT_ACCEPTED).data(null).build();
+        }
+
+        Project project = query.getProject();
+
+        if(!project.getPhase().equals(Phase.TRIBUNALS_PHASE.toString())){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_IS_ON_ANOTHER_PHASE).data(null).build();
+        }
+
+        query.setAccepted(Boolean.FALSE);
+        projectTribunalRepository.save(query);
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("THE PROJECT HAS CHANGED THE ACCEPTED PARAMETER").build();
     }
 
     private ServiceAnswer verifyChangeOfFase(ProjectTribunal query) {

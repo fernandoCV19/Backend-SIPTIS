@@ -11,4 +11,6 @@ public interface ProjectTeacherService {
     ServiceAnswer getAllProjectsAcceptedByTeacherId(Long id);
 
     ServiceAnswer acceptProject(Long idTeacher, Long idProject);
+
+    ServiceAnswer removeAcceptProject(Long idTeacher, Long idProject);
 }

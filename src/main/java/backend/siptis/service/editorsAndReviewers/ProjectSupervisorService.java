@@ -11,4 +11,6 @@ public interface ProjectSupervisorService {
     ServiceAnswer getAllProjectsAcceptedBySupervisorId(Long id);
 
     ServiceAnswer acceptProject(Long idSupervisor, Long idProject);
+
+    ServiceAnswer removeAcceptProject(Long idSupervisor, Long idProject);
 }

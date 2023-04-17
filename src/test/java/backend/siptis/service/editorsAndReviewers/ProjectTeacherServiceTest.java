@@ -2,8 +2,11 @@ package backend.siptis.service.editorsAndReviewers;
 
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
+import backend.siptis.model.entity.editorsAndReviewers.ProjectSupervisor;
+import backend.siptis.model.entity.editorsAndReviewers.ProjectTeacher;
 import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.pjo.vo.projectManagement.ProjectToHomePageVO;
+import backend.siptis.model.repository.editorsAndReviewers.ProjectTeacherRepository;
 import backend.siptis.model.repository.projectManagement.ProjectRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
@@ -29,11 +32,13 @@ class ProjectTeacherServiceTest {
 
     private final ProjectTeacherService projectTeacherService;
     private final ProjectRepository projectRepository;
+    private final ProjectTeacherRepository projectTeacherRepository;
 
     @Autowired
-    ProjectTeacherServiceTest(ProjectTeacherServiceImpl projectTeacherService, ProjectRepository projectRepository) {
+    ProjectTeacherServiceTest(ProjectTeacherServiceImpl projectTeacherService, ProjectRepository projectRepository, ProjectTeacherRepository projectTeacherRepository) {
         this.projectTeacherService = projectTeacherService;
         this.projectRepository = projectRepository;
+        this.projectTeacherRepository = projectTeacherRepository;
     }
 
     @Test
@@ -311,5 +316,101 @@ class ProjectTeacherServiceTest {
         Optional<Project> project2 = projectRepository.findById(57L);
         String message2 = project.get().getPhase();
         assertTrue(!message1.equals(message2) && message2.equals("TRIBUNALS_PHASE"));
+    }
+
+    @Test
+    void acceptProjectWithAProjectThatAcceptedParameterCanChangeWillChangeThatParameter() {
+        ServiceAnswer query = projectTeacherService.acceptProject(53L, 57L);
+        ProjectTeacher res = projectTeacherRepository.findByTeacherIdAndProjectId(53L, 57L);
+        assertTrue(res.getAccepted());
+    }
+
+    @Test
+    void removeAcceptProjectWithIncorrectUserIdReturnUserIdDoesNotExist() {
+        ServiceAnswer query = projectTeacherService.removeAcceptProject(0L, 52L);
+        assertEquals(ServiceMessage.USER_ID_DOES_NOT_EXIST, query.getServiceMessage());
+    }
+
+    @Test
+    void removeAcceptProjectWithIncorrectUserIdReturnNullData() {
+        ServiceAnswer query = projectTeacherService.removeAcceptProject(0L, 52L);
+        assertNull(query.getData());
+    }
+
+    @Test
+    void removeAcceptProjectWithIncorrectProjectIdReturnProjectIdDoesNotExist() {
+        ServiceAnswer query = projectTeacherService.removeAcceptProject(53L, 0L);
+        assertEquals(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST, query.getServiceMessage());
+    }
+
+    @Test
+    void removeAcceptProjectWithIncorrectProjectIdReturnNullData() {
+        ServiceAnswer query = projectTeacherService.removeAcceptProject(53L, 0L);
+        assertNull(query.getData());
+    }
+
+    @Test
+    void removeAcceptProjectWithIdReviewerThatDoesNotMatchTheProjectReturnIdReviewerDoesNotMatchWithProject() {
+        ServiceAnswer query = projectTeacherService.removeAcceptProject(53L, 2L);
+        assertEquals(ServiceMessage.ID_REVIEWER_DOES_NOT_MATCH_WITH_PROJECT, query.getServiceMessage());
+
+    }
+
+    @Test
+    void removeAcceptProjectWithIdReviewerThatDoesNotMatchTheProjectReturnNullData() {
+        ServiceAnswer query = projectTeacherService.removeAcceptProject(53L, 2L);
+        assertNull(query.getData());
+    }
+
+    @Test
+    void removeAcceptProjectWithAProjectThatIsNoAcceptedReturnProjectIsAlreadyNotAccepted() {
+        ServiceAnswer query = projectTeacherService.removeAcceptProject(53L, 54L);
+        assertEquals(ServiceMessage.PROJECT_IS_ALREADY_NOT_ACCEPTED, query.getServiceMessage());
+
+    }
+
+    @Test
+    void removeAcceptProjectWithAProjectThatIsNoAcceptedReturnNullData() {
+        ServiceAnswer query = projectTeacherService.removeAcceptProject(53L, 54L);
+        assertNull(query.getData());
+    }
+
+    @Test
+    void removeAcceptProjectWithAProjectThatIsInTribunalsPhaseReturnProjectIsInTribunalsPhase() {
+        ServiceAnswer query = projectTeacherService.removeAcceptProject(53L, 50L);
+        assertEquals(ServiceMessage.PROJECT_IS_ON_ANOTHER_PHASE, query.getServiceMessage());
+    }
+
+    @Test
+    void removeAcceptProjectWithAProjectThatIsInTribunalsPhaseReturnNullData() {
+        ServiceAnswer query = projectTeacherService.removeAcceptProject(53L, 50L);
+        assertNull(query.getData());
+    }
+
+    @Test
+    void removeAcceptProjectWithAProjectThatIsInTribunalsPhaseWillNotChangeThePhase() {
+        Project projectBefore = projectRepository.findById(50L).get();
+        ServiceAnswer query = projectTeacherService.removeAcceptProject(53L, 50L);
+        Project projectAfter = projectRepository.findById(50L).get();
+        assertEquals(projectBefore.getPhase(), projectAfter.getPhase());
+    }
+
+    @Test
+    void removeAcceptProjectWithAProjectThatAcceptedParameterCanBeChangeReturnOk() {
+        ServiceAnswer query = projectTeacherService.removeAcceptProject(53L, 53L);
+        assertEquals(ServiceMessage.OK, query.getServiceMessage());
+    }
+
+    @Test
+    void removeAcceptProjectWithAProjectThatAcceptedParameterCanBeChangeReturnDataWithAValue() {
+        ServiceAnswer query = projectTeacherService.removeAcceptProject(53L, 53L);
+        assertNotNull(query.getData());
+    }
+
+    @Test
+    void removeAcceptProjectWithAProjectThatAcceptedParameterCanChangeWillChangeThatParameter() {
+        ServiceAnswer query = projectTeacherService.removeAcceptProject(53L, 53L);
+        ProjectTeacher res = projectTeacherRepository.findByTeacherIdAndProjectId(53L, 53L);
+        assertFalse(res.getAccepted());
     }
 }
