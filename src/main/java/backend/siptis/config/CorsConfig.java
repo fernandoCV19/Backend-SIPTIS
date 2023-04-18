@@ -15,46 +15,47 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
 
+                String localUI = "http://127.0.0.1:5173/";
 
                 registry.addMapping("/login")
-                        .allowedOrigins("http://localhost:3000/")
+                        .allowedOrigins(localUI)
                         .allowedMethods("*")
                         .exposedHeaders("*");
 
                 registry.addMapping("/user/login")
-                        .allowedOrigins("http://localhost:3000/")
+                        .allowedOrigins(localUI)
                         .allowedMethods("*")
                         .exposedHeaders("*");
 
                 registry.addMapping("/user/register/admin")
-                        .allowedOrigins("http://localhost:3000/")
+                        .allowedOrigins(localUI)
                         .allowedMethods("*")
                         .exposedHeaders("*");
 
                 registry.addMapping("/user/register/student")
-                        .allowedOrigins("http://localhost:3000/")
+                        .allowedOrigins(localUI)
                         .allowedMethods("*")
                         .exposedHeaders("*");
 
                 registry.addMapping("/user/test")
-                        .allowedOrigins("http://localhost:3000/")
+                        .allowedOrigins(localUI)
                         .allowedMethods("*")
                         .exposedHeaders("*");
 
                 registry.addMapping("/user/todos")
-                        .allowedOrigins("http://localhost:3000/")
+                        .allowedOrigins(localUI)
                         .allowedMethods("*");
 
                 registry.addMapping("/user/information/*")
-                        .allowedOrigins("http://localhost:3000/")
+                        .allowedOrigins(localUI)
                         .allowedMethods("*");
 
                 registry.addMapping("/user/information")
-                        .allowedOrigins("http://localhost:3000/")
+                        .allowedOrigins(localUI)
                         .allowedMethods("*");
 
                 registry.addMapping("/user/editUser/*")
-                        .allowedOrigins("http://localhost:3000/")
+                        .allowedOrigins(localUI)
                         .allowedMethods("*");
             }
         };
