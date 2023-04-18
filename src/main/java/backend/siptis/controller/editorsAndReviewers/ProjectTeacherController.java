@@ -35,6 +35,28 @@ public class ProjectTeacherController {
         return createResponseEntity(serviceAnswer);
     }
 
+    @GetMapping("/acceptProject/{idProject}/{idReviewer}")
+    public ResponseEntity<?> acceptProject(@PathVariable("idProject") Long idProject, @PathVariable("idReviewer") Long idReviewer){
+        ServiceAnswer serviceAnswer = projectTeacherService.acceptProject(idReviewer, idProject);
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        if(serviceAnswer.getServiceMessage().equals(ServiceMessage.OK)){
+            httpStatus = HttpStatus.OK;
+        }
+        ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
+        return new ResponseEntity<>(controllerAnswer, httpStatus);
+    }
+
+    @GetMapping("/removeAccepted/{idProject}/{idReviewer}")
+    public ResponseEntity<?> removeacceptedFromAProject(@PathVariable("idProject") Long idProject, @PathVariable("idReviewer") Long idReviewer){
+        ServiceAnswer serviceAnswer = projectTeacherService.removeAcceptProject(idReviewer, idProject);
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        if(serviceAnswer.getServiceMessage().equals(ServiceMessage.OK)){
+            httpStatus = HttpStatus.OK;
+        }
+        ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
+        return new ResponseEntity<>(controllerAnswer, httpStatus);
+    }
+
     private ResponseEntity<?> createResponseEntity(ServiceAnswer serviceAnswer){
         Object data = serviceAnswer.getData();
         ServiceMessage serviceMessage = serviceAnswer.getServiceMessage();
