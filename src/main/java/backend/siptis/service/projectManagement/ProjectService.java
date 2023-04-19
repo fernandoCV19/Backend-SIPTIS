@@ -4,8 +4,8 @@ import backend.siptis.commons.ServiceAnswer;
 
 public interface ProjectService {
 
-    ServiceAnswer obtenerProyectos();
+    ServiceAnswer getProjects();
 
-    ServiceAnswer obtenerPresentaciones (Long idProyecto);
+    ServiceAnswer getPresentations (Long idProyecto);
 
 }

@@ -1,21 +1,41 @@
 spring:
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:jpa_jbd
-    username: sa
-    password:
+    url: jdbc:postgresql://localhost:5432/siptis
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 50MB
+      max-request-size: 50MB
+
   jpa:
     hibernate:
       ddl-auto: update
+    show-sql: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.H2Dialect
-    show-sql: true
-  mvc:
-    pathmatch:
-      matching-strategy: ANT_PATH_MATCHER
+        format_sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
 
-app:
-  jwt:
-    secret: secret
-    expiration: 3600
+server:
+  port: 9090
+
+cloud:
+  aws:
+    region:
+      static: sa-east-1
+    stack:
+      auto: false
+    credentials:
+      access-key: AKIA4O3PHN4JLLTTCSW5
+      secret-key: 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
+
+logging:
+  level:
+    com:
+      amazonaws:
+        util:
+          EC2MetadataUtils: error

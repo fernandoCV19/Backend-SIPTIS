@@ -19,13 +19,13 @@ public class ProjectServiceImpl implements ProjectService {
     private ProjectRepository projectRepository;
 
     @Override
-    public ServiceAnswer obtenerProyectos(){
+    public ServiceAnswer getProjects(){
         List<Project> proyectos = projectRepository.findAll();
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(proyectos).build();
     }
 
     @Override
-    public ServiceAnswer obtenerPresentaciones (Long idProyecto){
+    public ServiceAnswer getPresentations (Long idProyecto){
         Optional<Project> oProyectoGrado = projectRepository.findById(idProyecto);
         if(oProyectoGrado.isEmpty()){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();

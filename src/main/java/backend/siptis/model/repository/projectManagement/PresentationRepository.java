@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PresentationRepository extends JpaRepository<Presentation, Long> {
-    Presentation findById(int id);
+    Optional<Presentation> findById(long id);
     Optional<Presentation> findTopByProjectIdAndReviewed(long idProyecto , boolean revisado);
 
     @Override

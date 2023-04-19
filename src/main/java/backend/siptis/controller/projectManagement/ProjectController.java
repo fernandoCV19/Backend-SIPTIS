@@ -20,12 +20,12 @@ public class ProjectController {
 
     @GetMapping("/presentations/{id}")
     public ResponseEntity<?> getPresentaciones(@PathVariable ("id") Long idProyecto){
-        ServiceAnswer serviceAnswer = proyectoGradoService.obtenerPresentaciones(idProyecto);
+        ServiceAnswer serviceAnswer = proyectoGradoService.getPresentations(idProyecto);
         return crearResponseEntity(serviceAnswer);
     }
     @GetMapping("/")
     public ResponseEntity<?> getProyectos(){
-        ServiceAnswer serviceAnswer = proyectoGradoService.obtenerProyectos();
+        ServiceAnswer serviceAnswer = proyectoGradoService.getProjects();
         return crearResponseEntity(serviceAnswer);
     }
     private ResponseEntity<?> crearResponseEntity(ServiceAnswer serviceAnswer){
