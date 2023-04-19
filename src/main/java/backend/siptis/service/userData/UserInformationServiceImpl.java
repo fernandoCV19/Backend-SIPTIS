@@ -30,6 +30,14 @@ public class UserInformationServiceImpl implements UserInformationService {
         //return null;
     }
 
+    public boolean existByCodSIS(String codSIS){
+        return userInformationRepository.existsByCodSIS(codSIS);
+    }
+
+    public boolean existByCi(String ci){
+        return userInformationRepository.existsByCi(ci);
+    }
+
     @Override
     public ServiceAnswer registerStudent(
             StudentRegisterDTO estudianteDTO, SiptisUser siptisUser) {
@@ -58,7 +66,7 @@ public class UserInformationServiceImpl implements UserInformationService {
         studentInformationDTO.setNames(estudianteDTO.getNames());
         studentInformationDTO.setCi(estudianteDTO.getCi());
         studentInformationDTO.setCodSIS(estudianteDTO.getCodSIS());
-        studentInformationDTO.setFechaNac(estudianteDTO.getBirthDate());
+        studentInformationDTO.setBirthDate(estudianteDTO.getBirthDate());
         studentInformationDTO.setCelNumber(estudianteDTO.getCelNumber());
 
         //return studentInformationDTO;
