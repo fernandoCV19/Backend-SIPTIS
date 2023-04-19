@@ -31,13 +31,14 @@ public class WebSecurityConfig {
     throws Exception{
         JWTAuthenticationFilter jwtAuthenticationFilter =new JWTAuthenticationFilter();
         jwtAuthenticationFilter.setAuthenticationManager(manager);
-        jwtAuthenticationFilter.setFilterProcessesUrl("/login");
+        //jwtAuthenticationFilter.setFilterProcessesUrl("/login");
 
         return http.cors().and()
                 .csrf().disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/user/register/student", "/user/register/admin" ,  "/user/test", "/supervisor/**", "/tribunal/**", "/teacher/**", "/tutor/**", "/project/**", "/email",
-                        "/general-activity","/general-activity/create", "/general-activity/*")
+                        "/general-activity","/general-activity/create", "/general-activity/*", "/user/test", "/user/login","/user/todos","/user/editUser/*",
+                        "/user/information/*", "/email/send")
                 .permitAll()
                 .anyRequest().authenticated()
                 .and().sessionManagement()
