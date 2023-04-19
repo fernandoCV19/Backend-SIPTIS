@@ -246,15 +246,15 @@ INSERT INTO project_student(id, user_id, project_id) VALUES (13, 17, 13);
 
 INSERT INTO siptis_user(id, email, password) VALUES (30, 'usuarioReview@mail.com', '12345678');
 
-INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, wpp_messages, user_id) VALUES (30, '2000-1-20', '2234568', '2000000', '22345670', 'ApellidosReview', 'NombresReview', false, 30);
+INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, user_id) VALUES (30, '2000-1-20', '2234568', '2000000', '22345670', 'ApellidosReview', 'NombresReview', 30);
 
 INSERT INTO siptis_user(id, email, password) VALUES (31, 'estudiante1@mail.com', '12345678');
 
-INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, wpp_messages, user_id) VALUES (31, '2000-1-20', '2234568', '2000000', '22345670', 'ApellidosEstudiante1', 'NombresEstudiante1', false, 31);
+INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, user_id) VALUES (31, '2000-1-20', '2234568', '2000000', '22345670', 'ApellidosEstudiante1', 'NombresEstudiante1', 31);
 
 INSERT INTO siptis_user(id, email, password) VALUES (32, 'estudiante2@mail.com', '12345678');
 
-INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, wpp_messages, user_id) VALUES (32, '2000-1-20', '2234568', '2000000', '22345670', 'ApellidosEstudiante2', 'NombresEstudiante2', false, 32);
+INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, user_id) VALUES (32, '2000-1-20', '2234568', '2000000', '22345670', 'ApellidosEstudiante2', 'NombresEstudiante2', 32);
 
 
 
@@ -381,16 +381,16 @@ INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id,
 --cambiar de fase proyectos
 
 INSERT INTO siptis_user(id, email, password) VALUES (50, 'tribunal@mail.com', '12345678');
-INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, wpp_messages, user_id) VALUES (50, '2000-1-20', '2234568', '2000000', '22345670', 'ApellidosTribunal', 'NombresTribunal', false, 50);
+INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, user_id) VALUES (50, '2000-1-20', '2234568', '2000000', '22345670', 'ApellidosTribunal', 'NombresTribunal', 50);
 
 INSERT INTO siptis_user(id, email, password) VALUES (51, 'tutor@mail.com', '12345678');
-INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, wpp_messages, user_id) VALUES (51, '2000-1-20', '2234568', '2000000', '22345670', 'ApellidosTutor', 'NombresTutor', false, 51);
+INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, user_id) VALUES (51, '2000-1-20', '2234568', '2000000', '22345670', 'ApellidosTutor', 'NombresTutor', 51);
 
 INSERT INTO siptis_user(id, email, password) VALUES (52, 'supervisor@mail.com', '12345678');
-INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, wpp_messages, user_id) VALUES (52, '2000-1-20', '2234568', '2000000', '22345670', 'ApellidosSupervisor', 'NombresSupervisor', false, 52);
+INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, user_id) VALUES (52, '2000-1-20', '2234568', '2000000', '22345670', 'ApellidosSupervisor', 'NombresSupervisor', 52);
 
 INSERT INTO siptis_user(id, email, password) VALUES (53, 'docente@mail.com', '12345678');
-INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, wpp_messages, user_id) VALUES (53, '2000-1-20', '2234568', '2000000', '22345670', 'ApellidosDocente', 'NombresDocente', false, 53);
+INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, user_id) VALUES (53, '2000-1-20', '2234568', '2000000', '22345670', 'ApellidosDocente', 'NombresDocente', 53);
 
 
 INSERT INTO project(id, blue_book_path, perfil_path, project_path, phase, name, defense_id, state_id, modality_id) VALUES (50, 'Libro1', null, 'Proyecto1', 'TRIBUNALS_PHASE', 'ProyectoGrado1', null, null, 1);
