@@ -17,7 +17,7 @@ public class CorsConfig {
 
 
                 registry.addMapping("/login")
-                        .allowedOrigins("http://localhost:3000/")
+                        .allowedOrigins("http://localhost:5173/")
                         .allowedMethods("*")
                         .exposedHeaders("*");
 
@@ -35,9 +35,7 @@ public class CorsConfig {
                         .allowedOrigins("http://localhost:3000/")
                         .allowedMethods("*");
 
-                registry.addMapping("/general-activity")
-                        .allowedOrigins("http://localhost:5137/")
-                        .allowedMethods("*");
+
             }
         };
     }
