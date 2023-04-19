@@ -15,24 +15,27 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
 
+                String userFrontend = "http://127.0.0.1:5173/";
 
-                registry.addMapping("/login")
-                        .allowedOrigins("http://localhost:3000/")
+
+                registry.addMapping("/user/login")
+                        .allowedOrigins(userFrontend)
                         .allowedMethods("*")
                         .exposedHeaders("*");
 
+
                 registry.addMapping("/user/register/admin")
-                        .allowedOrigins("http://localhost:3000/")
+                        .allowedOrigins(userFrontend)
                         .allowedMethods("*")
                         .exposedHeaders("*");
 
                 registry.addMapping("/user/test")
-                        .allowedOrigins("http://localhost:3000/")
+                        .allowedOrigins(userFrontend)
                         .allowedMethods("*")
                         .exposedHeaders("*");
 
                 registry.addMapping("/todos")
-                        .allowedOrigins("http://localhost:3000/")
+                        .allowedOrigins(userFrontend)
                         .allowedMethods("*");
             }
         };
