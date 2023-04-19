@@ -9,4 +9,6 @@ public interface ProjectService {
     ServiceAnswer obtenerPresentaciones (Long idProyecto);
 
     ServiceAnswer getProjectInfoToReview(Long idProject, Long idReviewer);
+
+    ServiceAnswer getAllProjectInfo(Long idProject);
 }

@@ -9,7 +9,9 @@ public class DefenseVO {
     private String defenseHour;
 
     public DefenseVO(Defense defense) {
-        place = defense.getPlace();
-        defenseHour = defense.getDefenseHour();
+        if (defense != null) {
+            place = defense.getPlace();
+            defenseHour = defense.getDefenseHour();
+        }
     }
 }

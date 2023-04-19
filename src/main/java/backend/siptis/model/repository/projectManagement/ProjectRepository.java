@@ -10,8 +10,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Long> {
-    Optional<Project> findById(int id);
-
     @Query("SELECT sup.supervisor.id AS idUser FROM ProjectSupervisor sup WHERE sup.project.id = :idProject"
             + " UNION " +
             "SELECT tea.teacher.id AS idUser FROM ProjectTeacher tea WHERE tea.project.id = :idProject"

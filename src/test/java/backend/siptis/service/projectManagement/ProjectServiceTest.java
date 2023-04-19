@@ -2,6 +2,7 @@ package backend.siptis.service.projectManagement;
 
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
+import backend.siptis.model.pjo.vo.projectManagement.ProjectCompleteInfo;
 import backend.siptis.model.pjo.vo.projectManagement.ProjectToReviewSectionVO;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -143,5 +144,36 @@ class ProjectServiceTest {
         assertFalse(projectToReviewSectionVO.getStudentChanges());
         assertFalse(projectToReviewSectionVO.getReviewed());
         assertNotEquals(-1, projectToReviewSectionVO.getNumberOfDays());
+    }
+
+    @Test
+    void getAllProjectInfoWithIncorrectIdReturnProjectIdDoesNotExist() {
+        ServiceAnswer query = projectService.getAllProjectInfo(0L);
+        assertEquals(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST, query.getServiceMessage());
+    }
+
+    @Test
+    void getAllProjectInfoWithIncorrectIdReturnNullData() {
+        ServiceAnswer query = projectService.getAllProjectInfo(0L);
+        assertNull(query.getData());
+    }
+
+    @Test
+    void getAllProjectInfoWithIncorrectIdReturnOk() {
+        ServiceAnswer query = projectService.getAllProjectInfo(1L);
+        assertEquals(ServiceMessage.OK, query.getServiceMessage());
+    }
+
+    @Test
+    void getAllProjectInfoWithIncorrectIdReturnObjectWithData() {
+        ServiceAnswer query = projectService.getAllProjectInfo(1L);
+        assertNotNull(query.getData());
+    }
+
+    @Test
+    void getAllProjectInfoWithIncorrectIdReturnTheProjectThatOwnsTheId() {
+        ServiceAnswer query = projectService.getAllProjectInfo(1L);
+        ProjectCompleteInfo project = (ProjectCompleteInfo) query.getData();
+        assertEquals(1L, project.getId());
     }
 }

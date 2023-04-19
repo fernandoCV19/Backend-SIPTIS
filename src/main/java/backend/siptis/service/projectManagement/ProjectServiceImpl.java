@@ -5,6 +5,7 @@ import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.projectManagement.Presentation;
 import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.entity.projectManagement.Review;
+import backend.siptis.model.pjo.vo.projectManagement.ProjectCompleteInfo;
 import backend.siptis.model.pjo.vo.projectManagement.ProjectToReviewSectionVO;
 import backend.siptis.model.repository.projectManagement.PresentationRepository;
 import backend.siptis.model.repository.projectManagement.ProjectRepository;
@@ -86,6 +87,17 @@ public class ProjectServiceImpl implements ProjectService {
         Integer numberOfDays = getDaysDifference(lastReview.getDate());
         ProjectToReviewSectionVO data = new ProjectToReviewSectionVO(project, Boolean.FALSE, numberOfDays, Boolean.TRUE);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(data).build();
+    }
+
+    @Override
+    public ServiceAnswer getAllProjectInfo(Long idProject) {
+        Optional<Project> query = projectRepository.findById(idProject);
+        if(query.isEmpty()){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data(null).build();
+        }
+
+        Project project = query.get();
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(new ProjectCompleteInfo(project)).build();
     }
 
     private Integer getDaysDifference(Date compare){

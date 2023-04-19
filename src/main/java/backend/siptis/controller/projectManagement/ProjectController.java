@@ -48,4 +48,15 @@ public class ProjectController {
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
+
+    @GetMapping("/allInfo/{idProject}")
+    public ResponseEntity<?> getAllInfo(@PathVariable("idProject") Long idProject){
+        ServiceAnswer serviceAnswer = proyectoGradoService.getAllProjectInfo(idProject);
+        HttpStatus httpStatus = HttpStatus.OK;
+        if(serviceAnswer.getServiceMessage() != ServiceMessage.OK){
+            httpStatus = HttpStatus.BAD_REQUEST;
+        }
+        ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
+        return new ResponseEntity<>(controllerAnswer, httpStatus);
+    }
 }
