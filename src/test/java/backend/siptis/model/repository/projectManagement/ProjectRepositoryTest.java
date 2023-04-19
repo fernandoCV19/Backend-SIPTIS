@@ -1,7 +1,8 @@
-package backend.siptis.model.repository.projectManagement;
+package backend.siptis.model.repository.projectmanagement;
 
 import backend.siptis.model.entity.projectManagement.Project;
-import org.junit.jupiter.api.Test;
+import backend.siptis.model.repository.projectManagement.ProjectRepository;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -17,24 +18,24 @@ import java.util.Optional;
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
-class ProjectRepositoryTest {
+public class ProjectRepositoryTest {
     @Autowired
-    private ProjectRepository projectRepository;
+     private ProjectRepository projectRepository;
 
     @Test
-    void findByIdReturnNotNull(){
+    public void testfindByIdReturnNotNull(){
         Optional<Project> ans = projectRepository.findById(1L);
         assertNotNull(ans);
     }
 
     @Test
-    void findByIdReturnAnElement(){
+    public void testfindByIdReturnAnElement(){
         Optional<Project> ans = projectRepository.findById(1L);
         assertFalse(ans.isEmpty());
     }
 
     @Test
-    void findByIdReturnObjectActualId(){
+    public void testfindByIdReturnObjectActualId(){
         Optional<Project> ans = projectRepository.findById(1L);
         Project fAns = ans.get();
         assertEquals(fAns.getId(),1L);

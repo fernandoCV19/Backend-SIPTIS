@@ -28,15 +28,17 @@ public class WebSecurityConfig {
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager manager)
-    throws Exception{
-        JWTAuthenticationFilter jwtAuthenticationFilter =new JWTAuthenticationFilter();
+            throws Exception {
+        JWTAuthenticationFilter jwtAuthenticationFilter = new JWTAuthenticationFilter();
         jwtAuthenticationFilter.setAuthenticationManager(manager);
-        jwtAuthenticationFilter.setFilterProcessesUrl("/login");
+        //jwtAuthenticationFilter.setFilterProcessesUrl("/login");
 
         return http.cors().and()
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/user/register/student", "/user/register/admin" ,  "/user/test", "/project/**" ,"/presentation/**")
+                .requestMatchers("/user/register/student", "/user/register/admin", "/user/test", "/supervisor/**", "/tribunal/**", "/teacher/**", "/tutor/**", "/project/**", "/email",
+                        "/general-activity", "/general-activity/create", "/general-activity/*", "/user/test", "/user/login", "/user/todos", "/user/editUser/*",
+                        "/user/information/*", "/email/send", "/project/**", "/presentation/**")
                 .permitAll()
                 .anyRequest().authenticated()
                 .and().sessionManagement()
@@ -49,7 +51,7 @@ public class WebSecurityConfig {
 
     @Bean
     AuthenticationManager authenticationManager(HttpSecurity http,
-                                                PasswordEncoder passwordEncoder) throws Exception{
+                                                PasswordEncoder passwordEncoder) throws Exception {
         return http.getSharedObject(AuthenticationManagerBuilder.class)
                 .userDetailsService(userDetailsService).passwordEncoder(passwordEncoder())
                 .and().build();
@@ -57,12 +59,12 @@ public class WebSecurityConfig {
 
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String password = passwordEncoder.encode("mavl");
         System.out.println(password);

@@ -2,6 +2,7 @@ package backend.siptis.model.entity.editorsAndReviewers;
 
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.model.entity.projectManagement.Project;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,7 +10,6 @@ import lombok.*;
 @Table(name = "project_tutor")
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProjectTutor {
@@ -20,10 +20,12 @@ public class ProjectTutor {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
     private SiptisUser tutor;
 
     @ManyToOne
     @JoinColumn(name = "project_id", nullable = false)
+    @JsonBackReference
     private Project project;
     private Boolean accepted;
     private Boolean reviewed;

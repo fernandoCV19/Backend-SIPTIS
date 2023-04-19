@@ -1,5 +1,6 @@
 package backend.siptis.service.records;
 
+import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.model.entity.records.GeneralActivity;
 import backend.siptis.model.pjo.dto.records.GeneralActivityDTO;
 import backend.siptis.model.pjo.vo.GeneralActivityVO;
@@ -9,12 +10,12 @@ import org.springframework.data.domain.Pageable;
 import java.util.Optional;
 import java.util.List;
 
-public interface GeneralAcitivityService {
-    Optional<GeneralActivity> findById(long id);
-    GeneralActivityVO persistGeneralActivity(GeneralActivityDTO generalActivityDTO);
+public interface GeneralActivityService {
+    ServiceAnswer findById(long id);
+    ServiceAnswer persistGeneralActivity(GeneralActivityDTO generalActivityDTO);
     List<GeneralActivityVO> findAllVO();
     Page<GeneralActivityVO> findAllVO(Pageable pageable);
-    void update(GeneralActivityDTO generalActivityDTO, long id);
-    void delete(long id);
+    ServiceAnswer update(GeneralActivityDTO generalActivityDTO, long id);
+    ServiceAnswer delete(long id);
     GeneralActivityVO entityToVO(GeneralActivity generalActivity);
 }

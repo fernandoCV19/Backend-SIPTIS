@@ -24,6 +24,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
+    testImplementation 'junit:junit:4.13.1'
     implementation 'junit:junit:4.13.1'
 
     // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-impl
@@ -48,6 +49,13 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 
+	//testImplementation 'org.springframework.security:spring-security-test'
+
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	testImplementation 'com.icegreen:greenmail-junit5:1.6.9'
+    testImplementation 'org.awaitility:awaitility:4.2.0'
 }
 
 //tasks.named('test') {

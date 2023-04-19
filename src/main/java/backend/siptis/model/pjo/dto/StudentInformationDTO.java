@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Getter
@@ -18,7 +20,13 @@ public class StudentInformationDTO {
     private String lastnames;
     private String celNumber;
     private String ci;
-    private Date fechaNac;
+    private String birthDate;
     private String codSIS;
-    private int career;
+    private Long careerId;
+    private String career;
+
+    public void setBirthDate(Date date){
+        DateFormat dtFormat = new SimpleDateFormat("yyyy-MM-dd");
+        birthDate = dtFormat.format(date);
+    }
 }

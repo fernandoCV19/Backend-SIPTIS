@@ -1,16 +1,16 @@
 package backend.siptis.model.entity.records;
 
 import backend.siptis.model.entity.projectManagement.Project;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
 
 @Entity
-@Table(name = "actividad")
+@Table(name = "activity")
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class Activity {
@@ -19,12 +19,15 @@ public class Activity {
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
+    @Column(name = "activity_name")
+    private String activityName;
     @Column(name = "activity_description")
     private String activityDescription;
     @Column(name = "activity_date")
     private Date activityDate;
 
-    @ManyToOne
-    @JoinColumn(name = "proyecto_grado_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id", nullable = false)
+    @JsonBackReference
     private Project project;
 }

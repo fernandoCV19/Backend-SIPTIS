@@ -20,6 +20,18 @@ spring:
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
+  mail:
+    host: smtp.gmail.com
+    username: maury.vargasl@gmail.com
+    password: ujlfeavaprrvlmxs
+    properties.mail.smtp:
+      auth: true
+      ssl.enable: true
+      ssl.required: true
+      ssl.trust: smtp.gmail.com
+
+
+
 server:
   port: 9090
 
@@ -39,3 +51,5 @@ logging:
       amazonaws:
         util:
           EC2MetadataUtils: error
+
+

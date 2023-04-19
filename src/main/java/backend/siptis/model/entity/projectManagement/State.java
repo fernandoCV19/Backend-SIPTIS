@@ -10,7 +10,6 @@ import java.util.Collection;
 @Table(name = "state")
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class State {
@@ -22,7 +21,7 @@ public class State {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "state", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "state")
     @JsonManagedReference
     private Collection<Project> projects;
 }

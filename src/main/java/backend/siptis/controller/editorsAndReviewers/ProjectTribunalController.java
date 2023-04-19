@@ -7,14 +7,12 @@ import backend.siptis.service.editorsAndReviewers.ProjectTribunalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/tribunal")
 @RequiredArgsConstructor
+@CrossOrigin
 public class ProjectTribunalController {
 
     private final ProjectTribunalService projectTribunalService;
@@ -31,7 +29,7 @@ public class ProjectTribunalController {
         return createResponseEntity(serviceAnswer);
     }
 
-    @GetMapping("/projectsReadyToDefense/{id}")
+    @GetMapping("/acceptedProjects/{id}")
     public ResponseEntity<?> getProjectsReadyToDefense(@PathVariable("id") Long id){
         ServiceAnswer serviceAnswer = projectTribunalService.getAllProjectsAcceptedWithoutDefensePointsByTribunalId(id);
         return createResponseEntity(serviceAnswer);
@@ -41,6 +39,28 @@ public class ProjectTribunalController {
     public ResponseEntity<?> getdefendedProjects(@PathVariable("id") Long id){
         ServiceAnswer serviceAnswer = projectTribunalService.getAllProjectsDefendedByTribunalId(id);
         return createResponseEntity(serviceAnswer);
+    }
+
+    @GetMapping("/acceptProject/{idProject}/{idReviewer}")
+    public ResponseEntity<?> acceptProject(@PathVariable("idProject") Long idProject, @PathVariable("idReviewer") Long idReviewer){
+        ServiceAnswer serviceAnswer = projectTribunalService.acceptProject(idReviewer, idProject);
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        if(serviceAnswer.getServiceMessage().equals(ServiceMessage.OK)){
+            httpStatus = HttpStatus.OK;
+        }
+        ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
+        return new ResponseEntity<>(controllerAnswer, httpStatus);
+    }
+
+    @GetMapping("/removeAccepted/{idProject}/{idReviewer}")
+    public ResponseEntity<?> removeacceptedFromAProject(@PathVariable("idProject") Long idProject, @PathVariable("idReviewer") Long idReviewer){
+        ServiceAnswer serviceAnswer = projectTribunalService.removeAcceptProject(idReviewer, idProject);
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        if(serviceAnswer.getServiceMessage().equals(ServiceMessage.OK)){
+            httpStatus = HttpStatus.OK;
+        }
+        ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
+        return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
 
     private ResponseEntity<?> createResponseEntity(ServiceAnswer serviceAnswer){

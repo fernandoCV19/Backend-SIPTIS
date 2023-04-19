@@ -11,4 +11,7 @@ public interface UserInformationService {
     ServiceAnswer registerStudent(
             StudentRegisterDTO estudianteDTO, SiptisUser siptisUser);
 
+    boolean existByCodSIS(String codSIS);
+
+    boolean existByCi(String ci);
 }

@@ -12,7 +12,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: 'create-drop'
     show-sql: true
     properties:
       hibernate:
@@ -32,7 +32,15 @@ cloud:
     credentials:
       access-key: AKIA4O3PHN4JLLTTCSW5
       secret-key: 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
-
+cloud:
+  aws:
+    region:
+      static: sa-east-1
+    stack:
+      auto: false
+    credentials:
+      access-key: AKIA4O3PHN4JLLTTCSW5
+      secret-key: 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
 logging:
   level:
     com:

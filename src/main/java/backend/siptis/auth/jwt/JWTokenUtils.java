@@ -8,10 +8,12 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 
 import java.util.Date;
 
+@Component
 public class JWTokenUtils {
 
     private static final long EXPIRE_TIME_DURATION = 2 * 60 * 60* 1000; //2horas.
@@ -22,6 +24,7 @@ public class JWTokenUtils {
 
         return Jwts.builder().setSubject(userDI.getUsername())
                 .setExpiration(fechaExpiracion)
+                .claim("id", userDI.getId())
                 .claim("roles", userDI.getRoles())
                 .signWith(Keys.hmacShaKeyFor(ACCESS_TOKEN_SECRET.getBytes()))
                 .compact();
@@ -55,6 +58,14 @@ public class JWTokenUtils {
         return Jwts.parserBuilder()
                 .setSigningKey(ACCESS_TOKEN_SECRET.getBytes())
                 .build().parseClaimsJws(token).getBody();
+    }
+
+    public static Long getId(String token){
+        Claims claims = getClaims(token);
+
+        Integer jwtId = (Integer) claims.get("id");
+        Long id = Long.valueOf(jwtId);
+        return id;
     }
 
     public static UsernamePasswordAuthenticationToken getAuthentication(String token){

@@ -22,6 +22,11 @@ public class UserDetailImp implements UserDetails {
         return siptisUser.getPassword();
     }
 
+
+    public Long getId() {
+        return siptisUser.getId();
+    }
+
     @Override
     public String getUsername() {
         return siptisUser.getUsername();
