@@ -29,7 +29,7 @@ public class UserInformation {
     private String ci;
     private Date birthDate;
     private String codSIS;
-    private boolean wppMessages = Boolean.FALSE;
+    //private boolean wppMessages = Boolean.FALSE;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

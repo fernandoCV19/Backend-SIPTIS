@@ -6,7 +6,7 @@ import lombok.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "actividad_general")
+@Table(name = "general_activity")
 @Getter
 @Setter
 @ToString
@@ -18,6 +18,8 @@ public class GeneralActivity {
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
+    @Column (name = "activity_name")
+    private String activityName;
     @Column(name = "activity_description")
     private String activityDescription;
     @Column(name = "activity_date")

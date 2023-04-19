@@ -1,9 +1,13 @@
 package backend.siptis.service.records;
 
+import backend.siptis.commons.ServiceAnswer;
+import backend.siptis.commons.ServiceMessage;
+import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.entity.records.Activity;
 import backend.siptis.model.entity.records.GeneralActivity;
 import backend.siptis.model.pjo.dto.records.ActivityDTO;
 import backend.siptis.model.pjo.vo.ActivityVO;
+import backend.siptis.model.repository.projectManagement.ProjectRepository;
 import backend.siptis.model.repository.records.ActivityRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,28 +22,52 @@ import java.util.Optional;
 @Service
 public class ActivityServiceImpl implements ActivityService{
 
-    public final ActivityRepository acitivityRepository;
+    public final ActivityRepository activityRepository;
+    private final ProjectRepository projectRepository;
     @Autowired
-    public ActivityServiceImpl(ActivityRepository acitivityRepository) {
-        this.acitivityRepository = acitivityRepository;
+    public ActivityServiceImpl(ActivityRepository activityRepository, ProjectRepository projectRepository) {
+        this.activityRepository = activityRepository;
+        this.projectRepository = projectRepository;
     }
     @Override
-    public Optional<Activity> findById(long id) {
-        return acitivityRepository.findById(id);
+    public ServiceAnswer findById(long id) {
+        Optional<Activity> activityOptional = activityRepository.findById(id);
+
+        if(!activityOptional.isEmpty()){
+            return ServiceAnswer.builder()
+                    .serviceMessage(ServiceMessage.OK)
+                    .data(entityToVO(activityOptional.get()))
+                    .build();
+        }
+        return ServiceAnswer.builder()
+                .serviceMessage(ServiceMessage.NOT_FOUND)
+                .build();
     }
 
     @Override
-    public ActivityVO persistActivity(ActivityDTO activityDTO) {
+    public ServiceAnswer persistActivity(ActivityDTO activityDTO) {
         Activity activity = new Activity();
-        activity.setActivityDescription(activityDTO.getActivityDescription());
-        activity.setActivityDate(activityDTO.getActivityDate());
-        activity =  acitivityRepository.save(activity);
-        return entityToVO(activity);
+        Optional<Project> project = projectRepository.findById(activityDTO.getIdProject());
+
+        if (!project.isEmpty()){
+            activity.setActivityDescription(activityDTO.getActivityDescription());
+            activity.setActivityDate(activityDTO.getActivityDate());
+            activity.setActivityName(activityDTO.getActivityName());
+            activity.setProject(project.get());
+            activity =  activityRepository.save(activity);
+
+            return ServiceAnswer.builder()
+                    .serviceMessage(ServiceMessage.OK)
+                    .data(entityToVO(activity)).build();
+        }
+        return ServiceAnswer.builder()
+                .serviceMessage(ServiceMessage.NOT_FOUND)
+                .data(null).build();
     }
 
     @Override
     public List<ActivityVO> findAllVO() {
-        List<Activity> activitiesList = acitivityRepository.findAll();
+        List<Activity> activitiesList = activityRepository.findAll();
         ArrayList<ActivityVO> activityArrayList = new ArrayList<>();
         for (Activity activity : activitiesList){
             activityArrayList.add(entityToVO(activity));
@@ -49,27 +77,43 @@ public class ActivityServiceImpl implements ActivityService{
 
     @Override
     public Page<ActivityVO> findAllVO(Pageable pageable) {
-        Page<Activity> activityList = acitivityRepository.findAll(pageable);
+        Page<Activity> activityList = activityRepository.findAll(pageable);
         return activityList.map(this::entityToVO);
     }
 
     @Override
-    public void update(ActivityDTO activityDTO, long id) {
-        Optional <Activity> optionalActivity = acitivityRepository.findById(id);
+    public ServiceAnswer update(ActivityDTO activityDTO, long id) {
+        Optional <Activity> optionalActivity = activityRepository.findById(id);
+
         if(!optionalActivity.isEmpty()){
             Activity activity = optionalActivity.get();
             activity.setActivityDescription(activityDTO.getActivityDescription());
             activity.setActivityDate(activityDTO.getActivityDate());
-            acitivityRepository.save(activity);
+            activity = activityRepository.save(activity);
+
+            return ServiceAnswer.builder()
+                    .serviceMessage(ServiceMessage.OK)
+                    .data(entityToVO(activity)).build();
         }
+        return ServiceAnswer.builder()
+                .serviceMessage(ServiceMessage.NOT_FOUND)
+                .data(null).build();
     }
 
     @Override
-    public void delete(long id) {
-        Optional <Activity> optionalActivity = acitivityRepository.findById(id);
+    public ServiceAnswer delete(long id) {
+        Optional <Activity> optionalActivity = activityRepository.findById(id);
+
         if(!optionalActivity.isEmpty()){
-            acitivityRepository.deleteById(id);
+            activityRepository.deleteById(id);
+            optionalActivity = activityRepository.findById(id);
+            return ServiceAnswer.builder()
+                    .serviceMessage(ServiceMessage.OK)
+                    .data(null).build();
         }
+        return ServiceAnswer.builder()
+                .serviceMessage(ServiceMessage.NOT_FOUND)
+                .data(null).build();
     }
 
     @Override
