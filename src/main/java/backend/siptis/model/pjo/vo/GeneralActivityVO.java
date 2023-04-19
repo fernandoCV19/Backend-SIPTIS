@@ -8,6 +8,7 @@ import java.util.Date;
 @Getter
 @Setter
 public class GeneralActivityVO {
+    private long id;
     private String activityName;
     private String activityDescription;
     private Date activityDate;
