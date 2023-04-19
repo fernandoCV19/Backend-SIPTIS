@@ -241,7 +241,7 @@ INSERT INTO project_student(id, user_id, project_id) VALUES (12, 16, 12);
 INSERT INTO project_student(id, user_id, project_id) VALUES (13, 17, 13);
 
 // General Activities
-INSERT INTO general_activity(id, activity_name, activity_description, activity_date) VALUES (9, 'Actividad General 1', 'Descripcion 1', '2023-7-1');
+INSERT INTO general_activity(id, activity_name, activity_description, activity_date) VALUES (9, 'Actividad General 1', 'Descripcion 1', '2023-4-15');
 
 INSERT INTO general_activity(id, activity_name, activity_description, activity_date) VALUES (8, 'Actividad General 2', 'Descripcion 2', '2023-7-2');
 

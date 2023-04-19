@@ -1,64 +1,61 @@
 package backend.siptis.service.records;
 
-import backend.siptis.model.entity.records.Activity;
-import backend.siptis.model.entity.records.GeneralActivity;
-import backend.siptis.model.pjo.dto.records.ActivityDTO;
-import backend.siptis.model.pjo.dto.records.GeneralActivityDTO;
-import backend.siptis.model.pjo.vo.GeneralActivityVO;
-import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import com.icegreen.greenmail.configuration.GreenMailConfiguration;
+import com.icegreen.greenmail.junit5.GreenMailExtension;
+import com.icegreen.greenmail.smtp.SmtpServer;
+import com.icegreen.greenmail.util.GreenMail;
+import com.icegreen.greenmail.util.GreenMailUtil;
+import com.icegreen.greenmail.util.ServerSetupTest;
+import jakarta.mail.MessagingException;
+//import jakarta.mail.internet.MimeMessage;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Date;
+import javax.mail.internet.MimeMessage;
+import java.io.IOException;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-@Transactional
+import static org.junit.jupiter.api.Assertions.*;
+
+
+
+@SpringBootTest//(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class EmailServiceTest {
     private final EmailService emailService;
-    private final GeneralActivityService generalActivityService;
-    private final ActivityService activityService;
+
     @Autowired
-    EmailServiceTest(EmailService emailService, GeneralActivityService generalActivityService, ActivityService activityService) {
+    public EmailServiceTest(EmailService emailService) {
         this.emailService = emailService;
-        this.generalActivityService = generalActivityService;
-        this.activityService = activityService;
     }
-
-    @BeforeEach
-    void setUp() {
-    }
-
-    @AfterEach
-    void tearDown() {
-    }
+    @RegisterExtension
+    static GreenMailExtension greenMail = new GreenMailExtension(ServerSetupTest.SMTP)
+            .withConfiguration(GreenMailConfiguration
+                    .aConfig()
+                    .withUser("siptis.umss@gmail.com", "ftryberzfpkddfvj"));
 
     @Test
     void sendPersonalActivities() {
-        GeneralActivityDTO activityDTO = new GeneralActivityDTO();
-        activityDTO.setActivityDate(new Date(2022, 1, 1));
-        activityDTO.setGeneralActivityName("test activity");
-        activityDTO.setActivityDescription("test activity description");
-
-        GeneralActivityVO save = (GeneralActivityVO) generalActivityService.persistGeneralActivity(activityDTO).getData();
-
-        long a = 1;
-        GeneralActivity generalActivity = (GeneralActivity) generalActivityService.findById(a).getData();
-        System.out.println(generalActivity);
-
     }
 
     @Test
-    void sendGeneralActivities() {
+    void sendGeneralActivities() throws MessagingException, IOException, javax.mail.MessagingException {
+        SmtpServer s = greenMail.getSmtp();
+        emailService.sendGeneralActivities();
+
+            MimeMessage[] receivedMessages = greenMail.getReceivedMessages();
+            assertEquals(1, receivedMessages.length);
+
+            MimeMessage receivedMessage = receivedMessages[0];
+            assertEquals("Hello GreenMail!", GreenMailUtil.getBody(receivedMessage));
+            assertEquals(1, receivedMessage.getAllRecipients().length);
+            assertEquals("test@greenmail.io", receivedMessage.getAllRecipients()[0].toString());
     }
 
     @Test
