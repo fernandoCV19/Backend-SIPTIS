@@ -4,6 +4,11 @@ spring:
     username: postgres
     password: serrano123
     driver-class-name: org.postgresql.Driver
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 50MB
+      max-request-size: 50MB
 
   jpa:
     hibernate:

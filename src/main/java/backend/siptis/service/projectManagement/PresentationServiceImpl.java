@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Optional;
 
 @Service
@@ -137,7 +138,7 @@ public class PresentationServiceImpl implements PresentationService {
 
     @Override
     public ServiceAnswer downloadFileFromCloud(String key){
-        String response= nube.getObject(key);
+        ByteArrayOutputStream response= nube.getObject(key);
         if (response == null){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
         }
