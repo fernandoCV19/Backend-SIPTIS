@@ -27,6 +27,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                     request.getReader(), Credentials.class
             );
         } catch (Exception e){
+            //System.out.println("excepcion: "+ e.getMessage());
         }
 
         try {
@@ -35,12 +36,13 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                             authCredentials.getEmail(),
                             authCredentials.getPassword(),
                             Collections.emptyList());
+            System.out.println(authCredentials);
             System.out.println("CORREO: "+authCredentials.getEmail());
             System.out.println("CONTRASENA: "+authCredentials.getPassword());
             return getAuthenticationManager().authenticate(PAToken);
         }catch (
     AuthenticationException e){
-            System.out.println(e.getMessage());
+            System.out.println("Error de autenticacion: "+e.getMessage());
             return null;
         }
     }

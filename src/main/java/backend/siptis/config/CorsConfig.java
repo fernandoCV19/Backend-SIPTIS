@@ -16,23 +16,54 @@ public class CorsConfig {
             public void addCorsMappings(CorsRegistry registry) {
 
 
+                String localUI = "http://127.0.0.1:5173/";
+
                 registry.addMapping("/login")
-                        .allowedOrigins("http://localhost:5173/")
+                        .allowedOrigins(localUI)
                         .allowedMethods("*")
                         .exposedHeaders("*");
 
+                registry.addMapping("/user/login")
+                        .allowedOrigins(localUI)
+                        .allowedMethods("*")
+                        .exposedHeaders("*");
+
+
                 registry.addMapping("/user/register/admin")
-                        .allowedOrigins("http://localhost:3000/")
+
+                        .allowedOrigins(localUI)
+                        .allowedMethods("*")
+                        .exposedHeaders("*");
+
+                registry.addMapping("/user/register/student")
+                        .allowedOrigins(localUI)
                         .allowedMethods("*")
                         .exposedHeaders("*");
 
                 registry.addMapping("/user/test")
-                        .allowedOrigins("http://localhost:3000/")
+
                         .allowedMethods("*")
                         .exposedHeaders("*");
 
                 registry.addMapping("/todos")
-                        .allowedOrigins("http://localhost:3000/")
+                        .allowedOrigins(localUI)
+                        .allowedMethods("*")
+                        .exposedHeaders("*");
+
+                registry.addMapping("/user/todos")
+                        .allowedOrigins(localUI)
+                        .allowedMethods("*");
+
+                registry.addMapping("/user/information/*")
+                        .allowedOrigins(localUI)
+                        .allowedMethods("*");
+
+                registry.addMapping("/user/information")
+                        .allowedOrigins(localUI)
+                        .allowedMethods("*");
+
+                registry.addMapping("/user/editUser/*")
+                        .allowedOrigins(localUI)
                         .allowedMethods("*");
 
 
