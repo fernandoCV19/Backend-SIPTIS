@@ -65,12 +65,6 @@ class PresentationRepositoryTest {
         assertEquals(fAns.getId(),8L);
     }
 
-    @Test
-    void deleteByIdTest(){
-    }
-
-    private final PresentationRepository presentationRepository;
-
     @Autowired
     PresentationRepositoryTest(PresentationRepository presentationRepository) {
         this.presentationRepository = presentationRepository;
