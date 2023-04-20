@@ -47,6 +47,14 @@ public class CloudManagementServiceImpl implements CloudManagementService {
     }
 
     @Override
+    public String putObject(File file, String carpeta) {
+        String key = carpeta + file.getName();
+        PutObjectRequest request = new PutObjectRequest(BUCKET, key, file);
+        s3Client.putObject(request);
+        return key;
+    }
+
+    @Override
     public ByteArrayOutputStream getObject(String key) {
         try{
         S3Object s3Object = s3Client.getObject(BUCKET, key);
