@@ -13,6 +13,7 @@ import jakarta.mail.internet.MimeMessage;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -142,6 +143,16 @@ public class EmailService {
         htmlTemplate = htmlTemplate.replace("#message", messageNotification);
 
         message.setContent(htmlTemplate, "text/html; charset=utf-8");
+
+        mailSender.send(message);
+    }
+
+    public void sendRecoverPasswordEmail(){
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("siptis.umss@gmail.com");
+        message.setTo("maury.vargasl@gmail.com");
+        message.setSubject("Prueba de envio de correo simple");
+        message.setText("Este es el contenido del email");
 
         mailSender.send(message);
     }

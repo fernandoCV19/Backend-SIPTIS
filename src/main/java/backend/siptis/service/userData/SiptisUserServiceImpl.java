@@ -58,9 +58,12 @@ public class SiptisUserServiceImpl implements SiptisUserService {
                 ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(userList).build() :
                 ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(usuarioCommonRepository.findAll()).build();
 
+
+    }
+
     @Override
-    public ServiceAnswer editStudentInformation(Long id,EditStudentInformationDTO editDTO) {
-        Optional<SiptisUser> user = usuarioCommonRepository.findById(id);
+    public ServiceAnswer editStudentInformation(Long userID, EditStudentInformationDTO editDTO) {
+        Optional<SiptisUser> user = usuarioCommonRepository.findById(userID);
 
         SiptisUser siptisUser = user.get();
 
@@ -73,15 +76,14 @@ public class SiptisUserServiceImpl implements SiptisUserService {
         userInformation.setBirthDate(editDTO.getBirthDate());
         userInformation.setCodSIS(editDTO.getCodSIS());
 
-
         SiptisUser user1 = usuarioCommonRepository.save(siptisUser);
-
         StudentInformationDTO informationDTO = convertToStudentInformation(user1);
 
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(informationDTO).build();
     }
 
-    public ServiceAnswer studentEditPersonalInfo(Long id, StudentEditPersonalInfoDTO dto){
+    @Override
+    public ServiceAnswer studentEditPersonalInfo(Long id, StudentEditPersonalInfoDTO dto) {
         Optional<SiptisUser> user = usuarioCommonRepository.findById(id);
         SiptisUser siptisUser = user.get();
 
@@ -97,7 +99,6 @@ public class SiptisUserServiceImpl implements SiptisUserService {
         StudentInformationDTO informationDTO = convertToStudentInformation(user1);
 
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(informationDTO).build();
-
     }
 
     private UserGeneralInformationDTO convertToDTO(SiptisUser user){
@@ -107,14 +108,14 @@ public class SiptisUserServiceImpl implements SiptisUserService {
         return userDTO;
     }
 
-    private StudentInformationDTO convertToStudentInformation(SiptisUser user){
+    private StudentInformationDTO convertToStudentInformation(SiptisUser user) {
 
         StudentInformationDTO student = new StudentInformationDTO();
-        if(user != null){
+        if (user != null) {
 
             student.setEmail(user.getEmail());
             UserInformation information = user.getUserInformation();
-            if(information != null){
+            if (information != null) {
                 student.setNames(information.getNames());
                 student.setLastnames(information.getLastnames());
                 student.setCelNumber(information.getCelNumber());
@@ -123,7 +124,7 @@ public class SiptisUserServiceImpl implements SiptisUserService {
                 student.setCodSIS(information.getCodSIS());
                 Set<UserCareer> career = user.getCareer();
 
-                for (UserCareer userCareer: career) {
+                for (UserCareer userCareer : career) {
                     student.setCareer(userCareer.getName());
                     student.setCareerId(userCareer.getId());
                 }

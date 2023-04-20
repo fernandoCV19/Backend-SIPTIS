@@ -38,7 +38,8 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers("/user/register/student", "/user/register/admin" ,
                         "/user/test", "/user/login","/user/todos","/user/editUser/*",
-                        "/user/information/*", "/email/send", "/general-activity","/general-activity/create", "/general-activity/*")
+                        "/user/information/*", "/email/send", "/general-activity",
+                        "/general-activity/create", "/general-activity/*", "/email/*")
 
                 .permitAll()
                 .anyRequest().authenticated()
