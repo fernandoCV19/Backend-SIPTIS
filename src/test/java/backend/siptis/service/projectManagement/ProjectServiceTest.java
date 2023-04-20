@@ -3,6 +3,7 @@ package backend.siptis.service.projectManagement;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.vo.projectManagement.ProjectCompleteInfo;
+import backend.siptis.model.pjo.vo.projectManagement.ProjectInfoToAssignTribunals;
 import backend.siptis.model.pjo.vo.projectManagement.ProjectToReviewSectionVO;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -175,5 +176,32 @@ class ProjectServiceTest {
         ServiceAnswer query = projectService.getAllProjectInfo(1L);
         ProjectCompleteInfo project = (ProjectCompleteInfo) query.getData();
         assertEquals(1L, project.getId());
+    }
+
+    @Test
+    void getProjectInfoToAssignTribunalsWithIncorrectProjectIdReturnProjectIdDoesNotExist() {
+        ServiceAnswer query = projectService.getProjectInfoToAssignTribunals(0L);
+        assertEquals(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST, query.getServiceMessage());
+    }
+    @Test
+    void getProjectInfoToAssignTribunalsWithIncorrectProjectIdReturnDataNull() {
+        ServiceAnswer query = projectService.getProjectInfoToAssignTribunals(0L);
+        assertNull(query.getData());
+    }
+    @Test
+    void getProjectInfoToAssignTribunalsWithCorrectProjectIdReturnOk() {
+        ServiceAnswer query = projectService.getProjectInfoToAssignTribunals(1L);
+        assertEquals(ServiceMessage.OK, query.getServiceMessage());
+    }
+    @Test
+    void getProjectInfoToAssignTribunalsWithCorrectProjectIdReturnDataWithValues() {
+        ServiceAnswer query = projectService.getProjectInfoToAssignTribunals(1L);
+        assertNotNull(query.getData());
+    }
+    @Test
+    void getProjectInfoToAssignTribunalsWithCorrectProjectIdReturnAnObjectWithTheCorrectIdOfTheProject() {
+        ServiceAnswer query = projectService.getProjectInfoToAssignTribunals(1L);
+        ProjectInfoToAssignTribunals res = (ProjectInfoToAssignTribunals)query.getData();
+        assertEquals(1L, res.getId());
     }
 }
