@@ -18,6 +18,7 @@ import java.io.ByteArrayOutputStream;
 
 @RestController
 @RequestMapping ("/presentation")
+@CrossOrigin
 public class PresentationController {
     @Autowired
     private CloudManagementService s3Service;
