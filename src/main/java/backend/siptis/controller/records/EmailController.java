@@ -28,7 +28,7 @@ public class EmailController {
 
     @GetMapping("/prueba")
     public String sendEmailTest() throws MessagingException, IOException {
-        emailService.sendRecoverPasswordEmail();
+        emailService.sendRecoverPasswordEmail("maury.vargasl@gmail.com");
 
         return "mensaje enviado con exito";
     }

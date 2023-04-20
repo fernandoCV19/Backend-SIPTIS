@@ -8,6 +8,7 @@ import backend.siptis.model.pjo.vo.GeneralActivityVO;
 import backend.siptis.service.userData.SiptisUserService;
 import jakarta.mail.Address;
 import jakarta.mail.MessagingException;
+import jakarta.mail.internet.AddressException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import lombok.AllArgsConstructor;
@@ -147,12 +148,17 @@ public class EmailService {
         mailSender.send(message);
     }
 
-    public void sendRecoverPasswordEmail(){
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("siptis.umss@gmail.com");
-        message.setTo("maury.vargasl@gmail.com");
-        message.setSubject("Prueba de envio de correo simple");
-        message.setText("Este es el contenido del email");
+    public void sendRecoverPasswordEmail(String email) throws MessagingException, IOException {
+        MimeMessage message = mailSender.createMimeMessage();
+
+        message.setFrom(new InternetAddress("siptis.umss@gmail.com"));
+
+        message.setRecipients(MimeMessage.RecipientType.TO, email);
+        message.setSubject("Respuesta solicitud recuperacion de contraseña SIPTIS");
+
+        String htmlTemplate = readFile("recoverpassword.html");
+
+        message.setContent(htmlTemplate, "text/html; charset=utf-8");
 
         mailSender.send(message);
     }
