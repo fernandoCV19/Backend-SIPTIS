@@ -15,6 +15,8 @@ public interface SiptisUserRepository extends JpaRepository<SiptisUser, Integer>
 
     Optional<SiptisUser> findOneByEmail(String email);
 
+    Optional<SiptisUser> findByTokenPassword(String tokenPassword);
+
     boolean existsByEmail(String email);
 
     Optional<SiptisUser> findById(Long id);

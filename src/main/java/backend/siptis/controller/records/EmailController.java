@@ -1,19 +1,20 @@
 package backend.siptis.controller.records;
 
+import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
+import backend.siptis.model.pjo.dto.TokenPasswordDTO;
 import backend.siptis.service.records.EmailService;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/email")
@@ -31,15 +32,17 @@ public class EmailController {
         return "ok";
     }
 
-    @GetMapping("/prueba")
-    public String sendEmailTest() throws MessagingException, IOException {
-        emailService.sendRecoverPasswordEmail("maury.vargasl@gmail.com");
+    @GetMapping("/prueba/{email}")
+    public String sendEmailTest(@PathVariable String email) throws MessagingException, IOException {
+        emailService.sendRecoverPasswordEmail(email);
 
         return "mensaje enviado con exito";
     }
 
     @PostMapping("/changePassword")
-    public ResponseEntity<?> changePassword(){
+    public ResponseEntity<?> changePassword(@RequestBody TokenPasswordDTO dto){
+
+        Optional<SiptisUser>
         return null;
     }
 

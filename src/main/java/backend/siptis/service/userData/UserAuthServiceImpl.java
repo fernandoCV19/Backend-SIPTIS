@@ -171,6 +171,10 @@ public class UserAuthServiceImpl implements UserAuthService {
         return JWTokenUtils.getId(token);
     }
 
+    @Override
+    public Optional<SiptisUser> findByTokenPassword(String tokenPassword){
+        return siptisUserRepository.findByTokenPassword(tokenPassword);
+    }
     private StudentInformationDTO convertToStudentInformation(SiptisUser user){
 
         StudentInformationDTO student = new StudentInformationDTO();
