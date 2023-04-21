@@ -38,6 +38,11 @@ public class EmailController {
         return "mensaje enviado con exito";
     }
 
+    @PostMapping("/changePassword")
+    public ResponseEntity<?> changePassword(){
+        return null;
+    }
+
     private ResponseEntity<?> crearResponseEntityRegistrar(ServiceAnswer serviceAnswer){
         Object data = serviceAnswer.getData();
         ServiceMessage messageService = serviceAnswer.getServiceMessage();
