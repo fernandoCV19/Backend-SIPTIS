@@ -3,6 +3,7 @@ package backend.siptis.service.records;
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectStudent;
 import backend.siptis.model.entity.projectManagement.Project;
+import backend.siptis.model.pjo.dto.ChangePasswordDTO;
 import backend.siptis.model.pjo.vo.ActivityVO;
 import backend.siptis.model.pjo.vo.GeneralActivityVO;
 import backend.siptis.service.userData.SiptisUserService;
@@ -12,21 +13,23 @@ import jakarta.mail.internet.AddressException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Transactional
@@ -36,6 +39,7 @@ public class EmailService {
     private final ActivityService activityService;
     private final GeneralActivityService generalActivityService;
     private final SiptisUserService siptisUserService;
+
 
     @Scheduled(cron = "0 0 8 * * *")
     public void sendPersonalActivities() throws MessagingException, IOException {
@@ -141,6 +145,7 @@ public class EmailService {
 
         String htmlTemplate = readFile("notification.html");
 
+
         htmlTemplate = htmlTemplate.replace("#message", messageNotification);
 
         message.setContent(htmlTemplate, "text/html; charset=utf-8");
@@ -151,15 +156,43 @@ public class EmailService {
     public void sendRecoverPasswordEmail(String email) throws MessagingException, IOException {
         MimeMessage message = mailSender.createMimeMessage();
 
-        message.setFrom(new InternetAddress("siptis.umss@gmail.com"));
+        //MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        ChangePasswordDTO dto = createChangePasswordDTO(email);
+        /*Context context = new Context();
+        Map<String, Object> messageContent = new HashMap<>();*/
 
+        String url = "http://127.0.0.1:5173/changePassword/";
+        /*messageContent.put("userName", "Usuario Siptis");
+        messageContent.put("url", url+ dto.getTokenPassword());
+        context.setVariables(messageContent);
+        String html = templateEngine.process("recoverpassword", context);
+        helper.setFrom(dto.getEmailFrom());
+        helper.setSubject(dto.getSubject());
+        helper.setTo(email);
+        helper.setText(html, true);*/
+
+        message.setFrom(new InternetAddress(dto.getEmailFrom()));
         message.setRecipients(MimeMessage.RecipientType.TO, email);
-        message.setSubject("Respuesta solicitud recuperacion de contraseña SIPTIS");
+        message.setSubject(dto.getSubject());
+
 
         String htmlTemplate = readFile("recoverpassword.html");
+        htmlTemplate = htmlTemplate.replace("#url", dto.getTokenPassword());
 
         message.setContent(htmlTemplate, "text/html; charset=utf-8");
 
         mailSender.send(message);
+
+    }
+
+    public ChangePasswordDTO createChangePasswordDTO(String email){
+        ChangePasswordDTO dto = new ChangePasswordDTO();
+        dto.setEmailFrom("siptis.umss@gmail.com");
+        dto.setEmailTo(email);
+        dto.setSubject("Respuesta solicitud recuperacion de contraseña SIPTIS");
+        UUID uuid = UUID.randomUUID();
+        dto.setTokenPassword(uuid.toString());
+
+        return dto;
     }
 }
