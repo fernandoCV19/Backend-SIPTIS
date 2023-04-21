@@ -29,6 +29,7 @@ public class SiptisUser implements UserDetails {
     private Long id;
     private String email;
     private String password;
+    private String tokenPassword;
 
 
 
@@ -105,6 +106,7 @@ public class SiptisUser implements UserDetails {
     public SiptisUser(String email, String password) {
         this.email = email;
         this.password = password;
+        this.tokenPassword = null;
     }
 
     //-------------------------------------------------------------------

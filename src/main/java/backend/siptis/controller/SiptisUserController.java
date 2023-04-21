@@ -38,7 +38,7 @@ public class SiptisUserController {
 
 
     @PostMapping("/register/student")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    // @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> registerStudent(
             @RequestBody StudentRegisterDTO studentDTO){
 
@@ -47,7 +47,7 @@ public class SiptisUserController {
     }
 
     @PostMapping("/register/admin")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    // @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> registerAdmin(
             @RequestBody AdminRegisterDTO adminRegisterDTO){
 
