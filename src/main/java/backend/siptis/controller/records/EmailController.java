@@ -41,9 +41,9 @@ public class EmailController {
 
     @PostMapping("/changePassword")
     public ResponseEntity<?> changePassword(@RequestBody TokenPasswordDTO dto){
-
-        Optional<SiptisUser>
-        return null;
+        ServiceAnswer user = emailService.changePassword(dto);
+        return crearResponseEntityRegistrar(user);
+        //return "hola";
     }
 
     private ResponseEntity<?> crearResponseEntityRegistrar(ServiceAnswer serviceAnswer){

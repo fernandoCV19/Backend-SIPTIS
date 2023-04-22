@@ -1,9 +1,12 @@
 package backend.siptis.service.records;
 
 import backend.siptis.auth.entity.SiptisUser;
+import backend.siptis.commons.ServiceAnswer;
+import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectStudent;
 import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.pjo.dto.ChangePasswordDTO;
+import backend.siptis.model.pjo.dto.TokenPasswordDTO;
 import backend.siptis.model.pjo.vo.ActivityVO;
 import backend.siptis.model.pjo.vo.GeneralActivityVO;
 import backend.siptis.service.userData.SiptisUserService;
@@ -20,10 +23,9 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
 
 import java.io.File;
 import java.io.IOException;
@@ -99,6 +101,24 @@ public class EmailService {
             }
         }
     }
+
+    public ServiceAnswer changePassword(TokenPasswordDTO dto){
+        SiptisUser user = siptisUserService.findByTokenPassword(dto.getTokenPassword());
+        System.out.println("REVISION");
+        System.out.println(user.getEmail());
+        System.out.println(dto.getTokenPassword());
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String password = encoder.encode(dto.getPassword());
+
+        user.setPassword(password);
+        //user.setTokenPassword(null);
+
+        // return  siptisUserService.save(user);
+
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(user).build();
+    }
+
+
     private Address[] getAllEmails(List<SiptisUser> users) throws MessagingException {
         Address[] addresses = new Address[users.size()];
         for(int i = 0; i < users.size(); i++){
@@ -155,32 +175,21 @@ public class EmailService {
 
     public void sendRecoverPasswordEmail(String email) throws MessagingException, IOException {
         MimeMessage message = mailSender.createMimeMessage();
+        SiptisUser user = siptisUserService.findByEmail(email);
 
-        //MimeMessageHelper helper = new MimeMessageHelper(message, true);
         ChangePasswordDTO dto = createChangePasswordDTO(email);
-        /*Context context = new Context();
-        Map<String, Object> messageContent = new HashMap<>();*/
-
-        String url = "http://127.0.0.1:5173/changePassword/";
-        /*messageContent.put("userName", "Usuario Siptis");
-        messageContent.put("url", url+ dto.getTokenPassword());
-        context.setVariables(messageContent);
-        String html = templateEngine.process("recoverpassword", context);
-        helper.setFrom(dto.getEmailFrom());
-        helper.setSubject(dto.getSubject());
-        helper.setTo(email);
-        helper.setText(html, true);*/
+        //String url = "http://127.0.0.1:5173/changePassword/";
 
         message.setFrom(new InternetAddress(dto.getEmailFrom()));
         message.setRecipients(MimeMessage.RecipientType.TO, email);
         message.setSubject(dto.getSubject());
-
+        user.setTokenPassword(dto.getTokenPassword());
+        siptisUserService.save(user);
 
         String htmlTemplate = readFile("recoverpassword.html");
         htmlTemplate = htmlTemplate.replace("#url", dto.getTokenPassword());
 
         message.setContent(htmlTemplate, "text/html; charset=utf-8");
-
         mailSender.send(message);
 
     }

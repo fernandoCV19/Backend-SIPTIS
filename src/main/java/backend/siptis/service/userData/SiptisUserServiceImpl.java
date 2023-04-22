@@ -51,6 +51,20 @@ public class SiptisUserServiceImpl implements SiptisUserService {
 
         return null;
     }
+
+    @Override
+    public SiptisUser findByEmail(String email){
+        return usuarioCommonRepository.findByEmail(email).get();
+    }
+
+    @Override
+    public SiptisUser findByTokenPassword(String tokenPassword){
+
+        Optional<SiptisUser> optional = usuarioCommonRepository.findByTokenPassword(tokenPassword);
+        return optional.get();
+    }
+
+
     @Override
     public ServiceAnswer getAllUsers() {
         List<SiptisUser> userList = usuarioCommonRepository.findAll();
@@ -58,7 +72,11 @@ public class SiptisUserServiceImpl implements SiptisUserService {
                 ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(userList).build() :
                 ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(usuarioCommonRepository.findAll()).build();
 
+    }
 
+    @Override
+    public SiptisUser save(SiptisUser siptisUser){
+        return usuarioCommonRepository.save(siptisUser);
     }
 
     @Override
