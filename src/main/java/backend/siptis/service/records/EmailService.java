@@ -173,24 +173,39 @@ public class EmailService {
         mailSender.send(message);
     }
 
-    public void sendRecoverPasswordEmail(String email) throws MessagingException, IOException {
+    public ServiceAnswer sendRecoverPasswordEmail(String email) throws MessagingException {
+
+        if(siptisUserService.exist){}
         MimeMessage message = mailSender.createMimeMessage();
         SiptisUser user = siptisUserService.findByEmail(email);
+
+        if(user == null){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.EMAIL_NOT_EXIST)
+                    .data("El correo electronico no se encuentra registrado en el sistema").build();
+
+        }
 
         ChangePasswordDTO dto = createChangePasswordDTO(email);
         //String url = "http://127.0.0.1:5173/changePassword/";
 
-        message.setFrom(new InternetAddress(dto.getEmailFrom()));
-        message.setRecipients(MimeMessage.RecipientType.TO, email);
-        message.setSubject(dto.getSubject());
-        user.setTokenPassword(dto.getTokenPassword());
-        siptisUserService.save(user);
+        try{
+            message.setFrom(new InternetAddress(dto.getEmailFrom()));
+            message.setRecipients(MimeMessage.RecipientType.TO, email);
+            message.setSubject(dto.getSubject());
+            user.setTokenPassword(dto.getTokenPassword());
+            siptisUserService.save(user);
 
-        String htmlTemplate = readFile("recoverpassword.html");
-        htmlTemplate = htmlTemplate.replace("#url", dto.getTokenPassword());
+            String htmlTemplate = readFile("recoverpassword.html");
+            htmlTemplate = htmlTemplate.replace("#url", dto.getTokenPassword());
+            message.setContent(htmlTemplate, "text/html; charset=utf-8");
+            mailSender.send(message);
 
-        message.setContent(htmlTemplate, "text/html; charset=utf-8");
-        mailSender.send(message);
+        }catch (IOException io){
+            System.out.println("Error al enviar mensaje");
+        }
+
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
+                .data("Se ha enviado un correo a su cuenta.").build();
 
     }
 

@@ -32,11 +32,13 @@ public class EmailController {
         return "ok";
     }
 
-    @GetMapping("/prueba/{email}")
-    public String sendEmailTest(@PathVariable String email) throws MessagingException, IOException {
-        emailService.sendRecoverPasswordEmail(email);
+    @GetMapping("/askemail/{email}")
+    public ResponseEntity<?> sendEmailTest(@PathVariable String email) throws MessagingException, IOException {
 
-        return "mensaje enviado con exito";
+        ServiceAnswer answer = emailService.sendRecoverPasswordEmail(email);
+
+        //return "mensaje enviado con exito";
+        return crearResponseEntityRegistrar(answer);
     }
 
     @PostMapping("/changePassword")

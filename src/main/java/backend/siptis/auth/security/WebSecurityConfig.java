@@ -40,7 +40,7 @@ public class WebSecurityConfig {
                         "/user/test", "/user/login","/user/todos","/user/editUser/*",
                         "/user/information/*", "/email/send", "/general-activity",
                         "/general-activity/create","/email/prueba/*", "/general-activity/*",
-                        "/email/changePassword","/email/*")
+                        "/email/changePassword","/email/askemail/*")
 
                 .permitAll()
                 .anyRequest().authenticated()

@@ -19,6 +19,10 @@ public interface SiptisUserService {
 
     SiptisUser save(SiptisUser user);
 
+    boolean existsByEmail(String email);
+
+    boolean existsTokenPassword(String tokenPassword);
+
     ServiceAnswer editStudentInformation(Long userID,EditStudentInformationDTO editDTO);
 
     ServiceAnswer studentEditPersonalInfo(Long id, StudentEditPersonalInfoDTO dto);

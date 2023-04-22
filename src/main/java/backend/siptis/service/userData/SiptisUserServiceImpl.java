@@ -54,7 +54,24 @@ public class SiptisUserServiceImpl implements SiptisUserService {
 
     @Override
     public SiptisUser findByEmail(String email){
-        return usuarioCommonRepository.findByEmail(email).get();
+
+        Optional<SiptisUser> user = usuarioCommonRepository.findByEmail(email);
+        //System.out.println("WEAFOME"+user.get());
+        return user.get();
+    }
+
+    @Override
+    public boolean existsByEmail(String email){
+
+        return usuarioCommonRepository.existsByEmail(email);
+
+    }
+
+    @Override
+    public boolean existsTokenPassword(String tokenPassword){
+
+        return usuarioCommonRepository.existsByTokenPassword(tokenPassword);
+
     }
 
     @Override
