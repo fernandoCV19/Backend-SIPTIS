@@ -103,19 +103,24 @@ public class EmailService {
     }
 
     public ServiceAnswer changePassword(TokenPasswordDTO dto){
+        if(!siptisUserService.existsTokenPassword(dto.getTokenPassword())){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.INVALID_TOKEN)
+                    .data("El token para el cambio de contraseña no es valido").build();
+        }
         SiptisUser user = siptisUserService.findByTokenPassword(dto.getTokenPassword());
-        System.out.println("REVISION");
+        //System.out.println("REVISION");
         System.out.println(user.getEmail());
         System.out.println(dto.getTokenPassword());
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String password = encoder.encode(dto.getPassword());
 
         user.setPassword(password);
-        //user.setTokenPassword(null);
+        user.setTokenPassword(null);
 
         // return  siptisUserService.save(user);
 
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(user).build();
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
+                .data("La contrasena se actualizó correctamente.").build();
     }
 
 
@@ -175,15 +180,12 @@ public class EmailService {
 
     public ServiceAnswer sendRecoverPasswordEmail(String email) throws MessagingException {
 
-        if(siptisUserService.exist){}
-        MimeMessage message = mailSender.createMimeMessage();
-        SiptisUser user = siptisUserService.findByEmail(email);
-
-        if(user == null){
+        if(!siptisUserService.existsByEmail(email)){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.EMAIL_NOT_EXIST)
                     .data("El correo electronico no se encuentra registrado en el sistema").build();
-
         }
+        MimeMessage message = mailSender.createMimeMessage();
+        SiptisUser user = siptisUserService.findByEmail(email);
 
         ChangePasswordDTO dto = createChangePasswordDTO(email);
         //String url = "http://127.0.0.1:5173/changePassword/";
