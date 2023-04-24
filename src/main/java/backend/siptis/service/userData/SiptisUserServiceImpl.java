@@ -53,6 +53,11 @@ public class SiptisUserServiceImpl implements SiptisUserService {
     }
 
     @Override
+    public boolean existsByEmail(String email){
+        return usuarioCommonRepository.existsByEmail(email);
+    }
+
+    @Override
     public SiptisUser findByEmail(String email){
 
         Optional<SiptisUser> user = usuarioCommonRepository.findByEmail(email);
@@ -60,12 +65,6 @@ public class SiptisUserServiceImpl implements SiptisUserService {
         return user.get();
     }
 
-    @Override
-    public boolean existsByEmail(String email){
-
-        return usuarioCommonRepository.existsByEmail(email);
-
-    }
 
     @Override
     public boolean existsTokenPassword(String tokenPassword){
