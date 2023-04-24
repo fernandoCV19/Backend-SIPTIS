@@ -96,6 +96,11 @@ public class SiptisUserServiceImpl implements SiptisUserService {
 
     @Override
     public ServiceAnswer editStudentInformation(Long userID, EditStudentInformationDTO editDTO) {
+
+        if(! usuarioCommonRepository.existsById(userID)){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST)
+                    .data("No existe un usuario registrado con el id solicitado").build();
+        }
         Optional<SiptisUser> user = usuarioCommonRepository.findById(userID);
 
         SiptisUser siptisUser = user.get();

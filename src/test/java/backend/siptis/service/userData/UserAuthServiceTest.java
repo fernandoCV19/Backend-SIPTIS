@@ -2,7 +2,9 @@ package backend.siptis.service.userData;
 
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
+import backend.siptis.model.entity.userData.UserInformation;
 import backend.siptis.model.pjo.dto.AdminRegisterDTO;
+import backend.siptis.model.pjo.dto.StudentInformationDTO;
 import backend.siptis.model.pjo.dto.StudentRegisterDTO;
 import backend.siptis.model.pjo.dto.records.LogInDTO;
 import jakarta.transaction.Transactional;
@@ -138,7 +140,7 @@ public class UserAuthServiceTest {
     @Test
     void userInfoUserExistTest(){
         StudentRegisterDTO studentDTO = createStudent();
-        service.registerStudent(studentDTO);
+        ServiceAnswer answer1 = service.registerStudent(studentDTO);
         LogInDTO loginDTO = new LogInDTO();
         loginDTO.setEmail("maury.vargasl@gmail.com");
         loginDTO.setPassword("mavl");
@@ -146,6 +148,8 @@ public class UserAuthServiceTest {
         String token = (String) answer.getData();
         Long id = service.getIdFromToken(token);
         ServiceAnswer answer2 = service.userInfo(id);
+        StudentInformationDTO info = (StudentInformationDTO) answer2.getData();
+        System.out.println("DATA: "+info.getCi());
         assertEquals(ServiceMessage.OK, answer2.getServiceMessage());
     }
 
