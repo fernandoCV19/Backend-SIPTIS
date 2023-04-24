@@ -61,7 +61,6 @@ public class SiptisUserServiceImpl implements SiptisUserService {
     public SiptisUser findByEmail(String email){
 
         Optional<SiptisUser> user = usuarioCommonRepository.findByEmail(email);
-        //System.out.println("WEAFOME"+user.get());
         return user.get();
     }
 

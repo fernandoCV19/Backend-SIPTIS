@@ -21,14 +21,17 @@ import static org.junit.jupiter.api.Assertions.*;
 public class SiptisUserServiceTest {
 
     private SiptisUserService service;
+    private UserAuthService authService;
 
     @Autowired
-    SiptisUserServiceTest(SiptisUserService service) {
+    SiptisUserServiceTest(SiptisUserService service, UserAuthService authService) {
         this.service = service;
+        this.authService = authService;
     }
 
     @Test
     void getByEmailThatNoExist(){
+        a
         Boolean answer = service.existsByEmail("fake@gmail.com");
         assertFalse(answer);
     }

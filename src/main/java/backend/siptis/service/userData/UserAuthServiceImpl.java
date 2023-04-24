@@ -104,7 +104,7 @@ public class UserAuthServiceImpl implements UserAuthService {
 
         if(siptisUserRepository.existsByEmail(adminDTO.getEmail())){
             String mensajeError = "El correo ya esta registrado en el sistema";
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR_REGISTRO_CUENTA).data(mensajeError).build();
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR_REGISTRO_CUENTA_EMAIL).data(mensajeError).build();
         }
 
         SiptisUser adminUser = new SiptisUser();
@@ -125,6 +125,10 @@ public class UserAuthServiceImpl implements UserAuthService {
 
     @Override
     public ServiceAnswer userInfo(Long id){
+        if(!siptisUserRepository.existsById(id)){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST)
+                    .data("No existe un usuario con el id solicitado").build();
+        }
         Optional<SiptisUser> response = siptisUserRepository.findById(id);
         SiptisUser user = response.get();
 
