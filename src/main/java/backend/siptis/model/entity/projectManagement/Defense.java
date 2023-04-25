@@ -19,4 +19,9 @@ public class Defense {
     private String place;
 
     private String defenseHour;
+
+    public Defense(String place, String hour) {
+        this.place = place;
+        this.defenseHour = hour;
+    }
 }

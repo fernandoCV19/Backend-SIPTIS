@@ -5,11 +5,13 @@ import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectStudent;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectTribunal;
+import backend.siptis.model.entity.projectManagement.Defense;
 import backend.siptis.model.entity.projectManagement.Presentation;
 import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.entity.projectManagement.Review;
 import backend.siptis.model.entity.userData.Schedule;
 import backend.siptis.model.pjo.dto.projectManagement.AssignTribunalsDTO;
+import backend.siptis.model.pjo.dto.projectManagement.DefenseDTO;
 import backend.siptis.model.pjo.vo.projectManagement.*;
 import backend.siptis.model.repository.editorsAndReviewers.ProjectTribunalRepository;
 import backend.siptis.model.repository.projectManagement.PresentationRepository;
@@ -158,6 +160,22 @@ public class ProjectServiceImpl implements ProjectService {
         List<UserDefenseScheduleVO> tribunalsDefenseInfo = tribunalsList.stream().map(this::createDefenseInfo).toList();
         InfoToCreateADefenseVO data = new InfoToCreateADefenseVO(studentsDefenseInfo, tribunalsDefenseInfo);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(data).build();
+    }
+
+    @Override
+    public ServiceAnswer addDefense(DefenseDTO defenseDTO) {
+        Optional<Project> query = projectRepository.findById(defenseDTO.getIdProject());
+        if(query.isEmpty()){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data(null).build();
+        }
+        Project project = query.get();
+        if(project.getDefense() != null){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_HAS_ALREADY_A_DEFENSE_DATE).data(null).build();
+        }
+        Defense newDefense = new Defense(defenseDTO.getPlace(), defenseDTO.getHour());
+        project.setDefense(newDefense);
+        projectRepository.save(project);
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("Defense created").build();;
     }
 
     private UserDefenseScheduleVO createDefenseInfo(SiptisUser student) {

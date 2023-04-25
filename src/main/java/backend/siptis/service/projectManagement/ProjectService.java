@@ -2,6 +2,7 @@ package backend.siptis.service.projectManagement;
 
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.model.pjo.dto.projectManagement.AssignTribunalsDTO;
+import backend.siptis.model.pjo.dto.projectManagement.DefenseDTO;
 
 public interface ProjectService {
 
@@ -18,4 +19,6 @@ public interface ProjectService {
     ServiceAnswer assignTribunals(AssignTribunalsDTO assignTribunalsDTO);
 
     ServiceAnswer getSchedulesInfoToAssignADefense(Long idProject);
+
+    ServiceAnswer addDefense(DefenseDTO defenseDTO);
 }
