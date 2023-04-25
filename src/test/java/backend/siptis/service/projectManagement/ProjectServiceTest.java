@@ -2,6 +2,7 @@ package backend.siptis.service.projectManagement;
 
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
+import backend.siptis.model.pjo.dto.projectManagement.AssignTribunalsDTO;
 import backend.siptis.model.pjo.vo.projectManagement.ProjectCompleteInfo;
 import backend.siptis.model.pjo.vo.projectManagement.ProjectInfoToAssignTribunals;
 import backend.siptis.model.pjo.vo.projectManagement.ProjectToReviewSectionVO;
@@ -10,22 +11,30 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import javax.sql.DataSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class ProjectServiceTest {
 
     private final ProjectService projectService;
+    private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public ProjectServiceTest(ProjectService projectService) {
+    public ProjectServiceTest(ProjectService projectService, JdbcTemplate jdbcTemplate) {
         this.projectService = projectService;
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Test
@@ -202,6 +211,68 @@ class ProjectServiceTest {
     void getProjectInfoToAssignTribunalsWithCorrectProjectIdReturnAnObjectWithTheCorrectIdOfTheProject() {
         ServiceAnswer query = projectService.getProjectInfoToAssignTribunals(1L);
         ProjectInfoToAssignTribunals res = (ProjectInfoToAssignTribunals)query.getData();
-        assertEquals(1L, res.getId());
+        assertEquals("ProyectoGrado1", res.getName());
+    }
+
+    @Test
+    void assignTribunalsWithIncorrectIdTribunalReturnUserIdDoesNotExist() {
+        AssignTribunalsDTO assignTribunalsDTO = new AssignTribunalsDTO(new Long[]{0L, 5L, 9L}, 1L);
+        ServiceAnswer query = projectService.assignTribunals(assignTribunalsDTO);
+        assertEquals(ServiceMessage.USER_ID_DOES_NOT_EXIST, query.getServiceMessage());
+    }
+
+    @Test
+    void assignTribunalsWithIncorrectIdTribunalReturnTheIncorrectId() {
+        AssignTribunalsDTO assignTribunalsDTO = new AssignTribunalsDTO(new Long[]{0L, 5L, 9L}, 1L);
+        ServiceAnswer query = projectService.assignTribunals(assignTribunalsDTO);
+        Long data = (Long) query.getData();
+        assertEquals(0L, data);
+    }
+
+    @Test
+    void assignTribunalsWithUserIdThatIsNotATribunalReturnUserIsNotATribunal() {
+        AssignTribunalsDTO assignTribunalsDTO = new AssignTribunalsDTO(new Long[]{2L, 5L, 9L}, 1L);
+        ServiceAnswer query = projectService.assignTribunals(assignTribunalsDTO);
+        assertEquals(ServiceMessage.USER_IS_NOT_A_TRIBUNAL, query.getServiceMessage());
+    }
+
+    @Test
+    void assignTribunalsWithUserIdThatIsNotATribunalReturnTheIncorrectId() {
+        AssignTribunalsDTO assignTribunalsDTO = new AssignTribunalsDTO(new Long[]{2L, 5L, 9L}, 1L);
+        ServiceAnswer query = projectService.assignTribunals(assignTribunalsDTO);
+        Long data = (Long) query.getData();
+        assertEquals(2L, data);
+    }
+
+    @Test
+    void assignTribunalsWithIncorrectProjectIdReturnProjectIdDoesNotExist() {
+        AssignTribunalsDTO assignTribunalsDTO = new AssignTribunalsDTO(new Long[]{1L, 5L, 9L}, 0L);
+        ServiceAnswer query = projectService.assignTribunals(assignTribunalsDTO);
+        assertEquals(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST, query.getServiceMessage());
+    }
+
+    @Test
+    void assignTribunalsWithIncorrectProjectIdReturnNullData() {
+        AssignTribunalsDTO assignTribunalsDTO = new AssignTribunalsDTO(new Long[]{1L, 5L, 9L}, 0L);
+        ServiceAnswer query = projectService.assignTribunals(assignTribunalsDTO);
+        assertNull(query.getData());
+    }
+
+    @Test
+    @Sql(scripts = {"/cleanDB.sql","/assignTribunals.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    void assignTribunalsWithCorrectDataReturnOk() {
+        AssignTribunalsDTO assignTribunalsDTO = new AssignTribunalsDTO(new Long[]{1L, 5L, 9L}, 1L);
+        ServiceAnswer query = projectService.assignTribunals(assignTribunalsDTO);
+        assertEquals(ServiceMessage.OK, query.getServiceMessage());
+        jdbcTemplate.execute("DROP ALL OBJECTS");
+    }
+
+    @Test
+    @Sql(scripts = {"/cleanDB.sql","/assignTribunals.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    void assignTribunalsWithCorrectDataReturnDataWithAMessage() {
+        AssignTribunalsDTO assignTribunalsDTO = new AssignTribunalsDTO(new Long[]{1L, 5L, 9L}, 1L);
+        ServiceAnswer query = projectService.assignTribunals(assignTribunalsDTO);
+        assertEquals("Tribunals has been assigned to the project", (String)query.getData());
+        jdbcTemplate.execute("DROP ALL OBJECTS");
     }
 }

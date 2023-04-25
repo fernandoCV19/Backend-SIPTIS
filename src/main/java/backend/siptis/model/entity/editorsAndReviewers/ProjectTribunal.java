@@ -33,4 +33,12 @@ public class ProjectTribunal {
     @Column(name = "defense_points")
     private Double defensePoints;
     private Boolean reviewed;
+
+    public ProjectTribunal(SiptisUser tribunal, Project project) {
+        this.tribunal = tribunal;
+        this.project = project;
+        accepted = false;
+        reviewed = false;
+        defensePoints = null;
+    }
 }

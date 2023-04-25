@@ -1,13 +1,17 @@
 package backend.siptis.service.projectManagement;
 
+import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
+import backend.siptis.model.entity.editorsAndReviewers.ProjectTribunal;
 import backend.siptis.model.entity.projectManagement.Presentation;
 import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.entity.projectManagement.Review;
+import backend.siptis.model.pjo.dto.projectManagement.AssignTribunalsDTO;
 import backend.siptis.model.pjo.vo.projectManagement.ProjectCompleteInfo;
 import backend.siptis.model.pjo.vo.projectManagement.ProjectInfoToAssignTribunals;
 import backend.siptis.model.pjo.vo.projectManagement.ProjectToReviewSectionVO;
+import backend.siptis.model.repository.editorsAndReviewers.ProjectTribunalRepository;
 import backend.siptis.model.repository.projectManagement.PresentationRepository;
 import backend.siptis.model.repository.projectManagement.ProjectRepository;
 import backend.siptis.model.repository.projectManagement.ReviewRepository;
@@ -16,6 +20,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +35,7 @@ public class ProjectServiceImpl implements ProjectService {
     private final PresentationRepository presentationRepository;
     private final ReviewRepository reviewRepository;
     private final SiptisUserRepository siptisUserRepository;
+    private final ProjectTribunalRepository projectTribunalRepository;
 
     @Override
     public ServiceAnswer getProjects(){
@@ -110,6 +116,34 @@ public class ProjectServiceImpl implements ProjectService {
 
         Project project = query.get();
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(new ProjectInfoToAssignTribunals(project)).build();
+    }
+
+    @Override
+    public ServiceAnswer assignTribunals(AssignTribunalsDTO assignTribunalsDTO) {
+        List<Long> tribunalsIds = assignTribunalsDTO.getTribunalsIds();
+        Long projectId = assignTribunalsDTO.getProjectId();
+        List<SiptisUser> tribunals = new ArrayList<>();
+        for(Long id: tribunalsIds){
+            Optional<SiptisUser> user = siptisUserRepository.findById(id);
+            if(user.isEmpty()){
+                return ServiceAnswer.builder().serviceMessage(ServiceMessage.USER_ID_DOES_NOT_EXIST).data(id).build();
+            }
+            if(user.get().getRoles().stream().noneMatch(role -> role.getName().equals("TRIBUNAL"))){
+                return ServiceAnswer.builder().serviceMessage(ServiceMessage.USER_IS_NOT_A_TRIBUNAL).data(id).build();
+            }
+            tribunals.add(user.get());
+        }
+        Optional<Project> project = projectRepository.findById(projectId);
+        if(project.isEmpty()){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data(null).build();
+        }
+
+        for(SiptisUser user: tribunals){
+            ProjectTribunal projectTribunal = new ProjectTribunal(user, project.get());
+            projectTribunalRepository.save(projectTribunal);
+        }
+
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("Tribunals has been assigned to the project").build();
     }
 
     private Integer getDaysDifference(Date compare){

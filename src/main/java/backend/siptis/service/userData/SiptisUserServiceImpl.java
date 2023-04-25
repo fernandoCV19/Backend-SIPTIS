@@ -9,6 +9,8 @@ import backend.siptis.model.pjo.dto.EditStudentInformationDTO;
 import backend.siptis.model.pjo.dto.StudentEditPersonalInfoDTO;
 import backend.siptis.model.pjo.dto.StudentInformationDTO;
 import backend.siptis.model.pjo.dto.UserGeneralInformationDTO;
+import backend.siptis.model.pjo.vo.projectManagement.ProjectInfoToAssignTribunals;
+import backend.siptis.model.pjo.vo.userData.TribunalInfoToAssignSection;
 import backend.siptis.model.repository.general.RoleRepository;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +27,6 @@ import java.util.Set;
 public class SiptisUserServiceImpl implements SiptisUserService {
 
     private final SiptisUserRepository usuarioCommonRepository;
-
-    @Autowired
     private final UserInformationService userInformationService;
 
     @Override
@@ -99,6 +99,13 @@ public class SiptisUserServiceImpl implements SiptisUserService {
 
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(informationDTO).build();
 
+    }
+
+    @Override
+    public ServiceAnswer getPossibleTribunals() {
+        List<SiptisUser> query = usuarioCommonRepository.findByRolesName("TRIBUNAL");
+        List<TribunalInfoToAssignSection> res = query.stream().map(TribunalInfoToAssignSection::new).toList();
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(res).build();
     }
 
     private UserGeneralInformationDTO convertToDTO(SiptisUser user){

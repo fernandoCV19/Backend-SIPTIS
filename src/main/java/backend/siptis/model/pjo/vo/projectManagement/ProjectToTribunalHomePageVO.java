@@ -4,7 +4,7 @@ import backend.siptis.model.entity.projectManagement.Project;
 import lombok.Data;
 
 @Data
-public class ProjectToTribunalHomePageVO extends ProjectToHomePageVO {
+public class    ProjectToTribunalHomePageVO extends ProjectToHomePageVO {
     private DefenseVO defense;
     private Double defensePoints;
 

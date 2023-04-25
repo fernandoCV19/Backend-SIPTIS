@@ -115,6 +115,13 @@ public class SiptisUserController {
         return crearResponseEntityRegistrar(answer);
     }
 
+    @GetMapping("/getTribunals")
+    public ResponseEntity<?> getTribunals(){
+        ServiceAnswer query = userService.getPossibleTribunals();
+        ControllerAnswer controllerAnswer = ControllerAnswer.builder().message(query.getServiceMessage().toString()).data(query.getData()).build();
+        return new ResponseEntity<>(controllerAnswer, HttpStatus.OK);
+    }
+
     private ResponseEntity<?> crearResponseEntityRegistrar(ServiceAnswer serviceAnswer){
         Object data = serviceAnswer.getData();
         ServiceMessage messageService = serviceAnswer.getServiceMessage();
