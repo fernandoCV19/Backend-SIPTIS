@@ -1,4 +1,4 @@
-package backend.siptis.service.projectManagement;
+package backend.siptis.service.cloud;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.*;
@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import org.apache.commons.io.FileUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -70,7 +69,7 @@ public class CloudManagementServiceImpl implements CloudManagementService {
 
         return outputStream;
     } catch (IOException ioException) {
-        System.out.println(ioException.toString());
+        System.err.println(ioException);
     }
 
         return null;
@@ -108,5 +107,13 @@ public class CloudManagementServiceImpl implements CloudManagementService {
         }
 
         return keys;
+    }
+
+    @Override
+    public String uploadDocumentToCloud(String filename){
+        File document = new File(filename);
+        String key = putObject(document, "Documentos/");
+        boolean bandera = document.delete();
+        return key;
     }
 }

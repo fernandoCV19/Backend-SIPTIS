@@ -1,4 +1,4 @@
-package backend.siptis.service.projectManagement;
+package backend.siptis.service.cloud;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -17,4 +17,6 @@ public interface CloudManagementService {
     String getObjectURL(String key);
 
     List<String> getObjectslistFromFolder(String folderKey) ;
+
+     String uploadDocumentToCloud(String filename);
 }
