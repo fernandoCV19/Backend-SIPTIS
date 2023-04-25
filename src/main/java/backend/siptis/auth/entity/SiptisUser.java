@@ -71,7 +71,7 @@ public class SiptisUser implements UserDetails {
 
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "siptisUser")
     @JsonManagedReference
-    private Collection<Schedule> availablesSchedule;
+    private Collection<Schedule> availableSchedules;
 
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "siptisUser")
     @JsonManagedReference

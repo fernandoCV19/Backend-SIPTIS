@@ -16,4 +16,6 @@ public interface ProjectService {
     ServiceAnswer getProjectInfoToAssignTribunals(Long idProject);
 
     ServiceAnswer assignTribunals(AssignTribunalsDTO assignTribunalsDTO);
+
+    ServiceAnswer getSchedulesInfoToAssignADefense(Long idProject);
 }

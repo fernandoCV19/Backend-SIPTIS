@@ -115,6 +115,7 @@ INSERT INTO role(id, name) VALUES (2, 'TRIBUNAL');
 INSERT INTO role(id, name) VALUES (3, 'TUTOR');
 INSERT INTO role(id, name) VALUES (4, 'TEACHER');
 INSERT INTO role(id, name) VALUES (5, 'SUPERVISOR');
+INSERT INTO role(id, name) VALUES (6, 'STUDENT');
 
 INSERT INTO siptis_user(id, email, password) VALUES (1, 'usuario1@mail.com', '12345678');
 
@@ -581,3 +582,144 @@ INSERT INTO activity (id, activity_name, activity_description, activity_date, pr
 
 
 
+
+---- get schedule info
+
+INSERT INTO project(id, blue_book_path, perfil_path, project_path, phase, name, defense_id, state_id, modality_id) VALUES (100, 'Libro100', 'Perfil100', 'Proyecto100', 'Fase100', 'ProyectoGrado100', null, null, 1);
+
+INSERT INTO project_area(project_id, area_id) VALUES (100, 1);
+
+INSERT INTO project_sub_area(project_id, sub_area_id) VALUES (100, 1);
+
+
+INSERT INTO siptis_user(id, email, password) VALUES (100, 'usuario100@mail.com', '12345678');
+
+INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names,  user_id) VALUES (100, '2000-1-19', '1234567', '1000000', '12345670', 'Apellidos100', 'Nombres100',  100);
+
+INSERT INTO siptis_user_role(siptis_user_id, role_id) VALUES (100, 2);
+
+
+INSERT INTO siptis_user(id, email, password) VALUES (101, 'usuario101@mail.com', '12345678');
+
+INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names,  user_id) VALUES (101, '2000-1-19', '1234567', '1000000', '12345670', 'Apellidos101', 'Nombres101',  101);
+
+INSERT INTO siptis_user_role(siptis_user_id, role_id) VALUES (101, 2);
+
+
+INSERT INTO siptis_user(id, email, password) VALUES (102, 'usuario102@mail.com', '12345678');
+
+INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names,  user_id) VALUES (102, '2000-1-19', '1234567', '1000000', '12345670', 'Apellidos102', 'Nombres102',  102);
+
+INSERT INTO siptis_user_role(siptis_user_id, role_id) VALUES (102, 2);
+
+
+
+INSERT INTO siptis_user(id, email, password) VALUES (103, 'usuario103@mail.com', '12345678');
+
+INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names,  user_id) VALUES (103, '2000-1-19', '1234567', '1000000', '12345670', 'Apellidos103', 'Nombres103',  103);
+
+INSERT INTO siptis_user_role(siptis_user_id, role_id) VALUES (103, 6);
+
+
+
+INSERT INTO siptis_user(id, email, password) VALUES (104, 'usuario104@mail.com', '12345678');
+
+INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names,  user_id) VALUES (104, '2000-1-19', '1234567', '1000000', '12345670', 'Apellidos104', 'Nombres104',  104);
+
+INSERT INTO siptis_user_role(siptis_user_id, role_id) VALUES (104, 6);
+
+
+
+
+INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id, user_id) VALUES (100, false, null, false, 100, 100);
+INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id, user_id) VALUES (101, false, null, false, 100, 101);
+INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id, user_id) VALUES (102, false, null, false, 100, 102);
+
+
+INSERT INTO project_student(id, user_id, project_id) VALUES (100, 103, 100);
+
+INSERT INTO project_student(id, user_id, project_id) VALUES (101, 101, 100);
+
+
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (1, 'Lunes', '02:55', '13:31', 100);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (2, 'Lunes', '19:01', '10:44', 101);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (3, 'Lunes', '13:32', '12:25', 102);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (4, 'Lunes', '05:31', '04:49', 103);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (5, 'Lunes', '74:62', '65:43', 104);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (6, 'Lunes', '86:27', '76:54', 100);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (7, 'Lunes', '86:35', '86:65', 101);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (8, 'Lunes', '86:24', '98:68', 102);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (9, 'Lunes', '24:53', '48:38', 103);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (10, 'Lunes', '07:96', '28:85', 104);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (11, 'Lunes', '61:25', '42:98', 100);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (12, 'Lunes', '04:37', '83:81', 101);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (13, 'Lunes', '13:18', '17:07', 102);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (14, 'Lunes', '06:78', '81:38', 103);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (15, 'Lunes', '47:97', '24:34', 104);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (16, 'Lunes', '79:67', '27:49', 100);
+
+
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (17, 'Martes', '62:47', '38:62', 101);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (18, 'Martes', '46:46', '46:31', 102);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (19, 'Martes', '46:79', '80:70', 103);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (20, 'Martes', '64:60', '05:90', 104);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (21, 'Martes', '93:18', '23:19', 100);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (22, 'Martes', '32:86', '29:84', 101);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (23, 'Martes', '12:38', '18:38', 102);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (24, 'Martes', '68:67', '16:67', 103);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (25, 'Martes', '13:14', '32:18', 104);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (26, 'Martes', '67:31', '64:91', 100);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (27, 'Martes', '61:49', '91:34', 101);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (28, 'Martes', '42:64', '13:32', 102);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (29, 'Martes', '36:94', '19:75', 103);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (30, 'Martes', '67:91', '36:47', 104);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (31, 'Martes', '67:92', '19:79', 100);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (32, 'Martes', '91:78', '31:47', 101);
+
+
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (33, 'Miercoles', '13:48', '97:61', 102);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (34, 'Miercoles', '17:97', '63:17', 103);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (35, 'Miercoles', '97:13', '47:63', 104);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (36, 'Miercoles', '57:94', '13:74', 100);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (37, 'Miercoles', '67:13', '17:63', 101);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (38, 'Miercoles', '28:97', '31:64', 102);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (39, 'Miercoles', '67:51', '84:17', 103);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (40, 'Miercoles', '93:28', '19:73', 104);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (41, 'Miercoles', '94:82', '46:37', 100);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (42, 'Miercoles', '49:34', '47:93', 101);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (43, 'Miercoles', '71:98', '28:97', 102);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (44, 'Miercoles', '36:61', '64:82', 103);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (45, 'Miercoles', '96:85', '87:41', 104);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (46, 'Miercoles', '37:94', '28:95', 100);
+
+
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (47, 'Jueves', '34:48', '18:91', 101);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (48, 'Jueves', '61:82', '18:91', 102);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (49, 'Jueves', '82:97', '16:28', 103);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (50, 'Jueves', '79:81', '97:58', 104);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (51, 'Jueves', '96:85', '48:28', 100);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (52, 'Jueves', '87:28', '93:94', 101);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (52, 'Jueves', '97:38', '82:19', 102);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (54, 'Jueves', '37:28', '84:58', 103);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (55, 'Jueves', '71:48', '95:47', 104);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (56, 'Jueves', '48:93', '28:84', 100);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (57, 'Jueves', '87:82', '96:94', 101);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (58, 'Jueves', '82:20', '12:14', 102);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (59, 'Jueves', '34:61', '14:50', 103);
+
+
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (60, 'Viernes', '13:02', '80:71', 104);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (61, 'Viernes', '30:10', '20:28', 100);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (62, 'Viernes', '01:47', '82:90', 101);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (63, 'Viernes', '91:27', '80:94', 102);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (64, 'Viernes', '34:91', '28:20', 103);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (65, 'Viernes', '34:80', '74:85', 104);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (66, 'Viernes', '67:69', '69:61', 100);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (67, 'Viernes', '07:50', '34:20', 101);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (68, 'Viernes', '34:20', '34:28', 102);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (69, 'Viernes', '47:85', '67:60', 103);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (70, 'Viernes', '03:24', '82:20', 104);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (71, 'Viernes', '34:80', '17:37', 100);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (72, 'Viernes', '34:82', '80:17', 101);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (73, 'Viernes', '35:80', '47:28', 102);
+INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (74, 'Viernes', '39:84', '17:80', 103);

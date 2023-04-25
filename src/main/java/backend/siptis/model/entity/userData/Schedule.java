@@ -17,7 +17,8 @@ public class Schedule {
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
     private String dayS;
-    private String hourS;
+    private String hourStart;
+    private String hourFinish;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference

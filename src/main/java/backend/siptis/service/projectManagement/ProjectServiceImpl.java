@@ -3,14 +3,14 @@ package backend.siptis.service.projectManagement;
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
+import backend.siptis.model.entity.editorsAndReviewers.ProjectStudent;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectTribunal;
 import backend.siptis.model.entity.projectManagement.Presentation;
 import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.entity.projectManagement.Review;
+import backend.siptis.model.entity.userData.Schedule;
 import backend.siptis.model.pjo.dto.projectManagement.AssignTribunalsDTO;
-import backend.siptis.model.pjo.vo.projectManagement.ProjectCompleteInfo;
-import backend.siptis.model.pjo.vo.projectManagement.ProjectInfoToAssignTribunals;
-import backend.siptis.model.pjo.vo.projectManagement.ProjectToReviewSectionVO;
+import backend.siptis.model.pjo.vo.projectManagement.*;
 import backend.siptis.model.repository.editorsAndReviewers.ProjectTribunalRepository;
 import backend.siptis.model.repository.projectManagement.PresentationRepository;
 import backend.siptis.model.repository.projectManagement.ProjectRepository;
@@ -20,10 +20,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -144,6 +141,38 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("Tribunals has been assigned to the project").build();
+    }
+
+    @Override
+    public ServiceAnswer getSchedulesInfoToAssignADefense(Long idProject) {
+        Optional<Project> query = projectRepository.findById(idProject);
+        if(query.isEmpty()){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data(null).build();
+        }
+        Project project = query.get();
+        Collection<ProjectStudent> students = project.getStudents();
+        Collection<ProjectTribunal> tribunals = project.getTribunals();
+        List<SiptisUser> studentsList = students.stream().map(ProjectStudent::getStudent).toList();
+        List<SiptisUser> tribunalsList = tribunals.stream().map(ProjectTribunal::getTribunal).toList();
+        List<UserDefenseScheduleVO> studentsDefenseInfo = studentsList.stream().map(this::createDefenseInfo).toList();
+        List<UserDefenseScheduleVO> tribunalsDefenseInfo = tribunalsList.stream().map(this::createDefenseInfo).toList();
+        InfoToCreateADefenseVO data = new InfoToCreateADefenseVO(studentsDefenseInfo, tribunalsDefenseInfo);
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(data).build();
+    }
+
+    private UserDefenseScheduleVO createDefenseInfo(SiptisUser student) {
+        HashMap<String, List<String[]>> schedules = new HashMap<>();
+        for(Schedule schedule:student.getAvailableSchedules()){
+            String day = schedule.getDayS();
+            String start = schedule.getHourStart();
+            String finish = schedule.getHourFinish();
+            if(!schedules.containsKey(day)){
+                schedules.put(day, new ArrayList<>());
+            }
+            List<String[]> aux = schedules.get(day);
+            aux.add(new String[]{start, finish});
+        }
+        return new UserDefenseScheduleVO(student.getId(), student.getUserInformation().getNames() + " " + student.getUserInformation().getLastnames(), schedules);
     }
 
     private Integer getDaysDifference(Date compare){

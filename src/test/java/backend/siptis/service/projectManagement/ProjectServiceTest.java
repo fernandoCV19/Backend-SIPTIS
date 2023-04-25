@@ -3,22 +3,19 @@ package backend.siptis.service.projectManagement;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.projectManagement.AssignTribunalsDTO;
-import backend.siptis.model.pjo.vo.projectManagement.ProjectCompleteInfo;
-import backend.siptis.model.pjo.vo.projectManagement.ProjectInfoToAssignTribunals;
-import backend.siptis.model.pjo.vo.projectManagement.ProjectToReviewSectionVO;
+import backend.siptis.model.pjo.vo.projectManagement.*;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.sql.DataSource;
+import java.util.HashMap;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -274,5 +271,51 @@ class ProjectServiceTest {
         ServiceAnswer query = projectService.assignTribunals(assignTribunalsDTO);
         assertEquals("Tribunals has been assigned to the project", (String)query.getData());
         jdbcTemplate.execute("DROP ALL OBJECTS");
+    }
+
+    @Test
+    void getSchedulesInfoToAssignADefenseWithAnIncorrectIdReturnIdProjectDoesNotExist() {
+        ServiceAnswer query = projectService.getSchedulesInfoToAssignADefense(0L);
+        assertEquals(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST, query.getServiceMessage());
+    }
+
+    @Test
+    void getSchedulesInfoToAssignADefenseWithAnIncorrectIdReturnNullData() {
+        ServiceAnswer query = projectService.getSchedulesInfoToAssignADefense(0L);
+        assertNull(query.getData());
+    }
+
+    @Test
+    void getSchedulesInfoToAssignADefenseWithACorrectIdReturnOk() {
+        ServiceAnswer query = projectService.getSchedulesInfoToAssignADefense(100L);
+        assertEquals(ServiceMessage.OK, query.getServiceMessage());
+    }
+
+    @Test
+    void getSchedulesInfoToAssignADefenseWithACorrectIdReturnNotNullData() {
+        ServiceAnswer query = projectService.getSchedulesInfoToAssignADefense(100L);
+        assertNotNull(query.getData());
+    }
+
+    @Test
+    void getSchedulesInfoToAssignADefenseWithACorrectIdReturnTheCorrectNumberOfTribunals() {
+        ServiceAnswer query = projectService.getSchedulesInfoToAssignADefense(100L);
+        InfoToCreateADefenseVO infoToCreateADefenseVO = (InfoToCreateADefenseVO) query.getData();
+        assertEquals(3, infoToCreateADefenseVO.getTribunals().size());
+    }
+
+    @Test
+    void getSchedulesInfoToAssignADefenseWithACorrectIdReturnTheCorrectNumberOfStudents() {
+        ServiceAnswer query = projectService.getSchedulesInfoToAssignADefense(100L);
+        InfoToCreateADefenseVO infoToCreateADefenseVO = (InfoToCreateADefenseVO) query.getData();
+        assertEquals(2, infoToCreateADefenseVO.getStudents().size());
+    }
+
+    @Test
+    void getSchedulesInfoToAssignADefenseWithACorrectIdReturnTheCorrectDistributionOfDaysOfAUser() {
+        ServiceAnswer query = projectService.getSchedulesInfoToAssignADefense(100L);
+        InfoToCreateADefenseVO infoToCreateADefenseVO = (InfoToCreateADefenseVO) query.getData();
+        HashMap<String, List<String[]>> res = infoToCreateADefenseVO.getTribunals().get(0).getSchedules();
+        assertTrue(res.containsKey("Lunes") && res.containsKey("Martes") && res.containsKey("Miercoles") && res.containsKey("Jueves") && res.containsKey("Viernes") && res.size() == 5);
     }
 }
