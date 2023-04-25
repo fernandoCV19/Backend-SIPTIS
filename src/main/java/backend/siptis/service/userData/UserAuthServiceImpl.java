@@ -83,7 +83,7 @@ public class UserAuthServiceImpl implements UserAuthService {
             return validation;
         }
 
-        SiptisUser siptisUser = registerUser(teacherDTO.getEmail(), teacherDTO.getPassword(), 3)
+        SiptisUser siptisUser = registerUser(teacherDTO.getEmail(), teacherDTO.getPassword(), 3);
 
         ServiceAnswer respuesta = userInformationService.registerTeacher(teacherDTO, siptisUser);
 
