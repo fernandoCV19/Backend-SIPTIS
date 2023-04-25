@@ -4,6 +4,7 @@ import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.model.pjo.dto.AdminRegisterDTO;
 import backend.siptis.model.pjo.dto.StudentRegisterDTO;
+import backend.siptis.model.pjo.dto.TeacherRegisterDTO;
 import backend.siptis.model.pjo.dto.records.LogInDTO;
 
 import java.util.Optional;
@@ -13,6 +14,8 @@ public interface UserAuthService {
     ServiceAnswer findAll();
 
     ServiceAnswer registerStudent(StudentRegisterDTO estudianteDTO);
+
+    ServiceAnswer registerTeacher(TeacherRegisterDTO teacherDTO);
 
     ServiceAnswer registerAdmin(AdminRegisterDTO adminDTO);
 
