@@ -17,5 +17,6 @@ public interface SiptisUserRepository extends JpaRepository<SiptisUser, Long> {
 
     boolean existsByEmail(String email);
 
-    Optional<SiptisUser> findById(Long id);
+    Optional<SiptisUser> findOneById(Long id);
+
 }
