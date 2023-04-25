@@ -46,6 +46,15 @@ public class SiptisUserController {
         return crearResponseEntityRegistrar(student);
     }
 
+    @PostMapping("/register/teacher")
+    // @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<?> registerTeacher(
+            @RequestBody TeacherRegisterDTO teacherDTO){
+
+        ServiceAnswer teacher = userAuthService.registerTeacher(teacherDTO);
+        return crearResponseEntityRegistrar(teacher);
+    }
+
     @PostMapping("/register/admin")
     // @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> registerAdmin(
@@ -104,7 +113,17 @@ public class SiptisUserController {
         return crearResponseEntityRegistrar(answer);
     }
 
-        @PostMapping("/editUser")
+    @PostMapping("/editTeacher/{userId}")
+    public ResponseEntity<?> editTeacher(
+            @PathVariable int userId,
+            @RequestBody EditTeacherInformationDTO dto){
+
+        Long id = Long.valueOf(userId);
+        ServiceAnswer answer = userService.editTeacherInformation(id, dto);
+        return crearResponseEntityRegistrar(answer);
+    }
+
+    @PostMapping("/editUser")
     public ResponseEntity<?> editMiInformation(
             @RequestBody StudentEditPersonalInfoDTO dto,
             @RequestHeader (name="Authorization") String token){
@@ -112,6 +131,17 @@ public class SiptisUserController {
         Long id = userAuthService.getIdFromToken(token);
 
         ServiceAnswer answer = userService.studentEditPersonalInfo(id, dto);
+        return crearResponseEntityRegistrar(answer);
+    }
+
+    @PostMapping("/editTeacher")
+    public ResponseEntity<?> editMiInformationTeacher(
+            @RequestBody TeacherEditPersonalInfoDTO dto,
+            @RequestHeader (name="Authorization") String token){
+
+        Long id = userAuthService.getIdFromToken(token);
+
+        ServiceAnswer answer = userService.teacherEditPersonalInfo(id, dto);
         return crearResponseEntityRegistrar(answer);
     }
 
