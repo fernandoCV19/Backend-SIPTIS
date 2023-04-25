@@ -13,6 +13,7 @@ import backend.siptis.model.repository.projectManagement.ReviewRepository;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -33,6 +34,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ServiceAnswer getProjects(){
         List<Project> proyectos = projectRepository.findAll();
+
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(proyectos).build();
     }
 
@@ -45,7 +47,7 @@ public class ProjectServiceImpl implements ProjectService {
         Project proyecto = oProyectoGrado.get();
         List<Presentation> presentaciones = proyecto.getPresentations().stream().toList();
         if (presentaciones.isEmpty()){
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.SIN_PRESENTACIONES).data(null).build();
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_PRESENTATIONS).data(null).build();
         }
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(presentaciones).build();
     }

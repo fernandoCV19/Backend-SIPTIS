@@ -6,12 +6,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ReportDocumentDTO {
-    private int reportNumber;
-    private String title;
-    private String postulant;
-    private String tutor;
-    private String teacher;
+    private long userId;
+    private long projectId;
     private String description;
+    private String shortDescription;
     //private MultipartFile tutorSignature;
     //private MultipartFile teacherSignature;
 }
