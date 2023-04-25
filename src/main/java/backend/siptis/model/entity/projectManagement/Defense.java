@@ -19,5 +19,4 @@ public class Defense {
     private String place;
 
     private String defenseHour;
-
 }
