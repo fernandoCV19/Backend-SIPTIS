@@ -42,8 +42,8 @@ cloud:
       stack:
         auto: false
       credentials:
-        access-key: AKIA4O3PHN4JLLTTCSW5
-        secret-key: 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
+        access-key: AKIA4O3PHN4JMSTAYYPK
+        secret-key: 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
 
 logging:
   level:
