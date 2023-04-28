@@ -4,6 +4,7 @@ create sequence defense_seq start with 1 increment by 50;
 create sequence document_seq start with 1 increment by 50;
 create sequence general_activity_seq start with 1 increment by 50;
 create sequence modality_seq start with 1 increment by 50;
+create sequence place_to_defense_seq start with 1 increment by 50;
 create sequence presentation_seq start with 1 increment by 50;
 create sequence project_seq start with 1 increment by 50;
 create sequence project_student_seq start with 1 increment by 50;
@@ -22,12 +23,13 @@ create sequence user_career_seq start with 1 increment by 50;
 create sequence user_information_seq start with 1 increment by 50;
 create table activity (id bigint not null, activity_date timestamp(6), activity_description varchar(255), activity_name varchar(255), project_id bigint not null, primary key (id));
 create table area (id bigint not null, name varchar(255), primary key (id));
-create table defense (id integer not null, defense_hour varchar(255), place varchar(255), primary key (id));
+create table defense (id bigint not null, date timestamp(6), place_to_defense_id bigint, project_id bigint, primary key (id));
 create table document (id bigint not null, description varchar(255), path varchar(255), type varchar(255), user_id bigint not null, primary key (id));
 create table general_activity (id bigint not null, activity_date timestamp(6), activity_description varchar(255), activity_name varchar(255), primary key (id));
 create table modality (id bigint not null, name varchar(255), primary key (id));
+create table place_to_defense (id bigint not null, capacity integer, location varchar(255), name varchar(255), primary key (id));
 create table presentation (id bigint not null, blue_book_path varchar(255), date timestamp(6), phase varchar(255), project_path varchar(255), reviewed boolean, project_id bigint not null, primary key (id));
-create table project (id bigint not null, blue_book_path varchar(255), name varchar(255), perfil_path varchar(255), phase varchar(255), project_path varchar(255), defense_id integer, modality_id bigint not null, state_id bigint, primary key (id));
+create table project (id bigint not null, blue_book_path varchar(255), name varchar(255), perfil_path varchar(255), phase varchar(255), project_path varchar(255), modality_id bigint not null, state_id bigint, primary key (id));
 create table project_area (project_id bigint not null, area_id bigint not null);
 create table project_student (id bigint not null, project_id bigint not null, user_id bigint not null, primary key (id));
 create table project_sub_area (project_id bigint not null, sub_area_id bigint not null);
@@ -37,7 +39,7 @@ create table project_tribunal (id bigint not null, accepted boolean, defense_poi
 create table project_tutor (id bigint not null, accepted boolean, reviewed boolean, project_id bigint not null, user_id bigint not null, primary key (id));
 create table review (id bigint not null, commentary varchar(255), date timestamp(6), document_path varchar(255), presentation_id bigint not null, user_id bigint not null, primary key (id));
 create table role (id integer not null, name varchar(255), primary key (id));
-create table schedule (id bigint not null, days varchar(255), hours varchar(255), user_id bigint not null, primary key (id));
+create table schedule (id bigint not null, days varchar(255), hour_finish varchar(255), hour_start varchar(255), user_id bigint not null, primary key (id));
 create table siptis_user (id bigint not null, email varchar(255), password varchar(255), primary key (id));
 create table siptis_user_area (siptisuser_id bigint not null, area_id bigint not null);
 create table siptis_user_career (siptisuser_id bigint not null, career_id bigint not null, primary key (siptisuser_id, career_id));
@@ -48,9 +50,10 @@ create table user_area (id bigint not null, name varchar(255), primary key (id))
 create table user_career (id bigint not null, name varchar(255), primary key (id));
 create table user_information (id bigint not null, birth_date timestamp(6), cel_number varchar(255), ci varchar(255), codsis varchar(255), lastnames varchar(255), names varchar(255), user_id bigint, primary key (id));
 alter table if exists activity add constraint FKnhet5ajl85sdn6l77obdgh47s foreign key (project_id) references project;
+alter table if exists defense add constraint FKrorlgp1jnvjkmsf121o7ha645 foreign key (place_to_defense_id) references place_to_defense;
+alter table if exists defense add constraint FK88auhvb4tfyd7hba7q1m0d0wx foreign key (project_id) references project;
 alter table if exists document add constraint FK7iadwrg8rxcn2o6jpboa8gmm5 foreign key (user_id) references siptis_user;
 alter table if exists presentation add constraint FKedd9862jjq377ce3laaquoymq foreign key (project_id) references project;
-alter table if exists project add constraint FK5993se7ebop1x40svb50cypbm foreign key (defense_id) references defense;
 alter table if exists project add constraint FKognp3vx6c8kg3w3tx424hjny0 foreign key (modality_id) references modality;
 alter table if exists project add constraint FKn9hn5axyk6qcevc2d67ohv8db foreign key (state_id) references state;
 alter table if exists project_area add constraint FKbf6m2u4tapd9cenngqjyqc774 foreign key (area_id) references area;
@@ -90,7 +93,7 @@ INSERT INTO sub_area(id, name) VALUES (2, 'SubArea2');
 INSERT INTO modality(id, name) VALUES (1, 'Adscripcion');
 
 
-INSERT INTO project(id, blue_book_path, perfil_path, project_path, phase, name, defense_id, state_id, modality_id) VALUES (1, 'Libro1', 'Perfil1', 'Proyecto1', 'Fase1', 'ProyectoGrado1', null, null, 1);
+INSERT INTO project(id, blue_book_path, perfil_path, project_path, phase, name,  state_id, modality_id) VALUES (1, 'Libro1', 'Perfil1', 'Proyecto1', 'Fase1', 'ProyectoGrado1', null, 1);
 
 INSERT INTO project_area(project_id, area_id) VALUES (1, 1);
 

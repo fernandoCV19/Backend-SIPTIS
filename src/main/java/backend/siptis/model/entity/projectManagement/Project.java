@@ -35,7 +35,8 @@ public class Project {
 
     private String phase;
 
-    @OneToOne
+    @OneToOne(mappedBy = "project", cascade = CascadeType.ALL, optional = true)
+    @JoinColumn(name = "defense_id")
     private Defense defense;
 
     @ManyToOne(fetch = FetchType.LAZY)

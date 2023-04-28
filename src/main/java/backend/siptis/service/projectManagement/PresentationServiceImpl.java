@@ -19,14 +19,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PresentationServiceImpl implements PresentationService {
 
-    @Autowired
-    private CloudManagementService nube;
-
-    @Autowired
-    private PresentationRepository presentationRepository;
-
-    @Autowired
-    private ProjectRepository proyectoGradoRepository;
+    private final CloudManagementService nube;
+    private final PresentationRepository presentationRepository;
+    private final ProjectRepository proyectoGradoRepository;
 
     @Override
     public ServiceAnswer createPresentation (Long idProyecto, Phase fase){
