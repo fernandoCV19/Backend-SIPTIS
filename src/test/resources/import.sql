@@ -2,6 +2,7 @@
 
 INSERT INTO place_to_defense(id, capacity, location, name) VALUES (1, 20, 'Departamento informatica-sistemas', 'Auditorio');
 INSERT INTO place_to_defense(id, capacity, location, name) VALUES (2, 200, 'Edificio nuevo', 'Auditorio');
+INSERT INTO place_to_defense(id, capacity, location, name) VALUES (3, 50, 'Edificio nuevo', 'Aula 692B');
 
 INSERT INTO area(id, name) VALUES (1, 'Area1');
 
