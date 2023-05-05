@@ -15,4 +15,5 @@ public interface SiptisUserService {
     ServiceAnswer editStudentInformation(Long userID,EditStudentInformationDTO editDTO);
 
     ServiceAnswer studentEditPersonalInfo(Long id, StudentEditPersonalInfoDTO dto);
+    ServiceAnswer getPersonalActivities(Long id);
 }

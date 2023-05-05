@@ -1,6 +1,7 @@
 package backend.siptis.model.repository.userData;
 
 import backend.siptis.auth.entity.SiptisUser;
+import backend.siptis.model.entity.projectManagement.Project;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -18,4 +19,5 @@ public interface SiptisUserRepository extends JpaRepository<SiptisUser, Integer>
     boolean existsByEmail(String email);
 
     Optional<SiptisUser> findById(Long id);
+    Optional <Project> findProjectById(Long id);
 }
