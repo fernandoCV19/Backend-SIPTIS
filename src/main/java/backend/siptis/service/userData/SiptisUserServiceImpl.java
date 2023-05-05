@@ -1,8 +1,8 @@
 package backend.siptis.service.userData;
 
 import backend.siptis.auth.entity.SiptisUser;
-import backend.siptis.commons.ServiceMessage;
 import backend.siptis.commons.ServiceAnswer;
+import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectStudent;
 import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.entity.records.Activity;
@@ -90,7 +90,7 @@ public class SiptisUserServiceImpl implements SiptisUserService {
                 ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(usuarioCommonRepository.findAll()).build();
     }
 
-    }
+
 
     @Override
     public SiptisUser save(SiptisUser siptisUser){
@@ -255,3 +255,4 @@ public class SiptisUserServiceImpl implements SiptisUserService {
             return student;
         }
     }
+
