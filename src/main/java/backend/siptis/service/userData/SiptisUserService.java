@@ -15,7 +15,7 @@ public interface SiptisUserService {
 
     ServiceAnswer findAll();
     ServiceAnswer obtenerProyectosSupervisorParaMenuPrincipalPorIdUsuario(Integer id);
-    ServiceAnswer getAllUsers();
+
 
     SiptisUser findByEmail(String email);
 

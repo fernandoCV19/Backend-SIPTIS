@@ -45,6 +45,11 @@ public class SiptisUserServiceImpl implements SiptisUserService {
     }
 
     @Override
+    public ServiceAnswer obtenerProyectosSupervisorParaMenuPrincipalPorIdUsuario(Integer id) {
+        return null;
+    }
+
+    @Override
     public ServiceAnswer obtenerProyectosSupervisorParaMenuPrincipalPorIdUsuario(Long id) {
         Optional<SiptisUser> usuarioOptional = usuarioCommonRepository.findById(id);
         if(usuarioOptional.isEmpty()){
@@ -97,31 +102,6 @@ public class SiptisUserServiceImpl implements SiptisUserService {
         return usuarioCommonRepository.save(siptisUser);
     }
 
-    @Override
-    public ServiceAnswer editStudentInformation(Long userID, EditStudentInformationDTO editDTO) {
-
-        if(! usuarioCommonRepository.existsById(userID)){
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST)
-                    .data("No existe un usuario registrado con el id solicitado").build();
-        }
-        Optional<SiptisUser> user = usuarioCommonRepository.findById(userID);
-
-        SiptisUser siptisUser = user.get();
-
-        siptisUser.setEmail(editDTO.getEmail());
-        UserInformation userInformation = siptisUser.getUserInformation();
-        userInformation.setNames(editDTO.getNames());
-        userInformation.setLastnames(editDTO.getLastnames());
-        userInformation.setCelNumber(editDTO.getCelNumber());
-        userInformation.setCi(editDTO.getCi());
-        userInformation.setBirthDate(editDTO.getBirthDate());
-        userInformation.setCodSIS(editDTO.getCodSIS());
-
-        SiptisUser user1 = usuarioCommonRepository.save(siptisUser);
-        StudentInformationDTO informationDTO = convertToStudentInformation(user1);
-
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(informationDTO).build();
-    }
 
     @Override
     public ServiceAnswer editTeacherInformation(Long userID, EditTeacherInformationDTO editDTO) {
@@ -167,28 +147,32 @@ public class SiptisUserServiceImpl implements SiptisUserService {
 
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(informationDTO).build();
     }
-        @Override
-        public ServiceAnswer editStudentInformation(Long id,EditStudentInformationDTO editDTO) {
-            Optional<SiptisUser> user = usuarioCommonRepository.findById(id);
 
-            SiptisUser siptisUser = user.get();
+    @Override
+    public ServiceAnswer editStudentInformation(Long userID, EditStudentInformationDTO editDTO) {
 
-            siptisUser.setEmail(editDTO.getEmail());
-            UserInformation userInformation = siptisUser.getUserInformation();
-            userInformation.setNames(editDTO.getNames());
-            userInformation.setLastnames(editDTO.getLastnames());
-            userInformation.setCelNumber(editDTO.getCelNumber());
-            userInformation.setCi(editDTO.getCi());
-            userInformation.setBirthDate(editDTO.getBirthDate());
-            userInformation.setCodSIS(editDTO.getCodSIS());
-
-
-            SiptisUser user1 = usuarioCommonRepository.save(siptisUser);
-
-            StudentInformationDTO informationDTO = convertToStudentInformation(user1);
-
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(informationDTO).build();
+        if(! usuarioCommonRepository.existsById(userID)){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST)
+                    .data("No existe un usuario registrado con el id solicitado").build();
         }
+        Optional<SiptisUser> user = usuarioCommonRepository.findById(userID);
+
+        SiptisUser siptisUser = user.get();
+
+        siptisUser.setEmail(editDTO.getEmail());
+        UserInformation userInformation = siptisUser.getUserInformation();
+        userInformation.setNames(editDTO.getNames());
+        userInformation.setLastnames(editDTO.getLastnames());
+        userInformation.setCelNumber(editDTO.getCelNumber());
+        userInformation.setCi(editDTO.getCi());
+        userInformation.setBirthDate(editDTO.getBirthDate());
+        userInformation.setCodSIS(editDTO.getCodSIS());
+
+        SiptisUser user1 = usuarioCommonRepository.save(siptisUser);
+        StudentInformationDTO informationDTO = convertToStudentInformation(user1);
+
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(informationDTO).build();
+    }
 
     @Override
         public ServiceAnswer teacherEditPersonalInfo(Long id, TeacherEditPersonalInfoDTO dto) {
