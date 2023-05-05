@@ -58,6 +58,10 @@ public class CorsConfig {
                         .allowedOrigins(localUI)
                         .allowedMethods("*");
 
+                registry.addMapping("/user/personal-activities/*")
+                        .allowedOrigins(localUI)
+                        .allowedMethods("*");
+
                 registry.addMapping("/user/information")
                         .allowedOrigins(localUI)
                         .allowedMethods("*");

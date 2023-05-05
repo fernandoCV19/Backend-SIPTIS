@@ -12,4 +12,7 @@ public interface ProjectTribunalService {
 
     ServiceAnswer getAllProjectsDefendedByTribunalId(Long id);
 
+    ServiceAnswer acceptProject(Long idTribunal, Long idProject);
+
+    ServiceAnswer removeAcceptProject(Long idTribunal, Long idProject);
 }

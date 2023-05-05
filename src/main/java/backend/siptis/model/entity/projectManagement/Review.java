@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "review")
 @Getter
@@ -30,4 +32,5 @@ public class Review {
     @JoinColumn(name = "presentation_id", nullable = false)
     @JsonBackReference
     private Presentation presentation;
+    private Date date;
 }

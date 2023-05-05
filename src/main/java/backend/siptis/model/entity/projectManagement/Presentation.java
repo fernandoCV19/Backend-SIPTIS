@@ -1,11 +1,13 @@
 package backend.siptis.model.entity.projectManagement;
 
+import backend.siptis.commons.Phase;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Collection;
+import java.util.Date;
 
 @Entity
 @Table(name = "presentation")
@@ -29,7 +31,7 @@ public class Presentation {
 
     private Boolean reviewed = false;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "project_id", nullable = false)
     @JsonBackReference
     private Project project;
@@ -37,4 +39,6 @@ public class Presentation {
     @OneToMany(mappedBy = "presentation",  fetch = FetchType.LAZY)
     @JsonManagedReference
     private Collection<Review> reviews;
+
+    private Date date;
 }

@@ -28,8 +28,8 @@ public class WebSecurityConfig {
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager manager)
-    throws Exception{
-        JWTAuthenticationFilter jwtAuthenticationFilter =new JWTAuthenticationFilter();
+            throws Exception {
+        JWTAuthenticationFilter jwtAuthenticationFilter = new JWTAuthenticationFilter();
         jwtAuthenticationFilter.setAuthenticationManager(manager);
         //jwtAuthenticationFilter.setFilterProcessesUrl("/login");
 
@@ -42,6 +42,7 @@ public class WebSecurityConfig {
                         "/user/information/*", "/email/send", "/general-activity",
                         "/general-activity/create","/email/prueba/*", "/general-activity/*",
                         "/email/changePassword","/email/askemail/*")
+                        "/user/information/*", "/user/personal-activities/*", "/email/send", "/general-activity","/general-activity/create", "/general-activity/*")
 
                 .permitAll()
                 .anyRequest().authenticated()
@@ -55,7 +56,7 @@ public class WebSecurityConfig {
 
     @Bean
     AuthenticationManager authenticationManager(HttpSecurity http,
-                                                PasswordEncoder passwordEncoder) throws Exception{
+                                                PasswordEncoder passwordEncoder) throws Exception {
         return http.getSharedObject(AuthenticationManagerBuilder.class)
                 .userDetailsService(userDetailsService).passwordEncoder(passwordEncoder())
                 .and().build();
@@ -63,12 +64,12 @@ public class WebSecurityConfig {
 
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String password = passwordEncoder.encode("mavl");
         System.out.println(password);

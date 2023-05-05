@@ -3,6 +3,7 @@ package backend.siptis.model.repository.editorsAndReviewers;
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectSupervisor;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectTribunal;
+import backend.siptis.model.entity.editorsAndReviewers.ProjectTutor;
 import backend.siptis.model.entity.projectManagement.Project;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
@@ -194,5 +195,23 @@ class ProjectTribunalRepositoryTest {
     void findByTribunalIdAndDefensePointsIsNotNullWithATrueIdReturnOnlyOneElement() {
         List<ProjectTribunal> ans = projectTribunalRepository.findByTribunalIdAndDefensePointsIsNotNull(4L);
         assertEquals(1, ans.size());
+    }
+
+    @Test
+    void findByTribunalIdAndProjectIdWithACorrectUserIdAndProjectIdReturnAnObject() {
+        ProjectTribunal query = projectTribunalRepository.findByTribunalIdAndProjectId(4L, 10L);
+        assertNotNull(query);
+    }
+
+    @Test
+    void findByTribunalIdAndProjectIdWithAnIncorrectUserIdAndProjectIdReturnANull() {
+        ProjectTribunal query = projectTribunalRepository.findByTribunalIdAndProjectId(0L, 0L);
+        assertNull(query);
+    }
+
+    @Test
+    void findByTribunalIdAndProjectIdWithACorrectUserIdAndProjectIdReturnAnObjectThatContainsTheProjectAndTheReviewer() {
+        ProjectTribunal query = projectTribunalRepository.findByTribunalIdAndProjectId(4L, 10L);
+        assertTrue(query.getTribunal().getId() == 4L && query.getProject().getId() == 10L);
     }
 }

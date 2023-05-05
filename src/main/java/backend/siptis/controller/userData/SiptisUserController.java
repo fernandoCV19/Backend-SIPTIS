@@ -1,10 +1,14 @@
-package backend.siptis.controller;
+package backend.siptis.controller.userData;
 
 import backend.siptis.auth.jwt.JWTokenUtils;
 import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.*;
+import backend.siptis.model.entity.records.Activity;
+import backend.siptis.model.pjo.dto.AdminRegisterDTO;
+import backend.siptis.model.pjo.dto.EditStudentInformationDTO;
+import backend.siptis.model.pjo.dto.StudentEditPersonalInfoDTO;
 import backend.siptis.model.pjo.dto.records.LogInDTO;
 import backend.siptis.service.userData.SiptisUserService;
 import backend.siptis.service.userData.UserAuthService;
@@ -19,6 +23,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -128,6 +134,12 @@ public class SiptisUserController {
         Long id = userAuthService.getIdFromToken(token);
 
         ServiceAnswer answer = userService.studentEditPersonalInfo(id, dto);
+        return crearResponseEntityRegistrar(answer);
+    }
+    @GetMapping("/personal-activities/{userId}")
+    public ResponseEntity<?> getPersonalProjectActivities(@PathVariable int userId){
+        Long idL = Long.valueOf(userId);
+        ServiceAnswer answer = userService.getPersonalActivities(idL);
         return crearResponseEntityRegistrar(answer);
     }
 

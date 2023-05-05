@@ -1,6 +1,7 @@
 package backend.siptis.model.repository.userData;
 
 import backend.siptis.auth.entity.SiptisUser;
+import backend.siptis.model.entity.projectManagement.Project;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -8,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface SiptisUserRepository extends JpaRepository<SiptisUser, Integer> {
+public interface SiptisUserRepository extends JpaRepository<SiptisUser, Long> {
 
     @Override
     List<SiptisUser> findAll();
@@ -26,4 +27,5 @@ public interface SiptisUserRepository extends JpaRepository<SiptisUser, Integer>
     boolean existsByTokenPassword(String tokenPassword);
 
     Optional<SiptisUser> findById(Long id);
+    Optional <Project> findProjectById(Long id);
 }

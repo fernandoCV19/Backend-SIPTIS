@@ -1,5 +1,6 @@
 package backend.siptis.model.entity.projectManagement;
 
+import backend.siptis.commons.Phase;
 import backend.siptis.model.entity.editorsAndReviewers.*;
 import backend.siptis.model.entity.records.Activity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -39,7 +40,7 @@ public class Project {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "modality_id", nullable = false)
-    @JsonBackReference
+    @JsonManagedReference
     private Modality modality;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {

@@ -152,4 +152,22 @@ class ProjectSupervisorRepositoryTest {
         List<ProjectSupervisor> ans = projectSupervisorRepository.findBySupervisorIdAndAcceptedIsTrue(1L);
         assertEquals(1, ans.size());
     }
+
+    @Test
+    void findBySupervisorIdAndProjectIdWithACorrectUserIdAndProjectIdReturnAnObject() {
+        ProjectSupervisor query = projectSupervisorRepository.findBySupervisorIdAndProjectId(1L, 1L);
+        assertNotNull(query);
+    }
+
+    @Test
+    void findBySupervisorIdAndProjectIdWithAnIncorrectUserIdAndProjectIdReturnANull() {
+        ProjectSupervisor query = projectSupervisorRepository.findBySupervisorIdAndProjectId(0L, 0L);
+        assertNull(query);
+    }
+
+    @Test
+    void findBySupervisorIdAndProjectIdWithACorrectUserIdAndProjectIdReturnAnObjectThatContainsTheProjectAndTheReviewer() {
+        ProjectSupervisor query = projectSupervisorRepository.findBySupervisorIdAndProjectId(1L, 1L);
+        assertTrue(query.getSupervisor().getId() == 1L && query.getProject().getId() == 1L);
+    }
 }

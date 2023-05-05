@@ -1,5 +1,6 @@
 package backend.siptis.model.entity.projectManagement;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,8 +22,8 @@ public class Modality {
 
     private String name;
 
-    @OneToMany(mappedBy = "modality", fetch = FetchType.LAZY )
-    @JsonManagedReference
+    @OneToMany(mappedBy = "modality")
+    @JsonBackReference
     private Collection<Project> projects;
 
 }

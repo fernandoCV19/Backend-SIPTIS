@@ -9,7 +9,9 @@ import backend.siptis.model.pjo.dto.TeacherEditPersonalInfoDTO;
 
 public interface SiptisUserService {
 
+    ServiceAnswer obtenerProyectosSupervisorParaMenuPrincipalPorIdUsuario(Long id);
 
+    ServiceAnswer getAllUsers();
 
     ServiceAnswer findAll();
     ServiceAnswer obtenerProyectosSupervisorParaMenuPrincipalPorIdUsuario(Integer id);
@@ -32,4 +34,5 @@ public interface SiptisUserService {
     ServiceAnswer studentEditPersonalInfo(Long id, StudentEditPersonalInfoDTO dto);
 
     ServiceAnswer teacherEditPersonalInfo(Long id, TeacherEditPersonalInfoDTO dto);
+    ServiceAnswer getPersonalActivities(Long id);
 }
