@@ -87,7 +87,7 @@ public class UserAuthServiceTest {
 
         StudentRegisterDTO studentDTO = createStudent();
         ServiceAnswer answer = service.registerStudent(studentDTO);
-        assertEquals(ServiceMessage.OK,answer.getServiceMessage());
+            assertEquals(ServiceMessage.OK,answer.getServiceMessage());
     }
 
     @Test
