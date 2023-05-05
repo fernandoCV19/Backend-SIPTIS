@@ -19,4 +19,5 @@ public interface ActivityService {
     ServiceAnswer update(ActivityDTO activityDTO, long id);
     ServiceAnswer delete(long id);
     ActivityVO entityToVO(Activity activity);
+    List<Activity> findByProjectId(Long id);
 }
