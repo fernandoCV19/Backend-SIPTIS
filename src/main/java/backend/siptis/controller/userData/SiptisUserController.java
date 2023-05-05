@@ -1,4 +1,4 @@
-package backend.siptis.controller;
+package backend.siptis.controller.userData;
 
 import backend.siptis.auth.jwt.JWTokenUtils;
 import backend.siptis.commons.ControllerAnswer;

@@ -20,7 +20,7 @@ public class Area {
 
     private String name;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "areas")
+    @ManyToMany( mappedBy = "areas")
     @JsonBackReference
     private Collection<Project> projects;
 }

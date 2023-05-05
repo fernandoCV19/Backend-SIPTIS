@@ -21,7 +21,7 @@ public class State {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "state", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "state")
     @JsonManagedReference
     private Collection<Project> projects;
 }

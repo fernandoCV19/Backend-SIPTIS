@@ -1,6 +1,7 @@
 package backend.siptis.model.repository.editorsAndReviewers;
 
 import backend.siptis.model.entity.editorsAndReviewers.ProjectSupervisor;
+import backend.siptis.model.entity.editorsAndReviewers.ProjectTeacher;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -16,4 +17,6 @@ public interface ProjectSupervisorRepository extends JpaRepository<ProjectSuperv
     List<ProjectSupervisor> findBySupervisorIdAndAcceptedIsFalseAndReviewedIsFalse(Long id);
 
     List<ProjectSupervisor> findBySupervisorIdAndAcceptedIsTrue(Long id);
+
+    ProjectSupervisor findBySupervisorIdAndProjectId(Long supervisorId, Long projectId);
 }

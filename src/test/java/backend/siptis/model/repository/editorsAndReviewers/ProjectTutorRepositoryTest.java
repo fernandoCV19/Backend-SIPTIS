@@ -1,6 +1,7 @@
 package backend.siptis.model.repository.editorsAndReviewers;
 
 import backend.siptis.auth.entity.SiptisUser;
+import backend.siptis.model.entity.editorsAndReviewers.ProjectSupervisor;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectTutor;
 import backend.siptis.model.entity.projectManagement.Project;
 import jakarta.transaction.Transactional;
@@ -151,5 +152,23 @@ class ProjectTutorRepositoryTest {
     void findByTutorIdAndAcceptedIsTrueWithATrueIdReturnOnlyOneElement() {
         List<ProjectTutor> ans = projectTutorRepository.findByTutorIdAndAcceptedIsTrue(2L);
         assertEquals(1, ans.size());
+    }
+
+    @Test
+    void findByTutorIdAndProjectIdWithACorrectUserIdAndProjectIdReturnAnObject() {
+        ProjectTutor query = projectTutorRepository.findByTutorIdAndProjectId(2L, 4L);
+        assertNotNull(query);
+    }
+
+    @Test
+    void findByTutorIdAndProjectIdWithAnIncorrectUserIdAndProjectIdReturnANull() {
+        ProjectTutor query = projectTutorRepository.findByTutorIdAndProjectId(0L, 0L);
+        assertNull(query);
+    }
+
+    @Test
+    void findByTutorIdAndProjectIdWithACorrectUserIdAndProjectIdReturnAnObjectThatContainsTheProjectAndTheReviewer() {
+        ProjectTutor query = projectTutorRepository.findByTutorIdAndProjectId(2L, 4L);
+        assertTrue(query.getTutor().getId() == 2L && query.getProject().getId() == 4L);
     }
 }

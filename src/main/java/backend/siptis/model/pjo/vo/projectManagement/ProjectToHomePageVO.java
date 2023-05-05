@@ -1,4 +1,4 @@
-package backend.siptis.model.pjo.dto.projectManagement;
+package backend.siptis.model.pjo.vo.projectManagement;
 
 import backend.siptis.model.entity.projectManagement.Project;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProjectToHomePageDTO {
+public class ProjectToHomePageVO {
     private Long projectID;
     private String projectName;
     private List<String> tutors;
@@ -24,7 +24,7 @@ public class ProjectToHomePageDTO {
     private Boolean reviewed;
 
 
-    public ProjectToHomePageDTO(Project project, Boolean accepted, Boolean reviewed) {
+    public ProjectToHomePageVO(Project project, Boolean accepted, Boolean reviewed) {
         projectID = project.getId();
         projectName = project.getName();
         tutors = project.getTutors()

@@ -21,7 +21,7 @@ public class AsignarRolesTest {
 
     @Test
     public void testAsignarRolUsuario1(){
-        int usuario1id = 102;
+        Long usuario1id = 102L;
         Integer rolAdminId = 1;
         SiptisUser siptisUser1 = repository.findById(usuario1id).get();
         siptisUser1.addRol(new Role(rolAdminId));
@@ -34,7 +34,7 @@ public class AsignarRolesTest {
     public void testAsignarRolUsuario2(){
         int usuario2id = 103;
         Integer rolDocenteId = 2;
-        SiptisUser siptisUser2 = repository.findById(usuario2id).get();
+        SiptisUser siptisUser2 = repository.findById((long) usuario2id).get();
         siptisUser2.addRol(new Role(rolDocenteId));
 
         SiptisUser siptisUserActualizado = repository.save(siptisUser2);
@@ -45,7 +45,7 @@ public class AsignarRolesTest {
     public void testAsignarMasRolesUsuario2(){
         int usuario2id = 103;
         Integer rolDocenteId = 1;
-        SiptisUser siptisUser2 = repository.findById(usuario2id).get();
+        SiptisUser siptisUser2 = repository.findById((long) usuario2id).get();
         siptisUser2.addRol(new Role(rolDocenteId));
 
         SiptisUser siptisUserActualizado = repository.save(siptisUser2);

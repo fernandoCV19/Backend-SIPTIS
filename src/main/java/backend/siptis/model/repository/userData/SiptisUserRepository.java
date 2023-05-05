@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface SiptisUserRepository extends JpaRepository<SiptisUser, Integer> {
+public interface SiptisUserRepository extends JpaRepository<SiptisUser, Long> {
 
     @Override
     List<SiptisUser> findAll();

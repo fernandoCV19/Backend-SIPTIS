@@ -1,5 +1,6 @@
 package backend.siptis.service.projectManagement;
 
+import backend.siptis.commons.Phase;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.model.entity.projectManagement.Presentation;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Optional;
 
 @Service
@@ -27,9 +29,8 @@ public class PresentationServiceImpl implements PresentationService {
     private ProjectRepository proyectoGradoRepository;
 
     @Override
-    public ServiceAnswer createPresentation (Long idProyecto, String fase){
-        Optional <Presentation> presentacionesNoEntregadas = presentationRepository.findTopByProjectIdAndReviewed(idProyecto, false);
-        //Optional <Presentation> presentacionesNoEntregadas = presentationRepository.findByProjectIdAndReviewed(idProyecto, false);
+    public ServiceAnswer createPresentation (Long idProyecto, Phase fase){
+        Optional <Presentation> presentacionesNoEntregadas = presentationRepository.findByProjectIdAndReviewed(idProyecto, false);
         if (presentacionesNoEntregadas.isPresent()){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PRESENTACION_PENDIENTE).data(null).build();
         }
@@ -40,7 +41,7 @@ public class PresentationServiceImpl implements PresentationService {
         Project project = oproyectoGrado.get();
         Presentation presentation = new Presentation();
 
-        presentation.setPhase(fase);
+        presentation.setPhase(fase.toString());
         presentation.setProject(project);
         presentationRepository.save(presentation);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.PRESENTACION_CREADA).data(presentation).build();
@@ -137,7 +138,7 @@ public class PresentationServiceImpl implements PresentationService {
 
     @Override
     public ServiceAnswer downloadFileFromCloud(String key){
-        String response= nube.getObject(key);
+        ByteArrayOutputStream response= nube.getObject(key);
         if (response == null){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
         }

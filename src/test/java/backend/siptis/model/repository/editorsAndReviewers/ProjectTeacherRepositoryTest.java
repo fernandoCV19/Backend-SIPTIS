@@ -3,6 +3,7 @@ package backend.siptis.model.repository.editorsAndReviewers;
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectSupervisor;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectTeacher;
+import backend.siptis.model.entity.editorsAndReviewers.ProjectTribunal;
 import backend.siptis.model.entity.projectManagement.Project;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
@@ -153,5 +154,23 @@ class ProjectTeacherRepositoryTest {
     void findByTeacherIdAndAcceptedIsTrueWithATrueIdReturnOnlyOneElement() {
         List<ProjectTeacher> ans = projectTeacherRepository.findByTeacherIdAndAcceptedIsTrue(3L);
         assertEquals(1, ans.size());
+    }
+
+    @Test
+    void findByTeacherIdAndProjectIdWithACorrectUserIdAndProjectIdReturnAnObject() {
+        ProjectTeacher query = projectTeacherRepository.findByTeacherIdAndProjectId(3L, 7L);
+        assertNotNull(query);
+    }
+
+    @Test
+    void findByTeacherIdAndProjectIdWithAnIncorrectUserIdAndProjectIdReturnANull() {
+        ProjectTeacher query = projectTeacherRepository.findByTeacherIdAndProjectId(0L, 0L);
+        assertNull(query);
+    }
+
+    @Test
+    void findByTeacherIdAndProjectIdWithACorrectUserIdAndProjectIdReturnAnObjectThatContainsTheProjectAndTheReviewer() {
+        ProjectTeacher query = projectTeacherRepository.findByTeacherIdAndProjectId(3L, 7L);
+        assertTrue(query.getTeacher().getId() == 3L && query.getProject().getId() == 7L);
     }
 }

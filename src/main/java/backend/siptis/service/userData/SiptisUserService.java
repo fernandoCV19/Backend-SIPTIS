@@ -6,7 +6,9 @@ import backend.siptis.model.pjo.dto.StudentEditPersonalInfoDTO;
 
 public interface SiptisUserService {
 
+    ServiceAnswer obtenerProyectosSupervisorParaMenuPrincipalPorIdUsuario(Long id);
 
+    ServiceAnswer getAllUsers();
 
     ServiceAnswer findAll();
     ServiceAnswer obtenerProyectosSupervisorParaMenuPrincipalPorIdUsuario(Integer id);
