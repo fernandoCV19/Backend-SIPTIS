@@ -8,7 +8,7 @@ import backend.siptis.model.entity.projectManagement.Project;
 import java.util.List;
 
 @Data
-public class ProjectCompleteInfo {
+public class ProjectCompleteInfoVO {
 
     private Long id;
     private String name;
@@ -26,7 +26,7 @@ public class ProjectCompleteInfo {
     private List<String> supervisors;
     private List<String> tribunals;
 
-    public ProjectCompleteInfo(Project project) {
+    public ProjectCompleteInfoVO(Project project) {
         id = project.getId();
         name = project.getName();
         perfilPath = project.getPerfilPath();

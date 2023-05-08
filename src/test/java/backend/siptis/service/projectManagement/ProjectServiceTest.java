@@ -180,7 +180,7 @@ class ProjectServiceTest {
     @Test
     void getAllProjectInfoWithIncorrectIdReturnTheProjectThatOwnsTheId() {
         ServiceAnswer query = projectService.getAllProjectInfo(1L);
-        ProjectCompleteInfo project = (ProjectCompleteInfo) query.getData();
+        ProjectCompleteInfoVO project = (ProjectCompleteInfoVO) query.getData();
         assertEquals(1L, project.getId());
     }
 
@@ -207,7 +207,7 @@ class ProjectServiceTest {
     @Test
     void getProjectInfoToAssignTribunalsWithCorrectProjectIdReturnAnObjectWithTheCorrectIdOfTheProject() {
         ServiceAnswer query = projectService.getProjectInfoToAssignTribunals(1L);
-        ProjectInfoToAssignTribunals res = (ProjectInfoToAssignTribunals)query.getData();
+        ProjectInfoToAssignTribunalsVO res = (ProjectInfoToAssignTribunalsVO)query.getData();
         assertEquals("ProyectoGrado1", res.getName());
     }
 

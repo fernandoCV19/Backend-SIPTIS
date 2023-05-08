@@ -9,12 +9,9 @@ import backend.siptis.model.pjo.dto.EditStudentInformationDTO;
 import backend.siptis.model.pjo.dto.StudentEditPersonalInfoDTO;
 import backend.siptis.model.pjo.dto.StudentInformationDTO;
 import backend.siptis.model.pjo.dto.UserGeneralInformationDTO;
-import backend.siptis.model.pjo.vo.projectManagement.ProjectInfoToAssignTribunals;
 import backend.siptis.model.pjo.vo.userData.TribunalInfoToAssignSection;
-import backend.siptis.model.repository.general.RoleRepository;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

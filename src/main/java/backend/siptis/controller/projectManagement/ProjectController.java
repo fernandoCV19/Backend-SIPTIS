@@ -4,6 +4,7 @@ import backend.siptis.commons.ServiceMessage;
 import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.model.pjo.dto.projectManagement.AssignTribunalsDTO;
+import backend.siptis.model.pjo.dto.projectManagement.DefenseDTO;
 import backend.siptis.service.projectManagement.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -86,6 +87,17 @@ public class ProjectController {
     @GetMapping("/schedulesToAssignDefense/{idProject}")
     public ResponseEntity<?> getSchedulesToAssignDefense(@PathVariable("idProject") Long idProject){
         ServiceAnswer serviceAnswer = proyectoGradoService.getSchedulesInfoToAssignADefense(idProject);
+        HttpStatus httpStatus = HttpStatus.OK;
+        if(serviceAnswer.getServiceMessage() != ServiceMessage.OK){
+            httpStatus = HttpStatus.BAD_REQUEST;
+        }
+        ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
+        return new ResponseEntity<>(controllerAnswer, httpStatus);
+    }
+
+    @PostMapping("/createDefense")
+    public ResponseEntity<?> createDefense(@RequestBody DefenseDTO defenseDTO){
+        ServiceAnswer serviceAnswer = proyectoGradoService.addDefense(defenseDTO);
         HttpStatus httpStatus = HttpStatus.OK;
         if(serviceAnswer.getServiceMessage() != ServiceMessage.OK){
             httpStatus = HttpStatus.BAD_REQUEST;

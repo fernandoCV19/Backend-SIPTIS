@@ -11,10 +11,7 @@ import backend.siptis.model.pjo.dto.projectManagement.AssignTribunalsDTO;
 import backend.siptis.model.pjo.dto.projectManagement.DefenseDTO;
 import backend.siptis.model.pjo.vo.projectManagement.*;
 import backend.siptis.model.repository.editorsAndReviewers.ProjectTribunalRepository;
-import backend.siptis.model.repository.projectManagement.PlaceToDefenseRepository;
-import backend.siptis.model.repository.projectManagement.PresentationRepository;
-import backend.siptis.model.repository.projectManagement.ProjectRepository;
-import backend.siptis.model.repository.projectManagement.ReviewRepository;
+import backend.siptis.model.repository.projectManagement.*;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +31,7 @@ public class ProjectServiceImpl implements ProjectService {
     private final SiptisUserRepository siptisUserRepository;
     private final ProjectTribunalRepository projectTribunalRepository;
     private final PlaceToDefenseRepository placeToDefenseRepository;
+    private final DefenseRepository defenseRepository;
 
     @Override
     public ServiceAnswer getProjects(){
@@ -102,7 +100,7 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
         Project project = query.get();
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(new ProjectCompleteInfo(project)).build();
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(new ProjectCompleteInfoVO(project)).build();
     }
 
     @Override
@@ -113,7 +111,7 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
         Project project = query.get();
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(new ProjectInfoToAssignTribunals(project)).build();
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(new ProjectInfoToAssignTribunalsVO(project)).build();
     }
 
     @Override
@@ -168,6 +166,14 @@ public class ProjectServiceImpl implements ProjectService {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data(null).build();
         }
         Project project = query.get();
+        List<Defense> reservations = defenseRepository.findByplaceToDefenseId(defenseDTO.getIdProject());
+        for(Defense defense: reservations){
+            long diffMillis = defenseDTO.getDate().getTime() - defense.getDate().getTime() ;
+            long diffHours = TimeUnit.HOURS.convert(diffMillis, TimeUnit.MILLISECONDS);
+            if(Math.abs(diffHours) <= 1){
+                return ServiceAnswer.builder().serviceMessage(ServiceMessage.THERE_IS_ANOTHER_RESERVATION_TOO_CLOSE).data(defense.getDate()).build();
+            }
+        }
         if(project.getDefense() != null){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_HAS_ALREADY_A_DEFENSE_DATE).data(null).build();
         }
@@ -176,8 +182,7 @@ public class ProjectServiceImpl implements ProjectService {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_PLACE_DOES_NOT_EXIST).data(null).build();
         }
         Defense newDefense =  new Defense(place.get(), project, defenseDTO.getDate());
-        project.setDefense(newDefense);
-        projectRepository.save(project);
+        defenseRepository.save(newDefense);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("Defense created").build();
     }
 

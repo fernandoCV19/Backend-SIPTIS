@@ -5,11 +5,13 @@ import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.projectManagement.Defense;
 import backend.siptis.model.entity.projectManagement.PlaceToDefense;
 import backend.siptis.model.pjo.vo.projectManagement.PlaceToDefenseVO;
+import backend.siptis.model.pjo.vo.projectManagement.PlaceWithReservedDateVO;
 import backend.siptis.model.repository.projectManagement.PlaceToDefenseRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -24,12 +26,7 @@ public class PlaceToDefenseServiceImpl implements PlaceToDefenseService{
     @Override
     public ServiceAnswer getReservedDates() {
         List<PlaceToDefense> query = placeToDefenseRepository.findAll();
-        HashMap<String, List<Date>> reservedDates = new HashMap<>();
-        for(PlaceToDefense place: query){
-            if(place.getDefenses().size() > 0) {
-                reservedDates.put(place.getName() + ":" + place.getLocation(), place.getDefenses().stream().map(Defense::getDate).toList());
-            }
-        }
+        List <PlaceWithReservedDateVO> reservedDates = query.stream().filter(placeToDefense -> !placeToDefense.getDefenses().isEmpty()).map(PlaceWithReservedDateVO::new).toList();
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(reservedDates).build();
     }
 
