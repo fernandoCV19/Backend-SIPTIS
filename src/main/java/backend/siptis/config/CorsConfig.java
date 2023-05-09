@@ -16,7 +16,7 @@ public class CorsConfig {
             public void addCorsMappings(CorsRegistry registry) {
 
 
-                String localUI = "http://127.0.0.1:5173/";
+                String localUI = "http://localhost:5173";
 
                 registry.addMapping("/login")
                         .allowedOrigins(localUI)
