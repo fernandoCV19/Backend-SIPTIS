@@ -35,4 +35,11 @@ public class Defense {
         this.project = project;
         this.date = date;
     }
+
+    public Defense(PlaceToDefense placeToDefense, Project project, Date date, Long id) {
+        this.id = id;
+        this.placeToDefense = placeToDefense;
+        this.project = project;
+        this.date = date;
+    }
 }

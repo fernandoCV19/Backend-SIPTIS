@@ -5,7 +5,9 @@ import backend.siptis.commons.ServiceMessage;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectTeacher;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectTribunal;
+import backend.siptis.model.entity.projectManagement.Defense;
 import backend.siptis.model.entity.projectManagement.Project;
+import backend.siptis.model.pjo.dto.editorsAndReviewers.ReviewADefenseDTO;
 import backend.siptis.model.pjo.vo.projectManagement.ProjectToTribunalHomePageVO;
 import backend.siptis.model.repository.editorsAndReviewers.ProjectTribunalRepository;
 import backend.siptis.model.repository.projectManagement.ProjectRepository;
@@ -13,7 +15,10 @@ import backend.siptis.model.repository.userData.SiptisUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -116,6 +121,55 @@ public class ProjectTribunalServiceImpl implements ProjectTribunalService {
         query.setAccepted(Boolean.FALSE);
         projectTribunalRepository.save(query);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("THE PROJECT HAS CHANGED THE ACCEPTED PARAMETER").build();
+    }
+
+    @Override
+    public ServiceAnswer reviewADefense(ReviewADefenseDTO reviewADefenseDTO) {
+        Long idProject = reviewADefenseDTO.getProject();
+        Optional<Project> projectOptional = projectRepository.findById(idProject);
+        if(projectOptional.isEmpty()){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data(null).build();
+        }
+        Long idTribunal = reviewADefenseDTO.getTribunal();
+        if(siptisUserRepository.findById(idTribunal).isEmpty()){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.USER_ID_DOES_NOT_EXIST).data(null).build();
+        }
+        ProjectTribunal query = projectTribunalRepository.findByTribunalIdAndProjectId(idTribunal, idProject);
+        if(query == null){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_TRIBUNAL_DOES_NOT_MATCH_WITH_PROJECT).data(null).build();
+        }
+        Double points = reviewADefenseDTO.getPoints();
+        if(points < 0 || points > 100){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.SCORE_IS_NOT_VALID).data(null).build();
+        }
+        query.setDefensePoints(points);
+        projectTribunalRepository.save(query);
+        Project project = projectOptional.get();
+        Defense defense = project.getDefense();
+
+        Date now = new Date();
+        long diffMillis = now.getTime() - defense.getDate().getTime() ;
+        long diffHours = TimeUnit.MINUTES.convert(diffMillis, TimeUnit.MILLISECONDS);
+        if(diffHours < 0){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.DEFENSE_HAS_NOT_STARTED).data(null).build();
+        }
+
+        if(diffHours > 180){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.DEFENSE_HAS_FINISHED).data(null).build();
+        }
+
+        Double newProjectDefensePoint = 0.0;
+        Integer count = 0;
+        for (ProjectTribunal aux:project.getTribunals()) {
+            if(aux.getDefensePoints() != null) {
+                newProjectDefensePoint += aux.getDefensePoints();
+                count++;
+            }
+        }
+        newProjectDefensePoint = newProjectDefensePoint / count;
+        project.setTotalDefensePoints(newProjectDefensePoint);
+        projectRepository.save(project);
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("SCORE HAS BEEN ASSIGNED").build();
     }
 
     private ServiceAnswer verifyChangeOfFase(ProjectTribunal query) {

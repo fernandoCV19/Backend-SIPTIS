@@ -726,3 +726,43 @@ INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (71, 'Vi
 INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (72, 'Viernes', '34:82', '80:17', 101);
 INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (73, 'Viernes', '35:80', '47:28', 102);
 INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (74, 'Viernes', '39:84', '17:80', 103);
+
+
+
+
+
+INSERT INTO project(id, blue_book_path, perfil_path, project_path, phase, name, state_id, modality_id) VALUES (200, 'Libro200', 'Perfil200', 'Proyecto200', 'Fase200', 'ProyectoGrado200', null, 1);
+
+INSERT INTO project_area(project_id, area_id) VALUES (200, 1);
+
+INSERT INTO project_sub_area(project_id, sub_area_id) VALUES (200, 1);
+
+
+INSERT INTO siptis_user(id, email, password) VALUES (200, 'usuario200@mail.com', '12345678');
+
+INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names,  user_id) VALUES (200, '2000-1-19', '1234567', '1000000', '12345670', 'Apellidos200', 'Nombres200',  200);
+
+INSERT INTO siptis_user_role(siptis_user_id, role_id) VALUES (200, 2);
+
+INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id, user_id) VALUES (200, true, null, false, 200, 200);
+
+
+INSERT INTO siptis_user(id, email, password) VALUES (201, 'usuario201@mail.com', '12345678');
+
+INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names,  user_id) VALUES (201, '2000-1-19', '1234567', '1000000', '12345670', 'Apellidos201', 'Nombres201',  201);
+
+INSERT INTO siptis_user_role(siptis_user_id, role_id) VALUES (201, 2);
+
+INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id, user_id) VALUES (201, true, null, false, 200, 201);
+
+
+INSERT INTO siptis_user(id, email, password) VALUES (202, 'usuario202@mail.com', '12345678');
+
+INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names,  user_id) VALUES (202, '2000-1-19', '1234567', '1000000', '12345670', 'Apellidos202', 'Nombres202',  202);
+
+INSERT INTO siptis_user_role(siptis_user_id, role_id) VALUES (202, 2);
+
+INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id, user_id) VALUES (202, true, null, false, 200, 202);
+
+
+INSERT INTO defense(id, date, place_to_defense_id, project_id) VALUES (200, '2000-1-19', 1, 200);

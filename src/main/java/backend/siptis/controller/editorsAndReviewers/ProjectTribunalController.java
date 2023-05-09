@@ -3,6 +3,7 @@ package backend.siptis.controller.editorsAndReviewers;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
+import backend.siptis.model.pjo.dto.editorsAndReviewers.ReviewADefenseDTO;
 import backend.siptis.service.editorsAndReviewers.ProjectTribunalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -53,8 +54,19 @@ public class ProjectTribunalController {
     }
 
     @GetMapping("/removeAccepted/{idProject}/{idReviewer}")
-    public ResponseEntity<?> removeacceptedFromAProject(@PathVariable("idProject") Long idProject, @PathVariable("idReviewer") Long idReviewer){
+    public ResponseEntity<?> removeAcceptedFromAProject(@PathVariable("idProject") Long idProject, @PathVariable("idReviewer") Long idReviewer){
         ServiceAnswer serviceAnswer = projectTribunalService.removeAcceptProject(idReviewer, idProject);
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        if(serviceAnswer.getServiceMessage().equals(ServiceMessage.OK)){
+            httpStatus = HttpStatus.OK;
+        }
+        ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
+        return new ResponseEntity<>(controllerAnswer, httpStatus);
+    }
+
+    @PostMapping("/reviewDefense")
+    public ResponseEntity<?> reviewDefense(@RequestBody ReviewADefenseDTO reviewADefenseDTO){
+        ServiceAnswer serviceAnswer = projectTribunalService.reviewADefense(reviewADefenseDTO);
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         if(serviceAnswer.getServiceMessage().equals(ServiceMessage.OK)){
             httpStatus = HttpStatus.OK;

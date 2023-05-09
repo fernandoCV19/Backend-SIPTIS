@@ -3,9 +3,14 @@ package backend.siptis.service.editorsAndReviewers;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectTribunal;
+import backend.siptis.model.entity.projectManagement.Defense;
+import backend.siptis.model.entity.projectManagement.PlaceToDefense;
 import backend.siptis.model.entity.projectManagement.Project;
+import backend.siptis.model.pjo.dto.editorsAndReviewers.ReviewADefenseDTO;
 import backend.siptis.model.pjo.vo.projectManagement.ProjectToTribunalHomePageVO;
 import backend.siptis.model.repository.editorsAndReviewers.ProjectTribunalRepository;
+import backend.siptis.model.repository.projectManagement.DefenseRepository;
+import backend.siptis.model.repository.projectManagement.PlaceToDefenseRepository;
 import backend.siptis.model.repository.projectManagement.ProjectRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
@@ -16,6 +21,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,12 +38,16 @@ class ProjectTribunalServiceTest {
     private final ProjectTribunalService projectTribunalService;
     private final ProjectRepository projectRepository;
     private final ProjectTribunalRepository projectTribunalRepository;
+    private final DefenseRepository defenseRepository;
+    private final PlaceToDefenseRepository placeToDefenseRepository;
 
     @Autowired
-    ProjectTribunalServiceTest(ProjectTribunalService projectTribunalService, ProjectRepository projectRepository, ProjectTribunalRepository projectTribunalRepository) {
+    ProjectTribunalServiceTest(ProjectTribunalService projectTribunalService, ProjectRepository projectRepository, ProjectTribunalRepository projectTribunalRepository, DefenseRepository defenseRepository, PlaceToDefenseRepository placeToDefenseRepository) {
         this.projectTribunalService = projectTribunalService;
         this.projectRepository = projectRepository;
         this.projectTribunalRepository = projectTribunalRepository;
+        this.defenseRepository = defenseRepository;
+        this.placeToDefenseRepository = placeToDefenseRepository;
     }
 
     @Test
@@ -468,5 +478,147 @@ class ProjectTribunalServiceTest {
         ServiceAnswer query = projectTribunalService.removeAcceptProject(51L, 51L);
         ProjectTribunal res = projectTribunalRepository.findByTribunalIdAndProjectId(51L, 51L);
         assertFalse(res.getAccepted());
+    }
+    //////////////////////////
+
+    @Test
+    void reviewADefenseWithWrongProjectIdReturnProjectIdDoesNotExist() {
+        ReviewADefenseDTO reviewADefenseDTO = new ReviewADefenseDTO(-1L , 200L, 100.0);
+        ServiceAnswer query = projectTribunalService.reviewADefense(reviewADefenseDTO);
+        assertEquals(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST, query.getServiceMessage());
+    }
+
+    @Test
+    void reviewADefenseWithWrongProjectIdReturnNull() {
+        ReviewADefenseDTO reviewADefenseDTO = new ReviewADefenseDTO(-1L , 200L, 100.0);
+        ServiceAnswer query = projectTribunalService.reviewADefense(reviewADefenseDTO);
+        assertNull(query.getData());
+    }
+
+    @Test
+    void reviewADefenseWithWrongUserIdReturnUserIdDoesNotExist() {
+        ReviewADefenseDTO reviewADefenseDTO = new ReviewADefenseDTO(200L , -1L, 100.0);
+        ServiceAnswer query = projectTribunalService.reviewADefense(reviewADefenseDTO);
+        assertEquals(ServiceMessage.USER_ID_DOES_NOT_EXIST, query.getServiceMessage());
+    }
+
+    @Test
+    void reviewADefenseWithWrongUserIdReturnNull() {
+        ReviewADefenseDTO reviewADefenseDTO = new ReviewADefenseDTO(200L , -1L, 100.0);
+        ServiceAnswer query = projectTribunalService.reviewADefense(reviewADefenseDTO);
+        assertNull(query.getData());
+    }
+
+    @Test
+    void reviewADefenseWithIncorrectMatchReturnIdTribunalDoesMatchWithProject() {
+        ReviewADefenseDTO reviewADefenseDTO = new ReviewADefenseDTO(200L , 1L, 100.0);
+        ServiceAnswer query = projectTribunalService.reviewADefense(reviewADefenseDTO);
+        assertEquals(ServiceMessage.ID_TRIBUNAL_DOES_NOT_MATCH_WITH_PROJECT, query.getServiceMessage());
+    }
+
+    @Test
+    void reviewADefenseWithIncorrectMatchReturnNull() {
+        ReviewADefenseDTO reviewADefenseDTO = new ReviewADefenseDTO(200L , 1L, 100.0);
+        ServiceAnswer query = projectTribunalService.reviewADefense(reviewADefenseDTO);
+        assertNull(query.getData());
+    }
+
+    @Test
+    void reviewADefenseWithIncorrectScoreReturnScoreIsNotValid() {
+        ReviewADefenseDTO reviewADefenseDTO = new ReviewADefenseDTO(200L , 200L, 110.0);
+        ServiceAnswer query = projectTribunalService.reviewADefense(reviewADefenseDTO);
+        assertEquals(ServiceMessage.SCORE_IS_NOT_VALID, query.getServiceMessage());
+    }
+
+    @Test
+    void reviewADefenseWithIncorrectScoreReturnNull() {
+        ReviewADefenseDTO reviewADefenseDTO = new ReviewADefenseDTO(200L , 200L, 110.0);
+        ServiceAnswer query = projectTribunalService.reviewADefense(reviewADefenseDTO);
+        assertNull(query.getData());
+    }
+
+    @Test
+    void reviewADefenseThatHasNotStartedReturnDefenseHasNotStarted() {
+        ReviewADefenseDTO reviewADefenseDTO = new ReviewADefenseDTO(200L , 200L, 100.0);
+        Defense defense = createDefense(2);
+        Defense aux = defenseRepository.save(defense);
+        ServiceAnswer query = projectTribunalService.reviewADefense(reviewADefenseDTO);
+        assertEquals(ServiceMessage.DEFENSE_HAS_NOT_STARTED, query.getServiceMessage());
+    }
+
+    @Test
+    void reviewADefenseThatHasNotStartedReturnNull() {
+        ReviewADefenseDTO reviewADefenseDTO = new ReviewADefenseDTO(200L , 200L, 100.0);
+        Defense defense = createDefense(2);
+        defenseRepository.save(defense);
+        ServiceAnswer query = projectTribunalService.reviewADefense(reviewADefenseDTO);
+        assertNull(query.getData());
+    }
+
+    @Test
+    void reviewADefenseTooLateReturnDefenseHasFinished() {
+        ReviewADefenseDTO reviewADefenseDTO = new ReviewADefenseDTO(200L , 200L, 100.0);
+        Defense defense = createDefense(-4);
+        defenseRepository.save(defense);
+        ServiceAnswer query = projectTribunalService.reviewADefense(reviewADefenseDTO);
+        assertEquals(ServiceMessage.DEFENSE_HAS_FINISHED, query.getServiceMessage());
+    }
+
+    @Test
+    void reviewADefenseTooLateReturnNull() {
+        ReviewADefenseDTO reviewADefenseDTO = new ReviewADefenseDTO(200L , 200L, 100.0);
+        Defense defense = createDefense(-4);
+        defenseRepository.save(defense);
+        ServiceAnswer query = projectTribunalService.reviewADefense(reviewADefenseDTO);
+        assertNull(query.getData());
+    }
+
+    @Test
+    void reviewADefenseCorrectlyReturnOk() {
+        ReviewADefenseDTO reviewADefenseDTO = new ReviewADefenseDTO(200L , 200L, 100.0);
+        Defense defense = createDefense(-1);
+        defenseRepository.save(defense);
+        ServiceAnswer query = projectTribunalService.reviewADefense(reviewADefenseDTO);
+        assertEquals(ServiceMessage.OK, query.getServiceMessage());
+    }
+
+    @Test
+    void reviewADefenseCorrectlyReturnNotNull() {
+        ReviewADefenseDTO reviewADefenseDTO = new ReviewADefenseDTO(200L , 200L, 100.0);
+        Defense defense = createDefense(-1);
+        defenseRepository.save(defense);
+        ServiceAnswer query = projectTribunalService.reviewADefense(reviewADefenseDTO);
+        assertNotNull(query.getData());
+    }
+
+    @Test
+    void reviewADefenseCorrectlyReturnScoreHasBeenAssigned() {
+        ReviewADefenseDTO reviewADefenseDTO = new ReviewADefenseDTO(200L , 200L, 100.0);
+        Defense defense = createDefense(-1);
+        defenseRepository.save(defense);
+        ServiceAnswer query = projectTribunalService.reviewADefense(reviewADefenseDTO);
+        assertEquals("SCORE HAS BEEN ASSIGNED", query.getData().toString());
+    }
+
+    @Test
+    void reviewADefenseCorrectlyAssignTheAverageToTheProject() {
+        Defense defense = createDefense(-1);
+        defenseRepository.save(defense);
+        ReviewADefenseDTO reviewADefenseDTO = new ReviewADefenseDTO(200L , 200L, 80.0);
+        projectTribunalService.reviewADefense(reviewADefenseDTO);
+        ReviewADefenseDTO reviewADefenseDT2 = new ReviewADefenseDTO(200L , 201L, 70.0);
+        projectTribunalService.reviewADefense(reviewADefenseDT2);
+        ReviewADefenseDTO reviewADefenseDTO3 = new ReviewADefenseDTO(200L , 202L, 90.0);
+        projectTribunalService.reviewADefense(reviewADefenseDTO3);
+        Project project = projectRepository.findById(200L).get();
+        assertEquals(80.0, project.getTotalDefensePoints());
+    }
+
+    private Defense createDefense(Integer hours){
+        Defense newDefense = defenseRepository.findById(200L).get();
+        Date newDate = new Date();
+        newDate.setHours(newDate.getHours() + hours);
+        newDefense.setDate(newDate);
+        return newDefense;
     }
 }

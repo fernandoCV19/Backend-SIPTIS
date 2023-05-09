@@ -2,7 +2,6 @@ package backend.siptis.service.projectManagement;
 
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.model.entity.projectManagement.Defense;
 import backend.siptis.model.entity.projectManagement.PlaceToDefense;
 import backend.siptis.model.pjo.vo.projectManagement.PlaceToDefenseVO;
 import backend.siptis.model.pjo.vo.projectManagement.PlaceWithReservedDateVO;
@@ -11,9 +10,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 @Service

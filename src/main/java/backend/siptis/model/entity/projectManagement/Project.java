@@ -93,4 +93,6 @@ public class Project {
     @JsonManagedReference
     private Collection<ProjectTribunal> tribunals;
 
+    @Column(name = "total_defense_points")
+    private Double totalDefensePoints;
 }

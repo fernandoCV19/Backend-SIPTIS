@@ -1,6 +1,7 @@
 package backend.siptis.service.editorsAndReviewers;
 
 import backend.siptis.commons.ServiceAnswer;
+import backend.siptis.model.pjo.dto.editorsAndReviewers.ReviewADefenseDTO;
 
 public interface ProjectTribunalService {
 
@@ -15,4 +16,6 @@ public interface ProjectTribunalService {
     ServiceAnswer acceptProject(Long idTribunal, Long idProject);
 
     ServiceAnswer removeAcceptProject(Long idTribunal, Long idProject);
+
+    ServiceAnswer reviewADefense(ReviewADefenseDTO reviewADefenseDTO);
 }
