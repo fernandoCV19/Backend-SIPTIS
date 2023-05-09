@@ -25,11 +25,8 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class SiptisUserServiceImpl implements SiptisUserService {
 
-    private final SiptisUserRepository usuarioCommonRepository;
-    private final ActivityService activityService;
-
     @Autowired
-    private final UserInformationService userInformationService;
+    private final SiptisUserRepository usuarioCommonRepository;
 
     @Override
     public ServiceAnswer findAll() {

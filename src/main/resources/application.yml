@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/siptis
+    url: jdbc:postgresql://localhost:5432/siptis2
     username: postgres
-    password: 123
+    password: serrano123
     driver-class-name: org.postgresql.Driver
   servlet:
     multipart:

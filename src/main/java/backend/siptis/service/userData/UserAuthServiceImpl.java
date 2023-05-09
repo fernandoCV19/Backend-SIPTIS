@@ -168,7 +168,6 @@ public class UserAuthServiceImpl implements UserAuthService {
         StudentInformationDTO dto = convertToStudentInformation(user);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(dto).build();
     }
-
     @Override
     public ServiceAnswer logIn(LogInDTO logInDTO){
 
