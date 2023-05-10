@@ -30,7 +30,6 @@ public class CorsConfig {
 
 
                 registry.addMapping("/user/register/admin")
-
                         .allowedOrigins(localUI)
                         .allowedMethods("*")
                         .exposedHeaders("*");
