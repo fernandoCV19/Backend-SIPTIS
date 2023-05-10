@@ -136,9 +136,9 @@ public class SiptisUserController {
         ServiceAnswer answer = userService.studentEditPersonalInfo(id, dto);
         return crearResponseEntityRegistrar(answer);
     }
-    @GetMapping("/personal-activities/{userId}")
-    public ResponseEntity<?> getPersonalProjectActivities(@PathVariable int userId){
-        Long idL = Long.valueOf(userId);
+    @GetMapping("/personal-activities")
+    public ResponseEntity<?> getPersonalProjectActivities(@RequestHeader (name="Authorization") String token){
+        Long idL = userAuthService.getIdFromToken(token);
         ServiceAnswer answer = userService.getPersonalActivities(idL);
         return crearResponseEntityRegistrar(answer);
     }

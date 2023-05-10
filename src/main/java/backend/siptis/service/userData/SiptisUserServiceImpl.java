@@ -16,10 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -203,9 +200,15 @@ public class SiptisUserServiceImpl implements SiptisUserService {
         public ServiceAnswer getPersonalActivities(Long id){
             Optional<SiptisUser> userFound = usuarioCommonRepository.findById(id);
             if(userFound.isEmpty()){
-                return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
+                return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(new ArrayList<>()).build();
             }
-            ProjectStudent ps = userFound.get().getStudents().iterator().next();
+
+            Collection<ProjectStudent> list = userFound.get().getStudents();
+            if(list.isEmpty()){
+                return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(new ArrayList<>()).build();
+            }
+            ProjectStudent ps = list.stream().findFirst().get();
+
             List<Activity> activities = ps.getProject().getActivities().stream().toList();
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(activities).build();
         }
