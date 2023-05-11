@@ -4,7 +4,6 @@ import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectTribunal;
 import backend.siptis.model.entity.projectManagement.Defense;
-import backend.siptis.model.entity.projectManagement.PlaceToDefense;
 import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.pjo.dto.editorsAndReviewers.ReviewADefenseDTO;
 import backend.siptis.model.pjo.vo.projectManagement.ProjectToTribunalHomePageVO;
