@@ -15,6 +15,6 @@ public interface PresentationRepository extends JpaRepository<Presentation, Long
     @Override
     void deleteById(Long aLong);
 
-    Presentation findTopByProjectIdOrderByDateDesc(Long id);
+    Presentation findTopByProjectIdOrderByDateDesc(Long idProject);
 
 }

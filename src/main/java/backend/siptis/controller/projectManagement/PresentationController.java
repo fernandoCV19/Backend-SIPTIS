@@ -71,6 +71,17 @@ public class PresentationController {
         return crearResponseEntityConPresentacion(respuestaServicio);
     }
 
+    @GetMapping("/getLastReviews/{id}")
+    ResponseEntity<?> getLastReviews(@PathVariable("id") Long idProject){
+        ServiceAnswer serviceAnswer = presentationService.getLastReviewsFromAPresentation(idProject);
+        HttpStatus httpStatus = HttpStatus.OK;
+        if(serviceAnswer.getServiceMessage() != ServiceMessage.OK){
+            httpStatus = HttpStatus.BAD_REQUEST;
+        }
+        ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
+        return new ResponseEntity<>(controllerAnswer, httpStatus);
+    }
+
     private ResponseEntity<?> crearResponseEntityConPresentacion(ServiceAnswer respuestaServicio){
         Object data = respuestaServicio.getData();
         ServiceMessage mensajeServicio = respuestaServicio.getServiceMessage();

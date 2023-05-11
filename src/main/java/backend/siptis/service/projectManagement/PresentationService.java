@@ -17,4 +17,6 @@ public interface PresentationService {
     ServiceAnswer delete (Long idPresentacion);
 
     ServiceAnswer downloadFileFromCloud(String key);
+
+    ServiceAnswer getLastReviewsFromAPresentation(Long idProject);
 }

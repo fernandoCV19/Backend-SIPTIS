@@ -5,23 +5,27 @@ import backend.siptis.commons.ServiceMessage;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.model.entity.projectManagement.Presentation;
 import backend.siptis.model.entity.projectManagement.Project;
+import backend.siptis.model.entity.projectManagement.Review;
+import backend.siptis.model.pjo.vo.projectManagement.ReviewShortInfoVO;
 import backend.siptis.model.repository.projectManagement.PresentationRepository;
 import backend.siptis.model.repository.projectManagement.ProjectRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class PresentationServiceImpl implements PresentationService {
 
     private final CloudManagementService nube;
     private final PresentationRepository presentationRepository;
-    private final ProjectRepository proyectoGradoRepository;
+    private final ProjectRepository projectRepository;
 
     @Override
     public ServiceAnswer createPresentation (Long idProyecto, Phase fase){
@@ -29,7 +33,7 @@ public class PresentationServiceImpl implements PresentationService {
         if (presentacionesNoEntregadas.isPresent()){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PRESENTACION_PENDIENTE).data(null).build();
         }
-        Optional<Project> oproyectoGrado = proyectoGradoRepository.findById(idProyecto);
+        Optional<Project> oproyectoGrado = projectRepository.findById(idProyecto);
         if (oproyectoGrado.isEmpty()){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
         }
@@ -58,7 +62,7 @@ public class PresentationServiceImpl implements PresentationService {
         if (presentation.getBlueBookPath() != null)
             proyecto.setBlueBookPath(presentation.getBlueBookPath());
         proyecto.setPhase(fase);
-        proyectoGradoRepository.saveAndFlush(proyecto);
+        projectRepository.saveAndFlush(proyecto);
         presentationRepository.saveAndFlush(presentation);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.PRESENTACION_REVISADA).data(presentation).build();
     }
@@ -139,6 +143,19 @@ public class PresentationServiceImpl implements PresentationService {
         }
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(response).build();
 
+    }
+
+    @Override
+    public ServiceAnswer getLastReviewsFromAPresentation(Long idProject) {
+        if(projectRepository.findById(idProject).isEmpty()){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data(null).build();
+        }
+        Presentation presentation = presentationRepository.findTopByProjectIdOrderByDateDesc(idProject);
+        if(presentation == null){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.THERE_IS_NO_PRESENTATION_YET).data(null).build();
+        }
+        List<ReviewShortInfoVO> reviews = presentation.getReviews().stream().map(ReviewShortInfoVO::new).toList();
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(reviews).build();
     }
 
     private String correctFileContext (String context){
