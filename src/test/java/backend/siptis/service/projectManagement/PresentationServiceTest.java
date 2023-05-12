@@ -2,7 +2,7 @@ package backend.siptis.service.projectManagement;
 
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.model.pjo.vo.projectManagement.ReviewShortInfoVO;
+import backend.siptis.model.pjo.vo.projectManagement.InfoToReviewAProjectVO;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +10,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -61,21 +59,21 @@ class PresentationServiceTest {
     @Test
     void getLastReviewsFromAPresentationWithProjectThatDoesNotHaveReviewReturnEmptyList(){
         ServiceAnswer query = presentationService.getLastReviewsFromAPresentation(31L);
-        List<ReviewShortInfoVO> listOfReviews = (List<ReviewShortInfoVO>) query.getData();
-        assertTrue(listOfReviews.isEmpty());
+        InfoToReviewAProjectVO listOfReviews = (InfoToReviewAProjectVO) query.getData();
+        assertTrue(listOfReviews.getOtherReviews().isEmpty());
     }
 
     @Test
     void getLastReviewsFromAPresentationReturnAllLastReviewsFromAProject(){
         ServiceAnswer query = presentationService.getLastReviewsFromAPresentation(33L);
-        List<ReviewShortInfoVO> listOfReviews = (List<ReviewShortInfoVO>) query.getData();
-        assertEquals(2, listOfReviews.size());
+        InfoToReviewAProjectVO listOfReviews = (InfoToReviewAProjectVO) query.getData();
+        assertEquals(2, listOfReviews.getOtherReviews().size());
     }
 
     @Test
     void getLastReviewsFromAPresentationReturnAllCorrectLastReviewsFromAProject(){
         ServiceAnswer query = presentationService.getLastReviewsFromAPresentation(33L);
-        List<ReviewShortInfoVO> listOfReviews = (List<ReviewShortInfoVO>) query.getData();
-        assertTrue(listOfReviews.get(0).getDocumentPath().equals("documentPath4") && listOfReviews.get(1).getDocumentPath().equals("documentPath5"));
+        InfoToReviewAProjectVO listOfReviews = (InfoToReviewAProjectVO) query.getData();
+        assertTrue(listOfReviews.getOtherReviews().get(0).getDocumentPath().equals("documentPath4") && listOfReviews.getOtherReviews().get(1).getDocumentPath().equals("documentPath5"));
     }
 }

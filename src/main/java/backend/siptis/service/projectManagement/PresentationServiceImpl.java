@@ -5,6 +5,7 @@ import backend.siptis.commons.ServiceMessage;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.model.entity.projectManagement.Presentation;
 import backend.siptis.model.entity.projectManagement.Project;
+import backend.siptis.model.pjo.vo.projectManagement.InfoToReviewAProjectVO;
 import backend.siptis.model.pjo.vo.projectManagement.ReviewShortInfoVO;
 import backend.siptis.model.repository.projectManagement.PresentationRepository;
 import backend.siptis.model.repository.projectManagement.ProjectRepository;
@@ -146,7 +147,8 @@ public class PresentationServiceImpl implements PresentationService {
 
     @Override
     public ServiceAnswer getLastReviewsFromAPresentation(Long idProject) {
-        if(projectRepository.findById(idProject).isEmpty()){
+        Optional<Project> projectOptinal = projectRepository.findById(idProject);
+        if(projectOptinal.isEmpty()){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data(null).build();
         }
         Presentation presentation = presentationRepository.findTopByProjectIdOrderByDateDesc(idProject);
@@ -154,7 +156,8 @@ public class PresentationServiceImpl implements PresentationService {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.THERE_IS_NO_PRESENTATION_YET).data(null).build();
         }
         List<ReviewShortInfoVO> reviews = presentation.getReviews().stream().map(ReviewShortInfoVO::new).toList();
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(reviews).build();
+        InfoToReviewAProjectVO data = new InfoToReviewAProjectVO(projectOptinal.get(), reviews);
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(data).build();
     }
 
     private String correctFileContext (String context){
