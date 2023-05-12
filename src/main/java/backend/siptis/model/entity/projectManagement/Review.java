@@ -33,4 +33,12 @@ public class Review {
     @JsonBackReference
     private Presentation presentation;
     private Date date;
+
+    public Review(String documentPath, String commentary, SiptisUser siptisUser, Presentation presentation, Date date) {
+        this.documentPath = documentPath;
+        this.commentary = commentary;
+        this.siptisUser = siptisUser;
+        this.presentation = presentation;
+        this.date = date;
+    }
 }
