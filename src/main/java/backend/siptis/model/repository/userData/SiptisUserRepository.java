@@ -28,4 +28,6 @@ public interface SiptisUserRepository extends JpaRepository<SiptisUser, Long> {
 
     Optional<SiptisUser> findById(Long id);
     Optional <Project> findProjectById(Long id);
+    Optional<SiptisUser> findOneById(Long id);
+
 }

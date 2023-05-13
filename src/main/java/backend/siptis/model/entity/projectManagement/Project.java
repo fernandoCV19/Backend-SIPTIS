@@ -22,6 +22,9 @@ public class Project {
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
+    @Column(name = "report_index", columnDefinition = "integer default 0")
+    private Integer reportIndex = 0;
+
     private String name;
 
     @Column(name = "perfil_path")
@@ -38,7 +41,7 @@ public class Project {
     @OneToOne
     private Defense defense;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "modality_id", nullable = false)
     @JsonManagedReference
     private Modality modality;
@@ -63,7 +66,7 @@ public class Project {
     @JsonManagedReference
     private Collection<Presentation> presentations;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "state_id", nullable = true)
     @JsonBackReference
     private State state;
