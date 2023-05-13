@@ -1,9 +1,11 @@
 package backend.siptis.service.projectManagement;
 
 import backend.siptis.auth.entity.SiptisUser;
+import backend.siptis.commons.Phase;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.projectManagement.Presentation;
+import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.entity.projectManagement.Review;
 import backend.siptis.model.repository.projectManagement.PresentationRepository;
 import backend.siptis.model.repository.projectManagement.ProjectRepository;
@@ -32,8 +34,8 @@ public class ReviewServiceImpl implements ReviewService{
 
     @Override
     public ServiceAnswer addReview(Long projectId, Long userId, MultipartFile multipartFile, String commentary) {
-        Optional<Presentation> presentationOptional = presentationRepository.findById(projectId);
-        if(presentationOptional.isEmpty()){
+        Optional<Project> projectOptional = projectRepository.findById(projectId);
+        if(projectOptional.isEmpty()){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data(null).build();
         }
         Optional<SiptisUser> userOptional = siptisUserRepository.findById(userId);
@@ -57,6 +59,9 @@ public class ReviewServiceImpl implements ReviewService{
                 newReview.setId(lastPossibleReview.get().getId());
             }
             reviewRepository.save(newReview);
+            Project project = projectOptional.get();
+            project.setPhase(Phase.POST_DEFENSE_PHASE.toString());
+            projectRepository.save(project);
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("REVIEW SAVED").build();
         }catch (Exception e){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.THERE_IS_A_PROBLEM_WITH_THE_CLOUD).data("REVIEW SAVED").build();

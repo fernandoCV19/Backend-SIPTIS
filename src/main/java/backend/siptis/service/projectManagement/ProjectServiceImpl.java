@@ -1,6 +1,7 @@
 package backend.siptis.service.projectManagement;
 
 import backend.siptis.auth.entity.SiptisUser;
+import backend.siptis.commons.Phase;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectStudent;
@@ -143,8 +144,8 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ServiceAnswer getSchedulesInfoToAssignADefense(Long idProject) {
-        Optional<Project> query = projectRepository.findById(idProject);
+    public ServiceAnswer getSchedulesInfoToAssignADefense(Long projectId) {
+        Optional<Project> query = projectRepository.findById(projectId);
         if(query.isEmpty()){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data(null).build();
         }
@@ -184,6 +185,18 @@ public class ProjectServiceImpl implements ProjectService {
         Defense newDefense =  new Defense(place.get(), project, defenseDTO.getDate());
         defenseRepository.save(newDefense);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("Defense created").build();
+    }
+
+    @Override
+    public ServiceAnswer getProjectsToDefenseOrDefended(Long userId) {
+        Optional<SiptisUser> userOptional = siptisUserRepository.findById(userId);
+        if(userOptional.isEmpty()){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.USER_ID_DOES_NOT_EXIST).data(null).build();
+        }
+        List<Project> projectsToDefend = projectRepository.findByPhaseAndTribunalsTribunalId(Phase.DEFENSE_PHASE.toString(), userId);
+        List<Project> projectsDefended = projectRepository.findByPhaseAndTribunalsTribunalId(Phase.POST_DEFENSE_PHASE.toString(), userId);
+        InfoToDefensesSectionVO data = new InfoToDefensesSectionVO(projectsToDefend, projectsDefended);
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(data).build();
     }
 
     private UserDefenseScheduleVO createDefenseInfo(SiptisUser student) {
