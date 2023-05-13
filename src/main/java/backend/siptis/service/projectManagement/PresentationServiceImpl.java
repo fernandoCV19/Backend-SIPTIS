@@ -146,12 +146,12 @@ public class PresentationServiceImpl implements PresentationService {
     }
 
     @Override
-    public ServiceAnswer getLastReviewsFromAPresentation(Long idProject) {
-        Optional<Project> projectOptinal = projectRepository.findById(idProject);
+    public ServiceAnswer getLastReviewsFromAPresentation(Long projectId) {
+        Optional<Project> projectOptinal = projectRepository.findById(projectId);
         if(projectOptinal.isEmpty()){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data(null).build();
         }
-        Presentation presentation = presentationRepository.findTopByProjectIdOrderByDateDesc(idProject);
+        Presentation presentation = presentationRepository.findTopByProjectIdOrderByDateDesc(projectId);
         if(presentation == null){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.THERE_IS_NO_PRESENTATION_YET).data(null).build();
         }

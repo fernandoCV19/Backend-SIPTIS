@@ -72,8 +72,8 @@ public class PresentationController {
     }
 
     @GetMapping("/getLastReviews/{id}")
-    ResponseEntity<?> getLastReviews(@PathVariable("id") Long idProject){
-        ServiceAnswer serviceAnswer = presentationService.getLastReviewsFromAPresentation(idProject);
+    ResponseEntity<?> getLastReviews(@PathVariable("id") Long projectId){
+        ServiceAnswer serviceAnswer = presentationService.getLastReviewsFromAPresentation(projectId);
         HttpStatus httpStatus = HttpStatus.OK;
         if(serviceAnswer.getServiceMessage() != ServiceMessage.OK){
             httpStatus = HttpStatus.BAD_REQUEST;
