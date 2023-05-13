@@ -16,16 +16,16 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 public class ProjectController {
     @Autowired
-    public ProjectService proyectoGradoService;
+    public ProjectService projectService;
 
     @GetMapping("/presentations/{id}")
     public ResponseEntity<?> getPresentaciones(@PathVariable ("id") Long idProyecto){
-        ServiceAnswer serviceAnswer = proyectoGradoService.getPresentations(idProyecto);
+        ServiceAnswer serviceAnswer = projectService.getPresentations(idProyecto);
         return crearResponseEntity(serviceAnswer);
     }
     @GetMapping("/")
     public ResponseEntity<?> getProyectos(){
-        ServiceAnswer serviceAnswer = proyectoGradoService.getProjects();
+        ServiceAnswer serviceAnswer = projectService.getProjects();
         return crearResponseEntity(serviceAnswer);
     }
     private ResponseEntity<?> crearResponseEntity(ServiceAnswer serviceAnswer){
@@ -40,9 +40,9 @@ public class ProjectController {
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
 
-    @GetMapping("/getProjectInfoToReview/{idProject}/{idReviewer}")
-    public ResponseEntity<?> getProjectInfoToReview(@PathVariable("idProject") Long idProject, @PathVariable("idReviewer") Long idReviewer){
-        ServiceAnswer serviceAnswer = proyectoGradoService.getProjectInfoToReview(idProject, idReviewer);
+    @GetMapping("/getProjectInfoToReview/{projectId}/{reviewerId}")
+    public ResponseEntity<?> getProjectInfoToReview(@PathVariable("projectId") Long projectId, @PathVariable("reviewerId") Long reviewerId){
+        ServiceAnswer serviceAnswer = projectService.getProjectInfoToReview(projectId, reviewerId);
         HttpStatus httpStatus = HttpStatus.OK;
         if(serviceAnswer.getServiceMessage() != ServiceMessage.OK && serviceAnswer.getServiceMessage() != ServiceMessage.THERE_IS_NO_PRESENTATION_YET){
             httpStatus = HttpStatus.BAD_REQUEST;
@@ -51,9 +51,9 @@ public class ProjectController {
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
 
-    @GetMapping("/allInfo/{idProject}")
-    public ResponseEntity<?> getAllInfo(@PathVariable("idProject") Long idProject){
-        ServiceAnswer serviceAnswer = proyectoGradoService.getAllProjectInfo(idProject);
+    @GetMapping("/allInfo/{projectId}")
+    public ResponseEntity<?> getAllInfo(@PathVariable("projectId") Long projectId){
+        ServiceAnswer serviceAnswer = projectService.getAllProjectInfo(projectId);
         HttpStatus httpStatus = HttpStatus.OK;
         if(serviceAnswer.getServiceMessage() != ServiceMessage.OK){
             httpStatus = HttpStatus.BAD_REQUEST;
@@ -62,9 +62,9 @@ public class ProjectController {
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
 
-    @GetMapping("/getInfoToAssignTribunals/{idProject}")
-    public ResponseEntity<?> getInfoToAssignTribunals(@PathVariable("idProject") Long idProject){
-        ServiceAnswer serviceAnswer = proyectoGradoService.getProjectInfoToAssignTribunals(idProject);
+    @GetMapping("/getInfoToAssignTribunals/{projectId}")
+    public ResponseEntity<?> getInfoToAssignTribunals(@PathVariable("projectId") Long projectId){
+        ServiceAnswer serviceAnswer = projectService.getProjectInfoToAssignTribunals(projectId);
         HttpStatus httpStatus = HttpStatus.OK;
         if(serviceAnswer.getServiceMessage() != ServiceMessage.OK){
             httpStatus = HttpStatus.BAD_REQUEST;
@@ -75,7 +75,7 @@ public class ProjectController {
 
     @PostMapping("/assignTribunals")
     public ResponseEntity<?> assignTribunal(@RequestBody AssignTribunalsDTO assignTribunalsDTO){
-        ServiceAnswer serviceAnswer = proyectoGradoService.assignTribunals(assignTribunalsDTO);
+        ServiceAnswer serviceAnswer = projectService.assignTribunals(assignTribunalsDTO);
         HttpStatus httpStatus = HttpStatus.OK;
         if(serviceAnswer.getServiceMessage() != ServiceMessage.OK){
             httpStatus = HttpStatus.BAD_REQUEST;
@@ -84,9 +84,9 @@ public class ProjectController {
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
 
-    @GetMapping("/schedulesToAssignDefense/{idProject}")
-    public ResponseEntity<?> getSchedulesToAssignDefense(@PathVariable("idProject") Long idProject){
-        ServiceAnswer serviceAnswer = proyectoGradoService.getSchedulesInfoToAssignADefense(idProject);
+    @GetMapping("/schedulesToAssignDefense/{projectId}")
+    public ResponseEntity<?> getSchedulesToAssignDefense(@PathVariable("projectId") Long projectId){
+        ServiceAnswer serviceAnswer = projectService.getSchedulesInfoToAssignADefense(projectId);
         HttpStatus httpStatus = HttpStatus.OK;
         if(serviceAnswer.getServiceMessage() != ServiceMessage.OK){
             httpStatus = HttpStatus.BAD_REQUEST;
@@ -97,7 +97,7 @@ public class ProjectController {
 
     @PostMapping("/createDefense")
     public ResponseEntity<?> createDefense(@RequestBody DefenseDTO defenseDTO){
-        ServiceAnswer serviceAnswer = proyectoGradoService.addDefense(defenseDTO);
+        ServiceAnswer serviceAnswer = projectService.addDefense(defenseDTO);
         HttpStatus httpStatus = HttpStatus.OK;
         if(serviceAnswer.getServiceMessage() != ServiceMessage.OK){
             httpStatus = HttpStatus.BAD_REQUEST;
@@ -108,7 +108,7 @@ public class ProjectController {
 
     @GetMapping("/defenses/{tribunalID}")
     public ResponseEntity<?> getProjectsToDefenseOrDefended(@PathVariable("tribunalID") Long tribunalID){
-        ServiceAnswer serviceAnswer = proyectoGradoService.getProjectsToDefenseOrDefended(tribunalID);
+        ServiceAnswer serviceAnswer = projectService.getProjectsToDefenseOrDefended(tribunalID);
         HttpStatus httpStatus = HttpStatus.OK;
         if(serviceAnswer.getServiceMessage() != ServiceMessage.OK){
             httpStatus = HttpStatus.BAD_REQUEST;
