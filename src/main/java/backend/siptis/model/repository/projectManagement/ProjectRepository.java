@@ -18,4 +18,6 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
             + " UNION " +
             "SELECT tut.tutor.id AS idUser FROM ProjectTutor tut WHERE tut.project.id = :projectID" )
     List<Long> getIdsListFromReviewers(Long projectID);
+
+    List<Project> findByPhaseAndTribunalsTribunalId(Long userId);
 }
