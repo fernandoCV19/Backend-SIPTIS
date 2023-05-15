@@ -59,9 +59,6 @@ public class ReviewServiceImpl implements ReviewService{
                 newReview.setId(lastPossibleReview.get().getId());
             }
             reviewRepository.save(newReview);
-            Project project = projectOptional.get();
-            project.setPhase(Phase.POST_DEFENSE_PHASE.toString());
-            projectRepository.save(project);
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("REVIEW SAVED").build();
         }catch (Exception e){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.THERE_IS_A_PROBLEM_WITH_THE_CLOUD).data("REVIEW SAVED").build();

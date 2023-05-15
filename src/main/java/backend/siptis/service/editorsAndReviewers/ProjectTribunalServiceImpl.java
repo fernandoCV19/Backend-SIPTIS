@@ -166,6 +166,9 @@ public class ProjectTribunalServiceImpl implements ProjectTribunalService {
                 count++;
             }
         }
+        if(count > 2){
+            project.setPhase(Phase.POST_DEFENSE_PHASE.toString());
+        }
         newProjectDefensePoint = newProjectDefensePoint / count;
         project.setTotalDefensePoints(newProjectDefensePoint);
         projectRepository.save(project);

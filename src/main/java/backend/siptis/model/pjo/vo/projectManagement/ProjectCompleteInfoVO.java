@@ -18,6 +18,7 @@ public class ProjectCompleteInfoVO {
     private String phase;
     private DefenseVO defense;
     private String modality;
+    private Double score;
     private List<String> subAreas;
     private List<String> areas;
     private List<String> students;
@@ -37,6 +38,7 @@ public class ProjectCompleteInfoVO {
         modality = project.getModality().toString();
         subAreas = project.getSubAreas() != null ? project.getSubAreas().stream().map(SubArea::getName).toList() : null;
         areas = project.getAreas() != null ? project.getAreas().stream().map(Area::getName).toList() : null;
+        score = project.getTotalDefensePoints();
         students = project.getStudents() != null ? project.getStudents()
                 .stream()
                 .map(e -> e.getStudent().getUserInformation().getNames() + " " + e.getStudent().getUserInformation().getLastnames())
