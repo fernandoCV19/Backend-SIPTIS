@@ -6,6 +6,7 @@ import backend.siptis.model.pjo.dto.EditStudentInformationDTO;
 import backend.siptis.model.pjo.dto.EditTeacherInformationDTO;
 import backend.siptis.model.pjo.dto.StudentEditPersonalInfoDTO;
 import backend.siptis.model.pjo.dto.TeacherEditPersonalInfoDTO;
+import org.springframework.data.domain.Pageable;
 
 public interface SiptisUserService {
 
@@ -34,5 +35,5 @@ public interface SiptisUserService {
     ServiceAnswer studentEditPersonalInfo(Long id, StudentEditPersonalInfoDTO dto);
 
     ServiceAnswer teacherEditPersonalInfo(Long id, TeacherEditPersonalInfoDTO dto);
-    ServiceAnswer getPersonalActivities(Long id);
+    ServiceAnswer getPersonalActivities(Long id, Pageable pageable);
 }

@@ -14,6 +14,9 @@ import backend.siptis.model.repository.userData.SiptisUserRepository;
 import backend.siptis.service.records.ActivityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -197,19 +200,8 @@ public class SiptisUserServiceImpl implements SiptisUserService {
             return userDTO;
         }
         @Override
-        public ServiceAnswer getPersonalActivities(Long id){
-            Optional<SiptisUser> userFound = usuarioCommonRepository.findById(id);
-            if(userFound.isEmpty()){
-                return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(new ArrayList<>()).build();
-            }
-
-            Collection<ProjectStudent> list = userFound.get().getStudents();
-            if(list.isEmpty()){
-                return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(new ArrayList<>()).build();
-            }
-            ProjectStudent ps = list.stream().findFirst().get();
-
-            List<Activity> activities = ps.getProject().getActivities().stream().toList();
+        public ServiceAnswer getPersonalActivities(Long id, Pageable pageable){
+            Page<Activity> activities = usuarioCommonRepository.findAllPersonalActivities(id, pageable);
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(activities).build();
         }
         private StudentInformationDTO convertToStudentInformation(SiptisUser user) {
