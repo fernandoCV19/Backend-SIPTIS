@@ -199,6 +199,15 @@ public class ProjectServiceImpl implements ProjectService {
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(data).build();
     }
 
+    @Override
+    public ServiceAnswer getProjectsWithoutAndWithTribunals() {
+        List<Project> projects = projectRepository.findAll();
+        List<ProjectCompleteInfoVO> withTribunals = projects.stream().filter(project -> project.getPhase().equals(Phase.DEFENSE_PHASE.toString())).map(ProjectCompleteInfoVO::new).toList();
+        List<ProjectCompleteInfoVO> withoutTribunals = projects.stream().filter(project -> project.getPhase().equals(Phase.TRIBUNALS_PHASE.toString())).map(ProjectCompleteInfoVO::new).toList();
+        ProjectsWithoutAndWithTribunalsVO data = new ProjectsWithoutAndWithTribunalsVO(withTribunals, withoutTribunals);
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(data).build();
+    }
+
     private UserDefenseScheduleVO createDefenseInfo(SiptisUser student) {
         HashMap<String, List<String[]>> schedules = new HashMap<>();
         for(Schedule schedule:student.getAvailableSchedules()){

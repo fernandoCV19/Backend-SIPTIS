@@ -23,4 +23,6 @@ public interface ProjectService {
     ServiceAnswer addDefense(DefenseDTO defenseDTO);
 
     ServiceAnswer getProjectsToDefenseOrDefended(Long userId);
+
+    ServiceAnswer getProjectsWithoutAndWithTribunals();
 }
