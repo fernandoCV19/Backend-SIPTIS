@@ -25,4 +25,6 @@ public interface ProjectService {
     ServiceAnswer getProjectsToDefenseOrDefended(Long userId);
 
     ServiceAnswer getProjectsWithoutAndWithTribunals();
+
+    ServiceAnswer getProjectsWithoutAndWithDefensePlace();
 }
