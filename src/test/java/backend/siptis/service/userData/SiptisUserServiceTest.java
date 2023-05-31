@@ -1,20 +1,17 @@
 package backend.siptis.service.userData;
 
-import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.AdminRegisterDTO;
 import backend.siptis.model.pjo.dto.EditStudentInformationDTO;
 import backend.siptis.model.pjo.dto.StudentRegisterDTO;
 import backend.siptis.model.pjo.dto.records.LogInDTO;
-import backend.siptis.service.records.EmailService;
+import backend.siptis.service.records.EmailServiceImpl;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Date;
@@ -30,7 +27,7 @@ public class SiptisUserServiceTest {
 
     private SiptisUserService service;
     private UserAuthService authService;
-    private EmailService emailService;
+    private EmailServiceImpl emailServiceImpl;
 
     private StudentRegisterDTO createStudent(){
         String email = "maury.vargasl@gmail.com";
@@ -89,10 +86,10 @@ public class SiptisUserServiceTest {
     @Autowired
     SiptisUserServiceTest(
             SiptisUserService service, UserAuthService authService,
-            EmailService emailService) {
+            EmailServiceImpl emailServiceImpl) {
         this.service = service;
         this.authService = authService;
-        this.emailService = emailService;
+        this.emailServiceImpl = emailServiceImpl;
     }
 
     @Test

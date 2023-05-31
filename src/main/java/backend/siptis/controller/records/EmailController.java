@@ -1,11 +1,10 @@
 package backend.siptis.controller.records;
 
-import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.TokenPasswordDTO;
-import backend.siptis.service.records.EmailService;
+import backend.siptis.service.records.EmailServiceImpl;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,15 +13,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/email")
 public class EmailController {
-    private EmailService emailService;
+    private EmailServiceImpl emailServiceImpl;
     @Autowired
-    public EmailController(EmailService emailService){
-        this.emailService = emailService;
+    public EmailController(EmailServiceImpl emailServiceImpl){
+        this.emailServiceImpl = emailServiceImpl;
     }
     @GetMapping("")
     public String sendNotification() throws MessagingException, IOException {
@@ -35,7 +33,7 @@ public class EmailController {
     @GetMapping("/askemail/{email}")
     public ResponseEntity<?> sendEmailTest(@PathVariable String email) throws MessagingException, IOException {
 
-        ServiceAnswer answer = emailService.sendRecoverPasswordEmail(email);
+        ServiceAnswer answer = emailServiceImpl.sendRecoverPasswordEmail(email);
 
         //return "mensaje enviado con exito";
         return crearResponseEntityRegistrar(answer);
@@ -43,7 +41,7 @@ public class EmailController {
 
     @PostMapping("/changePassword")
     public ResponseEntity<?> changePassword(@RequestBody TokenPasswordDTO dto){
-        ServiceAnswer answer = emailService.changePassword(dto);
+        ServiceAnswer answer = emailServiceImpl.changePassword(dto);
         return crearResponseEntityRegistrar(answer);
         //return "hola";
     }
