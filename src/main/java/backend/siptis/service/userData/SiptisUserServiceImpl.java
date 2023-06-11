@@ -131,47 +131,60 @@ public class SiptisUserServiceImpl implements SiptisUserService {
 
     @Override
     public ServiceAnswer studentEditPersonalInfo(Long id, StudentEditPersonalInfoDTO dto) {
-        Optional<SiptisUser> user = usuarioCommonRepository.findById(id);
-        SiptisUser siptisUser = user.get();
+        String message = "La información de su cuenta fue modificada exitosamente.";
+        if(! usuarioCommonRepository.existsById(id)){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST)
+                    .data("No existe un usuario registrado con el id solicitado").build();
+        }
+        try {
+            Optional<SiptisUser> user = usuarioCommonRepository.findById(id);
+            SiptisUser siptisUser = user.get();
 
-        siptisUser.setEmail(dto.getEmail());
-        UserInformation userInformation = siptisUser.getUserInformation();
+            siptisUser.setEmail(dto.getEmail());
+            UserInformation userInformation = siptisUser.getUserInformation();
 
-        userInformation.setCelNumber(dto.getCelNumber());
-        userInformation.setCi(dto.getCi());
-        userInformation.setBirthDate(dto.getBirthDate());
+            userInformation.setCelNumber(dto.getCelNumber());
+            userInformation.setCi(dto.getCi());
+            userInformation.setBirthDate(dto.getBirthDate());
 
-        SiptisUser user1 = usuarioCommonRepository.save(siptisUser);
+            SiptisUser user1 = usuarioCommonRepository.save(siptisUser);
 
-        StudentInformationDTO informationDTO = convertToStudentInformation(user1);
+            StudentInformationDTO informationDTO = convertToStudentInformation(user1);
+        }catch (Exception e){
+            message = "Ocurrio un error al intentar modificar su informacion.";
+        }
 
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(informationDTO).build();
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(message).build();
     }
 
     @Override
     public ServiceAnswer editStudentInformation(Long userID, EditStudentInformationDTO editDTO) {
 
+        String message = "La información fue modificada exitosamente.";
         if(! usuarioCommonRepository.existsById(userID)){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST)
                     .data("No existe un usuario registrado con el id solicitado").build();
         }
-        Optional<SiptisUser> user = usuarioCommonRepository.findById(userID);
+        try{
+            Optional<SiptisUser> user = usuarioCommonRepository.findById(userID);
 
-        SiptisUser siptisUser = user.get();
+            SiptisUser siptisUser = user.get();
 
-        siptisUser.setEmail(editDTO.getEmail());
-        UserInformation userInformation = siptisUser.getUserInformation();
-        userInformation.setNames(editDTO.getNames());
-        userInformation.setLastnames(editDTO.getLastnames());
-        userInformation.setCelNumber(editDTO.getCelNumber());
-        userInformation.setCi(editDTO.getCi());
-        userInformation.setBirthDate(editDTO.getBirthDate());
-        userInformation.setCodSIS(editDTO.getCodSIS());
+            siptisUser.setEmail(editDTO.getEmail());
+            UserInformation userInformation = siptisUser.getUserInformation();
+            userInformation.setNames(editDTO.getNames());
+            userInformation.setLastnames(editDTO.getLastnames());
+            userInformation.setCelNumber(editDTO.getCelNumber());
+            userInformation.setCi(editDTO.getCi());
+            userInformation.setBirthDate(editDTO.getBirthDate());
+            userInformation.setCodSIS(editDTO.getCodSIS());
 
-        SiptisUser user1 = usuarioCommonRepository.save(siptisUser);
-        StudentInformationDTO informationDTO = convertToStudentInformation(user1);
-
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(informationDTO).build();
+            SiptisUser user1 = usuarioCommonRepository.save(siptisUser);
+            StudentInformationDTO informationDTO = convertToStudentInformation(user1);
+        }catch (Exception e){
+            message = "Ocurrio un error al intentar modificar la cuenta seleccionada.";
+        }
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(message).build();
     }
 
     @Override
