@@ -28,13 +28,13 @@ public interface SiptisUserService {
 
     boolean existsTokenPassword(String tokenPassword);
 
-    ServiceAnswer editStudentInformation(Long userID,EditStudentInformationDTO editDTO);
+    /*ServiceAnswer editStudentInformation(Long userID,EditStudentInformationDTO editDTO);
 
     ServiceAnswer editTeacherInformation(Long userID, EditTeacherInformationDTO editDTO);
 
     ServiceAnswer studentEditPersonalInfo(Long id, StudentEditPersonalInfoDTO dto);
 
     ServiceAnswer teacherEditPersonalInfo(Long id, TeacherEditPersonalInfoDTO dto);
-
+*/
     ServiceAnswer getPersonalActivities(Long id);
 }

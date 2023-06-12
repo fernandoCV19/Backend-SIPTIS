@@ -11,6 +11,8 @@ import backend.siptis.model.pjo.dto.records.LogInDTO;
 import backend.siptis.service.userData.SiptisUserService;
 import backend.siptis.service.userData.UserAuthService;
 import backend.siptis.service.userData.registerUser.RegisterUser;
+import backend.siptis.service.userData.userPersonalInformation.AdminEditInformation;
+import backend.siptis.service.userData.userPersonalInformation.UserEditInformation;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,6 +35,12 @@ public class SiptisUserController {
 
     @Autowired
     private final SiptisUserService userService;
+
+    @Autowired
+    private final AdminEditInformation adminEditInformationService;
+
+    @Autowired
+    private final UserEditInformation userEditInformationService;
 
 
 
@@ -108,7 +116,7 @@ public class SiptisUserController {
             @RequestBody EditStudentInformationDTO dto){
 
         Long id = Long.valueOf(userId);
-        ServiceAnswer answer = userService.editStudentInformation(id, dto);
+        ServiceAnswer answer = adminEditInformationService.editStudentInformation(id, dto);
         return crearResponseEntityRegistrar(answer);
     }
 
@@ -118,7 +126,7 @@ public class SiptisUserController {
             @RequestBody EditTeacherInformationDTO dto){
 
         Long id = Long.valueOf(userId);
-        ServiceAnswer answer = userService.editTeacherInformation(id, dto);
+        ServiceAnswer answer = adminEditInformationService.editTeacherInformation(id, dto);
         return crearResponseEntityRegistrar(answer);
     }
 
@@ -129,7 +137,7 @@ public class SiptisUserController {
 
         Long id = userAuthService.getIdFromToken(token);
 
-        ServiceAnswer answer = userService.studentEditPersonalInfo(id, dto);
+        ServiceAnswer answer = userEditInformationService.studentEditPersonalInfo(id, dto);
         return crearResponseEntityRegistrar(answer);
     }
     @GetMapping("/personal-activities/{userId}")
@@ -146,7 +154,7 @@ public class SiptisUserController {
 
         Long id = userAuthService.getIdFromToken(token);
 
-        ServiceAnswer answer = userService.teacherEditPersonalInfo(id, dto);
+        ServiceAnswer answer = userEditInformationService.teacherEditPersonalInfo(id, dto);
         return crearResponseEntityRegistrar(answer);
     }
 

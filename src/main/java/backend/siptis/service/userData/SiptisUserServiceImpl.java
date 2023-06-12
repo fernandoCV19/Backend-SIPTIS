@@ -99,7 +99,7 @@ public class SiptisUserServiceImpl implements SiptisUserService {
     }
 
 
-    @Override
+    /*@Override
     public ServiceAnswer editTeacherInformation(Long userID, EditTeacherInformationDTO editDTO) {
         if(! usuarioCommonRepository.existsById(userID)){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST)
@@ -201,7 +201,7 @@ public class SiptisUserServiceImpl implements SiptisUserService {
 
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(informationDTO).build();
 
-        }
+        }*/
 
 
 
@@ -221,7 +221,7 @@ public class SiptisUserServiceImpl implements SiptisUserService {
             List<Activity> activities = ps.getProject().getActivities().stream().toList();
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(activities).build();
         }
-        private StudentInformationDTO convertToStudentInformation(SiptisUser user) {
+        /*private StudentInformationDTO convertToStudentInformation(SiptisUser user) {
 
             StudentInformationDTO student = new StudentInformationDTO();
             if (user != null) {
@@ -246,6 +246,6 @@ public class SiptisUserServiceImpl implements SiptisUserService {
 
             }
             return student;
-        }
+        }*/
     }
 

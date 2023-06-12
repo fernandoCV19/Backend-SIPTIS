@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class SearchUserInformationImpl implements SearchUserInformation{
+    public class SearchUserInformationImpl implements SearchUserInformation{
 
     private final SiptisUserRepository usuarioCommonRepository;
 

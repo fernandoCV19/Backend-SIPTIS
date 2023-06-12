@@ -29,6 +29,6 @@ public class CheckUserInformationImpl implements CheckUserInformation{
 
     @Override
     public boolean existsTokenPassword(String tokenPassword) {
-        return false;
+        return userRepository.existsByTokenPassword(tokenPassword);
     }
 }
