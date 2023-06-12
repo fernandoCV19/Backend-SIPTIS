@@ -17,6 +17,7 @@ public interface SiptisUserService {
     ServiceAnswer obtenerProyectosSupervisorParaMenuPrincipalPorIdUsuario(Integer id);
 
 
+
     SiptisUser findByEmail(String email);
 
     SiptisUser findByTokenPassword(String email);
@@ -34,5 +35,6 @@ public interface SiptisUserService {
     ServiceAnswer studentEditPersonalInfo(Long id, StudentEditPersonalInfoDTO dto);
 
     ServiceAnswer teacherEditPersonalInfo(Long id, TeacherEditPersonalInfoDTO dto);
+
     ServiceAnswer getPersonalActivities(Long id);
 }
