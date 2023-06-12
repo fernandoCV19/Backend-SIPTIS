@@ -13,12 +13,6 @@ public interface UserAuthService {
 
     ServiceAnswer findAll();
 
-    /*ServiceAnswer registerStudent(StudentRegisterDTO estudianteDTO);
-
-    ServiceAnswer registerTeacher(TeacherRegisterDTO teacherDTO);
-
-    ServiceAnswer registerAdmin(AdminRegisterDTO adminDTO);*/
-
     ServiceAnswer logIn(LogInDTO logInDTO);
 
     ServiceAnswer userInfo(Long id);

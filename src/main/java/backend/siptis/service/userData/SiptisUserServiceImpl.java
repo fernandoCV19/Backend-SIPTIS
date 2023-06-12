@@ -4,12 +4,10 @@ import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectStudent;
-import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.entity.records.Activity;
 import backend.siptis.model.entity.userData.UserCareer;
 import backend.siptis.model.entity.userData.UserInformation;
 import backend.siptis.model.pjo.dto.*;
-import backend.siptis.model.repository.general.RoleRepository;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
 import backend.siptis.service.records.ActivityService;
 import lombok.RequiredArgsConstructor;
@@ -28,8 +26,6 @@ public class SiptisUserServiceImpl implements SiptisUserService {
     private final SiptisUserRepository usuarioCommonRepository;
     private final ActivityService activityService;
 
-    @Autowired
-    private final UserInformationService userInformationService;
 
     @Override
     public ServiceAnswer findAll() {
