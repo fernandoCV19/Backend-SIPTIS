@@ -11,9 +11,11 @@ import java.util.Optional;
 public interface UserInformationRepository extends JpaRepository<UserInformation, Integer> {
 
 
-    boolean existsByCi(String ci);
-
     boolean existsByCodSIS(String codSIS);
+
+    boolean existsById(Long id);
+
+    boolean existsByCi(String ci);
 
     @Query(value ="SELECT CONCAT(ui.names,' ',ui.lastnames)" +
             "FROM user_information ui " +
