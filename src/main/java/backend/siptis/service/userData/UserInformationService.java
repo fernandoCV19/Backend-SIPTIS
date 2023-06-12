@@ -9,7 +9,7 @@ public interface UserInformationService {
 
     ServiceAnswer findAll();
 
-    ServiceAnswer registerStudent(
+    /*ServiceAnswer registerStudent(
             StudentRegisterDTO estudianteDTO, SiptisUser siptisUser);
 
     ServiceAnswer registerTeacher(
@@ -17,5 +17,5 @@ public interface UserInformationService {
 
     boolean existByCodSIS(String codSIS);
 
-    boolean existByCi(String ci);
+    boolean existByCi(String ci);*/
 }

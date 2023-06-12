@@ -7,6 +7,7 @@ import backend.siptis.model.pjo.dto.AdminRegisterDTO;
 import backend.siptis.model.pjo.dto.StudentInformationDTO;
 import backend.siptis.model.pjo.dto.StudentRegisterDTO;
 import backend.siptis.model.pjo.dto.records.LogInDTO;
+import backend.siptis.service.userData.registerUser.RegisterUser;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -28,6 +29,7 @@ import java.util.Date;
 public class UserAuthServiceTest {
 
     private UserAuthService service;
+    private RegisterUser registerUserService;
 
 
     private StudentRegisterDTO createStudent(){
@@ -72,7 +74,7 @@ public class UserAuthServiceTest {
     @Test
     void findAllTest(){
         StudentRegisterDTO studentDTO = createStudent();
-        service.registerStudent(studentDTO);
+        registerUserService.registerStudent(studentDTO);
         ServiceAnswer answer = service.findAll();
         assertEquals(ServiceMessage.OK,answer.getServiceMessage());
     }
@@ -86,37 +88,37 @@ public class UserAuthServiceTest {
     void registerNewStudentTest(){
 
         StudentRegisterDTO studentDTO = createStudent();
-        ServiceAnswer answer = service.registerStudent(studentDTO);
+        ServiceAnswer answer = registerUserService.registerStudent(studentDTO);
             assertEquals(ServiceMessage.OK,answer.getServiceMessage());
     }
 
     @Test
     void registerStudentEmailAlreadyExistTest(){
         StudentRegisterDTO studentDTO = createStudent();
-        service.registerStudent(studentDTO);
+        registerUserService.registerStudent(studentDTO);
         StudentRegisterDTO studentDTO2 = createStudent();
-        ServiceAnswer answer2 = service.registerStudent(studentDTO2);
+        ServiceAnswer answer2 = registerUserService.registerStudent(studentDTO2);
         assertEquals(ServiceMessage.ERROR_REGISTRO_CUENTA_EMAIL,answer2.getServiceMessage());
     }
 
     @Test
     void registerStudentCiAlreadyExistTest(){
         StudentRegisterDTO studentDTO = createStudent();
-        service.registerStudent(studentDTO);
+        registerUserService.registerStudent(studentDTO);
         StudentRegisterDTO studentDTO2 = createStudent();
         studentDTO2.setEmail("new.email@gmail.com");
-        ServiceAnswer answer2 = service.registerStudent(studentDTO2);
+        ServiceAnswer answer2 = registerUserService.registerStudent(studentDTO2);
         assertEquals(ServiceMessage.ERROR_REGISTRO_CUENTA_CI,answer2.getServiceMessage());
     }
 
     @Test
     void registerStudentCodSISAlreadyExistTest(){
         StudentRegisterDTO studentDTO = createStudent();
-        service.registerStudent(studentDTO);
+        registerUserService.registerStudent(studentDTO);
         StudentRegisterDTO studentDTO2 = createStudent();
         studentDTO2.setEmail("new.email2@gmail.com");
         studentDTO2.setCi("newCi");
-        ServiceAnswer answer2 = service.registerStudent(studentDTO2);
+        ServiceAnswer answer2 = registerUserService.registerStudent(studentDTO2);
         assertEquals(ServiceMessage.ERROR_REGISTRO_CUENTA_CODSIS,answer2.getServiceMessage());
     }
 
@@ -124,23 +126,23 @@ public class UserAuthServiceTest {
     void registerNewAdminTest(){
 
         AdminRegisterDTO adminDTO = createAdmin();
-        ServiceAnswer answer = service.registerAdmin(adminDTO);
+        ServiceAnswer answer = registerUserService.registerAdmin(adminDTO);
         assertEquals(ServiceMessage.OK,answer.getServiceMessage());
     }
 
     @Test
     void registerAdminEmailAlreadyExistTest(){
         AdminRegisterDTO adminDTO = createAdmin();
-        service.registerAdmin(adminDTO);
+        registerUserService.registerAdmin(adminDTO);
         AdminRegisterDTO adminDTO2 = createAdmin();
-        ServiceAnswer answer = service.registerAdmin(adminDTO2);
+        ServiceAnswer answer = registerUserService.registerAdmin(adminDTO2);
         assertEquals(ServiceMessage.ERROR_REGISTRO_CUENTA_EMAIL,answer.getServiceMessage());
     }
 
     @Test
     void userInfoUserExistTest(){
         StudentRegisterDTO studentDTO = createStudent();
-        ServiceAnswer answer1 = service.registerStudent(studentDTO);
+        ServiceAnswer answer1 = registerUserService.registerStudent(studentDTO);
         LogInDTO loginDTO = new LogInDTO();
         loginDTO.setEmail("maury.vargasl@gmail.com");
         loginDTO.setPassword("mavl");
@@ -156,7 +158,7 @@ public class UserAuthServiceTest {
     @Test
     void userInfoUserNotExistTest(){
         StudentRegisterDTO studentDTO = createStudent();
-        service.registerStudent(studentDTO);
+        registerUserService.registerStudent(studentDTO);
         ServiceAnswer answer = service.userInfo(2L);
         assertEquals(ServiceMessage.ID_DOES_NOT_EXIST, answer.getServiceMessage());
     }
@@ -164,7 +166,7 @@ public class UserAuthServiceTest {
     @Test
     void loginTest(){
         StudentRegisterDTO studentDTO = createStudent();
-        service.registerStudent(studentDTO);
+        registerUserService.registerStudent(studentDTO);
         LogInDTO loginDTO = new LogInDTO();
         loginDTO.setEmail("maury.vargasl@gmail.com");
         loginDTO.setPassword("mavl");
@@ -175,7 +177,7 @@ public class UserAuthServiceTest {
     @Test
     void loginWrongEmailTest(){
         StudentRegisterDTO studentDTO = createStudent();
-        service.registerStudent(studentDTO);
+        registerUserService.registerStudent(studentDTO);
         LogInDTO loginDTO = new LogInDTO();
         loginDTO.setEmail("fake@gmail.com");
         loginDTO.setPassword("mavl");
@@ -186,7 +188,7 @@ public class UserAuthServiceTest {
     @Test
     void loginWrongPasswordTest(){
         StudentRegisterDTO studentDTO = createStudent();
-        service.registerStudent(studentDTO);
+        registerUserService.registerStudent(studentDTO);
         LogInDTO loginDTO = new LogInDTO();
         loginDTO.setEmail("maury.vargasl@gmail.com");
         loginDTO.setPassword("mavl1");
@@ -197,7 +199,7 @@ public class UserAuthServiceTest {
     @Test
     void getIdFromTokenTest(){
         StudentRegisterDTO studentDTO = createStudent();
-        service.registerStudent(studentDTO);
+        registerUserService.registerStudent(studentDTO);
         LogInDTO loginDTO = new LogInDTO();
         loginDTO.setEmail("maury.vargasl@gmail.com");
         loginDTO.setPassword("mavl");

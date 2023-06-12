@@ -8,6 +8,7 @@ import backend.siptis.model.pjo.dto.EditStudentInformationDTO;
 import backend.siptis.model.pjo.dto.StudentRegisterDTO;
 import backend.siptis.model.pjo.dto.records.LogInDTO;
 import backend.siptis.service.records.EmailService;
+import backend.siptis.service.userData.registerUser.RegisterUser;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -31,6 +32,7 @@ public class SiptisUserServiceTest {
     private SiptisUserService service;
     private UserAuthService authService;
     private EmailService emailService;
+    private RegisterUser registerUserService;
 
     private StudentRegisterDTO createStudent(){
         String email = "maury.vargasl@gmail.com";
@@ -98,7 +100,7 @@ public class SiptisUserServiceTest {
     @Test
     void getByEmailThatNoExistTest(){
         StudentRegisterDTO studentDTO = createStudent();
-        authService.registerStudent(studentDTO);
+        registerUserService.registerStudent(studentDTO);
         Boolean answer = service.existsByEmail("fake@gmail.com");
         assertFalse(answer);
     }
@@ -106,7 +108,7 @@ public class SiptisUserServiceTest {
     @Test
     void getByEmailThatExistTest(){
         StudentRegisterDTO studentDTO = createStudent();
-        authService.registerStudent(studentDTO);
+        registerUserService.registerStudent(studentDTO);
         Boolean answer = service.existsByEmail("maury.vargasl@gmail.com");
         assertTrue(answer);
     }
@@ -114,7 +116,7 @@ public class SiptisUserServiceTest {
     @Test
     void editStudentInformationIdNoExist(){
         StudentRegisterDTO studentDTO = createStudent();
-        authService.registerStudent(studentDTO);
+        registerUserService.registerStudent(studentDTO);
         LogInDTO loginDTO = new LogInDTO();
         loginDTO.setEmail("maury.vargasl@gmail.com");
         loginDTO.setPassword("mavl");

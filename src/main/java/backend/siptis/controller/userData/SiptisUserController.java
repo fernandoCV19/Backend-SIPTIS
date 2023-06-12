@@ -10,6 +10,7 @@ import backend.siptis.model.pjo.dto.StudentEditPersonalInfoDTO;
 import backend.siptis.model.pjo.dto.records.LogInDTO;
 import backend.siptis.service.userData.SiptisUserService;
 import backend.siptis.service.userData.UserAuthService;
+import backend.siptis.service.userData.registerUser.RegisterUser;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,9 @@ public class SiptisUserController {
     private final UserAuthService userAuthService;
 
     @Autowired
+    private final RegisterUser registerUserService;
+
+    @Autowired
     private final SiptisUserService userService;
 
 
@@ -37,7 +41,7 @@ public class SiptisUserController {
     public ResponseEntity<?> registerStudent(
             @RequestBody StudentRegisterDTO studentDTO){
 
-        ServiceAnswer student = userAuthService.registerStudent(studentDTO);
+        ServiceAnswer student = registerUserService.registerStudent(studentDTO);
         return crearResponseEntityRegistrar(student);
     }
 
@@ -46,7 +50,7 @@ public class SiptisUserController {
     public ResponseEntity<?> registerTeacher(
             @RequestBody TeacherRegisterDTO teacherDTO){
 
-        ServiceAnswer teacher = userAuthService.registerTeacher(teacherDTO);
+        ServiceAnswer teacher = registerUserService.registerTeacher(teacherDTO);
         return crearResponseEntityRegistrar(teacher);
     }
 
@@ -55,7 +59,7 @@ public class SiptisUserController {
     public ResponseEntity<?> registerAdmin(
             @RequestBody AdminRegisterDTO adminRegisterDTO){
 
-        ServiceAnswer admin = userAuthService.registerAdmin(adminRegisterDTO);
+        ServiceAnswer admin = registerUserService.registerAdmin(adminRegisterDTO);
         //return crearResponseEntityRegistrar(admin);
         return crearResponseEntityRegistrar(admin);
         /*return new ResponseEntity<>("Exito" +

@@ -31,7 +31,7 @@ public class UserInformationServiceImpl implements UserInformationService {
         //return null;
     }
 
-    public boolean existByCodSIS(String codSIS){
+    /*public boolean existByCodSIS(String codSIS){
         return userInformationRepository.existsByCodSIS(codSIS);
     }
 
@@ -100,5 +100,5 @@ public class UserInformationServiceImpl implements UserInformationService {
         //return studentInformationDTO;
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(studentInformationDTO).build();
 
-    }
+    }*/
 }

@@ -40,11 +40,7 @@ public class SearchUserInformationImpl implements SearchUserInformation{
         return user.get();
     }
 
-    @Override
-    public SiptisUser findByCodSis(String codsis) {
-        Optional<SiptisUser> optional = usuarioCommonRepository.findByCodsis(codsis);
-        return  optional.get();
-    }
+
 
     @Override
     public SiptisUser findByTokenPassword(String tokenPassword) {

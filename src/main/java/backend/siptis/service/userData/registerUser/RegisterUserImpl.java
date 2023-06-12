@@ -10,7 +10,10 @@ import backend.siptis.model.pjo.dto.StudentRegisterDTO;
 import backend.siptis.model.pjo.dto.TeacherRegisterDTO;
 import backend.siptis.model.repository.general.RoleRepository;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
+import backend.siptis.model.repository.userData.UserInformationRepository;
 import backend.siptis.service.userData.UserInformationService;
+import backend.siptis.service.userData.checkUserInformation.CheckUserInformation;
+import backend.siptis.service.userData.checkUserInformation.CheckUserInformationImpl;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +33,8 @@ public class RegisterUserImpl implements RegisterUser{
     private final RoleRepository roleRepository;
     @Autowired
     private final RegisterUserInformation userInformationService;
+    @Autowired
+    private  final CheckUserInformation checkUserInformation;
     @Autowired
     private final AuthenticationManager authenticationManager;
 
@@ -94,11 +99,11 @@ public class RegisterUserImpl implements RegisterUser{
             String errorMessage = "El correo ya se encuentra registrado en el sistema";
             return registerErrorMessage(ServiceMessage.ERROR_REGISTRO_CUENTA_EMAIL,errorMessage);
         }
-        if(userInformationService.existByCi(ci)){
+        if(checkUserInformation.existByCi(ci)){
             String errorMessage = "El ci ya se encuentra registrado en el sistema";
             return registerErrorMessage(ServiceMessage.ERROR_REGISTRO_CUENTA_CI,errorMessage);
         }
-        if(userInformationService.existByCodSIS(codSIS)){
+        if(checkUserInformation.existByCodSIS(codSIS)){
             String errorMessage = "El codigo SIS ya se encuentra registrado en el sistema";
             return registerErrorMessage(ServiceMessage.ERROR_REGISTRO_CUENTA_CODSIS,errorMessage);
         }

@@ -53,7 +53,7 @@ public class UserAuthServiceImpl implements UserAuthService {
 
     }
 
-    @Override
+    /*@Override
     public ServiceAnswer registerStudent(StudentRegisterDTO estudianteDTO) {
 
         ServiceAnswer validation = validateUser(estudianteDTO.getEmail(), estudianteDTO.getCi(), estudianteDTO.getCodSIS());
@@ -126,12 +126,6 @@ public class UserAuthServiceImpl implements UserAuthService {
         return null;
     }
 
-    private ServiceAnswer registerErrorMessage(ServiceMessage serviceMessage,String errorMessage){
-        return ServiceAnswer.builder().serviceMessage(
-                serviceMessage).data(errorMessage
-        ).build();
-    }
-
     @Override
     public ServiceAnswer registerAdmin(AdminRegisterDTO adminDTO) {
 
@@ -154,6 +148,12 @@ public class UserAuthServiceImpl implements UserAuthService {
         adminUser.setPassword(contrasena);
         siptisUserRepository.save(adminUser);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(adminUser).build();
+    }*/
+
+    private ServiceAnswer registerErrorMessage(ServiceMessage serviceMessage,String errorMessage){
+        return ServiceAnswer.builder().serviceMessage(
+                serviceMessage).data(errorMessage
+        ).build();
     }
 
     @Override

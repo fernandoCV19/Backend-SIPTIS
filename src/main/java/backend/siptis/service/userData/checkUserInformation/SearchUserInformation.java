@@ -15,7 +15,6 @@ public interface SearchUserInformation {
 
     SiptisUser findByEmail(String email);
 
-    SiptisUser findByCodSis(String codsis);
 
     SiptisUser findByTokenPassword(String tokenPassword);
 
