@@ -29,8 +29,7 @@ public class UserAuthServiceImpl implements UserAuthService {
 
     @Autowired
     private final SiptisUserRepository siptisUserRepository;
-    @Autowired
-    private final RoleRepository roleRepository;
+
     @Autowired
     private final AuthenticationManager authenticationManager;
 

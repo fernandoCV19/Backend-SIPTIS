@@ -11,6 +11,7 @@ import backend.siptis.model.pjo.dto.records.LogInDTO;
 import backend.siptis.service.userData.SiptisUserService;
 import backend.siptis.service.userData.UserAuthService;
 import backend.siptis.service.userData.registerUser.RegisterUser;
+import backend.siptis.service.userData.searchUsers.SearchUsers;
 import backend.siptis.service.userData.userPersonalInformation.AdminEditInformation;
 import backend.siptis.service.userData.userPersonalInformation.UserEditInformation;
 import lombok.AllArgsConstructor;
@@ -41,6 +42,9 @@ public class SiptisUserController {
 
     @Autowired
     private final UserEditInformation userEditInformationService;
+
+    @Autowired
+    private final SearchUsers searchUsersService;
 
 
 
@@ -174,5 +178,11 @@ public class SiptisUserController {
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(data).message(messageService.toString()).build();
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
-
+/*
+    @PostMapping("/buscarUser")
+    public ResponseEntity<?> searchUsers(@PathVariable String email){
+        ServiceAnswer answer = searchUsersService.searchUserByEmail(email);
+        return crearResponseEntityRegistrar(answer);
+    }
+*/
 }
