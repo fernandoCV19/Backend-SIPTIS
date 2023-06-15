@@ -13,6 +13,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
     @Autowired
     private SiptisUserRepository siptisUserRepository;
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         SiptisUser siptisUser = siptisUserRepository.findOneByEmail(email)

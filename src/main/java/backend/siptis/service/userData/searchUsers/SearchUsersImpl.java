@@ -3,6 +3,7 @@ package backend.siptis.service.userData.searchUsers;
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
+import backend.siptis.model.pjo.dto.UserListItemDTO;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
 import backend.siptis.model.repository.userData.UserInformationRepository;
 import jakarta.transaction.Transactional;
@@ -80,11 +81,12 @@ public class SearchUsersImpl implements SearchUsers {
         return null;
     }
 
-    /*@Override
-    public ServiceAnswer searchUserByEmail(String email) {
-        List<SiptisUser> users = userInformationRepository.findByEmailContaining(email);
+    @Override
+    public ServiceAnswer searchUserByNameAndRole(String name, Long role_id) {
+        List<UserListItemDTO> users =
+                userInformationRepository.searchUserByNameAndRole(name, role_id);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
                 .data(users).build();
 
-    }*/
+    }
 }

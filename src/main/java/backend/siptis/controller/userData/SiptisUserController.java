@@ -178,11 +178,13 @@ public class SiptisUserController {
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(data).message(messageService.toString()).build();
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
-/*
-    @PostMapping("/buscarUser")
-    public ResponseEntity<?> searchUsers(@PathVariable String email){
-        ServiceAnswer answer = searchUsersService.searchUserByEmail(email);
+
+    @GetMapping("/buscarUser/{name}/{role_id}")
+    public ResponseEntity<?> searchUsers( @PathVariable String name, @PathVariable Long role_id){
+        System.out.println('s');
+        ServiceAnswer answer = searchUsersService.searchUserByNameAndRole(name, role_id);
+
         return crearResponseEntityRegistrar(answer);
     }
-*/
+
 }

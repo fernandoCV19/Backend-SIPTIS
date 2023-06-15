@@ -4,12 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
-@AllArgsConstructor
-public class UserListItemDTO {
-    private Long id;
-    private String name;
-    private String lastname;
-    private String role;
+
+public interface UserListItemDTO {
+    //private Long id;
+    //private String name;
+    //private String lastname;
+    //private String role;
+    Long getId();
+    String getNames();
+    String getLastnames();
 }

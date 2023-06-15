@@ -26,7 +26,7 @@ public interface SearchUsers {
 
     ServiceAnswer searchAdminByEmail();
 
-    /*ServiceAnswer searchUserByEmail(String email);*/
+    ServiceAnswer searchUserByNameAndRole(String email, Long role_id);
 
 
 }
