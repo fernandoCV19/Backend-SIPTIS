@@ -6,6 +6,8 @@ public interface CheckUserInformation {
 
     boolean existByCi(String ci);
 
+    boolean existsById(Long id);
+
     boolean existsByEmail(String email);
 
     boolean existsTokenPassword(String tokenPassword);

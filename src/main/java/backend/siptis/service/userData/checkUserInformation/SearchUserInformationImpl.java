@@ -40,6 +40,11 @@ import java.util.Optional;
         return user.get();
     }
 
+    @Override
+    public SiptisUser findById(Long id) {
+        Optional<SiptisUser> optional = usuarioCommonRepository.findById(id);
+        return optional.get();
+    }
 
 
     @Override

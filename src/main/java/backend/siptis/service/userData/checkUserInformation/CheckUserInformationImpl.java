@@ -23,6 +23,11 @@ public class CheckUserInformationImpl implements CheckUserInformation{
     }
 
     @Override
+    public boolean existsById(Long id) {
+        return userRepository.existsById(id);
+    }
+
+    @Override
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
     }
