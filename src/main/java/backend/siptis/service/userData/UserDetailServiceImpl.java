@@ -2,6 +2,7 @@ package backend.siptis.service.userData;
 
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
+import backend.siptis.service.userData.userAuthentication.UserDetailImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

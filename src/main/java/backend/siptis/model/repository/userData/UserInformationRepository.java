@@ -20,12 +20,14 @@ public interface UserInformationRepository extends JpaRepository<UserInformation
     boolean existsByCodSIS(String codSIS);
 
 
-    @Query(value ="SELECT su.id, ui.names, ui.lastnames" +
+    @Query(value ="SELECT su.id, ui.names, ui.lastnames, ui.codSIS" +
             " FROM siptis_user su, user_information ui, role r, siptis_user_role sur " +
             " WHERE su.id = ui.user_id AND su.id = sur.siptis_user_id " +
             "AND r.id = sur.role_id AND r.id = :role_id AND LOWER( ui.names ) "+
             " LIKE LOWER( CONCAT( '%', :search_name, '%') ) " , nativeQuery = true)
     List<UserListItemDTO> searchUserByNameAndRole(String search_name, Long role_id);
+
+
 
     @Query(value ="SELECT CONCAT(ui.names,' ',ui.lastnames)" +
             "FROM user_information ui " +

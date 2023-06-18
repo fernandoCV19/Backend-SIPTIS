@@ -13,4 +13,5 @@ public interface UserListItemDTO {
     Long getId();
     String getNames();
     String getLastnames();
+    String getCodSIS();
 }

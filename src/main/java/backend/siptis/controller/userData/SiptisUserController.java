@@ -9,7 +9,7 @@ import backend.siptis.model.pjo.dto.EditStudentInformationDTO;
 import backend.siptis.model.pjo.dto.StudentEditPersonalInfoDTO;
 import backend.siptis.model.pjo.dto.records.LogInDTO;
 import backend.siptis.service.userData.SiptisUserService;
-import backend.siptis.service.userData.UserAuthService;
+import backend.siptis.service.userData.userAuthentication.UserAuthService;
 import backend.siptis.service.userData.registerUser.RegisterUser;
 import backend.siptis.service.userData.searchUsers.SearchUsers;
 import backend.siptis.service.userData.userPersonalInformation.AdminEditInformation;
@@ -45,38 +45,6 @@ public class SiptisUserController {
 
     @Autowired
     private final SearchUsers searchUsersService;
-
-
-
-    @PostMapping("/register/student")
-    // @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<?> registerStudent(
-            @RequestBody StudentRegisterDTO studentDTO){
-
-        ServiceAnswer student = registerUserService.registerStudent(studentDTO);
-        return crearResponseEntityRegistrar(student);
-    }
-
-    @PostMapping("/register/teacher")
-    // @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<?> registerTeacher(
-            @RequestBody TeacherRegisterDTO teacherDTO){
-
-        ServiceAnswer teacher = registerUserService.registerTeacher(teacherDTO);
-        return crearResponseEntityRegistrar(teacher);
-    }
-
-    @PostMapping("/register/admin")
-    // @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<?> registerAdmin(
-            @RequestBody AdminRegisterDTO adminRegisterDTO){
-
-        ServiceAnswer admin = registerUserService.registerAdmin(adminRegisterDTO);
-        //return crearResponseEntityRegistrar(admin);
-        return crearResponseEntityRegistrar(admin);
-        /*return new ResponseEntity<>("Exito" +
-                "", HttpStatus.OK);*/
-    }
 
 
     @PostMapping("/login")

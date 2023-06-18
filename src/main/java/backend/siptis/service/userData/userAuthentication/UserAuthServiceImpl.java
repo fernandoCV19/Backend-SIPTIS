@@ -1,4 +1,4 @@
-package backend.siptis.service.userData;
+package backend.siptis.service.userData.userAuthentication;
 
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.auth.jwt.JWTokenUtils;
@@ -9,7 +9,6 @@ import backend.siptis.model.entity.userData.UserInformation;
 import backend.siptis.model.pjo.dto.records.LogInDTO;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
 import backend.siptis.model.pjo.dto.StudentInformationDTO;
-import backend.siptis.model.repository.general.RoleRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +33,11 @@ public class UserAuthServiceImpl implements UserAuthService {
     private final AuthenticationManager authenticationManager;
 
 
-    @Override
+    /*@Override
     public ServiceAnswer findAll() {
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(siptisUserRepository.findAll()).build();
 
-    }
+    }*/
 
     private ServiceAnswer registerErrorMessage(ServiceMessage serviceMessage,String errorMessage){
         return ServiceAnswer.builder().serviceMessage(

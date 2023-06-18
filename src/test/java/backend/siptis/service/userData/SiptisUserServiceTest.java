@@ -1,6 +1,5 @@
 package backend.siptis.service.userData;
 
-import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.AdminRegisterDTO;
@@ -9,13 +8,12 @@ import backend.siptis.model.pjo.dto.StudentRegisterDTO;
 import backend.siptis.model.pjo.dto.records.LogInDTO;
 import backend.siptis.service.records.EmailService;
 import backend.siptis.service.userData.registerUser.RegisterUser;
+import backend.siptis.service.userData.userAuthentication.UserAuthService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Date;

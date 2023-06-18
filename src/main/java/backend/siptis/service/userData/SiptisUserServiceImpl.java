@@ -94,7 +94,6 @@ public class SiptisUserServiceImpl implements SiptisUserService {
     }
 
 
-
     private UserGeneralInformationDTO convertToDTO(SiptisUser user){
             UserGeneralInformationDTO userDTO = new UserGeneralInformationDTO();
             userDTO.setId(user.getId());
