@@ -22,8 +22,6 @@ public class PersonalInformationDTO {
     private String ci;
     private String birthDate;
     private String codSIS;
-    private Long careerId;
-    private String career;
 
     public void setBirthDate(Date date){
         DateFormat dtFormat = new SimpleDateFormat("yyyy-MM-dd");

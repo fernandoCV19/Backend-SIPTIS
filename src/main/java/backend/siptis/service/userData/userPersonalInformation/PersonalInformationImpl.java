@@ -6,6 +6,7 @@ import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.userData.UserCareer;
 import backend.siptis.model.entity.userData.UserInformation;
 import backend.siptis.model.pjo.dto.StudentInformationDTO;
+import backend.siptis.model.pjo.dto.records.PersonalInformationDTO;
 import backend.siptis.service.userData.checkUserInformation.CheckUserInformation;
 import backend.siptis.service.userData.checkUserInformation.SearchUserInformation;
 import lombok.RequiredArgsConstructor;
@@ -33,38 +34,28 @@ public class PersonalInformationImpl implements PersonalInformation{
 
         SiptisUser user = searchUserInformation.findById(id);
 
-        StudentInformationDTO dto = convertToPersonalInformation(user);
+        PersonalInformationDTO dto = convertToPersonalInformation(user);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(dto).build();
 
     }
 
-    private StudentInformationDTO convertToPersonalInformation(SiptisUser user){
+    private PersonalInformationDTO convertToPersonalInformation(SiptisUser user){
 
-        StudentInformationDTO student = new StudentInformationDTO();
+        PersonalInformationDTO personalInfo = new PersonalInformationDTO();
         if(user != null){
 
-            student.setEmail(user.getEmail());
+            personalInfo.setEmail(user.getEmail());
             UserInformation information = user.getUserInformation();;
             if(information != null){
-                student.setNames(information.getNames());
-                student.setLastnames(information.getLastnames());
-                student.setCelNumber(information.getCelNumber());
-                student.setCi(information.getCi());
-                student.setBirthDate(information.getBirthDate());
-                student.setCodSIS(information.getCodSIS());
-                Set<UserCareer> career = user.getCareer();
-
-                for (UserCareer userCareer: career) {
-                    student.setCareer(userCareer.getName());
-                    student.setCareerId(userCareer.getId());
-                }
+                personalInfo.setNames(information.getNames());
+                personalInfo.setLastnames(information.getLastnames());
+                personalInfo.setCelNumber(information.getCelNumber());
+                personalInfo.setCi(information.getCi());
+                personalInfo.setBirthDate(information.getBirthDate());
+                personalInfo.setCodSIS(information.getCodSIS());
             }
-
-
         }
-
-
-        return student;
+        return personalInfo;
     }
 
 

@@ -4,6 +4,7 @@ import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.service.userData.userAuthentication.UserAuthService;
+import backend.siptis.service.userData.userPersonalInformation.PersonalInformation;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,13 +19,16 @@ public class GetUserInformationController {
 
     @Autowired
     private final UserAuthService userAuthService;
+    @Autowired
+    private  final PersonalInformation personalInformation;
 
 
     @GetMapping("/personalInformation")
     public ResponseEntity<?> getInfo(@RequestHeader(name="Authorization") String token){
 
         Long id = userAuthService.getIdFromToken(token);
-        ServiceAnswer answerService = userAuthService.userInfo(id);
+        //ServiceAnswer answerService = userAuthService.userInfo(id);
+        ServiceAnswer answerService = personalInformation.getPersonalInformationById(id);
 
         return createResponse(answerService);
     }
