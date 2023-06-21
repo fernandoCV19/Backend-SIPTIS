@@ -36,7 +36,7 @@ public class WebSecurityConfig {
         return http.cors().and()
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/user/*", "/user/register/student", "/user/register/admin" ,
+                .requestMatchers("/user/**", "/user/register/student", "/user/register/admin" ,
                         "/user/register/teacher", "/user/editTeacher/*",
                         "/user/test", "/user/login","/user/todos","/user/editUser/*",
                         "/user/information/*", "/email/send", "/general-activity",
@@ -49,7 +49,7 @@ public class WebSecurityConfig {
                         "/general-activity", "/general-activity/create", "/general-activity/*", "/user/test",
                          "/user/login", "/user/todos", "/user/editUser/*",
                         "/user/information/*", "/email/send", "/project/**", "/presentation/**"
-                        ,"/document/**", "/cloud/**", "/user/buscarUser/**")
+                        ,"/document/**", "/cloud/**", "/user/buscarUser/**, /personalInformation")
                 .permitAll()
                 .anyRequest().authenticated()
                 .and().sessionManagement()
