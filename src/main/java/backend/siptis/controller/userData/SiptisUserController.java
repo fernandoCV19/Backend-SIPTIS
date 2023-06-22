@@ -102,7 +102,7 @@ public class SiptisUserController {
         return crearResponseEntityRegistrar(answer);
     }
 
-    @PostMapping("/editUser")
+    /*@PostMapping("/editUser")
     public ResponseEntity<?> editMiInformation(
             @RequestBody StudentEditPersonalInfoDTO dto,
             @RequestHeader (name="Authorization") String token){
@@ -111,7 +111,7 @@ public class SiptisUserController {
 
         ServiceAnswer answer = userEditInformationService.studentEditPersonalInfo(id, dto);
         return crearResponseEntityRegistrar(answer);
-    }
+    }*/
     @GetMapping("/personal-activities/{userId}")
     public ResponseEntity<?> getPersonalProjectActivities(@PathVariable int userId){
         Long idL = Long.valueOf(userId);

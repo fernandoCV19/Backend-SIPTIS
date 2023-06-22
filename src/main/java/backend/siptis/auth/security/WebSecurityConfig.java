@@ -49,7 +49,7 @@ public class WebSecurityConfig {
                         "/general-activity", "/general-activity/create", "/general-activity/*", "/user/test",
                          "/user/login", "/user/todos", "/user/editUser/*",
                         "/user/information/*", "/email/send", "/project/**", "/presentation/**"
-                        ,"/document/**", "/cloud/**", "/user/buscarUser/**, /personalInformation")
+                        ,"/document/**", "/cloud/**", "/user/buscarUser/**", "/user/personalInformation", "/siptis/**")
                 .permitAll()
                 .anyRequest().authenticated()
                 .and().sessionManagement()

@@ -11,4 +11,9 @@ public interface PersonalInformation {
     ServiceAnswer UserEditPersonalInformationById(Long id, UserEditPersonalInformationDTO dto);
 
     ServiceAnswer AdminEditPersonalInformationById(Long id, AdminEditUserPersonalInformationDTO dto);
+
+    ServiceAnswer getStudentCareerById(Long id);
+
+    ServiceAnswer getTeacherAreasById(Long id);
+
 }

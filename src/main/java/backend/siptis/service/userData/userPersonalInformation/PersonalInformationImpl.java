@@ -5,8 +5,6 @@ import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.userData.UserInformation;
 import backend.siptis.model.pjo.dto.AdminEditUserPersonalInformationDTO;
-import backend.siptis.model.pjo.dto.StudentEditPersonalInfoDTO;
-import backend.siptis.model.pjo.dto.StudentInformationDTO;
 import backend.siptis.model.pjo.dto.UserEditPersonalInformationDTO;
 import backend.siptis.model.pjo.dto.records.PersonalInformationDTO;
 import backend.siptis.service.userData.SiptisUserService;
@@ -16,8 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -96,6 +92,16 @@ public class PersonalInformationImpl implements PersonalInformation{
 
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(message).build();
 
+    }
+
+    @Override
+    public ServiceAnswer getStudentCareerById(Long id) {
+        return null;
+    }
+
+    @Override
+    public ServiceAnswer getTeacherAreasById(Long id) {
+        return null;
     }
 
     private PersonalInformationDTO convertToPersonalInformation(SiptisUser user){

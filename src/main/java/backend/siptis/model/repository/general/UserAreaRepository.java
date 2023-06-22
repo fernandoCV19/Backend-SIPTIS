@@ -1,14 +1,14 @@
 package backend.siptis.model.repository.general;
 
-import backend.siptis.model.entity.userData.UserCareer;
+import backend.siptis.model.entity.userData.UserArea;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface UserCareerRepository extends JpaRepository<UserCareer, Integer > {
+public interface UserAreaRepository extends JpaRepository<UserArea, Integer > {
 
     @Override
-    List<UserCareer> findAll();
+    List<UserArea> findAll();
 }
