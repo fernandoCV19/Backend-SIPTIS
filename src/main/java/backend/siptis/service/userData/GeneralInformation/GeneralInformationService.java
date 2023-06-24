@@ -7,4 +7,8 @@ public interface GeneralInformationService {
     ServiceAnswer getAllCareers();
 
     ServiceAnswer getAllUserAreas();
+
+    ServiceAnswer getAreaById(int id);
+
+    ServiceAnswer getCareerById(int id);
 }

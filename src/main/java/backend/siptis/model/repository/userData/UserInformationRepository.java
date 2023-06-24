@@ -2,8 +2,10 @@ package backend.siptis.model.repository.userData;
 
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.model.entity.userData.UserInformation;
+import jakarta.transaction.Transactional;
 import org.apache.catalina.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import backend.siptis.model.pjo.dto.UserListItemDTO;
 import org.springframework.stereotype.Repository;
@@ -12,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
+@Transactional
 public interface UserInformationRepository extends JpaRepository<UserInformation, Integer> {
 
 
@@ -46,6 +49,11 @@ public interface UserInformationRepository extends JpaRepository<UserInformation
             "    WHERE pt.project_id = :idProject" +
             ")", nativeQuery = true)
     List <String> getTutorsNames (Long idProject);
+
+    @Modifying
+    @Query(value = "DELETE FROM siptis_user_area sua " +
+            "WHERE sua.siptisuser_id = :userId", nativeQuery = true)
+    void deleteUserAreas(Long userId);
 
 
 }

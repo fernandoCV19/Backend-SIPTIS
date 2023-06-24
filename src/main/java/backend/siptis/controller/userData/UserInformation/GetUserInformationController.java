@@ -1,11 +1,11 @@
-package backend.siptis.controller.userData.GetUserInformation;
+package backend.siptis.controller.userData.UserInformation;
 
 import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.model.pjo.dto.StudentEditPersonalInfoDTO;
 import backend.siptis.model.pjo.dto.UserEditPersonalInformationDTO;
 import backend.siptis.service.userData.userAuthentication.UserAuthService;
+import backend.siptis.service.userData.userPersonalInformation.EditPersonalInformationService;
 import backend.siptis.service.userData.userPersonalInformation.GetPersonalInformationService;
 import backend.siptis.service.userData.userPersonalInformation.PersonalInformation;
 import lombok.AllArgsConstructor;
@@ -23,8 +23,6 @@ public class GetUserInformationController {
     @Autowired
     private final UserAuthService userAuthService;
     @Autowired
-    private  final PersonalInformation personalInformationService;
-    @Autowired
     private final GetPersonalInformationService getPersonalInformationService;
 
 
@@ -33,7 +31,8 @@ public class GetUserInformationController {
 
         Long id = userAuthService.getIdFromToken(token);
         //ServiceAnswer answerService = userAuthService.userInfo(id);
-        ServiceAnswer answerService = personalInformationService.getPersonalInformationById(id);
+        ServiceAnswer answerService =
+                getPersonalInformationService.getPersonalInformationById(id);
 
         return createResponse(answerService);
     }
@@ -49,15 +48,15 @@ public class GetUserInformationController {
         return createResponse(answerService);
     }
 
-    @PostMapping("/editPersonalInformation")
-    public ResponseEntity<?> editMiInformation(
-            @RequestBody UserEditPersonalInformationDTO dto,
-            @RequestHeader (name="Authorization") String token){
+    @GetMapping("/userAreas")
+    public ResponseEntity<?> getAreas(@RequestHeader(name="Authorization") String token){
 
         Long id = userAuthService.getIdFromToken(token);
+        //ServiceAnswer answerService = userAuthService.userInfo(id);
+        ServiceAnswer answerService =
+                getPersonalInformationService.getTeacherAreasById(id);
 
-        ServiceAnswer answer = personalInformationService.UserEditPersonalInformationById(id, dto);
-        return createResponse(answer);
+        return createResponse(answerService);
     }
 
 

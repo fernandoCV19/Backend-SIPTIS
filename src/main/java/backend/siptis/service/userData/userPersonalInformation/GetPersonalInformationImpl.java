@@ -3,6 +3,7 @@ package backend.siptis.service.userData.userPersonalInformation;
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
+import backend.siptis.model.entity.userData.UserArea;
 import backend.siptis.model.entity.userData.UserCareer;
 import backend.siptis.model.entity.userData.UserInformation;
 import backend.siptis.model.pjo.dto.records.PersonalInformationDTO;
@@ -55,7 +56,15 @@ public class GetPersonalInformationImpl implements GetPersonalInformationService
 
     @Override
     public ServiceAnswer getTeacherAreasById(Long id) {
-        return null;
+        if(!checkUserInformation.existsById(id)){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST)
+                    .data("No existe un usuario con el id solicitado").build();
+        }
+        SiptisUser user = searchUserInformation.findById(id);
+
+        Set<UserArea> areas = user.getAreas();
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(areas).build();
+
     }
 
 

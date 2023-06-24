@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +34,22 @@ public class GeneralInformationImpl implements GeneralInformationService{
     public ServiceAnswer getAllUserAreas() {
         List<UserArea> areas = areaRepository.findAll();
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(areas).build();
+
+    }
+
+    @Override
+    public ServiceAnswer getAreaById(int id) {
+        Optional<UserArea> area = areaRepository.findById(id);
+        UserArea response = area.get();
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(response).build();
+
+    }
+
+    @Override
+    public ServiceAnswer getCareerById(int id) {
+        Optional<UserCareer> career = careerRepository.findById(id);
+        UserCareer response = career.get();
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(response).build();
 
     }
 }

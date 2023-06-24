@@ -6,8 +6,6 @@ import backend.siptis.model.pjo.dto.TeacherEditPersonalInfoDTO;
 
 public interface UserEditInformation {
 
-    ServiceAnswer studentEditPersonalInfo(Long id, StudentEditPersonalInfoDTO dto);
-
     ServiceAnswer teacherEditPersonalInfo(Long id, TeacherEditPersonalInfoDTO dto);
 
 

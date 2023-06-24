@@ -12,6 +12,8 @@ public interface EditPersonalInformationService {
 
     ServiceAnswer UpdateUserAreas(Long id, UserSelectedAreasDTO dto);
 
+    ServiceAnswer DeleteUserAreas(Long id);
+
     ServiceAnswer UpdateStudentCareer(Long id, Long careerId);
 
     ServiceAnswer EditFullPersonalInformationById(Long id, AdminEditUserPersonalInformationDTO dto);

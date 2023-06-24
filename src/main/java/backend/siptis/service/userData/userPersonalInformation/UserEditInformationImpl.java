@@ -22,36 +22,6 @@ public class UserEditInformationImpl implements UserEditInformation{
     private final SiptisUserRepository usuarioCommonRepository;
 
     @Override
-    public ServiceAnswer studentEditPersonalInfo(Long id, StudentEditPersonalInfoDTO dto) {
-        String message = "La información de su cuenta fue modificada exitosamente.";
-        if(! usuarioCommonRepository.existsById(id)){
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST)
-                    .data("No existe un usuario registrado con el id solicitado").build();
-        }
-        try {
-            Optional<SiptisUser> user = usuarioCommonRepository.findById(id);
-            SiptisUser siptisUser = user.get();
-
-            siptisUser.setEmail(dto.getEmail());
-            UserInformation userInformation = siptisUser.getUserInformation();
-
-            userInformation.setCelNumber(dto.getCelNumber());
-            userInformation.setCi(dto.getCi());
-            userInformation.setBirthDate(dto.getBirthDate());
-
-            SiptisUser user1 = usuarioCommonRepository.save(siptisUser);
-
-            StudentInformationDTO informationDTO = convertToStudentInformation(user1);
-        }catch (Exception e){
-            message = "Ocurrio un error al intentar modificar su informacion.";
-        }
-
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(message).build();
-    }
-
-
-
-    @Override
     public ServiceAnswer teacherEditPersonalInfo(Long id, TeacherEditPersonalInfoDTO dto) {
         Optional<SiptisUser> user = usuarioCommonRepository.findById(id);
         SiptisUser siptisUser = user.get();
