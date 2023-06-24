@@ -5,7 +5,7 @@ import backend.siptis.model.pjo.dto.AdminRegisterDTO;
 import backend.siptis.model.pjo.dto.StudentRegisterDTO;
 import backend.siptis.model.pjo.dto.TeacherRegisterDTO;
 
-public interface RegisterUser {
+public interface RegisterUserService {
 
     ServiceAnswer registerStudent(StudentRegisterDTO estudianteDTO);
 

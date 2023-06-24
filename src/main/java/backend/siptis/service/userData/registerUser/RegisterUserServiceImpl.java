@@ -22,14 +22,14 @@ import org.springframework.stereotype.Service;
 @Service
 @Transactional
 @AllArgsConstructor
-public class RegisterUserImpl implements RegisterUser{
+public class RegisterUserServiceImpl implements RegisterUserService {
 
     @Autowired
     private final SiptisUserRepository siptisUserRepository;
     @Autowired
     private final RoleRepository roleRepository;
     @Autowired
-    private final RegisterUserInformation registerUserService;
+    private final RegisterUserInformation registerUserInformation;
     @Autowired
     private  final CheckUserInformation checkUserInformation;
     @Autowired
@@ -46,33 +46,53 @@ public class RegisterUserImpl implements RegisterUser{
 
 
         SiptisUser siptisUser = registerUser(estudianteDTO.getEmail(), estudianteDTO.getPassword(), 1);
-        //InformacionEstudianteDTO estudiante = new InformacionEstudianteDTO();
-        ServiceAnswer respuesta = registerUserService
+        ServiceAnswer respuesta = registerUserInformation
                 .registerStudent(estudianteDTO, siptisUser);
 
-        StudentInformationDTO estudiante = (StudentInformationDTO) respuesta.getData();
-        estudiante.setEmail(siptisUser.getEmail());
+        if(respuesta == null){
+            return createResponse(
+                    ServiceMessage.ERROR_REGISTRO_CUENTA, "Ocurrio un error al registrar la cuenta");
+        }
+        return createResponse(
+                ServiceMessage.OK, "La cuenta de estudiante se registro exitosamente.");
 
-        //return estudiante;
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(estudiante).build();
     }
 
     @Override
     public ServiceAnswer registerTeacher(TeacherRegisterDTO teacherDTO) {
         ServiceAnswer validation = validateUser(teacherDTO.getEmail(), teacherDTO.getCi(), teacherDTO.getCodSIS());
-
         if( validation != null){
             return validation;
         }
 
         SiptisUser siptisUser = registerUser(teacherDTO.getEmail(), teacherDTO.getPassword(), 3);
 
-        ServiceAnswer respuesta = registerUserService.registerTeacher(teacherDTO, siptisUser);
+        ServiceAnswer respuesta = registerUserInformation.registerTeacherInformation(teacherDTO, siptisUser);
 
-        StudentInformationDTO estudiante = (StudentInformationDTO) respuesta.getData();
-        estudiante.setEmail(siptisUser.getEmail());
+        if(respuesta == null){
+            return createResponse(
+                    ServiceMessage.ERROR_REGISTRO_CUENTA, "Ocurrio un error al registrar la cuenta");
+        }
+        return createResponse(
+                ServiceMessage.OK, "La cuenta de docente se registro exitosamente.");
 
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(estudiante).build();
+    }
+
+    @Override
+    public ServiceAnswer registerAdmin(AdminRegisterDTO adminDTO) {
+
+        if(siptisUserRepository.existsByEmail(adminDTO.getEmail())){
+            String mensajeError = "El correo ya esta registrado en el sistema";
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR_REGISTRO_CUENTA_EMAIL).data(mensajeError).build();
+        }
+
+        SiptisUser adminUser = registerUser(adminDTO.getEmail(), adminDTO.getPassword(), 2);
+        if(adminUser == null){
+            return createResponse(
+                    ServiceMessage.ERROR_REGISTRO_CUENTA, "Ocurrio un error al registrar la cuenta");
+        }
+        return createResponse(
+                ServiceMessage.OK, "La cuenta de administrador se registro exitosamente.");
 
     }
 
@@ -94,47 +114,24 @@ public class RegisterUserImpl implements RegisterUser{
     private ServiceAnswer validateUser(String email, String ci, String codSIS){
         if(siptisUserRepository.existsByEmail(email)){
             String errorMessage = "El correo ya se encuentra registrado en el sistema";
-            return registerErrorMessage(ServiceMessage.ERROR_REGISTRO_CUENTA_EMAIL,errorMessage);
+            return createResponse(ServiceMessage.ERROR_REGISTRO_CUENTA_EMAIL,errorMessage);
         }
         if(checkUserInformation.existByCi(ci)){
             String errorMessage = "El ci ya se encuentra registrado en el sistema";
-            return registerErrorMessage(ServiceMessage.ERROR_REGISTRO_CUENTA_CI,errorMessage);
+            return createResponse(ServiceMessage.ERROR_REGISTRO_CUENTA_CI,errorMessage);
         }
         if(checkUserInformation.existByCodSIS(codSIS)){
             String errorMessage = "El codigo SIS ya se encuentra registrado en el sistema";
-            return registerErrorMessage(ServiceMessage.ERROR_REGISTRO_CUENTA_CODSIS,errorMessage);
+            return createResponse(ServiceMessage.ERROR_REGISTRO_CUENTA_CODSIS,errorMessage);
         }
 
         return null;
     }
 
-    private ServiceAnswer registerErrorMessage(ServiceMessage serviceMessage,String errorMessage){
+    private ServiceAnswer createResponse(ServiceMessage serviceMessage,String errorMessage){
         return ServiceAnswer.builder().serviceMessage(
                 serviceMessage).data(errorMessage
         ).build();
     }
 
-    @Override
-    public ServiceAnswer registerAdmin(AdminRegisterDTO adminDTO) {
-
-        if(siptisUserRepository.existsByEmail(adminDTO.getEmail())){
-            String mensajeError = "El correo ya esta registrado en el sistema";
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR_REGISTRO_CUENTA_EMAIL).data(mensajeError).build();
-        }
-
-        SiptisUser adminUser = new SiptisUser();
-        adminUser.setEmail(adminDTO.getEmail());
-        Role role = roleRepository.findById(2)
-                .orElseThrow(() -> new UsernameNotFoundException(
-                        "El rol no existe"
-                ));
-
-        adminUser.addRol(role);
-
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        String contrasena = encoder.encode(adminDTO.getPassword());
-        adminUser.setPassword(contrasena);
-        siptisUserRepository.save(adminUser);
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(adminUser).build();
-    }
 }

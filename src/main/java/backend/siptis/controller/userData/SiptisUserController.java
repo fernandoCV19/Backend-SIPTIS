@@ -4,13 +4,11 @@ import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.*;
-import backend.siptis.model.pjo.dto.AdminRegisterDTO;
 import backend.siptis.model.pjo.dto.EditStudentInformationDTO;
-import backend.siptis.model.pjo.dto.StudentEditPersonalInfoDTO;
 import backend.siptis.model.pjo.dto.records.LogInDTO;
 import backend.siptis.service.userData.SiptisUserService;
 import backend.siptis.service.userData.userAuthentication.UserAuthService;
-import backend.siptis.service.userData.registerUser.RegisterUser;
+import backend.siptis.service.userData.registerUser.RegisterUserService;
 import backend.siptis.service.userData.searchUsers.SearchUsers;
 import backend.siptis.service.userData.userPersonalInformation.AdminEditInformation;
 import backend.siptis.service.userData.userPersonalInformation.UserEditInformation;
@@ -32,7 +30,7 @@ public class SiptisUserController {
     private final UserAuthService userAuthService;
 
     @Autowired
-    private final RegisterUser registerUserService;
+    private final RegisterUserService registerUserService;
 
     @Autowired
     private final SiptisUserService userService;

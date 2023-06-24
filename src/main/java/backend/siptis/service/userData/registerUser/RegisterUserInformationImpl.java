@@ -46,23 +46,15 @@ public class RegisterUserInformationImpl implements RegisterUserInformation{
 
         siptisUser.addCareer(userCareer);
 
-        userInformationRepository.save(userInformation);
+        UserInformation information =  userInformationRepository.save(userInformation);
 
-        StudentInformationDTO studentInformationDTO = new StudentInformationDTO();
-
-        studentInformationDTO.setLastnames(estudianteDTO.getLastnames());
-        studentInformationDTO.setNames(estudianteDTO.getNames());
-        studentInformationDTO.setCi(estudianteDTO.getCi());
-        studentInformationDTO.setCodSIS(estudianteDTO.getCodSIS());
-        studentInformationDTO.setBirthDate(estudianteDTO.getBirthDate());
-        studentInformationDTO.setCelNumber(estudianteDTO.getCelNumber());
-
-        //return studentInformationDTO;
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(studentInformationDTO).build();
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
+                .data(information).build();
     }
 
     @Override
-    public ServiceAnswer registerTeacher(TeacherRegisterDTO teacherDTO, SiptisUser siptisUser) {
+    public ServiceAnswer registerTeacherInformation(TeacherRegisterDTO teacherDTO, SiptisUser siptisUser) {
+
         UserInformation userInformation = new UserInformation();
         userInformation.setSiptisUser(siptisUser);
         userInformation.setLastnames(teacherDTO.getLastnames());
@@ -71,21 +63,10 @@ public class RegisterUserInformationImpl implements RegisterUserInformation{
         userInformation.setCodSIS(teacherDTO.getCodSIS());
         userInformation.setBirthDate(teacherDTO.getBirthDate());
         userInformation.setCelNumber(teacherDTO.getCelNumber());
-
-
-        userInformationRepository.save(userInformation);
-
-        StudentInformationDTO studentInformationDTO = new StudentInformationDTO();
-
-        studentInformationDTO.setLastnames(teacherDTO.getLastnames());
-        studentInformationDTO.setNames(teacherDTO.getNames());
-        studentInformationDTO.setCi(teacherDTO.getCi());
-        studentInformationDTO.setCodSIS(teacherDTO.getCodSIS());
-        studentInformationDTO.setBirthDate(teacherDTO.getBirthDate());
-        studentInformationDTO.setCelNumber(teacherDTO.getCelNumber());
-
+        UserInformation information = userInformationRepository.save(userInformation);
         //return studentInformationDTO;
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(studentInformationDTO).build();
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
+                .data(information).build();
 
     }
 

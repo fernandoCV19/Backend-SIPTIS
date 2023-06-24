@@ -6,7 +6,7 @@ import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.AdminRegisterDTO;
 import backend.siptis.model.pjo.dto.StudentRegisterDTO;
 import backend.siptis.model.pjo.dto.TeacherRegisterDTO;
-import backend.siptis.service.userData.registerUser.RegisterUser;
+import backend.siptis.service.userData.registerUser.RegisterUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class RegisterUserController {
 
     @Autowired
-    private final RegisterUser registerUserService;
+    private final RegisterUserService registerUserService;
 
 
     @PostMapping("/register/student")

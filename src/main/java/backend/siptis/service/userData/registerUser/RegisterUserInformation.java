@@ -10,7 +10,7 @@ public interface RegisterUserInformation {
     ServiceAnswer registerStudent(
             StudentRegisterDTO estudianteDTO, SiptisUser siptisUser);
 
-    ServiceAnswer registerTeacher(
+    ServiceAnswer registerTeacherInformation(
             TeacherRegisterDTO teacherDTO, SiptisUser siptisUser);
 
 }

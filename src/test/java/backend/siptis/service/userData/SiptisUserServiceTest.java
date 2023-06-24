@@ -7,7 +7,7 @@ import backend.siptis.model.pjo.dto.EditStudentInformationDTO;
 import backend.siptis.model.pjo.dto.StudentRegisterDTO;
 import backend.siptis.model.pjo.dto.records.LogInDTO;
 import backend.siptis.service.records.EmailService;
-import backend.siptis.service.userData.registerUser.RegisterUser;
+import backend.siptis.service.userData.registerUser.RegisterUserService;
 import backend.siptis.service.userData.userAuthentication.UserAuthService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,7 @@ public class SiptisUserServiceTest {
     private SiptisUserService service;
     private UserAuthService authService;
     private EmailService emailService;
-    private RegisterUser registerUserService;
+    private RegisterUserService registerUserService;
 
     private StudentRegisterDTO createStudent(){
         String email = "maury.vargasl@gmail.com";
