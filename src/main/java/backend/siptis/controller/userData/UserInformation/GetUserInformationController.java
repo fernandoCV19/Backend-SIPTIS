@@ -59,6 +59,17 @@ public class GetUserInformationController {
         return createResponse(answerService);
     }
 
+    @GetMapping("/userNotSelectedAreas")
+    public ResponseEntity<?> getNotSelectedAreas(
+            @RequestHeader(name="Authorization") String token){
+
+        Long id = userAuthService.getIdFromToken(token);
+        //ServiceAnswer answerService = userAuthService.userInfo(id);
+        ServiceAnswer answerService =
+                getPersonalInformationService.getTeacherNotSelectedAreasById(id);
+
+        return createResponse(answerService);
+    }
 
     private ResponseEntity<?> createResponse(ServiceAnswer serviceAnswer){
         Object data = serviceAnswer.getData();

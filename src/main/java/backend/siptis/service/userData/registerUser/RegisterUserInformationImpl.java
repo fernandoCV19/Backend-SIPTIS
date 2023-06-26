@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @AllArgsConstructor
 public class RegisterUserInformationImpl implements RegisterUserInformation{
@@ -39,12 +41,13 @@ public class RegisterUserInformationImpl implements RegisterUserInformation{
         userInformation.setBirthDate(estudianteDTO.getBirthDate());
         userInformation.setCelNumber(estudianteDTO.getCelNumber());
 
-        UserCareer userCareer = userCareerRepository.findById(estudianteDTO.getCareer())
-                .orElseThrow(() -> new UsernameNotFoundException(
-                        "La carrera solicitada no existe"
-                ));
-
-        siptisUser.addCareer(userCareer);
+        try{
+            Optional<UserCareer> userCareer = userCareerRepository.findById(estudianteDTO.getCareer());
+            siptisUser.addCareer(userCareer.get());
+        }catch (Exception e){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR_REGISTRO_CUENTA)
+                    .data("Ocurrio un error, no hay carreras disponibles").build();
+        }
 
         UserInformation information =  userInformationRepository.save(userInformation);
 
@@ -63,10 +66,16 @@ public class RegisterUserInformationImpl implements RegisterUserInformation{
         userInformation.setCodSIS(teacherDTO.getCodSIS());
         userInformation.setBirthDate(teacherDTO.getBirthDate());
         userInformation.setCelNumber(teacherDTO.getCelNumber());
-        UserInformation information = userInformationRepository.save(userInformation);
-        //return studentInformationDTO;
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
-                .data(information).build();
+
+        try {
+            UserInformation information = userInformationRepository.save(userInformation);
+            //return studentInformationDTO;
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
+                    .data(information).build();
+        }catch (Exception e){
+            return null;
+        }
+
 
     }
 

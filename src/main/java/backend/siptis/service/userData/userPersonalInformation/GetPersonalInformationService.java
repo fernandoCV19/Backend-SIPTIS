@@ -9,4 +9,6 @@ public interface GetPersonalInformationService {
     ServiceAnswer getStudentCareerById(Long id);
 
     ServiceAnswer getTeacherAreasById(Long id);
+
+    ServiceAnswer getTeacherNotSelectedAreasById(Long id);
 }

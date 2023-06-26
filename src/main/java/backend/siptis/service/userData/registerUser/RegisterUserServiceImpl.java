@@ -49,13 +49,12 @@ public class RegisterUserServiceImpl implements RegisterUserService {
         ServiceAnswer respuesta = registerUserInformation
                 .registerStudent(estudianteDTO, siptisUser);
 
-        if(respuesta == null){
+        /*if(respuesta == null){
             return createResponse(
                     ServiceMessage.ERROR_REGISTRO_CUENTA, "Ocurrio un error al registrar la cuenta");
-        }
-        return createResponse(
-                ServiceMessage.OK, "La cuenta de estudiante se registro exitosamente.");
-
+        }*/
+        siptisUserRepository.save(siptisUser);
+        return respuesta;
     }
 
     @Override
@@ -73,9 +72,8 @@ public class RegisterUserServiceImpl implements RegisterUserService {
             return createResponse(
                     ServiceMessage.ERROR_REGISTRO_CUENTA, "Ocurrio un error al registrar la cuenta");
         }
-        return createResponse(
-                ServiceMessage.OK, "La cuenta de docente se registro exitosamente.");
-
+        siptisUserRepository.save(siptisUser);
+        return respuesta;
     }
 
     @Override
@@ -91,6 +89,7 @@ public class RegisterUserServiceImpl implements RegisterUserService {
             return createResponse(
                     ServiceMessage.ERROR_REGISTRO_CUENTA, "Ocurrio un error al registrar la cuenta");
         }
+        siptisUserRepository.save(adminUser);
         return createResponse(
                 ServiceMessage.OK, "La cuenta de administrador se registro exitosamente.");
 
@@ -108,7 +107,7 @@ public class RegisterUserServiceImpl implements RegisterUserService {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String contrasena = encoder.encode(password);
         siptisUser.setPassword(contrasena);
-        return siptisUserRepository.save(siptisUser);
+        return siptisUser;
     }
 
     private ServiceAnswer validateUser(String email, String ci, String codSIS){

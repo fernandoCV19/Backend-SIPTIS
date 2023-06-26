@@ -7,6 +7,7 @@ import backend.siptis.model.entity.userData.UserArea;
 import backend.siptis.model.entity.userData.UserCareer;
 import backend.siptis.model.entity.userData.UserInformation;
 import backend.siptis.model.pjo.dto.records.PersonalInformationDTO;
+import backend.siptis.model.repository.userData.UserInformationRepository;
 import backend.siptis.service.userData.SiptisUserService;
 import backend.siptis.service.userData.checkUserInformation.CheckUserInformation;
 import backend.siptis.service.userData.checkUserInformation.SearchUserInformation;
@@ -26,6 +27,8 @@ public class GetPersonalInformationImpl implements GetPersonalInformationService
     private final SearchUserInformation searchUserInformation;
     @Autowired
     private final SiptisUserService siptisUserService;
+    @Autowired
+    private final UserInformationRepository userInformationRepository;
 
     @Override
     public ServiceAnswer getPersonalInformationById(Long id) {
@@ -64,6 +67,13 @@ public class GetPersonalInformationImpl implements GetPersonalInformationService
 
         Set<UserArea> areas = user.getAreas();
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(areas).build();
+
+    }
+
+    @Override
+    public ServiceAnswer getTeacherNotSelectedAreasById(Long id) {
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
+                .data(userInformationRepository.getNotSelectedAreas(id)).build();
 
     }
 

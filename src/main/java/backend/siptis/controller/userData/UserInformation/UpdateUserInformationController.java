@@ -40,6 +40,16 @@ public class UpdateUserInformationController {
         return createResponse(answer);
     }
 
+    @PostMapping("/updateAreas/{userId}")
+    public ResponseEntity<?> setSelectedAreas(
+            @RequestBody UserSelectedAreasDTO dto,
+            @PathVariable int userId){
+
+        Long id = Long.valueOf( userId);
+        ServiceAnswer answer = editPersonalInformationService.UpdateUserAreas(id, dto);
+        return createResponse(answer);
+    }
+
     @PostMapping("/editPersonalInformation")
     public ResponseEntity<?> editMiInformation(
             @RequestBody UserEditPersonalInformationDTO dto,

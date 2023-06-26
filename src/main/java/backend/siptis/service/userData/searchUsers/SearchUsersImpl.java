@@ -4,6 +4,7 @@ import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.UserListItemDTO;
+import backend.siptis.model.pjo.dto.stadisticsDTO.AdminListItemDTO;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
 import backend.siptis.model.repository.userData.UserInformationRepository;
 import jakarta.transaction.Transactional;
@@ -33,17 +34,26 @@ public class SearchUsersImpl implements SearchUsers {
 
     @Override
     public ServiceAnswer getAllAdmin() {
-        return null;
+        List<AdminListItemDTO> userList =
+                userInformationRepository.getAllAdmins();
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
+                .data(userList).build();
     }
 
     @Override
     public ServiceAnswer getAllStudent() {
-        return null;
+        List<UserListItemDTO> userList =
+                userInformationRepository.getAllUsersByRole(1L);
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
+                .data(userList).build();
     }
 
     @Override
     public ServiceAnswer getAllTeacher() {
-        return null;
+        List<UserListItemDTO> userList =
+                userInformationRepository.getAllUsersByRole(3L);
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
+                .data(userList).build();
     }
 
     @Override

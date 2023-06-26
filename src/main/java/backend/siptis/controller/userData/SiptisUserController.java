@@ -55,7 +55,6 @@ public class SiptisUserController {
     }
 
     @GetMapping("/information")
-
     public ResponseEntity<?> getInfo(@RequestHeader (name="Authorization") String token){
 
         Long id = userAuthService.getIdFromToken(token);
@@ -145,12 +144,5 @@ public class SiptisUserController {
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
 
-    @GetMapping("/buscarUser/{name}/{role_id}")
-    public ResponseEntity<?> searchUsers( @PathVariable String name, @PathVariable Long role_id){
-        System.out.println('s');
-        ServiceAnswer answer = searchUsersService.searchUserByNameAndRole(name, role_id);
-
-        return crearResponseEntityRegistrar(answer);
-    }
 
 }

@@ -69,6 +69,10 @@ public class CorsConfig {
                         .allowedOrigins(localUI)
                         .allowedMethods("*");
 
+                registry.addMapping("/user/updateAreas/*")
+                        .allowedOrigins(localUI)
+                        .allowedMethods("*");
+
                 registry.addMapping("/email/askemail/*")
                         .allowedOrigins(localUI)
                         .allowedMethods("*");
