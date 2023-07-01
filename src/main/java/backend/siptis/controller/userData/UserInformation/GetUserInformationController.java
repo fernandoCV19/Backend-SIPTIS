@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -37,6 +38,17 @@ public class GetUserInformationController {
         return createResponse(answerService);
     }
 
+    @GetMapping("/personalInformation/{userId}")
+    public ResponseEntity<?> getInfoById(@PathVariable int userId){
+
+        Long id = Long.valueOf(userId);
+        //ServiceAnswer answerService = userAuthService.userInfo(id);
+        ServiceAnswer answerService =
+                getPersonalInformationService.getPersonalInformationById(id);
+
+        return createResponse(answerService);
+    }
+
     @GetMapping("/userCareer")
     public ResponseEntity<?> getCareer(@RequestHeader(name="Authorization") String token){
 
@@ -49,6 +61,7 @@ public class GetUserInformationController {
     }
 
     @GetMapping("/userAreas")
+    @PreAuthorize("hasAuthority('TEACHER')")
     public ResponseEntity<?> getAreas(@RequestHeader(name="Authorization") String token){
 
         Long id = userAuthService.getIdFromToken(token);
