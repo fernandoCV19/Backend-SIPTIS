@@ -7,7 +7,7 @@ import backend.siptis.model.entity.userData.UserCareer;
 import backend.siptis.model.entity.userData.UserInformation;
 import backend.siptis.model.pjo.dto.EditStudentInformationDTO;
 import backend.siptis.model.pjo.dto.EditTeacherInformationDTO;
-import backend.siptis.model.pjo.dto.StudentInformationDTO;
+import backend.siptis.model.pjo.dto.usersInformationDTO.StudentInformationDTO;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

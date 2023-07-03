@@ -1,12 +1,10 @@
 package backend.siptis.model.repository.userData;
 
-import backend.siptis.auth.entity.SiptisUser;
-import backend.siptis.model.entity.userData.UserArea;
 import backend.siptis.model.entity.userData.UserInformation;
+import backend.siptis.model.pjo.dto.PotentialTribunalDTO;
 import backend.siptis.model.pjo.dto.UserAreaDTO;
 import backend.siptis.model.pjo.dto.stadisticsDTO.AdminListItemDTO;
 import jakarta.transaction.Transactional;
-import org.apache.catalina.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -78,5 +76,11 @@ public interface UserInformationRepository extends JpaRepository<UserInformation
             "WHERE sua.siptisuser_id = :userId", nativeQuery = true)
     void deleteUserAreas(Long userId);
 
-
+    @Query(value ="SELECT su.id, ui.names, ui.lastnames " +
+            " FROM siptis_user su, user_information ui," +
+            " role r, siptis_user_role sur " +
+            " WHERE su.id = sur.siptis_user_id " +
+            "AND r.id = sur.role_id AND r.id = 3 " +
+            "AND su.id = ui.user_id" , nativeQuery = true)
+    List<PotentialTribunalDTO> getTeachersInformation();
 }

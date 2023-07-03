@@ -3,7 +3,7 @@ package backend.siptis.service.userData;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.AdminRegisterDTO;
-import backend.siptis.model.pjo.dto.StudentInformationDTO;
+import backend.siptis.model.pjo.dto.usersInformationDTO.StudentInformationDTO;
 import backend.siptis.model.pjo.dto.StudentRegisterDTO;
 import backend.siptis.model.pjo.dto.records.LogInDTO;
 import backend.siptis.service.userData.registerUser.RegisterUserService;

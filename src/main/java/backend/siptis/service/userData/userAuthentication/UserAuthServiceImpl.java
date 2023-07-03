@@ -8,7 +8,7 @@ import backend.siptis.model.entity.userData.UserCareer;
 import backend.siptis.model.entity.userData.UserInformation;
 import backend.siptis.model.pjo.dto.records.LogInDTO;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
-import backend.siptis.model.pjo.dto.StudentInformationDTO;
+import backend.siptis.model.pjo.dto.usersInformationDTO.StudentInformationDTO;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

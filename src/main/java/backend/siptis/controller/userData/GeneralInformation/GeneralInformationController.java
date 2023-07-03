@@ -3,6 +3,7 @@ package backend.siptis.controller.userData.GeneralInformation;
 import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
+import backend.siptis.model.pjo.dto.UserSelectedAreasDTO;
 import backend.siptis.service.userData.GeneralInformation.GeneralInformationService;
 import backend.siptis.service.userData.userAuthentication.UserAuthService;
 import lombok.AllArgsConstructor;
@@ -32,6 +33,20 @@ public class GeneralInformationController {
         return createResponse(answerService);
     }
 
+    @GetMapping("/getAllPotentialTribunals")
+    public ResponseEntity<?> getAllPotentialTribunals(){
+        ServiceAnswer answerService = generalInformationService.getAllPotentialTribunals();
+        return createResponse(answerService);
+    }
+
+    @PostMapping("/getPotentialTribunalsByAreas")
+    public ResponseEntity<?> getPotentialTribunalsByAreas(
+            @RequestBody UserSelectedAreasDTO areas
+    ){
+        System.out.println(areas.getIds().toString());
+        ServiceAnswer answerService = generalInformationService.getPotentialTribunalsByAreas(areas);
+        return createResponse(answerService);
+    }
     private ResponseEntity<?> createResponse(ServiceAnswer serviceAnswer){
         Object data = serviceAnswer.getData();
         ServiceMessage messageService = serviceAnswer.getServiceMessage();
