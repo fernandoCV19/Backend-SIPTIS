@@ -38,7 +38,28 @@ public class EditPersonalInformationImpl implements EditPersonalInformationServi
 
     @Override
     public ServiceAnswer EditLimitedPersonalInformationById(Long id, UserEditPersonalInformationDTO dto) {
-        return null;
+        String message = "La información de su cuenta fue modificada exitosamente.";
+        if(! checkUserInformation.existsById(id)){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST)
+                    .data("No existe un usuario registrado con el id solicitado").build();
+        }
+        try {
+            SiptisUser siptisUser = searchUserInformation.findById(id);
+
+            siptisUser.setEmail(dto.getEmail());
+            UserInformation userInformation = siptisUser.getUserInformation();
+
+            userInformation.setCelNumber(dto.getCelNumber());
+            userInformation.setCi(dto.getCi());
+            userInformation.setBirthDate(dto.getBirthDate());
+
+            SiptisUser user1 = siptisUserService.save(siptisUser);
+        }catch (Exception e){
+            message = "Ocurrio un error al intentar modificar su informacion.";
+        }
+
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(message).build();
+
     }
 
     @Override

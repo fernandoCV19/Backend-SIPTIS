@@ -40,7 +40,7 @@ public class UpdateUserInformationController {
         return createResponse(answer);
     }
 
-    @PostMapping("/updateAreas/{userId}")
+    @PostMapping("/updateAreasById/{userId}")
     public ResponseEntity<?> setSelectedAreas(
             @RequestBody UserSelectedAreasDTO dto,
             @PathVariable int userId){

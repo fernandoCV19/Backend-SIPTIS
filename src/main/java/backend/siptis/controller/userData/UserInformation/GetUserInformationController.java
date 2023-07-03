@@ -60,6 +60,16 @@ public class GetUserInformationController {
         return createResponse(answerService);
     }
 
+    @GetMapping("/userCareerById/{userId}")
+    public ResponseEntity<?> getCareer(
+            @PathVariable int userId){
+        Long id = Long.valueOf(userId);
+        ServiceAnswer answerService =
+                getPersonalInformationService.getStudentCareerById(id);
+
+        return createResponse(answerService);
+    }
+
     @GetMapping("/userAreas")
     @PreAuthorize("hasAuthority('TEACHER')")
     public ResponseEntity<?> getAreas(@RequestHeader(name="Authorization") String token){
@@ -72,11 +82,34 @@ public class GetUserInformationController {
         return createResponse(answerService);
     }
 
+    @GetMapping("/userAreasById/{userId}")
+    public ResponseEntity<?> getAreas(
+            @PathVariable int userId){
+
+        Long id = Long.valueOf(userId);
+        ServiceAnswer answerService =
+                getPersonalInformationService.getTeacherAreasById(id);
+
+        return createResponse(answerService);
+    }
+
     @GetMapping("/userNotSelectedAreas")
     public ResponseEntity<?> getNotSelectedAreas(
             @RequestHeader(name="Authorization") String token){
 
         Long id = userAuthService.getIdFromToken(token);
+        //ServiceAnswer answerService = userAuthService.userInfo(id);
+        ServiceAnswer answerService =
+                getPersonalInformationService.getTeacherNotSelectedAreasById(id);
+
+        return createResponse(answerService);
+    }
+
+    @GetMapping("/userNotSelectedAreasById/{userId}")
+    public ResponseEntity<?> getNotSelectedAreasById(
+            @PathVariable int userId){
+
+        Long id = Long.valueOf(userId);
         //ServiceAnswer answerService = userAuthService.userInfo(id);
         ServiceAnswer answerService =
                 getPersonalInformationService.getTeacherNotSelectedAreasById(id);
