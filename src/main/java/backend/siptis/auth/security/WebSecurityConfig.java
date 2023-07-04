@@ -14,6 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -41,6 +42,7 @@ public class WebSecurityConfig {
                         "/user/information/*", "/email/send", "/project/**", "/presentation/**", "/placesToDefense/**"
                         ,"/document/**", "/cloud/**")
                 .requestMatchers("/user/*", "/user/register/student", "/user/register/admin" ,
+                .requestMatchers("/user/**", "/user/register/student", "/user/register/admin" ,
                         "/user/register/teacher", "/user/editTeacher/*",
                         "/user/test", "/user/login","/user/todos","/user/editUser/*",
                         "/user/information/*", "/email/send", "/general-activity",
@@ -48,8 +50,18 @@ public class WebSecurityConfig {
                         "/email/changePassword","/email/askemail/*",
                         "/user/information/*", "/user/personal-activities/*", "/email/send", "/general-activity","/general-activity/create", "/general-activity/*")
 
+                        "/user/information/*", "/user/personal-activities/*", "/email/send",
+                         "/general-activity","/general-activity/create", "/general-activity/*",
+                         "/user/register/student", "/user/register/admin", "/user/test", "/supervisor/**",
+                          "/tribunal/**", "/teacher/**", "/tutor/**", "/project/**", "/email",
+                        "/general-activity", "/general-activity/create", "/general-activity/*", "/user/test",
+                         "/user/login", "/user/todos", "/user/editUser/*",
+                        "/user/information/*", "/email/send", "/project/**", "/presentation/**"
+                        ,"/document/**", "/cloud/**", "/user/buscarUser/**", "/user/personalInformation",
+                        "/siptis/**", "/stadistics/**", "/user/updateAreas/**")
                 .permitAll()
                 .anyRequest().authenticated()
+                .and().exceptionHandling().authenticationEntryPoint(authenticationEntryPoint())
                 .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().addFilter(jwtAuthenticationFilter)
@@ -77,5 +89,10 @@ public class WebSecurityConfig {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String password = passwordEncoder.encode("mavl");
         System.out.println(password);
+    }
+
+    @Bean
+    public AuthenticationEntryPoint authenticationEntryPoint(){
+        return new CustomAuthenticationEntryPoint();
     }
 }

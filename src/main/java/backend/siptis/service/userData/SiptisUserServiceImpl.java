@@ -4,7 +4,6 @@ import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectStudent;
-import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.entity.records.Activity;
 import backend.siptis.model.entity.userData.UserCareer;
 import backend.siptis.model.entity.userData.UserInformation;
@@ -14,7 +13,6 @@ import backend.siptis.model.pjo.dto.StudentInformationDTO;
 import backend.siptis.model.pjo.dto.UserGeneralInformationDTO;
 import backend.siptis.model.pjo.vo.userData.TribunalInfoToAssignSection;
 import backend.siptis.model.pjo.dto.*;
-import backend.siptis.model.repository.general.RoleRepository;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
 import backend.siptis.service.records.ActivityService;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +23,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +35,8 @@ public class SiptisUserServiceImpl implements SiptisUserService {
 
     private final SiptisUserRepository usuarioCommonRepository;
     private final UserInformationService userInformationService;
+    private final ActivityService activityService;
+
 
     @Override
     public ServiceAnswer findAll() {
@@ -78,7 +83,6 @@ public class SiptisUserServiceImpl implements SiptisUserService {
     public boolean existsTokenPassword(String tokenPassword){
 
         return usuarioCommonRepository.existsByTokenPassword(tokenPassword);
-
     }
 
     @Override
@@ -220,31 +224,6 @@ public class SiptisUserServiceImpl implements SiptisUserService {
             Page<Activity> activities = usuarioCommonRepository.findAllPersonalActivities(id, pageable);
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(activities).build();
         }
-        private StudentInformationDTO convertToStudentInformation(SiptisUser user) {
 
-            StudentInformationDTO student = new StudentInformationDTO();
-            if (user != null) {
-
-                student.setEmail(user.getEmail());
-                UserInformation information = user.getUserInformation();
-                if (information != null) {
-                    student.setNames(information.getNames());
-                    student.setLastnames(information.getLastnames());
-                    student.setCelNumber(information.getCelNumber());
-                    student.setCi(information.getCi());
-                    student.setBirthDate(information.getBirthDate());
-                    student.setCodSIS(information.getCodSIS());
-                    Set<UserCareer> career = user.getCareer();
-
-                    for (UserCareer userCareer : career) {
-                        student.setCareer(userCareer.getName());
-                        student.setCareerId(userCareer.getId());
-                    }
-                }
-
-
-            }
-            return student;
-        }
     }
 

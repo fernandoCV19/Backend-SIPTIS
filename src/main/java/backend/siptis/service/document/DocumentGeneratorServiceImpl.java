@@ -32,7 +32,6 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-
 public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
     @Autowired
     private CloudManagementService nube;

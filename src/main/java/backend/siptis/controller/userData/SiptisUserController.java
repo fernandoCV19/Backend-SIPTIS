@@ -8,6 +8,15 @@ import backend.siptis.model.pjo.dto.*;
 import backend.siptis.model.pjo.dto.records.LogInDTO;
 import backend.siptis.service.userData.SiptisUserService;
 import backend.siptis.service.userData.UserAuthService;
+import backend.siptis.model.pjo.dto.*;
+import backend.siptis.model.pjo.dto.EditStudentInformationDTO;
+import backend.siptis.model.pjo.dto.records.LogInDTO;
+import backend.siptis.service.userData.SiptisUserService;
+import backend.siptis.service.userData.userAuthentication.UserAuthService;
+import backend.siptis.service.userData.registerUser.RegisterUserService;
+import backend.siptis.service.userData.searchUsers.SearchUsers;
+import backend.siptis.service.userData.userPersonalInformation.AdminEditInformation;
+import backend.siptis.service.userData.userPersonalInformation.UserEditInformation;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,8 +41,13 @@ public class SiptisUserController {
     private final UserAuthService userAuthService;
 
     @Autowired
+    private final RegisterUserService registerUserService;
+
+    @Autowired
     private final SiptisUserService userService;
 
+    @Autowired
+    private final AdminEditInformation adminEditInformationService;
 
     @PostMapping("/register/student")
     // @PreAuthorize("hasAuthority('ADMIN')")
@@ -64,6 +78,11 @@ public class SiptisUserController {
         /*return new ResponseEntity<>("Exito" +
                 "", HttpStatus.OK);*/
     }
+    @Autowired
+    private final UserEditInformation userEditInformationService;
+
+    @Autowired
+    private final SearchUsers searchUsersService;
 
 
     @PostMapping("/login")
@@ -76,8 +95,7 @@ public class SiptisUserController {
     }
 
     @GetMapping("/information")
-
-    public ResponseEntity<?> getInfo(@RequestHeader(name = "Authorization") String token) {
+    public ResponseEntity<?> getInfo(@RequestHeader (name="Authorization") String token){
 
         Long id = userAuthService.getIdFromToken(token);
         ServiceAnswer answerService = userAuthService.userInfo(id);
@@ -107,7 +125,7 @@ public class SiptisUserController {
             @RequestBody EditStudentInformationDTO dto) {
 
         Long id = Long.valueOf(userId);
-        ServiceAnswer answer = userService.editStudentInformation(id, dto);
+        ServiceAnswer answer = adminEditInformationService.editStudentInformation(id, dto);
         return crearResponseEntityRegistrar(answer);
     }
 
@@ -117,18 +135,18 @@ public class SiptisUserController {
             @RequestBody EditTeacherInformationDTO dto) {
 
         Long id = Long.valueOf(userId);
-        ServiceAnswer answer = userService.editTeacherInformation(id, dto);
+        ServiceAnswer answer = adminEditInformationService.editTeacherInformation(id, dto);
         return crearResponseEntityRegistrar(answer);
     }
 
-    @PostMapping("/editUser")
+    /*@PostMapping("/editUser")
     public ResponseEntity<?> editMiInformation(
             @RequestBody StudentEditPersonalInfoDTO dto,
             @RequestHeader(name = "Authorization") String token) {
 
         Long id = userAuthService.getIdFromToken(token);
 
-        ServiceAnswer answer = userService.studentEditPersonalInfo(id, dto);
+        ServiceAnswer answer = userEditInformationService.studentEditPersonalInfo(id, dto);
         return crearResponseEntityRegistrar(answer);
     }
 
@@ -137,6 +155,12 @@ public class SiptisUserController {
         ServiceAnswer query = userService.getPossibleTribunals();
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().message(query.getServiceMessage().toString()).data(query.getData()).build();
         return new ResponseEntity<>(controllerAnswer, HttpStatus.OK);
+    }*/
+    @GetMapping("/personal-activities/{userId}")
+    public ResponseEntity<?> getPersonalProjectActivities(@PathVariable int userId){
+        Long idL = Long.valueOf(userId);
+        ServiceAnswer answer = userService.getPersonalActivities(idL);
+        return crearResponseEntityRegistrar(answer);
     }
 
     private ResponseEntity<?> crearResponseEntityRegistrar(ServiceAnswer serviceAnswer){
@@ -155,7 +179,7 @@ public class SiptisUserController {
 
         Long id = userAuthService.getIdFromToken(token);
 
-        ServiceAnswer answer = userService.teacherEditPersonalInfo(id, dto);
+        ServiceAnswer answer = userEditInformationService.teacherEditPersonalInfo(id, dto);
         return crearResponseEntityRegistrar(answer);
     }
 
@@ -175,5 +199,6 @@ public class SiptisUserController {
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(data).message(messageService.toString()).build();
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
+
 
 }

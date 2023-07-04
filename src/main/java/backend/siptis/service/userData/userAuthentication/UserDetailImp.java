@@ -1,4 +1,4 @@
-package backend.siptis.service.userData;
+package backend.siptis.service.userData.userAuthentication;
 
 import backend.siptis.auth.entity.SiptisUser;
 import lombok.AllArgsConstructor;

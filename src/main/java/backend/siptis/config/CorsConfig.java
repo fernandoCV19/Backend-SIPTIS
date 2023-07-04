@@ -16,7 +16,7 @@ public class CorsConfig {
             public void addCorsMappings(CorsRegistry registry) {
 
 
-                String localUI = "http://localhost:5173/";
+                String localUI = "http://localhost:5173";
 
                 registry.addMapping("/login")
                         .allowedOrigins(localUI)
@@ -30,7 +30,6 @@ public class CorsConfig {
 
 
                 registry.addMapping("/user/register/admin")
-
                         .allowedOrigins(localUI)
                         .allowedMethods("*")
                         .exposedHeaders("*");
@@ -67,6 +66,10 @@ public class CorsConfig {
                         .allowedMethods("*");
 
                 registry.addMapping("/user/editUser/*")
+                        .allowedOrigins(localUI)
+                        .allowedMethods("*");
+
+                registry.addMapping("/user/updateAreas/*")
                         .allowedOrigins(localUI)
                         .allowedMethods("*");
 

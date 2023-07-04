@@ -53,7 +53,7 @@ public class SiptisUser implements UserDetails {
             joinColumns = @JoinColumn(name = "siptisuser_id"),
             inverseJoinColumns = @JoinColumn(name = "area_id"))
     @JsonManagedReference
-    private Collection<UserArea> areas;
+    private Set<UserArea> areas;
 
     @ManyToMany(fetch = FetchType.LAZY,cascade = {
             CascadeType.PERSIST,
@@ -117,6 +117,8 @@ public class SiptisUser implements UserDetails {
     public void addCareer(UserCareer career){
         this.career.add(career);
     }
+
+    public void addAreas(UserArea area){ this.areas.add(area);}
 
     //-------------------------------------------------------------------
     @Override

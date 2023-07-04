@@ -38,4 +38,7 @@ public interface SiptisUserRepository extends JpaRepository<SiptisUser, Long> {
     @Query("SELECT a FROM Activity a, ProjectStudent ps " +
             "WHERE ps.student.id = :id AND ps.project.id = a.project.id")
     Page<Activity> findAllPersonalActivities(Long id, Pageable pageable);
+    Optional <Project> findProjectById(Long id);
+    Optional<SiptisUser> findOneById(Long id);
+
 }
