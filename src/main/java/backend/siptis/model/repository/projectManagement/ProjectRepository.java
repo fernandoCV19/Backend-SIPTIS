@@ -1,11 +1,8 @@
 package backend.siptis.model.repository.projectManagement;
 
 import java.util.List;
-import java.util.Optional;
 
 import backend.siptis.model.entity.projectManagement.Project;
-
-import backend.siptis.model.pjo.dto.projectManagement.ProjectOverviewDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import backend.siptis.model.pjo.dto.ProjectInfoDTO;
@@ -59,6 +56,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
             "AND CASE WHEN :area = NULL THEN 1=1 ELSE UPPER(a.name) LIKE CONCAT('%', UPPER(:area), '%') END " +
             "AND CASE WHEN :subarea = NULL THEN 1=1 ELSE UPPER(s.name) LIKE CONCAT('%', UPPER(:subarea), '%') END ")
     Page <Project> findAllWithFilters(Pageable pageable, @Param("name") String name, @Param("modality") String modality, @Param("area") String area, @Param("subarea") String subarea);
+
     @Query(value = "SELECT  project.id AS id, project.name AS name, " +
             "project.perfil_path AS perfil, modality.name AS modality," +
             " modality.id AS modalityId  " +

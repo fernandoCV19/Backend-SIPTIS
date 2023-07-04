@@ -17,7 +17,6 @@ import backend.siptis.model.entity.editorsAndReviewers.ProjectTutor;
 import backend.siptis.model.entity.projectManagement.Presentation;
 import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.entity.projectManagement.Review;
-import backend.siptis.model.pjo.vo.projectManagement.ProjectCompleteInfo;
 import backend.siptis.model.pjo.vo.projectManagement.ProjectToReviewSectionVO;
 import backend.siptis.model.repository.projectManagement.PresentationRepository;
 import backend.siptis.model.repository.projectManagement.ProjectRepository;

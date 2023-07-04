@@ -3,33 +3,21 @@ package backend.siptis.controller.userData;
 import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.model.entity.records.Activity;
 import backend.siptis.model.pjo.dto.*;
 import backend.siptis.model.pjo.dto.records.LogInDTO;
 import backend.siptis.service.userData.SiptisUserService;
-import backend.siptis.service.userData.UserAuthService;
-import backend.siptis.model.pjo.dto.*;
-import backend.siptis.model.pjo.dto.EditStudentInformationDTO;
-import backend.siptis.model.pjo.dto.records.LogInDTO;
-import backend.siptis.service.userData.SiptisUserService;
-import backend.siptis.service.userData.userAuthentication.UserAuthService;
 import backend.siptis.service.userData.registerUser.RegisterUserService;
 import backend.siptis.service.userData.searchUsers.SearchUsers;
+import backend.siptis.service.userData.userAuthentication.UserAuthService;
 import backend.siptis.service.userData.userPersonalInformation.AdminEditInformation;
 import backend.siptis.service.userData.userPersonalInformation.UserEditInformation;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-
 
 @RestController
 @RequestMapping("/user")
@@ -54,7 +42,7 @@ public class SiptisUserController {
     public ResponseEntity<?> registerStudent(
             @RequestBody StudentRegisterDTO studentDTO) {
 
-        ServiceAnswer student = userAuthService.registerStudent(studentDTO);
+        ServiceAnswer student = registerUserService.registerStudent(studentDTO);
         return crearResponseEntityRegistrar(student);
     }
 
@@ -63,7 +51,7 @@ public class SiptisUserController {
     public ResponseEntity<?> registerTeacher(
             @RequestBody TeacherRegisterDTO teacherDTO) {
 
-        ServiceAnswer teacher = userAuthService.registerTeacher(teacherDTO);
+        ServiceAnswer teacher = registerUserService.registerTeacher(teacherDTO);
         return crearResponseEntityRegistrar(teacher);
     }
 
@@ -72,7 +60,7 @@ public class SiptisUserController {
     public ResponseEntity<?> registerAdmin(
             @RequestBody AdminRegisterDTO adminRegisterDTO) {
 
-        ServiceAnswer admin = userAuthService.registerAdmin(adminRegisterDTO);
+        ServiceAnswer admin = registerUserService.registerAdmin(adminRegisterDTO);
         //return crearResponseEntityRegistrar(admin);
         return crearResponseEntityRegistrar(admin);
         /*return new ResponseEntity<>("Exito" +
@@ -157,13 +145,12 @@ public class SiptisUserController {
         return new ResponseEntity<>(controllerAnswer, HttpStatus.OK);
     }*/
     @GetMapping("/personal-activities/{userId}")
-    public ResponseEntity<?> getPersonalProjectActivities(@PathVariable int userId){
+    public ResponseEntity<?> getPersonalProjectActivities(@PathVariable int userId) {
         Long idL = Long.valueOf(userId);
         ServiceAnswer answer = userService.getPersonalActivities(idL);
         return crearResponseEntityRegistrar(answer);
     }
 
-    private ResponseEntity<?> crearResponseEntityRegistrar(ServiceAnswer serviceAnswer){
     @GetMapping("/personal-activities")
     public ResponseEntity<?> getPersonalProjectActivities(
             @RequestHeader(name = "Authorization") String token,
@@ -172,6 +159,7 @@ public class SiptisUserController {
         ServiceAnswer answer = userService.getPersonalActivities(idL, pageable);
         return crearResponseEntityRegistrar(answer);
     }
+
     @PostMapping("/editTeacher")
     public ResponseEntity<?> editMiInformationTeacher(
             @RequestBody TeacherEditPersonalInfoDTO dto,
@@ -199,6 +187,4 @@ public class SiptisUserController {
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(data).message(messageService.toString()).build();
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
-
-
 }

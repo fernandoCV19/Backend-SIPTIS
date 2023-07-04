@@ -37,28 +37,32 @@ public class WebSecurityConfig {
         return http.cors().and()
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/user/register/student", "/user/register/admin", "/user/test", "/supervisor/**", "/tribunal/**", "/teacher/**", "/tutor/**", "/project/**", "/email",
-                        "/general-activity", "/general-activity/create", "/general-activity/*", "/user/test", "/user/login", "/user/todos", "/user/editUser/*",
-                        "/user/information/*", "/email/send", "/project/**", "/presentation/**", "/placesToDefense/**"
-                        ,"/document/**", "/cloud/**")
-                .requestMatchers("/user/*", "/user/register/student", "/user/register/admin" ,
-                .requestMatchers("/user/**", "/user/register/student", "/user/register/admin" ,
+                .requestMatchers("/user/register/student", "/user/register/admin", "/user/test", "/user/information/*",
                         "/user/register/teacher", "/user/editTeacher/*",
-                        "/user/test", "/user/login","/user/todos","/user/editUser/*",
-                        "/user/information/*", "/email/send", "/general-activity",
-                        "/general-activity/create","/email/prueba/*", "/general-activity/*",
-                        "/email/changePassword","/email/askemail/*",
-                        "/user/information/*", "/user/personal-activities/*", "/email/send", "/general-activity","/general-activity/create", "/general-activity/*")
+                        "/user/login", "/user/todos", "/user/editUser/*",
+                        "/user/register/student", "/user/register/admin","/user/personal-activities/*",
+                        "/user/buscarUser/**", "/user/personalInformation",
+                        "/user/updateAreas/**",
 
-                        "/user/information/*", "/user/personal-activities/*", "/email/send",
-                         "/general-activity","/general-activity/create", "/general-activity/*",
-                         "/user/register/student", "/user/register/admin", "/user/test", "/supervisor/**",
-                          "/tribunal/**", "/teacher/**", "/tutor/**", "/project/**", "/email",
-                        "/general-activity", "/general-activity/create", "/general-activity/*", "/user/test",
-                         "/user/login", "/user/todos", "/user/editUser/*",
-                        "/user/information/*", "/email/send", "/project/**", "/presentation/**"
-                        ,"/document/**", "/cloud/**", "/user/buscarUser/**", "/user/personalInformation",
-                        "/siptis/**", "/stadistics/**", "/user/updateAreas/**")
+                        "/document/**",
+
+                        "/tribunal/**", "/teacher/**", "/tutor/**",
+
+                        "/project/**", "/presentation/**", "/placesToDefense/**",
+
+                        "/supervisor/**",
+                        "/siptis/**", "/stadistics/**",
+
+                        "/email",
+                        "/email/send",
+                        "/email/changePassword", "/email/askemail/*",
+                        "/email/prueba/*",
+
+                        "/general-activity", "/general-activity/create","/general-activity/*",
+
+                        "/cloud/**",
+
+                        "/supervisor/**")
                 .permitAll()
                 .anyRequest().authenticated()
                 .and().exceptionHandling().authenticationEntryPoint(authenticationEntryPoint())
