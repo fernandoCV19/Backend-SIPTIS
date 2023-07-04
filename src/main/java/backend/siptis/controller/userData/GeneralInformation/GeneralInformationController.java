@@ -33,6 +33,12 @@ public class GeneralInformationController {
         return createResponse(answerService);
     }
 
+    @GetMapping("/getAllProjectAreas")
+    public ResponseEntity<?> getAllProjectAreas(){
+        ServiceAnswer answerService = generalInformationService.getAllProjectAreas();
+        return createResponse(answerService);
+    }
+
     @GetMapping("/getAllPotentialTribunals")
     public ResponseEntity<?> getAllPotentialTribunals(){
         ServiceAnswer answerService = generalInformationService.getAllPotentialTribunals();
@@ -45,6 +51,14 @@ public class GeneralInformationController {
     ){
         System.out.println(areas.getIds().toString());
         ServiceAnswer answerService = generalInformationService.getPotentialTribunalsByAreas(areas);
+        return createResponse(answerService);
+    }
+
+    @PostMapping("/getProjectsByAreas")
+    public ResponseEntity<?> getProjectsByAreas(
+            @RequestBody UserSelectedAreasDTO areas
+    ){
+        ServiceAnswer answerService = generalInformationService.getProjectsByAreas(areas);
         return createResponse(answerService);
     }
     private ResponseEntity<?> createResponse(ServiceAnswer serviceAnswer){

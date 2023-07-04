@@ -3,13 +3,19 @@ package backend.siptis.service.userData.GeneralInformation;
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
+import backend.siptis.model.entity.projectManagement.Area;
+import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.entity.userData.UserArea;
 import backend.siptis.model.entity.userData.UserCareer;
 import backend.siptis.model.pjo.dto.PotentialTribunalDTO;
+import backend.siptis.model.pjo.dto.ProjectDTO;
+import backend.siptis.model.pjo.dto.ProjectInfoDTO;
 import backend.siptis.model.pjo.dto.UserSelectedAreasDTO;
 import backend.siptis.model.pjo.dto.stadisticsDTO.UserTribunalDTO;
 import backend.siptis.model.repository.general.UserAreaRepository;
 import backend.siptis.model.repository.general.UserCareerRepository;
+import backend.siptis.model.repository.projectManagement.AreaRepository;
+import backend.siptis.model.repository.projectManagement.ProjectRepository;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
 import backend.siptis.model.repository.userData.UserInformationRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,11 +34,15 @@ public class GeneralInformationImpl implements GeneralInformationService{
     @Autowired
     private final UserAreaRepository areaRepository;
     @Autowired
+    private final AreaRepository projectAreaRepository;
+    @Autowired
     private final UserCareerRepository careerRepository;
     @Autowired
     private final UserInformationRepository userInformationRepository;
     @Autowired
     private final SiptisUserRepository siptisUserRepository;
+    @Autowired
+    private final ProjectRepository projectRepository;
 
     @Override
     public ServiceAnswer getAllCareers() {
@@ -44,6 +54,13 @@ public class GeneralInformationImpl implements GeneralInformationService{
     @Override
     public ServiceAnswer getAllUserAreas() {
         List<UserArea> areas = areaRepository.findAll();
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(areas).build();
+
+    }
+
+    @Override
+    public ServiceAnswer getAllProjectAreas() {
+        List<Area> areas = projectAreaRepository.findAll();
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(areas).build();
 
     }
@@ -81,6 +98,64 @@ public class GeneralInformationImpl implements GeneralInformationService{
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
                 .data(tribunalDTOS ).build();
 
+    }
+
+    public ServiceAnswer getProjects() {
+        List<ProjectDTO> response = new ArrayList<>();
+        List<ProjectInfoDTO> projects = projectRepository.getProjectsList();
+
+        for (ProjectInfoDTO info : projects) {
+            Optional<Project> pj = projectRepository.findById(info.getId());
+            Set<Area> projectAreas = pj.get().getAreas();
+            ProjectDTO projectDTO = new ProjectDTO();
+            projectDTO.setName(info.getName());
+            projectDTO.setModality(info.getModality());
+            projectDTO.setPerfil(info.getPerfil());
+            projectDTO.setAreas(projectAreas);
+            projectDTO.setModalityId(info.getModalityId());
+
+            response.add(projectDTO);
+        }
+
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
+                .data(response ).build();
+    }
+
+    @Override
+    public ServiceAnswer getProjectsByAreas(UserSelectedAreasDTO dto) {
+        List<Long> selectedAreas = dto.getIds();
+        if (selectedAreas.isEmpty()){
+            return getProjects();
+        }
+        List<ProjectDTO> response = new ArrayList<>();
+        List<ProjectInfoDTO> projects = projectRepository.getProjectsList();
+
+        for (ProjectInfoDTO info : projects) {
+            boolean isValid = false;
+            Optional<Project> pj = projectRepository.findById(info.getId());
+            Set<Area> projectAreas = pj.get().getAreas();
+
+            for (Area area: projectAreas) {
+                if(selectedAreas.contains(area.getId())){
+                    isValid = true;
+                    break;
+                }
+            }
+            if(isValid){
+                ProjectDTO projectDTO = new ProjectDTO();
+                projectDTO.setName(info.getName());
+                projectDTO.setModality(info.getModality());
+                projectDTO.setPerfil(info.getPerfil());
+                projectDTO.setAreas(projectAreas);
+                projectDTO.setModalityId(info.getModalityId());
+
+                response.add(projectDTO);
+            }
+
+        }
+
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
+                .data(response ).build();
     }
 
     @Override

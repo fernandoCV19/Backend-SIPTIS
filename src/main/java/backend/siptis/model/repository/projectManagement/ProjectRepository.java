@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import backend.siptis.model.entity.projectManagement.Project;
 
+import backend.siptis.model.pjo.dto.ProjectInfoDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -20,5 +21,12 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
             "SELECT tut.tutor.id AS idUser FROM ProjectTutor tut WHERE tut.project.id = :idProject" )
     List<Long> getIdsListFromReviewers(Long idProject);
 
+
+    @Query(value = "SELECT  project.id AS id, project.name AS name, " +
+            "project.perfil_path AS perfil, modality.name AS modality," +
+            " modality.id AS modalityId  " +
+            " FROM project project, modality modality " +
+            " WHERE project.modality_id = modality.id ", nativeQuery = true )
+    List<ProjectInfoDTO> getProjectsList();
 
 }

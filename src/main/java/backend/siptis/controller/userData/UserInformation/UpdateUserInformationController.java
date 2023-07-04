@@ -3,6 +3,7 @@ package backend.siptis.controller.userData.UserInformation;
 import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
+import backend.siptis.model.pjo.dto.AdminEditUserPersonalInformationDTO;
 import backend.siptis.model.pjo.dto.UserEditPersonalInformationDTO;
 import backend.siptis.model.pjo.dto.UserSelectedAreasDTO;
 import backend.siptis.service.userData.userAuthentication.UserAuthService;
@@ -62,6 +63,18 @@ public class UpdateUserInformationController {
         return createResponse(answer);
     }
 
+    @PostMapping("/editPersonalInformationById/{userId}")
+    public ResponseEntity<?> editInformationById(
+            @RequestBody AdminEditUserPersonalInformationDTO dto,
+            @PathVariable int userId){
+
+        Long id = Long.valueOf(userId);
+        System.out.println("ID:----"+id+"-------------");
+
+        ServiceAnswer answer =
+                editPersonalInformationService.EditFullPersonalInformationById(id, dto);
+        return createResponse(answer);
+    }
     private ResponseEntity<?> createResponse(ServiceAnswer serviceAnswer){
         Object data = serviceAnswer.getData();
         ServiceMessage messageService = serviceAnswer.getServiceMessage();

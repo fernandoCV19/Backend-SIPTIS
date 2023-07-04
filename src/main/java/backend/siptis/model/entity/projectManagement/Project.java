@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Collection;
+import java.util.Set;
 
 @Entity
 @Table(name = "project")
@@ -60,7 +61,7 @@ public class Project {
     })
     @JoinTable(name = "project_area", joinColumns = @JoinColumn(name = "project_id"), inverseJoinColumns = @JoinColumn(name = "area_id"))
     @JsonManagedReference
-    private Collection<Area> areas;
+    private Set<Area> areas;
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
     @JsonManagedReference

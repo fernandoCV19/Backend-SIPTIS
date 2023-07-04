@@ -103,6 +103,30 @@ public class EditPersonalInformationImpl implements EditPersonalInformationServi
 
     @Override
     public ServiceAnswer EditFullPersonalInformationById(Long id, AdminEditUserPersonalInformationDTO dto) {
-        return null;
+        String message = "La información fue modificada exitosamente.";
+        if(! checkUserInformation.existsById(id)){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST)
+                    .data("No existe un usuario registrado con el id solicitado").build();
+        }
+        try {
+            SiptisUser siptisUser = searchUserInformation.findById(id);
+
+            siptisUser.setEmail(dto.getEmail());
+            UserInformation userInformation = siptisUser.getUserInformation();
+
+            userInformation.setNames(dto.getNames());
+            userInformation.setLastnames(dto.getLastnames());
+            userInformation.setCelNumber(dto.getCelNumber());
+            userInformation.setCi(dto.getCi());
+            userInformation.setCodSIS(dto.getCodSIS());
+            userInformation.setBirthDate(dto.getBirthDate());
+
+            SiptisUser user1 = siptisUserService.save(siptisUser);
+        }catch (Exception e){
+            message = "Ocurrio un error al intentar modificar la informacion.";
+        }
+
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(message).build();
+
     }
 }
