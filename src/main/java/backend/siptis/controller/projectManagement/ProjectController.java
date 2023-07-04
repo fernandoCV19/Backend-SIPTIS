@@ -5,10 +5,8 @@ import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.model.pjo.dto.projectManagement.AssignTribunalsDTO;
 import backend.siptis.model.pjo.dto.projectManagement.DefenseDTO;
-import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.service.projectManagement.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,19 +21,19 @@ public class ProjectController {
     @GetMapping("/presentations/{id}")
     public ResponseEntity<?> getPresentaciones(@PathVariable ("id") Long idProyecto){
         ServiceAnswer serviceAnswer = projectService.getPresentations(idProyecto);
-        return crearResponseEntity(serviceAnswer);
+        return createResponseEntity(serviceAnswer);
     }
     @GetMapping("/")
     public ResponseEntity<?> getProyectos(){
         ServiceAnswer serviceAnswer = projectService.getProjects();
-        return crearResponseEntity(serviceAnswer);
+        return createResponseEntity(serviceAnswer);
     }
 
     @GetMapping("/page")
     public ResponseEntity<?> getPaginatedProjects(
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "5") int pageSize) {
-        ServiceAnswer serviceAnswer = proyectoGradoService.getPaginatedCompletedProjects(pageNumber, pageSize);
+        ServiceAnswer serviceAnswer = projectService.getPaginatedCompletedProjects(pageNumber, pageSize);
         HttpStatus httpStatus = HttpStatus.OK;
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
         return new ResponseEntity<>(controllerAnswer, httpStatus);
@@ -47,7 +45,7 @@ public class ProjectController {
             @RequestParam(defaultValue = "5") int pageSize,
             @RequestParam(required = true) String name
     ) {
-        ServiceAnswer serviceAnswer = proyectoGradoService.getPaginatedCompletedProjectsByName(pageNumber, pageSize, name);
+        ServiceAnswer serviceAnswer = projectService.getPaginatedCompletedProjectsByName(pageNumber, pageSize, name);
         HttpStatus httpStatus = HttpStatus.OK;
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
         return new ResponseEntity<>(controllerAnswer, httpStatus);
@@ -59,7 +57,7 @@ public class ProjectController {
             @RequestParam(defaultValue = "5") int pageSize,
             @RequestParam(required = true) String modality
     ) {
-        ServiceAnswer serviceAnswer = proyectoGradoService.getPaginatedCompletedProjectsByModality(pageNumber, pageSize, modality);
+        ServiceAnswer serviceAnswer = projectService.getPaginatedCompletedProjectsByModality(pageNumber, pageSize, modality);
         HttpStatus httpStatus = HttpStatus.OK;
         if(serviceAnswer.getServiceMessage() != ServiceMessage.OK)
             httpStatus = HttpStatus.NOT_FOUND;
@@ -73,7 +71,7 @@ public class ProjectController {
             @RequestParam(defaultValue = "5") int pageSize,
             @RequestParam(required = true) String area
     ) {
-        ServiceAnswer serviceAnswer = proyectoGradoService.getPaginatedCompletedProjectsByArea(pageNumber, pageSize, area);
+        ServiceAnswer serviceAnswer = projectService.getPaginatedCompletedProjectsByArea(pageNumber, pageSize, area);
         HttpStatus httpStatus = HttpStatus.OK;
         if(serviceAnswer.getServiceMessage() != ServiceMessage.OK)
             httpStatus = HttpStatus.NOT_FOUND;
@@ -87,7 +85,7 @@ public class ProjectController {
             @RequestParam(defaultValue = "5") int pageSize,
             @RequestParam(required = true) String subarea
     ) {
-        ServiceAnswer serviceAnswer = proyectoGradoService.getPaginatedCompletedProjectsBySubArea(pageNumber, pageSize, subarea);
+        ServiceAnswer serviceAnswer = projectService.getPaginatedCompletedProjectsBySubArea(pageNumber, pageSize, subarea);
         HttpStatus httpStatus = HttpStatus.OK;
         if(serviceAnswer.getServiceMessage() != ServiceMessage.OK)
             httpStatus = HttpStatus.NOT_FOUND;
@@ -104,7 +102,7 @@ public class ProjectController {
             @RequestParam(required = false) String area,
             @RequestParam(required = false) String subarea
     ) {
-        ServiceAnswer serviceAnswer = proyectoGradoService.getPaginatedCompletedProjectsByFilters(pageNumber, pageSize, name, modality, area, subarea);
+        ServiceAnswer serviceAnswer = projectService.getPaginatedCompletedProjectsByFilters(pageNumber, pageSize, name, modality, area, subarea);
         HttpStatus httpStatus = HttpStatus.OK;
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
         return new ResponseEntity<>(controllerAnswer, httpStatus);

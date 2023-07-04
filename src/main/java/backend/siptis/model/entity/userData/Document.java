@@ -1,6 +1,7 @@
 package backend.siptis.model.entity.userData;
 
 import backend.siptis.auth.entity.SiptisUser;
+import backend.siptis.model.entity.projectManagement.Phase;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -24,4 +25,9 @@ public class Document {
     @JoinColumn(name = "user_id", nullable = false)
     @JsonBackReference
     private SiptisUser siptisUser;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "phase_id", nullable = false)
+    @JsonBackReference
+    private Phase phase;
 }

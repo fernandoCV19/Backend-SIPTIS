@@ -1,7 +1,6 @@
 package backend.siptis.service.projectManagement;
 
 import backend.siptis.auth.entity.SiptisUser;
-import backend.siptis.commons.Phase;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.projectManagement.Presentation;
@@ -11,6 +10,7 @@ import backend.siptis.model.repository.projectManagement.PresentationRepository;
 import backend.siptis.model.repository.projectManagement.ProjectRepository;
 import backend.siptis.model.repository.projectManagement.ReviewRepository;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
+import backend.siptis.service.cloud.CloudManagementService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

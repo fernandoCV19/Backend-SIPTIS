@@ -22,6 +22,8 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
             "SELECT tut.tutor.id AS idUser FROM ProjectTutor tut WHERE tut.project.id = :idProject" )
     List<Long> getIdsListFromReviewers(Long idProject);
 
+    List<Project> findByPhaseAndTribunalsTribunalId(String phase, Long userId);
+
     @Query("SELECT p FROM Project p WHERE p.defense IS NOT NULL")
     Page <Project> findAllWithDefense(Pageable pageable);
 

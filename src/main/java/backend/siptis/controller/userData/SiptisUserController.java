@@ -12,6 +12,7 @@ import backend.siptis.service.userData.userAuthentication.UserAuthService;
 import backend.siptis.service.userData.userPersonalInformation.AdminEditInformation;
 import backend.siptis.service.userData.userPersonalInformation.UserEditInformation;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -21,56 +22,14 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
-@AllArgsConstructor
+@RequiredArgsConstructor
 @CrossOrigin
 public class SiptisUserController {
 
-    @Autowired
     private final UserAuthService userAuthService;
-
-    @Autowired
-    private final RegisterUserService registerUserService;
-
-    @Autowired
     private final SiptisUserService userService;
-
-    @Autowired
     private final AdminEditInformation adminEditInformationService;
-
-    @PostMapping("/register/student")
-    // @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<?> registerStudent(
-            @RequestBody StudentRegisterDTO studentDTO) {
-
-        ServiceAnswer student = registerUserService.registerStudent(studentDTO);
-        return crearResponseEntityRegistrar(student);
-    }
-
-    @PostMapping("/register/teacher")
-    // @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<?> registerTeacher(
-            @RequestBody TeacherRegisterDTO teacherDTO) {
-
-        ServiceAnswer teacher = registerUserService.registerTeacher(teacherDTO);
-        return crearResponseEntityRegistrar(teacher);
-    }
-
-    @PostMapping("/register/admin")
-    // @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<?> registerAdmin(
-            @RequestBody AdminRegisterDTO adminRegisterDTO) {
-
-        ServiceAnswer admin = registerUserService.registerAdmin(adminRegisterDTO);
-        //return crearResponseEntityRegistrar(admin);
-        return crearResponseEntityRegistrar(admin);
-        /*return new ResponseEntity<>("Exito" +
-                "", HttpStatus.OK);*/
-    }
-    @Autowired
     private final UserEditInformation userEditInformationService;
-
-    @Autowired
-    private final SearchUsers searchUsersService;
 
 
     @PostMapping("/login")
@@ -127,29 +86,6 @@ public class SiptisUserController {
         return crearResponseEntityRegistrar(answer);
     }
 
-    /*@PostMapping("/editUser")
-    public ResponseEntity<?> editMiInformation(
-            @RequestBody StudentEditPersonalInfoDTO dto,
-            @RequestHeader(name = "Authorization") String token) {
-
-        Long id = userAuthService.getIdFromToken(token);
-
-        ServiceAnswer answer = userEditInformationService.studentEditPersonalInfo(id, dto);
-        return crearResponseEntityRegistrar(answer);
-    }
-
-    @GetMapping("/getTribunals")
-    public ResponseEntity<?> getTribunals(){
-        ServiceAnswer query = userService.getPossibleTribunals();
-        ControllerAnswer controllerAnswer = ControllerAnswer.builder().message(query.getServiceMessage().toString()).data(query.getData()).build();
-        return new ResponseEntity<>(controllerAnswer, HttpStatus.OK);
-    }*/
-    @GetMapping("/personal-activities/{userId}")
-    public ResponseEntity<?> getPersonalProjectActivities(@PathVariable int userId) {
-        Long idL = Long.valueOf(userId);
-        ServiceAnswer answer = userService.getPersonalActivities(idL);
-        return crearResponseEntityRegistrar(answer);
-    }
 
     @GetMapping("/personal-activities")
     public ResponseEntity<?> getPersonalProjectActivities(

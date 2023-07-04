@@ -31,5 +31,4 @@ public interface SiptisUserService {
 
     ServiceAnswer getPossibleTribunals();
     ServiceAnswer getPersonalActivities(Long id, Pageable pageable);
-    ServiceAnswer getPersonalActivities(Long id);
 }

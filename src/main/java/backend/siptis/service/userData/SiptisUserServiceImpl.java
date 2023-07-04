@@ -105,11 +105,6 @@ public class SiptisUserServiceImpl implements SiptisUserService {
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(activities).build();
     }
 
-    @Override
-    public ServiceAnswer getPersonalActivities(Long id) {
-        return null;
-    }
-
     private UserGeneralInformationDTO convertToDTO(SiptisUser user) {
         UserGeneralInformationDTO userDTO = new UserGeneralInformationDTO();
         userDTO.setId(user.getId());

@@ -15,4 +15,6 @@ public interface PresentationService {
     ServiceAnswer removeFile (Long idPresentacion, String context);
 
     ServiceAnswer delete (Long idPresentacion);
+
+    ServiceAnswer getLastReviewsFromAPresentation(Long idProject);
 }

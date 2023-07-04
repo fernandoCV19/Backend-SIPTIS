@@ -18,9 +18,8 @@ import java.util.Optional;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 class PresentationRepositoryTest {
-    @Autowired
-    private final PresentationRepository presentationRepository;
 
+    private final PresentationRepository presentationRepository;
 
     @Autowired
     PresentationRepositoryTest(PresentationRepository presentationRepository) {
@@ -69,14 +68,6 @@ class PresentationRepositoryTest {
         Optional<Presentation> ans = presentationRepository.findTopByProjectIdAndReviewed(1L, true);
         Presentation fAns = ans.get();
         assertEquals(fAns.getId(),8L);
-    }
-
-    @Autowired
-    PresentationRepositoryTest(PresentationRepository presentationRepository) {
-        this.presentationRepository = presentationRepository;
-    }
-    @Test
-    void deleteByIdTest(){
     }
 
 
