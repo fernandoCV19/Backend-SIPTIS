@@ -22,7 +22,6 @@ import java.util.Collection;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class SiptisUser implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,6 +29,9 @@ public class SiptisUser implements UserDetails {
     private Long id;
     private String email;
     private String password;
+    private String tokenPassword;
+
+
 
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {
@@ -104,6 +106,7 @@ public class SiptisUser implements UserDetails {
     public SiptisUser(String email, String password) {
         this.email = email;
         this.password = password;
+        this.tokenPassword = null;
     }
 
     //-------------------------------------------------------------------

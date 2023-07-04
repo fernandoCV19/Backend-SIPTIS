@@ -115,6 +115,10 @@ public class ActivityServiceImpl implements ActivityService{
                 .serviceMessage(ServiceMessage.NOT_FOUND)
                 .data(null).build();
     }
+    @Override
+    public List<Activity> findByProjectId(Long id) {
+        return activityRepository.findByProjectId(id);
+    }
 
     @Override
     public ActivityVO entityToVO(Activity activity) {

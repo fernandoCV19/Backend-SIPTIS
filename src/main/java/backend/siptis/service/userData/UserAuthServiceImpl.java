@@ -8,6 +8,7 @@ import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.userData.UserCareer;
 import backend.siptis.model.entity.userData.UserInformation;
 import backend.siptis.model.pjo.dto.AdminRegisterDTO;
+import backend.siptis.model.pjo.dto.TeacherRegisterDTO;
 import backend.siptis.model.pjo.dto.records.LogInDTO;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
 import backend.siptis.model.pjo.dto.StudentInformationDTO;
@@ -55,33 +56,14 @@ public class UserAuthServiceImpl implements UserAuthService {
     @Override
     public ServiceAnswer registerStudent(StudentRegisterDTO estudianteDTO) {
 
-        if(siptisUserRepository.existsByEmail(estudianteDTO.getEmail())){
-            String errorMessage = "El correo ya se encuentra registrado en el sistema";
-            return registerErrorMessage(ServiceMessage.ERROR_REGISTRO_CUENTA_EMAIL,errorMessage);
-        }
-        if(userInformationService.existByCi(estudianteDTO.getCi())){
-            String errorMessage = "El ci ya se encuentra registrado en el sistema";
-            return registerErrorMessage(ServiceMessage.ERROR_REGISTRO_CUENTA_CI,errorMessage);
-        }
-        if(userInformationService.existByCodSIS(estudianteDTO.getCodSIS())){
-            String errorMessage = "El codigo SIS ya se encuentra registrado en el sistema";
-            return registerErrorMessage(ServiceMessage.ERROR_REGISTRO_CUENTA_CODSIS,errorMessage);
+        ServiceAnswer validation = validateUser(estudianteDTO.getEmail(), estudianteDTO.getCi(), estudianteDTO.getCodSIS());
+
+        if( validation != null){
+            return validation;
         }
 
 
-        SiptisUser siptisUser = new SiptisUser();
-        siptisUser.setEmail(estudianteDTO.getEmail());
-        Role role = roleRepository.findById(1)
-                .orElseThrow(() -> new UsernameNotFoundException(
-                        "El rol no existe"
-                ));
-
-        siptisUser.addRol(role);
-
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        String contrasena = encoder.encode(estudianteDTO.getPassword());
-        siptisUser.setPassword(contrasena);
-        siptisUserRepository.save(siptisUser);
+        SiptisUser siptisUser = registerUser(estudianteDTO.getEmail(), estudianteDTO.getPassword(), 1);
         //InformacionEstudianteDTO estudiante = new InformacionEstudianteDTO();
         ServiceAnswer respuesta = userInformationService
                 .registerStudent(estudianteDTO, siptisUser);
@@ -91,6 +73,57 @@ public class UserAuthServiceImpl implements UserAuthService {
 
         //return estudiante;
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(estudiante).build();
+    }
+
+    @Override
+    public ServiceAnswer registerTeacher(TeacherRegisterDTO teacherDTO) {
+        ServiceAnswer validation = validateUser(teacherDTO.getEmail(), teacherDTO.getCi(), teacherDTO.getCodSIS());
+
+        if( validation != null){
+            return validation;
+        }
+
+        SiptisUser siptisUser = registerUser(teacherDTO.getEmail(), teacherDTO.getPassword(), 3);
+
+        ServiceAnswer respuesta = userInformationService.registerTeacher(teacherDTO, siptisUser);
+
+        StudentInformationDTO estudiante = (StudentInformationDTO) respuesta.getData();
+        estudiante.setEmail(siptisUser.getEmail());
+
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(estudiante).build();
+
+    }
+
+    private SiptisUser registerUser(String email, String password, int roleId){
+        SiptisUser siptisUser = new SiptisUser();
+        siptisUser.setEmail(email);
+        Role role = roleRepository.findById(roleId)
+                .orElseThrow(() -> new UsernameNotFoundException(
+                        "El rol no existe"
+                ));
+        siptisUser.addRol(role);
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String contrasena = encoder.encode(password);
+        siptisUser.setPassword(contrasena);
+        return siptisUserRepository.save(siptisUser);
+    }
+
+    private ServiceAnswer validateUser(String email, String ci, String codSIS){
+        if(siptisUserRepository.existsByEmail(email)){
+            String errorMessage = "El correo ya se encuentra registrado en el sistema";
+            return registerErrorMessage(ServiceMessage.ERROR_REGISTRO_CUENTA_EMAIL,errorMessage);
+        }
+        if(userInformationService.existByCi(ci)){
+            String errorMessage = "El ci ya se encuentra registrado en el sistema";
+            return registerErrorMessage(ServiceMessage.ERROR_REGISTRO_CUENTA_CI,errorMessage);
+        }
+        if(userInformationService.existByCodSIS(codSIS)){
+            String errorMessage = "El codigo SIS ya se encuentra registrado en el sistema";
+            return registerErrorMessage(ServiceMessage.ERROR_REGISTRO_CUENTA_CODSIS,errorMessage);
+        }
+
+        return null;
     }
 
     private ServiceAnswer registerErrorMessage(ServiceMessage serviceMessage,String errorMessage){
@@ -104,7 +137,7 @@ public class UserAuthServiceImpl implements UserAuthService {
 
         if(siptisUserRepository.existsByEmail(adminDTO.getEmail())){
             String mensajeError = "El correo ya esta registrado en el sistema";
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR_REGISTRO_CUENTA).data(mensajeError).build();
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR_REGISTRO_CUENTA_EMAIL).data(mensajeError).build();
         }
 
         SiptisUser adminUser = new SiptisUser();
@@ -125,13 +158,16 @@ public class UserAuthServiceImpl implements UserAuthService {
 
     @Override
     public ServiceAnswer userInfo(Long id){
+        if(!siptisUserRepository.existsById(id)){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST)
+                    .data("No existe un usuario con el id solicitado").build();
+        }
         Optional<SiptisUser> response = siptisUserRepository.findById(id);
         SiptisUser user = response.get();
 
         StudentInformationDTO dto = convertToStudentInformation(user);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(dto).build();
     }
-
     @Override
     public ServiceAnswer logIn(LogInDTO logInDTO){
 
@@ -171,6 +207,10 @@ public class UserAuthServiceImpl implements UserAuthService {
         return JWTokenUtils.getId(token);
     }
 
+    @Override
+    public Optional<SiptisUser> findByTokenPassword(String tokenPassword){
+        return siptisUserRepository.findByTokenPassword(tokenPassword);
+    }
     private StudentInformationDTO convertToStudentInformation(SiptisUser user){
 
         StudentInformationDTO student = new StudentInformationDTO();

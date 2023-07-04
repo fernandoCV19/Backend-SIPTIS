@@ -40,6 +40,14 @@ public class WebSecurityConfig {
                         "/general-activity", "/general-activity/create", "/general-activity/*", "/user/test", "/user/login", "/user/todos", "/user/editUser/*",
                         "/user/information/*", "/email/send", "/project/**", "/presentation/**", "/placesToDefense/**"
                         ,"/document/**", "/cloud/**")
+                .requestMatchers("/user/*", "/user/register/student", "/user/register/admin" ,
+                        "/user/register/teacher", "/user/editTeacher/*",
+                        "/user/test", "/user/login","/user/todos","/user/editUser/*",
+                        "/user/information/*", "/email/send", "/general-activity",
+                        "/general-activity/create","/email/prueba/*", "/general-activity/*",
+                        "/email/changePassword","/email/askemail/*",
+                        "/user/information/*", "/user/personal-activities/*", "/email/send", "/general-activity","/general-activity/create", "/general-activity/*")
+
                 .permitAll()
                 .anyRequest().authenticated()
                 .and().sessionManagement()

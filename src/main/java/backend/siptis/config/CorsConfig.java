@@ -15,7 +15,8 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
 
-                String localUI = "http://127.0.0.1:5173/";
+
+                String localUI = "http://localhost:5173/";
 
                 registry.addMapping("/login")
                         .allowedOrigins(localUI)
@@ -27,7 +28,9 @@ public class CorsConfig {
                         .allowedMethods("*")
                         .exposedHeaders("*");
 
+
                 registry.addMapping("/user/register/admin")
+
                         .allowedOrigins(localUI)
                         .allowedMethods("*")
                         .exposedHeaders("*");
@@ -38,6 +41,11 @@ public class CorsConfig {
                         .exposedHeaders("*");
 
                 registry.addMapping("/user/test")
+
+                        .allowedMethods("*")
+                        .exposedHeaders("*");
+
+                registry.addMapping("/todos")
                         .allowedOrigins(localUI)
                         .allowedMethods("*")
                         .exposedHeaders("*");
@@ -50,11 +58,23 @@ public class CorsConfig {
                         .allowedOrigins(localUI)
                         .allowedMethods("*");
 
+                registry.addMapping("/user/personal-activities/*")
+                        .allowedOrigins(localUI)
+                        .allowedMethods("*");
+
                 registry.addMapping("/user/information")
                         .allowedOrigins(localUI)
                         .allowedMethods("*");
 
                 registry.addMapping("/user/editUser/*")
+                        .allowedOrigins(localUI)
+                        .allowedMethods("*");
+
+                registry.addMapping("/email/askemail/*")
+                        .allowedOrigins(localUI)
+                        .allowedMethods("*");
+
+                registry.addMapping("/email/changePassword")
                         .allowedOrigins(localUI)
                         .allowedMethods("*");
 

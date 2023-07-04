@@ -80,6 +80,7 @@ public class GeneralActivityServiceImpl implements GeneralActivityService {
             generalActivity.setActivityName(generalActivityDTO.getGeneralActivityName());
             generalActivity.setActivityDescription(generalActivityDTO.getActivityDescription());
             generalActivity.setActivityDate(generalActivityDTO.getActivityDate());
+            generalActivityRepository.save(generalActivity);
 
             generalActivity = generalActivityRepository.findById(id).get();
 

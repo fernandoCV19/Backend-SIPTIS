@@ -4,6 +4,7 @@ import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.userData.UserCareer;
+import backend.siptis.model.pjo.dto.TeacherRegisterDTO;
 import backend.siptis.model.repository.userData.UserInformationRepository;
 import backend.siptis.model.entity.userData.UserInformation;
 import backend.siptis.model.pjo.dto.StudentInformationDTO;
@@ -71,5 +72,33 @@ public class UserInformationServiceImpl implements UserInformationService {
 
         //return studentInformationDTO;
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(studentInformationDTO).build();
+    }
+
+    @Override
+    public ServiceAnswer registerTeacher(TeacherRegisterDTO teacherDTO, SiptisUser siptisUser) {
+        UserInformation userInformation = new UserInformation();
+        userInformation.setSiptisUser(siptisUser);
+        userInformation.setLastnames(teacherDTO.getLastnames());
+        userInformation.setNames(teacherDTO.getNames());
+        userInformation.setCi(teacherDTO.getCi());
+        userInformation.setCodSIS(teacherDTO.getCodSIS());
+        userInformation.setBirthDate(teacherDTO.getBirthDate());
+        userInformation.setCelNumber(teacherDTO.getCelNumber());
+
+
+        userInformationRepository.save(userInformation);
+
+        StudentInformationDTO studentInformationDTO = new StudentInformationDTO();
+
+        studentInformationDTO.setLastnames(teacherDTO.getLastnames());
+        studentInformationDTO.setNames(teacherDTO.getNames());
+        studentInformationDTO.setCi(teacherDTO.getCi());
+        studentInformationDTO.setCodSIS(teacherDTO.getCodSIS());
+        studentInformationDTO.setBirthDate(teacherDTO.getBirthDate());
+        studentInformationDTO.setCelNumber(teacherDTO.getCelNumber());
+
+        //return studentInformationDTO;
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(studentInformationDTO).build();
+
     }
 }

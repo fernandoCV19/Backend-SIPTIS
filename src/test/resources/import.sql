@@ -583,7 +583,11 @@ INSERT INTO activity (id, activity_name, activity_description, activity_date, pr
 INSERT INTO activity (id, activity_name, activity_description, activity_date, project_id) VALUES (10, 'Actividad 10', 'Descripcion 10', '2023-8-10', 5);
 
 
+INSERT INTO role(id, name) VALUES (1, 'ESTUDIANTE');
+INSERT INTO role(id, name) VALUES (2, 'ADMIN');
+INSERT INTO role(id, name) VALUES (3, 'DOCENTE');
 
+--carreras
 
 
 ---- get schedule info
