@@ -19,7 +19,13 @@ import java.util.Optional;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 class PresentationRepositoryTest {
     @Autowired
-    private PresentationRepository presentationRepository;
+    private final PresentationRepository presentationRepository;
+
+
+    @Autowired
+    PresentationRepositoryTest(PresentationRepository presentationRepository) {
+        this.presentationRepository = presentationRepository;
+    }
 
     @Test
     void findByIdReturnNotNull(){
@@ -69,6 +75,10 @@ class PresentationRepositoryTest {
     PresentationRepositoryTest(PresentationRepository presentationRepository) {
         this.presentationRepository = presentationRepository;
     }
+    @Test
+    void deleteByIdTest(){
+    }
+
 
     @Test
     void findTopByOrderByDateDescAndProjectIdWithACorrectIdReturnAnObject() {

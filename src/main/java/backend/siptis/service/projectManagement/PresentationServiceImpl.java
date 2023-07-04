@@ -10,6 +10,7 @@ import backend.siptis.model.pjo.vo.projectManagement.ReviewShortInfoVO;
 import backend.siptis.model.repository.projectManagement.PresentationRepository;
 import backend.siptis.model.repository.projectManagement.ProjectRepository;
 import jakarta.transaction.Transactional;
+import backend.siptis.service.cloud.CloudManagementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,7 +32,7 @@ public class PresentationServiceImpl implements PresentationService {
     public ServiceAnswer createPresentation (Long idProyecto, Phase fase){
         Optional <Presentation> presentacionesNoEntregadas = presentationRepository.findByProjectIdAndReviewed(idProyecto, false);
         if (presentacionesNoEntregadas.isPresent()){
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.PRESENTACION_PENDIENTE).data(null).build();
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.PENDING_PRESENTATION).data(null).build();
         }
         Optional<Project> oproyectoGrado = projectRepository.findById(idProyecto);
         if (oproyectoGrado.isEmpty()){
@@ -43,7 +44,7 @@ public class PresentationServiceImpl implements PresentationService {
         presentation.setPhase(fase.toString());
         presentation.setProject(project);
         presentationRepository.save(presentation);
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.PRESENTACION_CREADA).data(presentation).build();
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.PRESENTATION_CREATED).data(presentation).build();
 
     }
 
@@ -85,7 +86,7 @@ public class PresentationServiceImpl implements PresentationService {
             presentation.setProjectPath(key);}
 
         presentationRepository.saveAndFlush(presentation);
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OPERACION_DE_NUBE_COMPLETADA).data(key).build();
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.CLOUD_OPERATION_COMPLETE).data(key).build();
     }
 
     @Override
@@ -116,7 +117,7 @@ public class PresentationServiceImpl implements PresentationService {
         }
         nube.deleteObject(key);
         presentationRepository.saveAndFlush(presentation);
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OPERACION_DE_NUBE_COMPLETADA).data(presentation).build();
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.CLOUD_OPERATION_COMPLETE).data(presentation).build();
     }
 
     @Override
@@ -130,20 +131,12 @@ public class PresentationServiceImpl implements PresentationService {
             if (project!=null)
                 nube.deleteObject(project);
             presentationRepository.deleteById(idPresentacion);
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.PRESENTACION_ELIMINADA).data(null).build();
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.PRESENTATION_DELETED).data(null).build();
         }
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
     }
 
-    @Override
-    public ServiceAnswer downloadFileFromCloud(String key){
-        ByteArrayOutputStream response= nube.getObject(key);
-        if (response == null){
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
-        }
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(response).build();
 
-    }
 
     @Override
     public ServiceAnswer getLastReviewsFromAPresentation(Long projectId) {

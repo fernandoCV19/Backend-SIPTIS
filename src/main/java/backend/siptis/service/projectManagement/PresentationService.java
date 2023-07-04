@@ -15,8 +15,4 @@ public interface PresentationService {
     ServiceAnswer removeFile (Long idPresentacion, String context);
 
     ServiceAnswer delete (Long idPresentacion);
-
-    ServiceAnswer downloadFileFromCloud(String key);
-
-    ServiceAnswer getLastReviewsFromAPresentation(Long idProject);
 }

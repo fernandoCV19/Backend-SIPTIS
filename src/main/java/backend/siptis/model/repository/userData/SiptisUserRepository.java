@@ -20,4 +20,6 @@ public interface SiptisUserRepository extends JpaRepository<SiptisUser, Long> {
     Optional<SiptisUser> findById(Long id);
 
     List<SiptisUser> findByRolesName(String roleName);
+    Optional<SiptisUser> findOneById(Long id);
+
 }

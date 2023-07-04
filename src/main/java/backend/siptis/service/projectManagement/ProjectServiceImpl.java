@@ -13,9 +13,21 @@ import backend.siptis.model.pjo.dto.projectManagement.DefenseDTO;
 import backend.siptis.model.pjo.vo.projectManagement.*;
 import backend.siptis.model.repository.editorsAndReviewers.ProjectTribunalRepository;
 import backend.siptis.model.repository.projectManagement.*;
+import backend.siptis.model.entity.editorsAndReviewers.ProjectTutor;
+import backend.siptis.model.entity.projectManagement.Presentation;
+import backend.siptis.model.entity.projectManagement.Project;
+import backend.siptis.model.entity.projectManagement.Review;
+import backend.siptis.model.pjo.vo.projectManagement.ProjectCompleteInfo;
+import backend.siptis.model.pjo.vo.projectManagement.ProjectToReviewSectionVO;
+import backend.siptis.model.repository.projectManagement.PresentationRepository;
+import backend.siptis.model.repository.projectManagement.ProjectRepository;
+import backend.siptis.model.repository.projectManagement.ReviewRepository;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -37,7 +49,99 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ServiceAnswer getProjects(){
         List<Project> proyectos = projectRepository.findAll();
+        if (proyectos.isEmpty()) return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_PROJECTS).data(proyectos).build();
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(proyectos).build();
+    }
+
+    @Override
+    public ServiceAnswer getPaginatedCompletedProjects(int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Project> projectPage = projectRepository.findAllWithDefense(pageable);
+        if (projectPage.isEmpty()) return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_PROJECTS).data(null).build();
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(projectPage).build();
+    }
+
+    @Override
+    public ServiceAnswer getPaginatedCompletedProjectsByName(int pageNumber, int pageSize, String name) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Project> projectPage = projectRepository.findAllByNameWithDefense(pageable, name);
+        if (projectPage.isEmpty()) return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_PROJECTS).data(null).build();
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(projectPage).build();
+    }
+
+    @Override
+    public ServiceAnswer getPaginatedCompletedProjectsByModality(int pageNumber, int pageSize, String modality) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Project> projectPage = projectRepository.findAllByModalityWithDefense(pageable, modality);
+        if (projectPage.isEmpty()) return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_PROJECTS).data(null).build();
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(projectPage.getContent()).build();
+    }
+
+    @Override
+    public ServiceAnswer getPaginatedCompletedProjectsByArea(int pageNumber, int pageSize, String area) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Project> projectPage = projectRepository.findAllByAreaWithDefense(pageable, area);
+        if (projectPage.isEmpty()) return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_PROJECTS).data(null).build();
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(projectPage.getContent()).build();
+    }
+
+    @Override
+    public ServiceAnswer getPaginatedCompletedProjectsBySubArea(int pageNumber, int pageSize, String subArea){
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Project> projectPage = projectRepository.findAllBySubAreaWithDefense(pageable, subArea);
+        if (projectPage.isEmpty()) return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_PROJECTS).data(null).build();
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(projectPage.getContent()).build();
+    }
+
+    @Override
+    public ServiceAnswer getPaginatedCompletedProjectsByFilters(int pageNumber, int pageSize, String name, String modality, String area, String subArea){
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Project> projectPage = projectRepository.findAllWithFilters(pageable, name, modality, area, subArea);
+        if (projectPage.isEmpty()) return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_PROJECTS).data(null).build();
+
+        List<Project> projects = projectPage.getContent();
+        int total = projectPage.getTotalPages();
+        Map<String, Object> totalResponse = new HashMap<>();
+        totalResponse.put ("totalPages", total);
+        totalResponse.put ("page", pageNumber);
+
+        List <Map<String, Object>> foundProjects = new ArrayList<>();
+
+        for (Project p: projects){
+            Map<String, Object> jsonMap = new HashMap<>();
+            jsonMap.put("id",p.getId());
+
+            jsonMap.put("projectName", p.getName());
+            jsonMap.put("modality", p.getModality().getName());
+            jsonMap.put("perfilPath", p.getPerfilPath());
+            jsonMap.put("blueBookPath", p.getBlueBookPath());
+            jsonMap.put("projectPath", p.getProjectPath());
+
+            jsonMap.put("areas", p.getAreas().toArray());
+            jsonMap.put("subAreas", p.getSubAreas().toArray());
+
+            List<ProjectStudent> projectStudents = p.getStudents().stream().toList();
+            List <String> studentsNames = new ArrayList<>();
+            for (ProjectStudent ps : projectStudents){
+                String names = ps.getStudent().getUserInformation().getNames().trim();
+                String lastnames = ps.getStudent().getUserInformation().getLastnames().trim();
+                studentsNames.add(names+ " " +lastnames);
+            }
+
+            jsonMap.put("students", studentsNames);
+
+            List<ProjectTutor> projectTutors = p.getTutors().stream().toList();
+            List <String> tutorsNames = new ArrayList<>();
+            for (ProjectTutor ps : projectTutors){
+                String names = ps.getTutor().getUserInformation().getNames().trim();
+                String lastnames = ps.getTutor().getUserInformation().getLastnames().trim();
+                tutorsNames.add(names+ " " +lastnames);
+            }
+            jsonMap.put("tutors", tutorsNames);
+            foundProjects.add(jsonMap);
+        }
+        totalResponse.put("content", foundProjects);
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(totalResponse).build();
     }
 
     @Override
@@ -49,7 +153,7 @@ public class ProjectServiceImpl implements ProjectService {
         Project proyecto = oProyectoGrado.get();
         List<Presentation> presentaciones = proyecto.getPresentations().stream().toList();
         if (presentaciones.isEmpty()){
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.SIN_PRESENTACIONES).data(null).build();
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_PRESENTATIONS).data(null).build();
         }
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(presentaciones).build();
     }
