@@ -62,7 +62,9 @@ public class WebSecurityConfig {
 
                         "/cloud/**",
 
-                        "/supervisor/**")
+                        "/supervisor/**",
+
+                        "/phase/**")
                 .permitAll()
                 .anyRequest().authenticated()
                 .and().exceptionHandling().authenticationEntryPoint(authenticationEntryPoint())

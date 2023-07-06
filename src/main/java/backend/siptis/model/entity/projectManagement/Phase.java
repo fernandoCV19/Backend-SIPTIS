@@ -23,5 +23,5 @@ public class Phase {
 
     @OneToMany(mappedBy = "phase", fetch = FetchType.LAZY)
     @JsonManagedReference
-    private Collection<Document> documents;
+    private Collection<DocumentPhase> documents;
 }
