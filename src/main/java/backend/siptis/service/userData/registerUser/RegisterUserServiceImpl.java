@@ -9,7 +9,7 @@ import backend.siptis.model.pjo.dto.StudentRegisterDTO;
 import backend.siptis.model.pjo.dto.TeacherRegisterDTO;
 import backend.siptis.model.repository.general.RoleRepository;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
-import backend.siptis.service.userData.checkUserInformation.CheckUserInformation;
+import backend.siptis.service.userData.UserInformationService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class RegisterUserServiceImpl implements RegisterUserService {
     @Autowired
     private final RegisterUserInformation registerUserInformation;
     @Autowired
-    private  final CheckUserInformation checkUserInformation;
+    private  final UserInformationService checkUserInformation;
     @Autowired
     private final AuthenticationManager authenticationManager;
 

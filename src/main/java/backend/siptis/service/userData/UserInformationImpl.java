@@ -1,16 +1,18 @@
-package backend.siptis.service.userData.checkUserInformation;
+package backend.siptis.service.userData;
 
-import backend.siptis.model.repository.userData.SiptisUserRepository;
+import backend.siptis.auth.entity.SiptisUser;
+import backend.siptis.model.entity.userData.UserInformation;
 import backend.siptis.model.repository.userData.UserInformationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
-public class CheckUserInformationImpl implements CheckUserInformation{
+public class UserInformationImpl implements UserInformationService{
 
     private final UserInformationRepository userInformationRepository;
-    private final SiptisUserRepository userRepository;
 
     @Override
     public boolean existByCodSIS(String codSIS) {
@@ -24,16 +26,14 @@ public class CheckUserInformationImpl implements CheckUserInformation{
 
     @Override
     public boolean existsById(Long id) {
-        return userRepository.existsById(id);
+        return userInformationRepository.existsById(id.intValue());
     }
 
     @Override
-    public boolean existsByEmail(String email) {
-        return userRepository.existsByEmail(email);
-    }
+    public UserInformation findById(Long id) {
 
-    @Override
-    public boolean existsTokenPassword(String tokenPassword) {
-        return userRepository.existsByTokenPassword(tokenPassword);
+        int userId = id.intValue();
+        Optional<UserInformation> optional = userInformationRepository.findById(userId);
+        return optional.get();
     }
 }

@@ -3,21 +3,17 @@ package backend.siptis.service.userData.userPersonalInformation;
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.model.entity.userData.UserArea;
 import backend.siptis.model.entity.userData.UserInformation;
 import backend.siptis.model.pjo.dto.AdminEditUserPersonalInformationDTO;
 import backend.siptis.model.pjo.dto.UserEditPersonalInformationDTO;
 import backend.siptis.model.pjo.dto.UserSelectedAreasDTO;
 import backend.siptis.model.pjo.dto.records.PersonalInformationDTO;
 import backend.siptis.service.userData.SiptisUserService;
-import backend.siptis.service.userData.checkUserInformation.CheckUserInformation;
+import backend.siptis.service.userData.UserInformationService;
 import backend.siptis.service.userData.checkUserInformation.SearchUserInformation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Service
@@ -25,7 +21,7 @@ import java.util.List;
 public class PersonalInformationImpl implements PersonalInformation{
 
     @Autowired
-    private final CheckUserInformation checkUserInformation;
+    private final UserInformationService checkUserInformation;
     @Autowired
     private final SearchUserInformation searchUserInformation;
     @Autowired

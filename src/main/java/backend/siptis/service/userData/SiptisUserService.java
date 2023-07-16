@@ -10,24 +10,26 @@ import org.springframework.data.domain.Pageable;
 
 public interface SiptisUserService {
 
-    ServiceAnswer obtenerProyectosSupervisorParaMenuPrincipalPorIdUsuario(Long id);
+    boolean existsByEmail(String email);
 
-    ServiceAnswer getAllUsers();
-
-    ServiceAnswer findAll();
-    ServiceAnswer obtenerProyectosSupervisorParaMenuPrincipalPorIdUsuario(Integer id);
-
-
+    boolean existsTokenPassword(String tokenPassword);
 
     SiptisUser findByEmail(String email);
 
     SiptisUser findByTokenPassword(String email);
 
+    ServiceAnswer getAllUsers();
+
+    ServiceAnswer findAll();
+
+
+
+    ServiceAnswer obtenerProyectosSupervisorParaMenuPrincipalPorIdUsuario(Long id);
+
+    ServiceAnswer obtenerProyectosSupervisorParaMenuPrincipalPorIdUsuario(Integer id);
+
     SiptisUser save(SiptisUser user);
 
-    boolean existsByEmail(String email);
-
-    boolean existsTokenPassword(String tokenPassword);
 
     ServiceAnswer getPossibleTribunals();
     ServiceAnswer getPersonalActivities(Long id, Pageable pageable);

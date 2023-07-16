@@ -9,7 +9,7 @@ import backend.siptis.model.entity.userData.UserInformation;
 import backend.siptis.model.pjo.dto.records.PersonalInformationDTO;
 import backend.siptis.model.repository.userData.UserInformationRepository;
 import backend.siptis.service.userData.SiptisUserService;
-import backend.siptis.service.userData.checkUserInformation.CheckUserInformation;
+import backend.siptis.service.userData.UserInformationService;
 import backend.siptis.service.userData.checkUserInformation.SearchUserInformation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ import java.util.Set;
 public class GetPersonalInformationImpl implements GetPersonalInformationService{
 
     @Autowired
-    private final CheckUserInformation checkUserInformation;
+    private final UserInformationService checkUserInformation;
     @Autowired
     private final SearchUserInformation searchUserInformation;
     @Autowired
