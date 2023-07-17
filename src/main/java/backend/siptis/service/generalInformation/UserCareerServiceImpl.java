@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +25,8 @@ public class UserCareerServiceImpl implements UserCareerService{
 
     @Override
     public ServiceAnswer getCareerById(int id) {
-        return null;
+        Optional<UserCareer> career = userCareerRepository.findById(id);
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
+                .data(career.get()).build();
     }
 }

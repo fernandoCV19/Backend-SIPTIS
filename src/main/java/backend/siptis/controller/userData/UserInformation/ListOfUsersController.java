@@ -3,9 +3,8 @@ package backend.siptis.controller.userData.UserInformation;
 import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.service.userData.searchUsers.SearchUsers;
+import backend.siptis.service.userData.UserInformationService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,35 +15,32 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 public class ListOfUsersController {
 
-    @Autowired
-    private final SearchUsers searchUsersService;
+    private final UserInformationService userInformationService;
 
     @GetMapping("/adminList")
     public ResponseEntity<?> adminList(){
-        ServiceAnswer answer = searchUsersService.getAllAdmin();
+        ServiceAnswer answer = userInformationService.getAllAdmin();
 
         return crearResponseEntityRegistrar(answer);
     }
 
     @GetMapping("/teacherList")
     public ResponseEntity<?> teacherList(){
-        ServiceAnswer answer = searchUsersService.getAllTeacher();
+        ServiceAnswer answer = userInformationService.getAllTeachers();
 
         return crearResponseEntityRegistrar(answer);
     }
 
     @GetMapping("/studentList")
     public ResponseEntity<?> studentList(){
-        System.out.println('s');
-        ServiceAnswer answer = searchUsersService.getAllStudent();
+        ServiceAnswer answer = userInformationService.getAllStudents();
 
         return crearResponseEntityRegistrar(answer);
     }
 
     @GetMapping("/buscarUser/{role_id}/{name}")
     public ResponseEntity<?> searchUsers( @PathVariable Long role_id, @PathVariable String name){
-        System.out.println('s');
-        ServiceAnswer answer = searchUsersService.searchUserByNameAndRole(name, role_id);
+        ServiceAnswer answer = userInformationService.searchUserByNameAndRole(name, role_id);
 
         return crearResponseEntityRegistrar(answer);
     }

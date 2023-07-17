@@ -4,6 +4,8 @@ import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.UserSelectedAreasDTO;
+import backend.siptis.service.generalInformation.UserAreaService;
+import backend.siptis.service.generalInformation.UserCareerService;
 import backend.siptis.service.userData.GeneralInformation.GeneralInformationService;
 import backend.siptis.service.userData.userAuthentication.UserAuthService;
 import lombok.AllArgsConstructor;
@@ -21,15 +23,18 @@ public class GeneralInformationController {
     @Autowired
     private final GeneralInformationService generalInformationService;
 
+    private final UserCareerService userCareerService;
+    private final UserAreaService userAreaService;
+
     @GetMapping("/getAllCareers")
     public ResponseEntity<?> getAllCareers(){
-        ServiceAnswer answerService = generalInformationService.getAllCareers();
+        ServiceAnswer answerService = userCareerService.getAllCareers();
         return createResponse(answerService);
     }
 
     @GetMapping("/getAllAreas")
     public ResponseEntity<?> getAllAreas(){
-        ServiceAnswer answerService = generalInformationService.getAllUserAreas();
+        ServiceAnswer answerService = userAreaService.getAllUserAreas();
         return createResponse(answerService);
     }
 

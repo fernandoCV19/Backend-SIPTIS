@@ -14,7 +14,13 @@ public interface UserInformationService {
 
     UserInformation findById(Long id);
 
+    ServiceAnswer getAllStudents();
 
+    ServiceAnswer getAllTeachers();
+
+    ServiceAnswer getAllAdmin();
+
+    ServiceAnswer searchUserByNameAndRole(String name, Long role_id);
 
 
 

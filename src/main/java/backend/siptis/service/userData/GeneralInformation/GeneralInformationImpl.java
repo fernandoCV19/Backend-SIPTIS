@@ -44,19 +44,7 @@ public class GeneralInformationImpl implements GeneralInformationService{
     @Autowired
     private final ProjectRepository projectRepository;
 
-    @Override
-    public ServiceAnswer getAllCareers() {
-        List<UserCareer> careers = careerRepository.findAll();
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(careers).build();
 
-    }
-
-    @Override
-    public ServiceAnswer getAllUserAreas() {
-        List<UserArea> areas = areaRepository.findAll();
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(areas).build();
-
-    }
 
     @Override
     public ServiceAnswer getAllProjectAreas() {
@@ -65,21 +53,6 @@ public class GeneralInformationImpl implements GeneralInformationService{
 
     }
 
-    @Override
-    public ServiceAnswer getAreaById(int id) {
-        Optional<UserArea> area = areaRepository.findById(id);
-        UserArea response = area.get();
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(response).build();
-
-    }
-
-    @Override
-    public ServiceAnswer getCareerById(int id) {
-        Optional<UserCareer> career = careerRepository.findById(id);
-        UserCareer response = career.get();
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(response).build();
-
-    }
 
     @Override
     public ServiceAnswer getAllPotentialTribunals() {

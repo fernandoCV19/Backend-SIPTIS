@@ -10,7 +10,6 @@ import backend.siptis.model.pjo.dto.records.PersonalInformationDTO;
 import backend.siptis.model.repository.userData.UserInformationRepository;
 import backend.siptis.service.userData.SiptisUserService;
 import backend.siptis.service.userData.UserInformationService;
-import backend.siptis.service.userData.checkUserInformation.SearchUserInformation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,8 +23,6 @@ public class GetPersonalInformationImpl implements GetPersonalInformationService
     @Autowired
     private final UserInformationService checkUserInformation;
     @Autowired
-    private final SearchUserInformation searchUserInformation;
-    @Autowired
     private final SiptisUserService siptisUserService;
     @Autowired
     private final UserInformationRepository userInformationRepository;
@@ -37,7 +34,7 @@ public class GetPersonalInformationImpl implements GetPersonalInformationService
                     .data("No existe un usuario con el id solicitado").build();
         }
 
-        SiptisUser user = searchUserInformation.findById(id);
+        SiptisUser user = siptisUserService.findById(id);
 
         PersonalInformationDTO dto = convertToPersonalInformation(user);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(dto).build();
@@ -50,7 +47,7 @@ public class GetPersonalInformationImpl implements GetPersonalInformationService
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST)
                     .data("No existe un usuario con el id solicitado").build();
         }
-        SiptisUser user = searchUserInformation.findById(id);
+        SiptisUser user = siptisUserService.findById(id);
 
         Set<UserCareer> career = user.getCareer();
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(career).build();
@@ -63,7 +60,7 @@ public class GetPersonalInformationImpl implements GetPersonalInformationService
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST)
                     .data("No existe un usuario con el id solicitado").build();
         }
-        SiptisUser user = searchUserInformation.findById(id);
+        SiptisUser user = siptisUserService.findById(id);
 
         Set<UserArea> areas = user.getAreas();
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(areas).build();

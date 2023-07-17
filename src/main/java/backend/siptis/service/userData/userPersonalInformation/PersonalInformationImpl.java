@@ -10,7 +10,6 @@ import backend.siptis.model.pjo.dto.UserSelectedAreasDTO;
 import backend.siptis.model.pjo.dto.records.PersonalInformationDTO;
 import backend.siptis.service.userData.SiptisUserService;
 import backend.siptis.service.userData.UserInformationService;
-import backend.siptis.service.userData.checkUserInformation.SearchUserInformation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,8 +22,6 @@ public class PersonalInformationImpl implements PersonalInformation{
     @Autowired
     private final UserInformationService checkUserInformation;
     @Autowired
-    private final SearchUserInformation searchUserInformation;
-    @Autowired
     private final SiptisUserService siptisUserService;
 
     @Override
@@ -34,7 +31,7 @@ public class PersonalInformationImpl implements PersonalInformation{
                     .data("No existe un usuario con el id solicitado").build();
         }
 
-        SiptisUser user = searchUserInformation.findById(id);
+        SiptisUser user = siptisUserService.findById(id);
 
         PersonalInformationDTO dto = convertToPersonalInformation(user);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(dto).build();
@@ -49,7 +46,7 @@ public class PersonalInformationImpl implements PersonalInformation{
                     .data("No existe un usuario registrado con el id solicitado").build();
         }
         try {
-            SiptisUser siptisUser = searchUserInformation.findById(id);
+            SiptisUser siptisUser = siptisUserService.findById(id);
 
             siptisUser.setEmail(dto.getEmail());
             UserInformation userInformation = siptisUser.getUserInformation();
@@ -82,7 +79,7 @@ public class PersonalInformationImpl implements PersonalInformation{
                     .data("No existe un usuario registrado con el id solicitado").build();
         }
         try {
-            SiptisUser siptisUser = searchUserInformation.findById(id);
+            SiptisUser siptisUser = siptisUserService.findById(id);
 
             siptisUser.setEmail(dto.getEmail());
             UserInformation userInformation = siptisUser.getUserInformation();

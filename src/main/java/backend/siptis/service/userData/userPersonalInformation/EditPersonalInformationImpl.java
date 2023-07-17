@@ -9,10 +9,10 @@ import backend.siptis.model.pjo.dto.AdminEditUserPersonalInformationDTO;
 import backend.siptis.model.pjo.dto.UserEditPersonalInformationDTO;
 import backend.siptis.model.pjo.dto.UserSelectedAreasDTO;
 import backend.siptis.model.repository.userData.UserInformationRepository;
+import backend.siptis.service.generalInformation.UserAreaService;
 import backend.siptis.service.userData.GeneralInformation.GeneralInformationService;
 import backend.siptis.service.userData.SiptisUserService;
 import backend.siptis.service.userData.UserInformationService;
-import backend.siptis.service.userData.checkUserInformation.SearchUserInformation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,13 +26,13 @@ public class EditPersonalInformationImpl implements EditPersonalInformationServi
     @Autowired
     private final UserInformationService checkUserInformation;
     @Autowired
-    private final SearchUserInformation searchUserInformation;
-    @Autowired
     private final GeneralInformationService generalInformationService;
-    @Autowired
+
     private final SiptisUserService siptisUserService;
     @Autowired
     private final UserInformationRepository userInformationRepository;
+
+    private final UserAreaService userAreaService;
 
     @Override
     public ServiceAnswer EditLimitedPersonalInformationById(Long id, UserEditPersonalInformationDTO dto) {
@@ -42,7 +42,7 @@ public class EditPersonalInformationImpl implements EditPersonalInformationServi
                     .data("No existe un usuario registrado con el id solicitado").build();
         }
         try {
-            SiptisUser siptisUser = searchUserInformation.findById(id);
+            SiptisUser siptisUser = siptisUserService.findById(id);
 
             siptisUser.setEmail(dto.getEmail());
             UserInformation userInformation = siptisUser.getUserInformation();
@@ -69,12 +69,12 @@ public class EditPersonalInformationImpl implements EditPersonalInformationServi
                     .data("No existe un usuario registrado con el id solicitado").build();
         }
         try {
-            SiptisUser siptisUser = searchUserInformation.findById(id);
+            SiptisUser siptisUser = siptisUserService.findById(id);
             userInformationRepository.deleteUserAreas(id);
             List<Long> ids = dto.getIds();
             for (Long areaId: ids) {
                 ServiceAnswer response =
-                        generalInformationService.getAreaById(areaId.intValue());
+                        userAreaService.getUserAreaById(areaId.intValue());
                 siptisUser.addAreas((UserArea) response.getData());
             }
 
@@ -107,7 +107,7 @@ public class EditPersonalInformationImpl implements EditPersonalInformationServi
                     .data("No existe un usuario registrado con el id solicitado").build();
         }
         try {
-            SiptisUser siptisUser = searchUserInformation.findById(id);
+            SiptisUser siptisUser = siptisUserService.findById(id);
 
             siptisUser.setEmail(dto.getEmail());
             UserInformation userInformation = siptisUser.getUserInformation();

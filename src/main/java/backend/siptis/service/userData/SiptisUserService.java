@@ -14,11 +14,16 @@ public interface SiptisUserService {
 
     boolean existsTokenPassword(String tokenPassword);
 
+    SiptisUser findById(long id);
+
     SiptisUser findByEmail(String email);
 
     SiptisUser findByTokenPassword(String email);
 
     ServiceAnswer getAllUsers();
+
+
+
 
     ServiceAnswer findAll();
 
