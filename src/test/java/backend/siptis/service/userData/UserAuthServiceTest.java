@@ -7,7 +7,6 @@ import backend.siptis.model.pjo.dto.usersInformationDTO.StudentInformationDTO;
 import backend.siptis.model.pjo.dto.StudentRegisterDTO;
 import backend.siptis.model.pjo.dto.records.LogInDTO;
 import backend.siptis.service.userData.registerUser.RegisterUserService;
-import backend.siptis.service.userData.userAuthentication.UserAuthService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;

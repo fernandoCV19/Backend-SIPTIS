@@ -2,7 +2,7 @@ package backend.siptis.auth.jwt;
 
 import backend.siptis.auth.entity.Role;
 import backend.siptis.auth.entity.SiptisUser;
-import backend.siptis.service.userData.userAuthentication.UserDetailImp;
+import backend.siptis.service.userData.UserInformationService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -19,7 +19,7 @@ public class JWTokenUtils {
     private static final long EXPIRE_TIME_DURATION = 2 * 60 * 60* 1000; //2horas.
     private static final String ACCESS_TOKEN_SECRET= "$2a$12$JTfIoPcl28jeEFio3aHBa.rcqtBUgvykiKYgKxvikVzzxVAt82CEu\n";
 
-    public static String createToken(UserDetailImp userDI){
+    public static String createToken(UserInformationService.UserDetailImp userDI){
         Date fechaExpiracion =new Date(System.currentTimeMillis() + EXPIRE_TIME_DURATION);
 
         return Jwts.builder().setSubject(userDI.getUsername())

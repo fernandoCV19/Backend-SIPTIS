@@ -3,11 +3,8 @@ package backend.siptis.controller.userData.UserInformation;
 import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.model.pjo.dto.UserEditPersonalInformationDTO;
-import backend.siptis.service.userData.userAuthentication.UserAuthService;
-import backend.siptis.service.userData.userPersonalInformation.EditPersonalInformationService;
+import backend.siptis.service.userData.SiptisUserService;
 import backend.siptis.service.userData.userPersonalInformation.GetPersonalInformationService;
-import backend.siptis.service.userData.userPersonalInformation.PersonalInformation;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,8 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 public class GetUserInformationController {
 
-    @Autowired
-    private final UserAuthService userAuthService;
+    private final SiptisUserService siptisUserService;
     @Autowired
     private final GetPersonalInformationService getPersonalInformationService;
 
@@ -30,7 +26,7 @@ public class GetUserInformationController {
     @GetMapping("/personalInformation")
     public ResponseEntity<?> getInfo(@RequestHeader(name="Authorization") String token){
 
-        Long id = userAuthService.getIdFromToken(token);
+        Long id = siptisUserService.getIdFromToken(token);
         //ServiceAnswer answerService = userAuthService.userInfo(id);
         ServiceAnswer answerService =
                 getPersonalInformationService.getPersonalInformationById(id);
@@ -52,7 +48,7 @@ public class GetUserInformationController {
     @GetMapping("/userCareer")
     public ResponseEntity<?> getCareer(@RequestHeader(name="Authorization") String token){
 
-        Long id = userAuthService.getIdFromToken(token);
+        Long id = siptisUserService.getIdFromToken(token);
         //ServiceAnswer answerService = userAuthService.userInfo(id);
         ServiceAnswer answerService =
                 getPersonalInformationService.getStudentCareerById(id);
@@ -74,7 +70,7 @@ public class GetUserInformationController {
     @PreAuthorize("hasAuthority('TEACHER')")
     public ResponseEntity<?> getAreas(@RequestHeader(name="Authorization") String token){
 
-        Long id = userAuthService.getIdFromToken(token);
+        Long id = siptisUserService.getIdFromToken(token);
         //ServiceAnswer answerService = userAuthService.userInfo(id);
         ServiceAnswer answerService =
                 getPersonalInformationService.getTeacherAreasById(id);
@@ -97,7 +93,7 @@ public class GetUserInformationController {
     public ResponseEntity<?> getNotSelectedAreas(
             @RequestHeader(name="Authorization") String token){
 
-        Long id = userAuthService.getIdFromToken(token);
+        Long id = siptisUserService.getIdFromToken(token);
         //ServiceAnswer answerService = userAuthService.userInfo(id);
         ServiceAnswer answerService =
                 getPersonalInformationService.getTeacherNotSelectedAreasById(id);

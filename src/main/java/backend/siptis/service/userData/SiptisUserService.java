@@ -6,7 +6,10 @@ import backend.siptis.model.pjo.dto.EditStudentInformationDTO;
 import backend.siptis.model.pjo.dto.EditTeacherInformationDTO;
 import backend.siptis.model.pjo.dto.StudentEditPersonalInfoDTO;
 import backend.siptis.model.pjo.dto.TeacherEditPersonalInfoDTO;
+import backend.siptis.model.pjo.dto.records.LogInDTO;
 import org.springframework.data.domain.Pageable;
+
+import java.util.Optional;
 
 public interface SiptisUserService {
 
@@ -18,12 +21,7 @@ public interface SiptisUserService {
 
     SiptisUser findByEmail(String email);
 
-    SiptisUser findByTokenPassword(String email);
-
     ServiceAnswer getAllUsers();
-
-
-
 
     ServiceAnswer findAll();
 
@@ -38,4 +36,10 @@ public interface SiptisUserService {
 
     ServiceAnswer getPossibleTribunals();
     ServiceAnswer getPersonalActivities(Long id, Pageable pageable);
+
+    ServiceAnswer logIn(LogInDTO logInDTO);
+
+    Long getIdFromToken(String token);
+
+    Optional<SiptisUser> findByTokenPassword(String tokenPassword);
 }

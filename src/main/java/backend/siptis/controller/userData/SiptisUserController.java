@@ -6,7 +6,7 @@ import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.*;
 import backend.siptis.model.pjo.dto.records.LogInDTO;
 import backend.siptis.service.userData.SiptisUserService;
-import backend.siptis.service.userData.userAuthentication.UserAuthService;
+import backend.siptis.service.userData.UserInformationService;
 import backend.siptis.service.userData.userPersonalInformation.AdminEditInformation;
 import backend.siptis.service.userData.userPersonalInformation.UserEditInformation;
 import lombok.RequiredArgsConstructor;
@@ -22,17 +22,17 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 public class SiptisUserController {
 
-    private final UserAuthService userAuthService;
     private final SiptisUserService userService;
     private final AdminEditInformation adminEditInformationService;
     private final UserEditInformation userEditInformationService;
+    private final UserInformationService userInformationService;
 
 
     @PostMapping("/login")
     public ResponseEntity<?> login(
             @RequestBody LogInDTO logInDTO) {
 
-        ServiceAnswer answerService = userAuthService.logIn(logInDTO);
+        ServiceAnswer answerService = userService.logIn(logInDTO);
 
         return crearResponseEntityRegistrar(answerService);
     }
@@ -40,19 +40,22 @@ public class SiptisUserController {
     @GetMapping("/information")
     public ResponseEntity<?> getInfo(@RequestHeader (name="Authorization") String token){
 
-        Long id = userAuthService.getIdFromToken(token);
-        ServiceAnswer answerService = userAuthService.userInfo(id);
+        Long id = userService.getIdFromToken(token);
+        //ServiceAnswer answerService = userInformationService(id);
 
-        return crearResponseEntityRegistrar(answerService);
+        //return crearResponseEntityRegistrar(answerService);
+
+        return null;
     }
 
     @GetMapping("/information/{userId}")
     public ResponseEntity<?> getInfoId(@PathVariable int userId) {
 
         Long idL = Long.valueOf(userId);
-        ServiceAnswer answerService = userAuthService.userInfo(idL);
+        //ServiceAnswer answerService = userAuthService.userInfo(idL);
 
-        return crearResponseEntityRegistrar(answerService);
+        //return crearResponseEntityRegistrar(answerService);
+        return null;
     }
 
     @GetMapping("/todos")
@@ -87,7 +90,7 @@ public class SiptisUserController {
     public ResponseEntity<?> getPersonalProjectActivities(
             @RequestHeader(name = "Authorization") String token,
             Pageable pageable) {
-        Long idL = userAuthService.getIdFromToken(token);
+        Long idL = userService.getIdFromToken(token);
         ServiceAnswer answer = userService.getPersonalActivities(idL, pageable);
         return crearResponseEntityRegistrar(answer);
     }
@@ -97,7 +100,7 @@ public class SiptisUserController {
             @RequestBody TeacherEditPersonalInfoDTO dto,
             @RequestHeader(name = "Authorization") String token) {
 
-        Long id = userAuthService.getIdFromToken(token);
+        Long id = userService.getIdFromToken(token);
 
         ServiceAnswer answer = userEditInformationService.teacherEditPersonalInfo(id, dto);
         return crearResponseEntityRegistrar(answer);

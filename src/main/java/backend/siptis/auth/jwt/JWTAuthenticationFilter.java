@@ -1,7 +1,7 @@
 package backend.siptis.auth.jwt;
 
 import backend.siptis.auth.security.Credentials;
-import backend.siptis.service.userData.userAuthentication.UserDetailImp;
+import backend.siptis.service.userData.UserInformationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
@@ -56,7 +56,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             Authentication authentication
     ) throws IOException {
         System.out.println("ENTRA AL SUCCESS ");
-        UserDetailImp userDetails= (UserDetailImp) authentication.getPrincipal();
+        UserInformationService.UserDetailImp userDetails= (UserInformationService.UserDetailImp) authentication.getPrincipal();
         String token = JWTokenUtils.createToken(userDetails);
         System.out.println("token: "+token);
         response.addHeader("Authorization", "Bearer "+ token);

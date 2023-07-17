@@ -106,7 +106,7 @@ public class EmailServiceImpl implements EmailService{
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.INVALID_TOKEN)
                     .data("El token para el cambio de contraseña no es valido").build();
         }
-        SiptisUser user = siptisUserService.findByTokenPassword(dto.getTokenPassword());
+        SiptisUser user = siptisUserService.findByTokenPassword(dto.getTokenPassword()).get();
         //System.out.println("REVISION");
         System.out.println(user.getEmail());
         System.out.println(dto.getTokenPassword());

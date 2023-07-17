@@ -6,9 +6,8 @@ import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.AdminEditUserPersonalInformationDTO;
 import backend.siptis.model.pjo.dto.UserEditPersonalInformationDTO;
 import backend.siptis.model.pjo.dto.UserSelectedAreasDTO;
-import backend.siptis.service.userData.userAuthentication.UserAuthService;
+import backend.siptis.service.userData.SiptisUserService;
 import backend.siptis.service.userData.userPersonalInformation.EditPersonalInformationService;
-import backend.siptis.service.userData.userPersonalInformation.PersonalInformation;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,10 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 public class UpdateUserInformationController {
 
-    @Autowired
-    private final UserAuthService userAuthService;
-    @Autowired
-    private  final PersonalInformation personalInformationService;
+    private  final SiptisUserService siptisUserService;
     @Autowired
     private  final EditPersonalInformationService editPersonalInformationService;
 
@@ -34,7 +30,7 @@ public class UpdateUserInformationController {
             @RequestBody UserSelectedAreasDTO dto,
             @RequestHeader (name="Authorization") String token){
 
-        Long id = userAuthService.getIdFromToken(token);
+        Long id = siptisUserService.getIdFromToken(token);
 
 
         ServiceAnswer answer = editPersonalInformationService.UpdateUserAreas(id, dto);
@@ -56,7 +52,7 @@ public class UpdateUserInformationController {
             @RequestBody UserEditPersonalInformationDTO dto,
             @RequestHeader (name="Authorization") String token){
 
-        Long id = userAuthService.getIdFromToken(token);
+        Long id = siptisUserService.getIdFromToken(token);
 
         ServiceAnswer answer =
                 editPersonalInformationService.EditLimitedPersonalInformationById(id, dto);

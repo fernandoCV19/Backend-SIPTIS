@@ -8,7 +8,6 @@ import backend.siptis.service.generalInformation.AreasService;
 import backend.siptis.service.generalInformation.UserAreaService;
 import backend.siptis.service.generalInformation.UserCareerService;
 import backend.siptis.service.userData.GeneralInformation.GeneralInformationService;
-import backend.siptis.service.userData.userAuthentication.UserAuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
