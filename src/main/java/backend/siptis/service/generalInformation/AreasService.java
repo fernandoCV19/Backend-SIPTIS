@@ -4,7 +4,9 @@ import backend.siptis.commons.ServiceAnswer;
 
 public interface AreasService {
 
-    ServiceAnswer getAllUserAreas();
+    ServiceAnswer getAllAreas();
 
-    ServiceAnswer getUserAreaById(int id);
+    ServiceAnswer getAreaById(int id);
+
+    ServiceAnswer getAllProjectAreas();
 }

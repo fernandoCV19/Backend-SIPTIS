@@ -4,6 +4,7 @@ import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.UserSelectedAreasDTO;
+import backend.siptis.service.generalInformation.AreasService;
 import backend.siptis.service.generalInformation.UserAreaService;
 import backend.siptis.service.generalInformation.UserCareerService;
 import backend.siptis.service.userData.GeneralInformation.GeneralInformationService;
@@ -25,6 +26,7 @@ public class GeneralInformationController {
 
     private final UserCareerService userCareerService;
     private final UserAreaService userAreaService;
+    private final AreasService areasService;
 
     @GetMapping("/getAllCareers")
     public ResponseEntity<?> getAllCareers(){
@@ -33,14 +35,14 @@ public class GeneralInformationController {
     }
 
     @GetMapping("/getAllAreas")
-    public ResponseEntity<?> getAllAreas(){
+    public ResponseEntity<?> getAllUserAreas(){
         ServiceAnswer answerService = userAreaService.getAllUserAreas();
         return createResponse(answerService);
     }
 
     @GetMapping("/getAllProjectAreas")
     public ResponseEntity<?> getAllProjectAreas(){
-        ServiceAnswer answerService = generalInformationService.getAllProjectAreas();
+        ServiceAnswer answerService = areasService.getAllAreas();
         return createResponse(answerService);
     }
 
@@ -54,7 +56,6 @@ public class GeneralInformationController {
     public ResponseEntity<?> getPotentialTribunalsByAreas(
             @RequestBody UserSelectedAreasDTO areas
     ){
-        System.out.println(areas.getIds().toString());
         ServiceAnswer answerService = generalInformationService.getPotentialTribunalsByAreas(areas);
         return createResponse(answerService);
     }

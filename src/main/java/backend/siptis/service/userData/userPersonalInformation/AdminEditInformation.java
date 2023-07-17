@@ -10,5 +10,4 @@ public interface AdminEditInformation {
 
     ServiceAnswer editTeacherInformation(Long userID, EditTeacherInformationDTO editDTO);
 
-
 }

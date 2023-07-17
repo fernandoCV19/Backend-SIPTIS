@@ -46,13 +46,6 @@ public class GeneralInformationImpl implements GeneralInformationService{
 
 
 
-    @Override
-    public ServiceAnswer getAllProjectAreas() {
-        List<Area> areas = projectAreaRepository.findAll();
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(areas).build();
-
-    }
-
 
     @Override
     public ServiceAnswer getAllPotentialTribunals() {

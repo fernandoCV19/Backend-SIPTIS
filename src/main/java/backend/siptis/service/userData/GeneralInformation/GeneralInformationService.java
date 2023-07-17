@@ -9,7 +9,7 @@ public interface GeneralInformationService {
 
     //ServiceAnswer getAllUserAreas();
 
-    ServiceAnswer getAllProjectAreas();
+    //ServiceAnswer getAllProjectAreas();
 
     //ServiceAnswer getAreaById(int id);
 
