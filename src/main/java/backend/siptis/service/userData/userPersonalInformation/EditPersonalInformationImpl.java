@@ -37,12 +37,12 @@ public class EditPersonalInformationImpl implements EditPersonalInformationServi
     @Override
     public ServiceAnswer EditLimitedPersonalInformationById(Long id, UserEditPersonalInformationDTO dto) {
         String message = "La información de su cuenta fue modificada exitosamente.";
-        if(! checkUserInformation.existsById(id)){
+        /*if(! checkUserInformation.existsById(id)){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST)
                     .data("No existe un usuario registrado con el id solicitado").build();
-        }
+        }*/
         try {
-            SiptisUser siptisUser = siptisUserService.findById(id);
+            SiptisUser siptisUser = (SiptisUser) siptisUserService.findById(id.intValue()).getData();
 
             siptisUser.setEmail(dto.getEmail());
             UserInformation userInformation = siptisUser.getUserInformation();
@@ -64,12 +64,12 @@ public class EditPersonalInformationImpl implements EditPersonalInformationServi
     public ServiceAnswer UpdateUserAreas(Long id, UserSelectedAreasDTO dto) {
 
         String message = "La información de su cuenta fue modificada exitosamente.";
-        if(! checkUserInformation.existsById(id)){
+        /*if(! checkUserInformation.existsById(id)){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST)
                     .data("No existe un usuario registrado con el id solicitado").build();
-        }
+        }*/
         try {
-            SiptisUser siptisUser = siptisUserService.findById(id);
+            SiptisUser siptisUser = (SiptisUser) siptisUserService.findById(id.intValue()).getData();
             userInformationRepository.deleteUserAreas(id);
             List<Long> ids = dto.getIds();
             for (Long areaId: ids) {
@@ -102,12 +102,12 @@ public class EditPersonalInformationImpl implements EditPersonalInformationServi
     @Override
     public ServiceAnswer EditFullPersonalInformationById(Long id, AdminEditUserPersonalInformationDTO dto) {
         String message = "La información fue modificada exitosamente.";
-        if(! checkUserInformation.existsById(id)){
+        /*if(! checkUserInformation.existsById(id)){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST)
                     .data("No existe un usuario registrado con el id solicitado").build();
-        }
+        }*/
         try {
-            SiptisUser siptisUser = siptisUserService.findById(id);
+            SiptisUser siptisUser = (SiptisUser) siptisUserService.findById(id.intValue()).getData();
 
             siptisUser.setEmail(dto.getEmail());
             UserInformation userInformation = siptisUser.getUserInformation();

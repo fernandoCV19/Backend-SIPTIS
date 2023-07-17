@@ -11,21 +11,21 @@ import java.util.Collection;
 
 public interface UserInformationService {
 
-    boolean existByCodSIS(String codSIS);
+    ServiceAnswer existByCodSIS(String codSIS);
+    ServiceAnswer existByCi(String ci);
+    ServiceAnswer existsById(Long id);
 
-    boolean existByCi(String ci);
-
-    boolean existsById(Long id);
-
-    UserInformation findById(Long id);
+    ServiceAnswer findById(Long id);
 
     ServiceAnswer getAllStudents();
-
     ServiceAnswer getAllTeachers();
-
     ServiceAnswer getAllAdmin();
 
     ServiceAnswer searchUserByNameAndRole(String name, Long role_id);
+
+    ServiceAnswer getUserPersonalInformation(SiptisUser user);
+
+    ServiceAnswer getTeacherNotSelectedAreasById(Long id);
 
 
     @AllArgsConstructor

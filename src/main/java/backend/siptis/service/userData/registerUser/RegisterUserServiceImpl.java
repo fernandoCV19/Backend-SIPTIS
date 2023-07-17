@@ -31,8 +31,6 @@ public class RegisterUserServiceImpl implements RegisterUserService {
     private final RegisterUserInformation registerUserInformation;
     @Autowired
     private  final UserInformationService checkUserInformation;
-    @Autowired
-    private final AuthenticationManager authenticationManager;
 
     @Override
     public ServiceAnswer registerStudent(StudentRegisterDTO estudianteDTO) {
@@ -110,7 +108,7 @@ public class RegisterUserServiceImpl implements RegisterUserService {
     }
 
     private ServiceAnswer validateUser(String email, String ci, String codSIS){
-        if(siptisUserRepository.existsByEmail(email)){
+       /* if(siptisUserRepository.existsByEmail(email)){
             String errorMessage = "El correo ya se encuentra registrado en el sistema";
             return createResponse(ServiceMessage.ERROR_REGISTRO_CUENTA_EMAIL,errorMessage);
         }
@@ -122,7 +120,7 @@ public class RegisterUserServiceImpl implements RegisterUserService {
             String errorMessage = "El codigo SIS ya se encuentra registrado en el sistema";
             return createResponse(ServiceMessage.ERROR_REGISTRO_CUENTA_CODSIS,errorMessage);
         }
-
+*/
         return null;
     }
 

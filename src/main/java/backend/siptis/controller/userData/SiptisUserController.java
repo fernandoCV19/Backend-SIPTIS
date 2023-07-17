@@ -23,18 +23,24 @@ import org.springframework.web.bind.annotation.*;
 public class SiptisUserController {
 
     private final SiptisUserService userService;
-    private final AdminEditInformation adminEditInformationService;
-    private final UserEditInformation userEditInformationService;
-    private final UserInformationService userInformationService;
-
 
     @PostMapping("/login")
     public ResponseEntity<?> login(
             @RequestBody LogInDTO logInDTO) {
-
         ServiceAnswer answerService = userService.logIn(logInDTO);
+        return createResponseEntity(answerService);
+    }
 
-        return crearResponseEntityRegistrar(answerService);
+
+    @GetMapping("/personalInformation/{userId}")
+    public ResponseEntity<?> getInfoById(@PathVariable int userId){
+
+        Long id = Long.valueOf(userId);
+        /*ServiceAnswer answerService =
+                userService.getUserPersonalInformation(id);
+
+        return createResponseEntity(answerService);*/
+        return null;
     }
 
     @GetMapping("/information")
@@ -48,15 +54,96 @@ public class SiptisUserController {
         return null;
     }
 
-    @GetMapping("/information/{userId}")
-    public ResponseEntity<?> getInfoId(@PathVariable int userId) {
 
-        Long idL = Long.valueOf(userId);
-        //ServiceAnswer answerService = userAuthService.userInfo(idL);
-
-        //return crearResponseEntityRegistrar(answerService);
-        return null;
+    @GetMapping("/personal-activities")
+    public ResponseEntity<?> getPersonalProjectActivities(
+            @RequestHeader(name = "Authorization") String token,
+            Pageable pageable) {
+        Long idL = userService.getIdFromToken(token);
+        ServiceAnswer answer = userService.getPersonalActivities(idL, pageable);
+        return createResponseEntity(answer);
     }
+
+
+    @GetMapping("/userCareer")
+    public ResponseEntity<?> getCareer(@RequestHeader(name="Authorization") String token){
+
+        Long id = userService.getIdFromToken(token);
+        ServiceAnswer answerService =
+                userService.getStudentCareerById(id);
+
+        return createResponseEntity(answerService);
+    }
+
+    @GetMapping("/userCareerById/{userId}")
+    public ResponseEntity<?> getCareer(
+            @PathVariable int userId){
+        Long id = Long.valueOf(userId);
+        ServiceAnswer answerService =
+                userService.getStudentCareerById(id);
+
+        return createResponseEntity(answerService);
+    }
+
+    @GetMapping("/userAreas")
+    //@PreAuthorize("hasAuthority('TEACHER')")
+    public ResponseEntity<?> getAreas(@RequestHeader(name="Authorization") String token){
+
+        Long id = userService.getIdFromToken(token);
+        ServiceAnswer answerService = userService.getTeacherAreasById(id);
+
+        return createResponseEntity(answerService);
+    }
+
+    @GetMapping("/userAreasById/{userId}")
+    public ResponseEntity<?> getAreas(
+            @PathVariable int userId){
+
+        Long id = Long.valueOf(userId);
+        ServiceAnswer answerService = userService.getTeacherAreasById(id);
+
+        return createResponseEntity(answerService);
+    }
+
+    @GetMapping("/userNotSelectedAreas")
+    public ResponseEntity<?> getNotSelectedAreas(
+            @RequestHeader(name="Authorization") String token){
+
+        Long id = userService.getIdFromToken(token);
+        //ServiceAnswer answerService = userAuthService.userInfo(id);
+        ServiceAnswer answerService =
+                userService.getTeacherNotSelectedAreasById(id);
+
+        return createResponseEntity(answerService);
+    }
+
+    @GetMapping("/userNotSelectedAreasById/{userId}")
+    public ResponseEntity<?> getNotSelectedAreasById(
+            @PathVariable int userId){
+
+        Long id = Long.valueOf(userId);
+        //ServiceAnswer answerService = userAuthService.userInfo(id);
+        ServiceAnswer answerService =
+                userService.getTeacherNotSelectedAreasById(id);
+
+        return createResponseEntity(answerService);
+    }
+
+
+    private ResponseEntity<?> createResponseEntity(ServiceAnswer serviceAnswer){
+        Object data = serviceAnswer.getData();
+        ServiceMessage mensajeServicio = serviceAnswer.getServiceMessage();
+        HttpStatus httpStatus = HttpStatus.OK;
+
+        if(mensajeServicio == ServiceMessage.NOT_FOUND || mensajeServicio == ServiceMessage.ERROR)
+            httpStatus = HttpStatus.NOT_FOUND;
+
+        ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(data).message(mensajeServicio.toString()).build();
+        return new ResponseEntity<>(controllerAnswer, httpStatus);
+    }
+
+/*
+
 
     @GetMapping("/todos")
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -86,15 +173,6 @@ public class SiptisUserController {
     }
 
 
-    @GetMapping("/personal-activities")
-    public ResponseEntity<?> getPersonalProjectActivities(
-            @RequestHeader(name = "Authorization") String token,
-            Pageable pageable) {
-        Long idL = userService.getIdFromToken(token);
-        ServiceAnswer answer = userService.getPersonalActivities(idL, pageable);
-        return crearResponseEntityRegistrar(answer);
-    }
-
     @PostMapping("/editTeacher")
     public ResponseEntity<?> editMiInformationTeacher(
             @RequestBody TeacherEditPersonalInfoDTO dto,
@@ -106,20 +184,5 @@ public class SiptisUserController {
         return crearResponseEntityRegistrar(answer);
     }
 
-    private ResponseEntity<?> crearResponseEntityRegistrar(ServiceAnswer serviceAnswer) {
-        Object data = serviceAnswer.getData();
-        ServiceMessage messageService = serviceAnswer.getServiceMessage();
-        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
-
-        if (messageService == ServiceMessage.OK) {
-            httpStatus = HttpStatus.OK;
-        }
-
-
-        if (messageService == ServiceMessage.NOT_FOUND || messageService == ServiceMessage.ERROR)
-            httpStatus = HttpStatus.NOT_FOUND;
-
-        ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(data).message(messageService.toString()).build();
-        return new ResponseEntity<>(controllerAnswer, httpStatus);
-    }
+    */
 }

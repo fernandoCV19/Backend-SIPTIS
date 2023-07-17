@@ -5,11 +5,10 @@ import backend.siptis.auth.jwt.JWTokenUtils;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.records.Activity;
+import backend.siptis.model.entity.userData.UserArea;
 import backend.siptis.model.entity.userData.UserCareer;
-import backend.siptis.model.entity.userData.UserInformation;
 import backend.siptis.model.pjo.dto.*;
 import backend.siptis.model.pjo.dto.records.LogInDTO;
-import backend.siptis.model.pjo.dto.usersInformationDTO.StudentInformationDTO;
 import backend.siptis.model.pjo.vo.userData.TribunalInfoToAssignSection;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +19,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -31,19 +30,8 @@ public class SiptisUserServiceImpl implements SiptisUserService {
 
     private final SiptisUserRepository usuarioCommonRepository;
     private final AuthenticationManager authenticationManager;
+    private final UserInformationService userInformationService;
 
-    @Override
-    public ServiceAnswer findAll() {
-        List<SiptisUser> userDBList = usuarioCommonRepository.findAll();
-        List<UserGeneralInformationDTO> userList = new ArrayList<>();
-        for (SiptisUser user : userDBList) {
-            UserGeneralInformationDTO userDTO = convertToDTO(user);
-
-            userList.add(userDTO);
-
-        }
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(userList).build();
-    }
 
     @Override
     public ServiceAnswer obtenerProyectosSupervisorParaMenuPrincipalPorIdUsuario(Integer id) {
@@ -61,27 +49,50 @@ public class SiptisUserServiceImpl implements SiptisUserService {
     }
 
     @Override
-    public boolean existsByEmail(String email) {
+    public ServiceAnswer existsById(int id) {
+        Long longId = Long.valueOf(id);
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
+                .data(usuarioCommonRepository.existsById(longId)).build();
+    }
+
+    private boolean existsUserById(long id) {
+        return usuarioCommonRepository.existsById(id);
+    }
+    private boolean existsUserByEmail(String email) {
         return usuarioCommonRepository.existsByEmail(email);
     }
-
-    @Override
-    public SiptisUser findByEmail(String email) {
-
-        Optional<SiptisUser> user = usuarioCommonRepository.findByEmail(email);
-        return user.get();
+    private SiptisUser findUserByEmail(String email) {
+        return usuarioCommonRepository.findByEmail(email).get();
     }
-
-
-    @Override
-    public boolean existsTokenPassword(String tokenPassword) {
-
-        return usuarioCommonRepository.existsByTokenPassword(tokenPassword);
-    }
-
-    @Override
-    public SiptisUser findById(long id) {
+    private SiptisUser findUserById(long id) {
         return usuarioCommonRepository.findById(id).get();
+    }
+
+    @Override
+    public ServiceAnswer existsByEmail(String email) {
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
+                .data(existsByEmail(email)).build();
+    }
+
+    @Override
+    public ServiceAnswer findByEmail(String email) {
+
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
+                .data(findUserByEmail(email)).build();
+    }
+
+    @Override
+    public ServiceAnswer existsTokenPassword(String tokenPassword) {
+
+        boolean response = usuarioCommonRepository.existsByTokenPassword(tokenPassword);
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
+                .data(response).build();
+    }
+
+    @Override
+    public ServiceAnswer findById(long id) {
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
+                .data(findUserById(id)).build();
     }
 
     @Override
@@ -90,6 +101,34 @@ public class SiptisUserServiceImpl implements SiptisUserService {
         return userList.isEmpty() ?
                 ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(userList).build() :
                 ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(usuarioCommonRepository.findAll()).build();
+    }
+
+    @Override
+    public ServiceAnswer getStudentCareerById(Long id) {
+        if(!existsUserById(id)){
+            String errorMessage = "El usuario al que intenta acceder no se encuentra registrado en el sistema";
+            return createResponse(ServiceMessage.ERROR,errorMessage);
+        }
+        SiptisUser user = findUserById(id);
+        Set<UserCareer> career = user.getCareer();
+        return  createResponse(ServiceMessage.OK, career);
+
+    }
+
+    @Override
+    public ServiceAnswer getTeacherAreasById(Long id) {
+        if(!existsUserById(id)){
+            String errorMessage = "El usuario al que intenta acceder no se encuentra registrado en el sistema";
+            return createResponse(ServiceMessage.ERROR,errorMessage);
+        }
+        SiptisUser user = findUserById(id);
+        Set<UserArea> areas = user.getAreas();
+        return createResponse(ServiceMessage.OK, areas);
+    }
+
+    @Override
+    public ServiceAnswer getTeacherNotSelectedAreasById(Long id) {
+        return userInformationService.getTeacherNotSelectedAreasById(id);
     }
 
     @Override
@@ -110,9 +149,9 @@ public class SiptisUserServiceImpl implements SiptisUserService {
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(activities).build();
     }
 
-    private ServiceAnswer registerErrorMessage(ServiceMessage serviceMessage,String errorMessage){
+    private ServiceAnswer createResponse(ServiceMessage serviceMessage,Object data){
         return ServiceAnswer.builder().serviceMessage(
-                serviceMessage).data(errorMessage
+                serviceMessage).data(data
         ).build();
     }
 
@@ -121,9 +160,9 @@ public class SiptisUserServiceImpl implements SiptisUserService {
     @Override
     public ServiceAnswer logIn(LogInDTO logInDTO){
 
-        if(!usuarioCommonRepository.existsByEmail(logInDTO.getEmail())){
+        if(!existsUserByEmail(logInDTO.getEmail())){
             String errorMessage = "El correo al que intenta acceder no se encuentra registrado en el sistema";
-            return registerErrorMessage(ServiceMessage.ERROR_INICIO_SESION_EMAIL,errorMessage);
+            return createResponse(ServiceMessage.ERROR_INICIO_SESION_EMAIL,errorMessage);
         }
 
         try{
@@ -140,12 +179,12 @@ public class SiptisUserServiceImpl implements SiptisUserService {
 
             } else {
                 String message = "Ocurrió un error al iniciar Sesión.";
-                return registerErrorMessage(ServiceMessage.ERROR_INICIO_SESION,message);
+                return createResponse(ServiceMessage.ERROR_INICIO_SESION,message);
             }
         }catch (Exception e){
             System.out.println("Error de autenticación: "+e.getMessage());
             String message = "Contraseña incorrecta.";
-            return registerErrorMessage(ServiceMessage.ERROR_INICIO_SESION_PASSWORD,message);
+            return createResponse(ServiceMessage.ERROR_INICIO_SESION_PASSWORD,message);
 
         }
     }
@@ -158,41 +197,21 @@ public class SiptisUserServiceImpl implements SiptisUserService {
     }
 
     @Override
+    public ServiceAnswer getUserPersonalInformation(long id) {
+        if(!existsUserById(id)){
+            String errorMessage = "El usuario al que intenta acceder no se encuentra registrado en el sistema";
+            return createResponse(ServiceMessage.ERROR,errorMessage);
+        }
+
+        SiptisUser user = findUserById(id);
+        return userInformationService.getUserPersonalInformation(user);
+
+    }
+
+    @Override
     public Optional<SiptisUser> findByTokenPassword(String tokenPassword){
         return usuarioCommonRepository.findByTokenPassword(tokenPassword);
     }
-
-
-
-    private StudentInformationDTO convertToStudentInformation(SiptisUser user){
-
-        StudentInformationDTO student = new StudentInformationDTO();
-        if(user != null){
-
-            student.setEmail(user.getEmail());
-            UserInformation information = user.getUserInformation();;
-            if(information != null){
-                student.setNames(information.getNames());
-                student.setLastnames(information.getLastnames());
-                student.setCelNumber(information.getCelNumber());
-                student.setCi(information.getCi());
-                student.setBirthDate(information.getBirthDate());
-                student.setCodSIS(information.getCodSIS());
-                Set<UserCareer> career = user.getCareer();
-
-                for (UserCareer userCareer: career) {
-                    student.setCareer(userCareer.getName());
-                    student.setCareerId(userCareer.getId());
-                }
-            }
-
-
-        }
-
-
-        return student;
-    }
-
 
     private UserGeneralInformationDTO convertToDTO(SiptisUser user) {
         UserGeneralInformationDTO userDTO = new UserGeneralInformationDTO();
@@ -200,5 +219,6 @@ public class SiptisUserServiceImpl implements SiptisUserService {
         userDTO.setEmail(user.getEmail());
         return userDTO;
     }
+
 }
 

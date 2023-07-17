@@ -2,10 +2,9 @@ package backend.siptis.service.userData;
 
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ServiceAnswer;
-import backend.siptis.model.pjo.dto.EditStudentInformationDTO;
-import backend.siptis.model.pjo.dto.EditTeacherInformationDTO;
-import backend.siptis.model.pjo.dto.StudentEditPersonalInfoDTO;
-import backend.siptis.model.pjo.dto.TeacherEditPersonalInfoDTO;
+import backend.siptis.model.pjo.dto.AdminRegisterDTO;
+import backend.siptis.model.pjo.dto.StudentRegisterDTO;
+import backend.siptis.model.pjo.dto.TeacherRegisterDTO;
 import backend.siptis.model.pjo.dto.records.LogInDTO;
 import org.springframework.data.domain.Pageable;
 
@@ -13,33 +12,34 @@ import java.util.Optional;
 
 public interface SiptisUserService {
 
-    boolean existsByEmail(String email);
+    ServiceAnswer existsById(int id);
+    ServiceAnswer existsByEmail(String email);
+    ServiceAnswer existsTokenPassword(String tokenPassword);
 
-    boolean existsTokenPassword(String tokenPassword);
-
-    SiptisUser findById(long id);
-
-    SiptisUser findByEmail(String email);
-
+    ServiceAnswer findById(long id);
+    ServiceAnswer findByEmail(String email);
     ServiceAnswer getAllUsers();
 
-    ServiceAnswer findAll();
+    ServiceAnswer getStudentCareerById(Long id);
+    ServiceAnswer getTeacherAreasById(Long id);
+    ServiceAnswer getTeacherNotSelectedAreasById(Long id);
 
+    Long getIdFromToken(String token);
 
+    ServiceAnswer getUserPersonalInformation(long id);
+
+    SiptisUser save(SiptisUser user);
 
     ServiceAnswer obtenerProyectosSupervisorParaMenuPrincipalPorIdUsuario(Long id);
 
     ServiceAnswer obtenerProyectosSupervisorParaMenuPrincipalPorIdUsuario(Integer id);
 
-    SiptisUser save(SiptisUser user);
-
-
     ServiceAnswer getPossibleTribunals();
+
     ServiceAnswer getPersonalActivities(Long id, Pageable pageable);
 
     ServiceAnswer logIn(LogInDTO logInDTO);
 
-    Long getIdFromToken(String token);
-
     Optional<SiptisUser> findByTokenPassword(String tokenPassword);
+
 }

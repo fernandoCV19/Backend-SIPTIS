@@ -23,6 +23,8 @@ public interface UserInformationRepository extends JpaRepository<UserInformation
 
     boolean existsByCodSIS(String codSIS);
 
+    Optional<UserInformation> findById(Long id);
+
 
     @Query(value ="SELECT su.id, ui.names, ui.lastnames, ui.codSIS" +
             " FROM siptis_user su, user_information ui, role r, siptis_user_role sur " +
