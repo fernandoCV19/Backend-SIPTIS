@@ -1,13 +1,20 @@
 package backend.siptis.service.userData;
 
+import backend.siptis.auth.entity.Role;
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.model.entity.userData.UserInformation;
+import backend.siptis.model.pjo.dto.records.PersonalInformationDTO;
+import backend.siptis.model.pjo.dto.usersInformationDTO.UserPersonalInformationDTO;
+import jakarta.mail.search.SearchTerm;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 public interface UserInformationService {
 
@@ -26,6 +33,8 @@ public interface UserInformationService {
     ServiceAnswer getUserPersonalInformation(SiptisUser user);
 
     ServiceAnswer getTeacherNotSelectedAreasById(Long id);
+
+    ServiceAnswer registerUserInformation(UserPersonalInformationDTO dto);
 
 
     @AllArgsConstructor
@@ -73,7 +82,13 @@ public interface UserInformationService {
         }
 
         public String getRoles(){
-            return siptisUser.getRoles().toString();
+            Set<Role> roles = siptisUser.getRoles();
+            List<String> rolesResponse = new ArrayList<>();
+            for (Role rol: roles) {
+                rolesResponse.add(rol.getName());
+            }
+             return siptisUser.getRoles().toString();
+            //return rolesResponse;
         }
 
 

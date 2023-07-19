@@ -3,27 +3,22 @@ package backend.siptis.service.userData;
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.model.entity.userData.UserArea;
-import backend.siptis.model.entity.userData.UserCareer;
 import backend.siptis.model.entity.userData.UserInformation;
 import backend.siptis.model.pjo.dto.UserListItemDTO;
 import backend.siptis.model.pjo.dto.records.PersonalInformationDTO;
 import backend.siptis.model.pjo.dto.stadisticsDTO.AdminListItemDTO;
+import backend.siptis.model.pjo.dto.usersInformationDTO.UserPersonalInformationDTO;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
 import backend.siptis.model.repository.userData.UserInformationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
 @Service
 @RequiredArgsConstructor
 public class UserInformationImpl implements UserInformationService{
 
     private final UserInformationRepository userInformationRepository;
-    private final SiptisUserRepository siptisUserRepository;
 
 
     private boolean existUserByCodSIS(String codSIS) {
@@ -126,6 +121,18 @@ public class UserInformationImpl implements UserInformationService{
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
                 .data(userInformationRepository.getNotSelectedAreas(id)).build();
 
+    }
+
+    @Override
+    public ServiceAnswer registerUserInformation(UserPersonalInformationDTO dto) {
+        UserInformation userInformation = new UserInformation();
+        userInformation.setNames(dto.getNames());
+        userInformation.setLastnames(dto.getLastnames());
+        userInformation.setCi(dto.getCi());
+        userInformation.setBirthDate(dto.getBirthDate());
+        userInformation.setCodSIS(dto.getCodSIS());
+
+        return null;
     }
 
 

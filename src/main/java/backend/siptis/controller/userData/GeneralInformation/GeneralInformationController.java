@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -28,6 +29,7 @@ public class GeneralInformationController {
     private final AreasService areasService;
 
     @GetMapping("/getAllCareers")
+    //@PreAuthorize("hasAuthority('STUDENT')")
     public ResponseEntity<?> getAllCareers(){
         ServiceAnswer answerService = userCareerService.getAllCareers();
         return createResponse(answerService);
