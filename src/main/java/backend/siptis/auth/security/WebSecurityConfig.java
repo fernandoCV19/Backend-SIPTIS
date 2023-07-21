@@ -62,6 +62,8 @@ public class WebSecurityConfig {
 
                         "/cloud/**",
 
+                        "/bot/**",
+
                         "/supervisor/**")
                 .permitAll()
                 .anyRequest().authenticated()
