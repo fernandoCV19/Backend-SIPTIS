@@ -13,6 +13,8 @@ INSERT INTO sub_area(id, name) VALUES (1, 'SubArea1');
 INSERT INTO sub_area(id, name) VALUES (2, 'SubArea2');
 
 INSERT INTO modality(id, name) VALUES (1, 'Adscripcion');
+INSERT INTO modality(id, name) VALUES (2, 'Proyecto de Grado');
+INSERT INTO modality(id, name) VALUES (3, 'Tesis');
 
 
 INSERT INTO project(id, blue_book_path, perfil_path, project_path, phase, name,  state_id, modality_id) VALUES (1, 'Libro1', 'Perfil1', 'Proyecto1', 'Fase1', 'ProyectoGrado1',  null, 1);
@@ -113,131 +115,131 @@ INSERT INTO project_sub_area(project_id, sub_area_id) VALUES (13, 1);
 INSERT INTO defense(id, date, place_to_defense_id, project_id) VALUES (2, '2000-1-19', 2, 13);
 
 --user
-INSERT INTO role(id, name) VALUES (1, 'ADMIN');
-INSERT INTO role(id, name) VALUES (2, 'TRIBUNAL');
-INSERT INTO role(id, name) VALUES (3, 'TUTOR');
-INSERT INTO role(id, name) VALUES (4, 'TEACHER');
+INSERT INTO role(id, name) VALUES (1, 'STUDENT');
+INSERT INTO role(id, name) VALUES (2, 'ADMIN');
+INSERT INTO role(id, name) VALUES (3, 'TEACHER');
+INSERT INTO role(id, name) VALUES (4, 'TUTOR');
 INSERT INTO role(id, name) VALUES (5, 'SUPERVISOR');
-INSERT INTO role(id, name) VALUES (6, 'STUDENT');
+INSERT INTO role(id, name) VALUES (6, 'TRIBUNAL');
 
-INSERT INTO siptis_user(id, email, password) VALUES (1, 'usuario1@mail.com', '12345678');
+INSERT INTO siptis_user(id, email, password) VALUES (1, 'usuario1@mail.com', '$2a$10$RLp2O1gUM9.WzQVRJDzgV.bHz4bi6awFqEDZeSKLgR2GOyx.3jGNu');
 
 INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names,  user_id) VALUES (1, '2000-1-19', '1234567', '1000000', '12345670', 'Apellidos1', 'Nombres1',  1);
 
 INSERT INTO siptis_user_role(siptis_user_id, role_id) VALUES (1, 2);
 
-INSERT INTO siptis_user(id, email, password) VALUES (2, 'usuario2@mail.com', '12345678');
+INSERT INTO siptis_user(id, email, password) VALUES (2, 'usuario2@mail.com', '$2a$10$JZDKlrNbRrGF81sgSC50SuF9NjfAEy80I5iOV4NuVCmWLBWlZIP1O');
 
 INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names,  user_id) VALUES (2, '2000-1-19', '1234568', '1000001', '12345671', 'Apellidos2', 'Nombres2',  2);
 
 INSERT INTO siptis_user_role(siptis_user_id, role_id) VALUES (2, 3);
 
-INSERT INTO siptis_user(id, email, password) VALUES (3, 'usuario3@mail.com', '12345678');
+INSERT INTO siptis_user(id, email, password) VALUES (3, 'usuario3@mail.com', '$2a$10$JZDKlrNbRrGF81sgSC50SuF9NjfAEy80I5iOV4NuVCmWLBWlZIP1O');
 
 INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names,  user_id) VALUES (3, '2000-1-19', '1234569', '1000002', '12345672', 'Apellidos3', 'Nombres3', 3);
 
 INSERT INTO siptis_user_role(siptis_user_id, role_id) VALUES (3, 4);
 
 
-INSERT INTO siptis_user(id, email, password) VALUES (4, 'usuario4@mail.com', '12345678');
+INSERT INTO siptis_user(id, email, password) VALUES (4, 'usuario4@mail.com', '$2a$10$JZDKlrNbRrGF81sgSC50SuF9NjfAEy80I5iOV4NuVCmWLBWlZIP1O');
 
 INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names,  user_id) VALUES (4, '2000-1-19', '1234570', '1000003', '12345673', 'Apellidos4', 'Nombres4',  4);
 
 INSERT INTO siptis_user_role(siptis_user_id, role_id) VALUES (4, 2);
 
 
-INSERT INTO siptis_user(id, email, password) VALUES (5, 'usuario5@mail.com', '12345678');
+INSERT INTO siptis_user(id, email, password) VALUES (5, 'usuario5@mail.com', '$2a$10$JZDKlrNbRrGF81sgSC50SuF9NjfAEy80I5iOV4NuVCmWLBWlZIP1O');
 
 INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names,  user_id) VALUES (5, '2000-1-19', '1234571', '1000004', '12345674', 'Apellidos5', 'Nombres5',  5);
 
 INSERT INTO siptis_user_role(siptis_user_id, role_id) VALUES (5, 2);
 
 
-INSERT INTO siptis_user(id, email, password) VALUES (6, 'usuario6@mail.com', '12345678');
+INSERT INTO siptis_user(id, email, password) VALUES (6, 'usuario6@mail.com', '$2a$10$JZDKlrNbRrGF81sgSC50SuF9NjfAEy80I5iOV4NuVCmWLBWlZIP1O');
 
 INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names,  user_id) VALUES (6, '2000-1-19', '1234572', '1000005', '12345675', 'Apellidos6', 'Nombres6',  6);
 
 INSERT INTO siptis_user_role(siptis_user_id, role_id) VALUES (6, 3);
 
 
-INSERT INTO siptis_user(id, email, password) VALUES (7, 'usuario7@mail.com', '12345678');
+INSERT INTO siptis_user(id, email, password) VALUES (7, 'usuario7@mail.com', '$2a$10$JZDKlrNbRrGF81sgSC50SuF9NjfAEy80I5iOV4NuVCmWLBWlZIP1O');
 
 INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names,  user_id) VALUES (7, '2000-1-19', '1234573', '1000006', '12345676', 'Apellidos7', 'Nombres7',  7);
 
 INSERT INTO siptis_user_role(siptis_user_id, role_id) VALUES (7, 4);
 
 
-INSERT INTO siptis_user(id, email, password) VALUES (8, 'usuario8@mail.com', '12345678');
+INSERT INTO siptis_user(id, email, password) VALUES (8, 'usuario8@mail.com', '$2a$10$JZDKlrNbRrGF81sgSC50SuF9NjfAEy80I5iOV4NuVCmWLBWlZIP1O');
 
 INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names,  user_id) VALUES (8, '2000-1-19', '1234574', '1000007', '12345677', 'Apellidos8', 'Nombres8',  8);
 
 INSERT INTO siptis_user_role(siptis_user_id, role_id) VALUES (8, 5);
 
 
-INSERT INTO siptis_user(id, email, password) VALUES (9, 'usuario9@mail.com', '12345678');
+INSERT INTO siptis_user(id, email, password) VALUES (9, 'usuario9@mail.com', '$2a$10$JZDKlrNbRrGF81sgSC50SuF9NjfAEy80I5iOV4NuVCmWLBWlZIP1O');
 
-INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names,  user_id) VALUES (9, '2000-1-19', '1234575', '1000008', '12345678', 'Apellidos9', 'Nombres9',  9);
+INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names,  user_id) VALUES (9, '2000-1-19', '1234575', '1000008', '$2a$10$JZDKlrNbRrGF81sgSC50SuF9NjfAEy80I5iOV4NuVCmWLBWlZIP1O', 'Apellidos9', 'Nombres9',  9);
 
 INSERT INTO siptis_user_role(siptis_user_id, role_id) VALUES (9, 2);
 
 
-INSERT INTO siptis_user(id, email, password) VALUES (10, 'usuario10@mail.com', '12345678');
+INSERT INTO siptis_user(id, email, password) VALUES (10, 'usuario10@mail.com', '$2a$10$JZDKlrNbRrGF81sgSC50SuF9NjfAEy80I5iOV4NuVCmWLBWlZIP1O');
 
 INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names,  user_id) VALUES (10,'2000-1-19', '1234576', '1000009', '12345679', 'Apellidos10', 'Nombres10',  10);
 
 INSERT INTO siptis_user_role(siptis_user_id, role_id) VALUES (10, 3);
 
 
-INSERT INTO siptis_user(id, email, password) VALUES (11, 'usuario11@mail.com', '12345678');
+INSERT INTO siptis_user(id, email, password) VALUES (11, 'usuario11@mail.com', '$2a$10$JZDKlrNbRrGF81sgSC50SuF9NjfAEy80I5iOV4NuVCmWLBWlZIP1O');
 
 INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names,  user_id) VALUES (11,'2000-1-19', '1234577', '1000010', '12345680', 'Apellidos11', 'Nombres11',  11);
 
 INSERT INTO siptis_user_role(siptis_user_id, role_id) VALUES (11, 4);
 
 
-INSERT INTO siptis_user(id, email, password) VALUES (12, 'usuario12@mail.com', '12345678');
+INSERT INTO siptis_user(id, email, password) VALUES (12, 'usuario12@mail.com', '$2a$10$JZDKlrNbRrGF81sgSC50SuF9NjfAEy80I5iOV4NuVCmWLBWlZIP1O');
 
 INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, user_id) VALUES (12,'2000-1-19', '1234578', '1000011', '12345681', 'Apellidos12', 'Nombres12', 12);
 
 INSERT INTO siptis_user_role(siptis_user_id, role_id) VALUES (12, 5);
 
 
-INSERT INTO siptis_user(id, email, password) VALUES (13, 'usuario13@mail.com', '12345678');
+INSERT INTO siptis_user(id, email, password) VALUES (13, 'usuario13@mail.com', '$2a$10$JZDKlrNbRrGF81sgSC50SuF9NjfAEy80I5iOV4NuVCmWLBWlZIP1O');
 
 INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, user_id) VALUES (13,'2000-1-19', '1234579', '1000012', '12345682', 'Apellidos13', 'Nombres13', 13);
 
 INSERT INTO siptis_user_role(siptis_user_id, role_id) VALUES (13, 2);
 
 
-INSERT INTO siptis_user(id, email, password) VALUES (14, 'usuario14@mail.com', '12345678');
+INSERT INTO siptis_user(id, email, password) VALUES (14, 'usuario14@mail.com', '$2a$10$JZDKlrNbRrGF81sgSC50SuF9NjfAEy80I5iOV4NuVCmWLBWlZIP1O');
 
 INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, user_id) VALUES (14,'2000-1-19', '1234580', '1000013', '12345683', 'Apellidos14', 'Nombres14', 14);
 
 INSERT INTO siptis_user_role(siptis_user_id, role_id) VALUES (14, 3);
 
 
-INSERT INTO siptis_user(id, email, password) VALUES (15, 'usuario15@mail.com', '12345678');
+INSERT INTO siptis_user(id, email, password) VALUES (15, 'usuario15@mail.com', '$2a$10$JZDKlrNbRrGF81sgSC50SuF9NjfAEy80I5iOV4NuVCmWLBWlZIP1O');
 
 INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, user_id) VALUES (15,'2000-1-19', '1234581', '1000014', '12345684', 'Apellidos15', 'Nombres15', 15);
 
 INSERT INTO siptis_user_role(siptis_user_id, role_id) VALUES (15, 4);
 
 
-INSERT INTO siptis_user(id, email, password) VALUES (16, 'usuario16@mail.com', '12345678');
+INSERT INTO siptis_user(id, email, password) VALUES (16, 'usuario16@mail.com', '$2a$10$JZDKlrNbRrGF81sgSC50SuF9NjfAEy80I5iOV4NuVCmWLBWlZIP1O');
 
 INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, user_id) VALUES (16,'2000-1-19', '1234582', '1000015', '12345685', 'Apellidos16', 'Nombres16', 16);
 
 INSERT INTO siptis_user_role(siptis_user_id, role_id) VALUES (16, 5);
 
 
-INSERT INTO siptis_user(id, email, password) VALUES (17, 'usuario17@mail.com', '12345678');
+INSERT INTO siptis_user(id, email, password) VALUES (17, 'usuario17@mail.com', '$2a$10$JZDKlrNbRrGF81sgSC50SuF9NjfAEy80I5iOV4NuVCmWLBWlZIP1O');
 
 INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, user_id) VALUES (17,'2000-1-19', '1234583', '1000016', '12345686', 'Apellidos17', 'Nombres17', 17);
 
 INSERT INTO siptis_user_role(siptis_user_id, role_id) VALUES (17, 2);
 
 
-INSERT INTO siptis_user(id, email, password) VALUES (18, 'usuario18@mail.com', '12345678');
+INSERT INTO siptis_user(id, email, password) VALUES (18, 'usuario18@mail.com', '$2a$10$JZDKlrNbRrGF81sgSC50SuF9NjfAEy80I5iOV4NuVCmWLBWlZIP1O');
 
 INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, user_id) VALUES (18,'2000-1-19', '1234584', '1000017', '12345687', 'Apellidos18', 'Nombres18', 18);
 
@@ -595,21 +597,21 @@ INSERT INTO project_area(project_id, area_id) VALUES (100, 1);
 INSERT INTO project_sub_area(project_id, sub_area_id) VALUES (100, 1);
 
 
-INSERT INTO siptis_user(id, email, password) VALUES (100, 'usuario100@mail.com', '12345678');
+INSERT INTO siptis_user(id, email, password) VALUES (100, 'usuario100@mail.com', '$2a$10$JZDKlrNbRrGF81sgSC50SuF9NjfAEy80I5iOV4NuVCmWLBWlZIP1O');
 
 INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names,  user_id) VALUES (100, '2000-1-19', '1234567', '1000000', '12345670', 'Apellidos100', 'Nombres100',  100);
 
 INSERT INTO siptis_user_role(siptis_user_id, role_id) VALUES (100, 2);
 
 
-INSERT INTO siptis_user(id, email, password) VALUES (101, 'usuario101@mail.com', '12345678');
+INSERT INTO siptis_user(id, email, password) VALUES (101, 'usuario101@mail.com', '$2a$10$JZDKlrNbRrGF81sgSC50SuF9NjfAEy80I5iOV4NuVCmWLBWlZIP1O');
 
 INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names,  user_id) VALUES (101, '2000-1-19', '1234567', '1000000', '12345670', 'Apellidos101', 'Nombres101',  101);
 
 INSERT INTO siptis_user_role(siptis_user_id, role_id) VALUES (101, 2);
 
 
-INSERT INTO siptis_user(id, email, password) VALUES (102, 'usuario102@mail.com', '12345678');
+INSERT INTO siptis_user(id, email, password) VALUES (102, 'usuario102@mail.com', '$2a$10$JZDKlrNbRrGF81sgSC50SuF9NjfAEy80I5iOV4NuVCmWLBWlZIP1O');
 
 INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names,  user_id) VALUES (102, '2000-1-19', '1234567', '1000000', '12345670', 'Apellidos102', 'Nombres102',  102);
 
@@ -617,7 +619,7 @@ INSERT INTO siptis_user_role(siptis_user_id, role_id) VALUES (102, 2);
 
 
 
-INSERT INTO siptis_user(id, email, password) VALUES (103, 'usuario103@mail.com', '12345678');
+INSERT INTO siptis_user(id, email, password) VALUES (103, 'usuario103@mail.com', '$2a$10$JZDKlrNbRrGF81sgSC50SuF9NjfAEy80I5iOV4NuVCmWLBWlZIP1O');
 
 INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names,  user_id) VALUES (103, '2000-1-19', '1234567', '1000000', '12345670', 'Apellidos103', 'Nombres103',  103);
 
@@ -625,7 +627,7 @@ INSERT INTO siptis_user_role(siptis_user_id, role_id) VALUES (103, 6);
 
 
 
-INSERT INTO siptis_user(id, email, password) VALUES (104, 'usuario104@mail.com', '12345678');
+INSERT INTO siptis_user(id, email, password) VALUES (104, 'usuario104@mail.com', '$2a$10$JZDKlrNbRrGF81sgSC50SuF9NjfAEy80I5iOV4NuVCmWLBWlZIP1O');
 
 INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names,  user_id) VALUES (104, '2000-1-19', '1234567', '1000000', '12345670', 'Apellidos104', 'Nombres104',  104);
 
@@ -726,3 +728,22 @@ INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (71, 'Vi
 INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (72, 'Viernes', '34:82', '80:17', 101);
 INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (73, 'Viernes', '35:80', '47:28', 102);
 INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (74, 'Viernes', '39:84', '17:80', 103);
+
+
+
+INSERT INTO phase(id, name, description_phase, modality_id) VALUES (1, 'Fase1', 'Esta es la descripcion de la fase 1 de adscripcion', 1)
+INSERT INTO phase(id, name, description_phase, modality_id) VALUES (2, 'Fase2', 'Esta es la descripcion de la fase 2 de adscripcion', 1)
+INSERT INTO phase(id, name, description_phase, modality_id) VALUES (3, 'Fase3', 'Esta es la descripcion de la fase 3 de adscripcion', 1)
+
+INSERT INTO phase(id, name, description_phase, modality_id) VALUES (4, 'Fase1', 'Esta es la descripcion de la fase 1 de proyecto de grado', 2)
+INSERT INTO phase(id, name, description_phase, modality_id) VALUES (5, 'Fase2', 'Esta es la descripcion de la fase 2 de proyecto de grado', 2)
+INSERT INTO phase(id, name, description_phase, modality_id) VALUES (6, 'Fase3', 'Esta es la descripcion de la fase 3 de proyecto de grado', 2)
+
+INSERT INTO phase(id, name, description_phase, modality_id) VALUES (7, 'Fase1', 'Esta es la descripcion de la fase 1 de tesis', 3)
+INSERT INTO phase(id, name, description_phase, modality_id) VALUES (8, 'Fase2', 'Esta es la descripcion de la fase 2 de tesis', 3)
+INSERT INTO phase(id, name, description_phase, modality_id) VALUES (9, 'Fase3', 'Esta es la descripcion de la fase 3 de tesis', 3)
+
+
+
+
+
