@@ -9,11 +9,11 @@ import backend.siptis.model.pjo.dto.records.PersonalInformationDTO;
 import backend.siptis.model.pjo.dto.stadisticsDTO.AdminListItemDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterUserDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.UserPersonalInformationDTO;
-import backend.siptis.model.repository.userData.SiptisUserRepository;
 import backend.siptis.model.repository.userData.UserInformationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 @Service
 @RequiredArgsConstructor
@@ -138,10 +138,25 @@ public class UserInformationImpl implements UserInformationService{
     }
 
     @Override
-    public ServiceAnswer registerUserInformation(UserPersonalInformationDTO dto) {
+    public ServiceAnswer registerUserInformation(RegisterUserDTO dto) {
 
-        ServiceAnswer answer = validateInformation(dto);
-
+        ServiceAnswer answer = validateNames(dto.getNames());
+        if(answer != null){
+            return answer;
+        }
+        answer = validateLastNames(dto.getLastnames());
+        if(answer != null){
+            return answer;
+        }
+        answer = validateCi(dto.getCi());
+        if(answer != null){
+            return answer;
+        }
+        answer = validateCelNumber(dto.getCelNumber());
+        if(answer != null){
+            return answer;
+        }
+        answer = validateCodSis(dto.getCodSIS());
         if(answer != null){
             return answer;
         }
@@ -156,22 +171,6 @@ public class UserInformationImpl implements UserInformationService{
         return createAnswer(ServiceMessage.OK, userInformation);
     }
 
-    @Override
-    public ServiceAnswer registerUserInformation(RegisterUserDTO dto){
-        ServiceAnswer answer = validateInformation(dto);
-        if(answer != null){
-            return answer;
-        }
-
-        UserInformation userInformation = new UserInformation();
-        userInformation.setNames(dto.getNames());
-        userInformation.setLastnames(dto.getLastnames());
-        userInformation.setCi(dto.getCi());
-        userInformation.setBirthDate(dto.getBirthDate());
-        userInformation.setCodSIS(dto.getCodSIS());
-
-        return createAnswer(ServiceMessage.OK, userInformation);
-    }
 
     @Override
     public ServiceAnswer registerStudentInformation(StudentRegisterDTO dto) {
@@ -183,34 +182,101 @@ public class UserInformationImpl implements UserInformationService{
         return null;
     }
 
-    private ServiceAnswer validateInformation(UserPersonalInformationDTO dto){
+
+    private ServiceAnswer validateNames(String names){
         String errorMessage = "";
-        if(existUserByCi(dto.getCi())){
-            errorMessage = "El ci ya se encuentra registrado en el sistema";
+        if(names == null || names == ""){
+            errorMessage = "Debe ingresar algun nombre.";
             return createAnswer(ServiceMessage.ERROR_REGISTER_ACCOUNT_CI, errorMessage);
         }
-        if(existUserByCodSIS(dto.getCodSIS())){
-            errorMessage = "El codigoSIS ya se encuentra registrado en el sistema";
-            return createAnswer(ServiceMessage.ERROR_REGISTER_ACCOUNT_CODSIS, errorMessage);
+        if(names.length() < 3){
+            errorMessage = "El nombre es demasiado corto.";
+            return createAnswer(ServiceMessage.ERROR_REGISTER_ACCOUNT_CI, errorMessage);
         }
-
+        if(names.length() > 25){
+            errorMessage = "El nombre es demasiado largo.";
+            return createAnswer(ServiceMessage.ERROR_REGISTER_ACCOUNT_CI, errorMessage);
+        }
         return null;
     }
 
-    private ServiceAnswer validateInformation(RegisterUserDTO dto){
+    private ServiceAnswer validateLastNames(String lastnames){
         String errorMessage = "";
-        if(existUserByCi(dto.getCi())){
-            errorMessage = "El ci ya se encuentra registrado en el sistema";
+        if(lastnames == null || lastnames == ""){
+            errorMessage = "Debe ingresar algun apellido.";
             return createAnswer(ServiceMessage.ERROR_REGISTER_ACCOUNT_CI, errorMessage);
         }
-        if(existUserByCodSIS(dto.getCodSIS())){
-            errorMessage = "El codigoSIS ya se encuentra registrado en el sistema";
-            return createAnswer(ServiceMessage.ERROR_REGISTER_ACCOUNT_CODSIS, errorMessage);
+        if(lastnames.length() < 3){
+            errorMessage = "El apellido es demasiado corto.";
+            return createAnswer(ServiceMessage.ERROR_REGISTER_ACCOUNT_CI, errorMessage);
         }
-
+        if(lastnames.length() > 30){
+            errorMessage = "El apellido es demasiado largo.";
+            return createAnswer(ServiceMessage.ERROR_REGISTER_ACCOUNT_CI, errorMessage);
+        }
         return null;
     }
 
+    private ServiceAnswer validateCelNumber(String celNumber){
+        String errorMessage = "";
+        if(celNumber == null || celNumber == ""){
+            errorMessage = "Debe ingresar algun numero personal.";
+            return createAnswer(ServiceMessage.ERROR_REGISTER_ACCOUNT_CI, errorMessage);
+        }
+        if(celNumber.length() < 6){
+            errorMessage = "El numero es demasiado corto.";
+            return createAnswer(ServiceMessage.ERROR_REGISTER_ACCOUNT_CI, errorMessage);
+        }
+        if(celNumber.length() > 11){
+            errorMessage = "El numero es demasiado largo.";
+            return createAnswer(ServiceMessage.ERROR_REGISTER_ACCOUNT_CI, errorMessage);
+        }
+        return null;
+    }
+
+    private ServiceAnswer validateCi(String ci){
+        String errorMessage = "";
+        if(ci == null || ci == ""){
+            errorMessage = "Debe ingresar algun documento de identidad.";
+            return createAnswer(ServiceMessage.ERROR_REGISTER_ACCOUNT_CI, errorMessage);
+        }
+        if(ci.length() < 5){
+            errorMessage = "El documento de identidad es demasiado corto.";
+            return createAnswer(ServiceMessage.ERROR_REGISTER_ACCOUNT_CI, errorMessage);
+        }
+        if(ci.length() > 15){
+            errorMessage = "El documento de identidad es demasiado largo.";
+            return createAnswer(ServiceMessage.ERROR_REGISTER_ACCOUNT_CI, errorMessage);
+        }
+
+        if(existUserByCi(ci)){
+            errorMessage = "El ci ya se encuentra registrado en el sistema";
+            return createAnswer(ServiceMessage.ERROR_REGISTER_ACCOUNT_CI, errorMessage);
+        }
+        return null;
+    }
+
+    private ServiceAnswer validateCodSis(String codSis){
+        String errorMessage = "";
+        if(codSis == null || codSis == ""){
+            errorMessage = "Debe ingresar algun codigo Sis.";
+            return createAnswer(ServiceMessage.ERROR_REGISTER_ACCOUNT_CI, errorMessage);
+        }
+        if(codSis.length() < 6){
+            errorMessage = "El codigo Sis es demasiado corto.";
+            return createAnswer(ServiceMessage.ERROR_REGISTER_ACCOUNT_CI, errorMessage);
+        }
+        if(codSis.length() > 15){
+            errorMessage = "El codigo Sis es demasiado largo.";
+            return createAnswer(ServiceMessage.ERROR_REGISTER_ACCOUNT_CI, errorMessage);
+        }
+
+        if(existUserByCodSIS(codSis)){
+            errorMessage = "El codigo Sis ya se encuentra registrado en el sistema";
+            return createAnswer(ServiceMessage.ERROR_REGISTER_ACCOUNT_CI, errorMessage);
+        }
+        return null;
+    }
 
     private ServiceAnswer createAnswer(ServiceMessage message, Object data){
         return ServiceAnswer.builder().serviceMessage(message)

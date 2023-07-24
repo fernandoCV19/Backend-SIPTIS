@@ -41,7 +41,6 @@ public interface UserInformationService {
     ServiceAnswer getUserPersonalInformation(SiptisUser user);
     ServiceAnswer getTeacherNotSelectedAreasById(Long id);
 
-    ServiceAnswer registerUserInformation(UserPersonalInformationDTO dto);
     ServiceAnswer registerUserInformation(RegisterUserDTO dto);
 
     ServiceAnswer registerStudentInformation(StudentRegisterDTO dto);

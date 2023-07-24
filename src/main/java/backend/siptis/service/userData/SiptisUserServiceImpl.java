@@ -25,8 +25,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -153,10 +151,7 @@ public class SiptisUserServiceImpl implements SiptisUserService {
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(res).build();
     }
 
-
-
-
-    private ServiceAnswer validateUser(String email, String password){
+    private ServiceAnswer validateEmail(String email){
         if(email == null || email == ""){
             return createResponse(ServiceMessage.ERROR_REGISTER_ACCOUNT_EMAIL, "Tiene que ingresar un correo.");
         }
@@ -166,6 +161,11 @@ public class SiptisUserServiceImpl implements SiptisUserService {
         if(existsUserByEmail(email)){
             return createResponse(ServiceMessage.ERROR_REGISTER_ACCOUNT_EMAIL, "El correo ya se encuentra registrado.");
         }
+        return null;
+    }
+
+    private ServiceAnswer validatePassword(String password){
+
         if(password == null || password == ""){
             return createResponse(ServiceMessage.ERROR_REGISTER_ACCOUNT_PASSWORD, "Tiene que ingresar una contraseña.");
         }
@@ -175,19 +175,15 @@ public class SiptisUserServiceImpl implements SiptisUserService {
         return null;
     }
 
-/*
-    private SiptisUser registerUser(String email, String password) {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        String userPassword = encoder.encode(password);
-        return new SiptisUser(email, userPassword);
-    }
-*/
     private ServiceAnswer registerUser(String email, String password) {
-        ServiceAnswer answer = validateUser(email, password);
+        ServiceAnswer answer = validateEmail(email);
         if(answer != null){
             return answer;
         }
-
+        answer = validatePassword(password);
+        if(answer != null){
+            return answer;
+        }
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String userPassword = encoder.encode(password);
         return createResponse(ServiceMessage.OK, new SiptisUser(email, userPassword));
@@ -248,8 +244,6 @@ public ServiceAnswer registerStudent(RegisterStudentDTO dto) {
             (ServiceMessage.OK, "El estudiante fue registrado exitosamente");
 
 }
-
-
 
     @Override
     public ServiceAnswer registerTeacher(RegisterUserDTO dto) {
@@ -367,7 +361,6 @@ public ServiceAnswer registerStudent(RegisterStudentDTO dto) {
     @Override
     public Long getIdFromToken(String token){
         token = token.replace("Bearer ","");
-        System.out.println("TK: "+token);
         return JWTokenUtils.getId(token);
     }
 
@@ -380,19 +373,11 @@ public ServiceAnswer registerStudent(RegisterStudentDTO dto) {
 
         SiptisUser user = findUserById(id);
         return userInformationService.getUserPersonalInformation(user);
-
     }
 
     @Override
     public Optional<SiptisUser> findByTokenPassword(String tokenPassword){
         return siptisUserRepository.findByTokenPassword(tokenPassword);
-    }
-
-    private UserGeneralInformationDTO convertToDTO(SiptisUser user) {
-        UserGeneralInformationDTO userDTO = new UserGeneralInformationDTO();
-        userDTO.setId(user.getId());
-        userDTO.setEmail(user.getEmail());
-        return userDTO;
     }
 
 }
