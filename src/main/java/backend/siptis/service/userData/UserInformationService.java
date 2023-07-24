@@ -4,7 +4,12 @@ import backend.siptis.auth.entity.Role;
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.model.entity.userData.UserInformation;
+import backend.siptis.model.pjo.dto.AdminEditUserPersonalInformationDTO;
+import backend.siptis.model.pjo.dto.StudentRegisterDTO;
+import backend.siptis.model.pjo.dto.TeacherRegisterDTO;
+import backend.siptis.model.pjo.dto.UserEditPersonalInformationDTO;
 import backend.siptis.model.pjo.dto.records.PersonalInformationDTO;
+import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterUserDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.UserPersonalInformationDTO;
 import jakarta.mail.search.SearchTerm;
 import lombok.AllArgsConstructor;
@@ -28,13 +33,20 @@ public interface UserInformationService {
     ServiceAnswer getAllTeachers();
     ServiceAnswer getAllAdmin();
 
+    ServiceAnswer userEditLimitedInformation(UserEditPersonalInformationDTO dto);
+    ServiceAnswer adminEditUserFullInformation(AdminEditUserPersonalInformationDTO dto);
+
     ServiceAnswer searchUserByNameAndRole(String name, Long role_id);
 
     ServiceAnswer getUserPersonalInformation(SiptisUser user);
-
     ServiceAnswer getTeacherNotSelectedAreasById(Long id);
 
     ServiceAnswer registerUserInformation(UserPersonalInformationDTO dto);
+    ServiceAnswer registerUserInformation(RegisterUserDTO dto);
+
+    ServiceAnswer registerStudentInformation(StudentRegisterDTO dto);
+    ServiceAnswer registerTeacherInformation(TeacherRegisterDTO dto);
+
 
 
     @AllArgsConstructor

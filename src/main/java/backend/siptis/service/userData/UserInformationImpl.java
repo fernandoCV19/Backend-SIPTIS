@@ -4,9 +4,10 @@ import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.userData.UserInformation;
-import backend.siptis.model.pjo.dto.UserListItemDTO;
+import backend.siptis.model.pjo.dto.*;
 import backend.siptis.model.pjo.dto.records.PersonalInformationDTO;
 import backend.siptis.model.pjo.dto.stadisticsDTO.AdminListItemDTO;
+import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterUserDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.UserPersonalInformationDTO;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
 import backend.siptis.model.repository.userData.UserInformationRepository;
@@ -70,6 +71,19 @@ public class UserInformationImpl implements UserInformationService{
     }
 
     @Override
+    public ServiceAnswer userEditLimitedInformation(UserEditPersonalInformationDTO dto) {
+        //validaciones
+
+        return null;
+    }
+
+    @Override
+    public ServiceAnswer adminEditUserFullInformation(AdminEditUserPersonalInformationDTO dto) {
+        return null;
+    }
+
+
+    @Override
     public ServiceAnswer getAllStudents() {
         List<UserListItemDTO> userList =
                 userInformationRepository.getAllUsersByRole(1L);
@@ -125,6 +139,13 @@ public class UserInformationImpl implements UserInformationService{
 
     @Override
     public ServiceAnswer registerUserInformation(UserPersonalInformationDTO dto) {
+
+        ServiceAnswer answer = validateInformation(dto);
+
+        if(answer != null){
+            return answer;
+        }
+
         UserInformation userInformation = new UserInformation();
         userInformation.setNames(dto.getNames());
         userInformation.setLastnames(dto.getLastnames());
@@ -132,8 +153,68 @@ public class UserInformationImpl implements UserInformationService{
         userInformation.setBirthDate(dto.getBirthDate());
         userInformation.setCodSIS(dto.getCodSIS());
 
+        return createAnswer(ServiceMessage.OK, userInformation);
+    }
+
+    @Override
+    public ServiceAnswer registerUserInformation(RegisterUserDTO dto){
+        ServiceAnswer answer = validateInformation(dto);
+        if(answer != null){
+            return answer;
+        }
+
+        UserInformation userInformation = new UserInformation();
+        userInformation.setNames(dto.getNames());
+        userInformation.setLastnames(dto.getLastnames());
+        userInformation.setCi(dto.getCi());
+        userInformation.setBirthDate(dto.getBirthDate());
+        userInformation.setCodSIS(dto.getCodSIS());
+
+        return createAnswer(ServiceMessage.OK, userInformation);
+    }
+
+    @Override
+    public ServiceAnswer registerStudentInformation(StudentRegisterDTO dto) {
+        return null;
+    }
+
+    @Override
+    public ServiceAnswer registerTeacherInformation(TeacherRegisterDTO dto) {
+        return null;
+    }
+
+    private ServiceAnswer validateInformation(UserPersonalInformationDTO dto){
+        String errorMessage = "";
+        if(existUserByCi(dto.getCi())){
+            errorMessage = "El ci ya se encuentra registrado en el sistema";
+            return createAnswer(ServiceMessage.ERROR_REGISTER_ACCOUNT_CI, errorMessage);
+        }
+        if(existUserByCodSIS(dto.getCodSIS())){
+            errorMessage = "El codigoSIS ya se encuentra registrado en el sistema";
+            return createAnswer(ServiceMessage.ERROR_REGISTER_ACCOUNT_CODSIS, errorMessage);
+        }
+
+        return null;
+    }
+
+    private ServiceAnswer validateInformation(RegisterUserDTO dto){
+        String errorMessage = "";
+        if(existUserByCi(dto.getCi())){
+            errorMessage = "El ci ya se encuentra registrado en el sistema";
+            return createAnswer(ServiceMessage.ERROR_REGISTER_ACCOUNT_CI, errorMessage);
+        }
+        if(existUserByCodSIS(dto.getCodSIS())){
+            errorMessage = "El codigoSIS ya se encuentra registrado en el sistema";
+            return createAnswer(ServiceMessage.ERROR_REGISTER_ACCOUNT_CODSIS, errorMessage);
+        }
+
         return null;
     }
 
 
+    private ServiceAnswer createAnswer(ServiceMessage message, Object data){
+        return ServiceAnswer.builder().serviceMessage(message)
+                .data(data).build();
+
+    }
 }

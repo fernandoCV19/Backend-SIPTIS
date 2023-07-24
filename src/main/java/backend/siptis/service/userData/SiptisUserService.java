@@ -2,7 +2,12 @@ package backend.siptis.service.userData;
 
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ServiceAnswer;
+import backend.siptis.model.pjo.dto.AdminRegisterDTO;
+import backend.siptis.model.pjo.dto.StudentRegisterDTO;
+import backend.siptis.model.pjo.dto.TeacherRegisterDTO;
 import backend.siptis.model.pjo.dto.records.LogInDTO;
+import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterStudentDTO;
+import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterUserDTO;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
@@ -33,6 +38,15 @@ public interface SiptisUserService {
 
     ServiceAnswer getPossibleTribunals();
 
+    ServiceAnswer registerStudent(RegisterStudentDTO dto);
+    ServiceAnswer registerTeacher(RegisterUserDTO dto);
+    ServiceAnswer registerAdmin(AdminRegisterDTO dto);
+
+    ServiceAnswer userEditPersonalInformation();
+    ServiceAnswer adminEditUserPersonalInformation();
+
+    ServiceAnswer getUserPersonalInformation(Long id);
+    ServiceAnswer getUserStudentPersonalInformation(Long id);
     ServiceAnswer getPersonalActivities(Long id, Pageable pageable);
 
     ServiceAnswer logIn(LogInDTO logInDTO);

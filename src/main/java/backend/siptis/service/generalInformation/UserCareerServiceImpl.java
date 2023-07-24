@@ -29,4 +29,19 @@ public class UserCareerServiceImpl implements UserCareerService{
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
                 .data(career.get()).build();
     }
+
+    @Override
+    public ServiceAnswer getCareerByName(String name) {
+        if(!userCareerRepository.existsByName(name)){
+            return createResponse(ServiceMessage.ERROR, "No se pudo encontrar la carrera solicitada");
+        }
+        return createResponse(ServiceMessage.OK, userCareerRepository.findUserCareerByName(name));
+    }
+
+
+    private ServiceAnswer createResponse(ServiceMessage serviceMessage, Object data){
+        return ServiceAnswer.builder().serviceMessage(
+                serviceMessage).data(data
+        ).build();
+    }
 }

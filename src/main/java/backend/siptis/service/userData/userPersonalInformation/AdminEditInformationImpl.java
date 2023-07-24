@@ -1,24 +1,12 @@
 package backend.siptis.service.userData.userPersonalInformation;
 
-import backend.siptis.auth.entity.SiptisUser;
-import backend.siptis.commons.ServiceAnswer;
-import backend.siptis.commons.ServiceMessage;
-import backend.siptis.model.entity.userData.UserCareer;
-import backend.siptis.model.entity.userData.UserInformation;
-import backend.siptis.model.pjo.dto.EditStudentInformationDTO;
-import backend.siptis.model.pjo.dto.EditTeacherInformationDTO;
-import backend.siptis.model.pjo.dto.usersInformationDTO.StudentInformationDTO;
-import backend.siptis.model.repository.userData.SiptisUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class AdminEditInformationImpl implements AdminEditInformation{
-
+/*
     private final SiptisUserRepository userRepository;
     @Override
     public ServiceAnswer editStudentInformation(Long userID, EditStudentInformationDTO editDTO) {
@@ -105,5 +93,5 @@ public class AdminEditInformationImpl implements AdminEditInformation{
         }
         return student;
     }
-
+*/
 }

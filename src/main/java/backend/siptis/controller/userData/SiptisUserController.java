@@ -3,7 +3,12 @@ package backend.siptis.controller.userData;
 import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
+import backend.siptis.model.pjo.dto.AdminRegisterDTO;
+import backend.siptis.model.pjo.dto.StudentRegisterDTO;
+import backend.siptis.model.pjo.dto.TeacherRegisterDTO;
 import backend.siptis.model.pjo.dto.records.LogInDTO;
+import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterStudentDTO;
+import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterUserDTO;
 import backend.siptis.service.userData.SiptisUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -36,6 +41,17 @@ public class SiptisUserController {
 
         return createResponseEntity(answerService);*/
         return null;
+    }
+
+    @GetMapping("/personalInformation")
+    public ResponseEntity<?> getPersonalInfo(@RequestHeader (name="Authorization") String token){
+
+        Long id = userService.getIdFromToken(token);
+        ServiceAnswer answerService =
+                userService.getUserPersonalInformation(id);
+
+        //return createResponseEntity(answerService);
+         return null;
     }
 
     @GetMapping("/information")
@@ -122,6 +138,34 @@ public class SiptisUserController {
                 userService.getTeacherNotSelectedAreasById(id);
 
         return createResponseEntity(answerService);
+    }
+
+    @PostMapping("/register/student")
+    // @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<?> registerStudent(
+            @RequestBody RegisterStudentDTO dto){
+
+        ServiceAnswer student = userService.registerStudent(dto);
+        return createResponseEntity(student);
+    }
+
+    @PostMapping("/register/teacher")
+    // @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<?> registerTeacher(
+            @RequestBody RegisterUserDTO dto){
+
+        ServiceAnswer student = userService.registerTeacher(dto);
+        return createResponseEntity(student);
+    }
+
+    @PostMapping("/register/admin")
+    // @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<?> registerAdmin(
+            @RequestBody AdminRegisterDTO dto){
+
+        ServiceAnswer student = userService.registerAdmin(dto);
+        return createResponseEntity(student);
+
     }
 
 

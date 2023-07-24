@@ -1,5 +1,6 @@
 package backend.siptis.service.userData;
 
+import backend.siptis.auth.entity.Role;
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.auth.jwt.JWTokenUtils;
 import backend.siptis.commons.ServiceAnswer;
@@ -7,28 +8,37 @@ import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.records.Activity;
 import backend.siptis.model.entity.userData.UserArea;
 import backend.siptis.model.entity.userData.UserCareer;
+import backend.siptis.model.entity.userData.UserInformation;
 import backend.siptis.model.pjo.dto.*;
 import backend.siptis.model.pjo.dto.records.LogInDTO;
+import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterStudentDTO;
+import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterUserDTO;
 import backend.siptis.model.pjo.vo.userData.TribunalInfoToAssignSection;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
+import backend.siptis.service.generalInformation.RoleService;
+import backend.siptis.service.generalInformation.UserCareerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor
 public class SiptisUserServiceImpl implements SiptisUserService {
 
-    private final SiptisUserRepository usuarioCommonRepository;
+    private final SiptisUserRepository siptisUserRepository;
+    private final RoleService roleService;
+    private final UserCareerService userCareerService;
     private final AuthenticationManager authenticationManager;
     private final UserInformationService userInformationService;
 
@@ -40,7 +50,7 @@ public class SiptisUserServiceImpl implements SiptisUserService {
 
     @Override
     public ServiceAnswer obtenerProyectosSupervisorParaMenuPrincipalPorIdUsuario(Long id) {
-        Optional<SiptisUser> usuarioOptional = usuarioCommonRepository.findById(id);
+        Optional<SiptisUser> usuarioOptional = siptisUserRepository.findById(id);
         if (usuarioOptional.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
         }
@@ -52,20 +62,20 @@ public class SiptisUserServiceImpl implements SiptisUserService {
     public ServiceAnswer existsById(int id) {
         Long longId = Long.valueOf(id);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
-                .data(usuarioCommonRepository.existsById(longId)).build();
+                .data(siptisUserRepository.existsById(longId)).build();
     }
 
     private boolean existsUserById(long id) {
-        return usuarioCommonRepository.existsById(id);
+        return siptisUserRepository.existsById(id);
     }
     private boolean existsUserByEmail(String email) {
-        return usuarioCommonRepository.existsByEmail(email);
+        return siptisUserRepository.existsByEmail(email);
     }
     private SiptisUser findUserByEmail(String email) {
-        return usuarioCommonRepository.findByEmail(email).get();
+        return siptisUserRepository.findByEmail(email).get();
     }
     private SiptisUser findUserById(long id) {
-        return usuarioCommonRepository.findById(id).get();
+        return siptisUserRepository.findById(id).get();
     }
 
     @Override
@@ -84,7 +94,7 @@ public class SiptisUserServiceImpl implements SiptisUserService {
     @Override
     public ServiceAnswer existsTokenPassword(String tokenPassword) {
 
-        boolean response = usuarioCommonRepository.existsByTokenPassword(tokenPassword);
+        boolean response = siptisUserRepository.existsByTokenPassword(tokenPassword);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
                 .data(response).build();
     }
@@ -97,10 +107,10 @@ public class SiptisUserServiceImpl implements SiptisUserService {
 
     @Override
     public ServiceAnswer getAllUsers() {
-        List<SiptisUser> userList = usuarioCommonRepository.findAll();
+        List<SiptisUser> userList = siptisUserRepository.findAll();
         return userList.isEmpty() ?
                 ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(userList).build() :
-                ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(usuarioCommonRepository.findAll()).build();
+                ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(siptisUserRepository.findAll()).build();
     }
 
     @Override
@@ -133,19 +143,184 @@ public class SiptisUserServiceImpl implements SiptisUserService {
 
     @Override
     public SiptisUser save(SiptisUser siptisUser) {
-        return usuarioCommonRepository.save(siptisUser);
+        return siptisUserRepository.save(siptisUser);
     }
 
     @Override
     public ServiceAnswer getPossibleTribunals() {
-        List<SiptisUser> query = usuarioCommonRepository.findByRolesName("TRIBUNAL");
+        List<SiptisUser> query = siptisUserRepository.findByRolesName("TRIBUNAL");
         List<TribunalInfoToAssignSection> res = query.stream().map(TribunalInfoToAssignSection::new).toList();
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(res).build();
     }
 
+
+
+
+    private ServiceAnswer validateUser(String email, String password){
+        if(email == null || email == ""){
+            return createResponse(ServiceMessage.ERROR_REGISTER_ACCOUNT_EMAIL, "Tiene que ingresar un correo.");
+        }
+        if(!Pattern.compile("^(.+)@(\\S+)$").matcher(email).matches()){
+            return createResponse(ServiceMessage.ERROR_REGISTER_ACCOUNT_EMAIL, "El correo no tiene el formato correcto.");
+        }
+        if(existsUserByEmail(email)){
+            return createResponse(ServiceMessage.ERROR_REGISTER_ACCOUNT_EMAIL, "El correo ya se encuentra registrado.");
+        }
+        if(password == null || password == ""){
+            return createResponse(ServiceMessage.ERROR_REGISTER_ACCOUNT_PASSWORD, "Tiene que ingresar una contraseña.");
+        }
+        if(password.length() < 6 ){
+            return createResponse(ServiceMessage.ERROR_REGISTER_ACCOUNT_PASSWORD, "La contraseña es muy corta.");
+        }
+        return null;
+    }
+
+/*
+    private SiptisUser registerUser(String email, String password) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String userPassword = encoder.encode(password);
+        return new SiptisUser(email, userPassword);
+    }
+*/
+    private ServiceAnswer registerUser(String email, String password) {
+        ServiceAnswer answer = validateUser(email, password);
+        if(answer != null){
+            return answer;
+        }
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String userPassword = encoder.encode(password);
+        return createResponse(ServiceMessage.OK, new SiptisUser(email, userPassword));
+    }
+
+    private ServiceAnswer registerRoleAndInformation(RegisterUserDTO dto, String career){
+        ServiceAnswer answer = registerUser(dto.getEmail(), dto.getPassword());
+        SiptisUser user;
+
+        if(answer.getServiceMessage() == ServiceMessage.OK){
+            user = (SiptisUser) answer.getData();
+        }else{
+            return  answer;
+        }
+
+        answer = userInformationService.registerUserInformation(dto);
+        if(answer.getServiceMessage() == ServiceMessage.OK){
+            UserInformation info = (UserInformation) answer.getData();
+            user.setUserInformation(info);
+        }else{
+            return  answer;
+        }
+
+        answer = roleService.getRoleByName(career);
+        if(answer.getServiceMessage() == ServiceMessage.OK){
+            Role role = (Role) answer.getData();
+            user.addRol(role);
+        }else{
+            return  answer;
+        }
+
+        return createResponse(ServiceMessage.OK, user);
+    }
+
+
+@Override
+public ServiceAnswer registerStudent(RegisterStudentDTO dto) {
+
+
+    ServiceAnswer answer = registerRoleAndInformation(dto, "STUDENT");
+    SiptisUser user;
+
+    if(answer.getServiceMessage() == ServiceMessage.OK){
+        user = (SiptisUser) answer.getData();
+    }else{
+        return  answer;
+    }
+
+    answer = userCareerService.getCareerByName(dto.getCareer());
+    if(answer.getServiceMessage() == ServiceMessage.OK){
+        UserCareer career = (UserCareer) answer.getData();
+        user.addCareer(career);
+    }else{
+        return  answer;
+    }
+    siptisUserRepository.save(user);
+    return createResponse
+            (ServiceMessage.OK, "El estudiante fue registrado exitosamente");
+
+}
+
+
+
+    @Override
+    public ServiceAnswer registerTeacher(RegisterUserDTO dto) {
+
+        ServiceAnswer answer = registerRoleAndInformation(dto, "STUDENT");
+        SiptisUser user;
+        if(answer.getServiceMessage() == ServiceMessage.OK){
+            user = (SiptisUser) answer.getData();
+        }else{
+            return  answer;
+        }
+
+        siptisUserRepository.save(user);
+        return createResponse
+                (ServiceMessage.OK, "El docente fue registrado exitosamente");
+    }
+
+    @Override
+    public ServiceAnswer registerAdmin(AdminRegisterDTO dto) {
+
+        ServiceAnswer answer = registerUser(dto.getEmail(), dto.getPassword());
+        SiptisUser user;
+        if(answer.getServiceMessage() == ServiceMessage.OK){
+            user = (SiptisUser) answer.getData();
+        }else{
+            return  answer;
+        }
+
+        answer = roleService.getRoleByName("ADMIN");
+        if(answer.getServiceMessage() == ServiceMessage.OK){
+            Role role = (Role) answer.getData();
+            user.addRol(role);
+        }else{
+            return  answer;
+        }
+
+        siptisUserRepository.save(user);
+        return createResponse
+                (ServiceMessage.OK, "El administrador fue registrado exitosamente");
+
+    }
+
+    @Override
+    public ServiceAnswer userEditPersonalInformation() {
+        return null;
+    }
+
+    @Override
+    public ServiceAnswer adminEditUserPersonalInformation() {
+        return null;
+    }
+
+    @Override
+    public ServiceAnswer getUserPersonalInformation(Long id) {
+        if(!existsUserById(id)){
+            return createResponse(ServiceMessage.OK, "No se pudo encontrar al usuario");
+        }
+        SiptisUser user = siptisUserRepository.findOneById(id).get();
+        UserInformation information = user.getUserInformation();
+
+        return createResponse(ServiceMessage.OK, information);
+    }
+
+    @Override
+    public ServiceAnswer getUserStudentPersonalInformation(Long id) {
+        return null;
+    }
+
     @Override
     public ServiceAnswer getPersonalActivities(Long id, Pageable pageable) {
-        Page<Activity> activities = usuarioCommonRepository.findAllPersonalActivities(id, pageable);
+        Page<Activity> activities = siptisUserRepository.findAllPersonalActivities(id, pageable);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(activities).build();
     }
 
@@ -210,7 +385,7 @@ public class SiptisUserServiceImpl implements SiptisUserService {
 
     @Override
     public Optional<SiptisUser> findByTokenPassword(String tokenPassword){
-        return usuarioCommonRepository.findByTokenPassword(tokenPassword);
+        return siptisUserRepository.findByTokenPassword(tokenPassword);
     }
 
     private UserGeneralInformationDTO convertToDTO(SiptisUser user) {

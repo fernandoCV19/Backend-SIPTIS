@@ -11,4 +11,8 @@ public interface UserCareerRepository extends JpaRepository<UserCareer, Integer 
 
     @Override
     List<UserCareer> findAll();
+
+    boolean existsByName(String name);
+
+    UserCareer findUserCareerByName(String name);
 }
