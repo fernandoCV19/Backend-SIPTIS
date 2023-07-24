@@ -11,6 +11,8 @@ public interface DocumentGeneratorService {
 
     ServiceAnswer generateReport (ReportDocumentDTO reportDocumentDTO);
 
+    ServiceAnswer generateReportTesting (ReportDocumentDTO reportDocumentDTO);
+
     ServiceAnswer generateSolvency(long idUser);
 
     ServiceAnswer generateDocumentaryRecord(DocumentaryRecordDto documentaryRecordDto);

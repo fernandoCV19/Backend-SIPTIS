@@ -3,20 +3,25 @@ package backend.siptis.auth.jwt;
 import backend.siptis.auth.entity.Role;
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.service.userData.UserInformationService;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 
+import java.security.Key;
 import java.util.Date;
 
 @Component
 public class JWTokenUtils {
 
-    private static final long EXPIRE_TIME_DURATION = 2 * 60 * 60* 1000; //2horas.
+    private static final long EXPIRE_TIME_DURATION = 1000; // media hora.
+    private static final long REFRESH_TOKEN_EXPIRE_TIME_DURATION = 60 * 60 * 1000; //1 horas
+    private static final Logger logger = LoggerFactory.getLogger(JWTokenUtils.class);
     private static final String ACCESS_TOKEN_SECRET= "$2a$12$JTfIoPcl28jeEFio3aHBa.rcqtBUgvykiKYgKxvikVzzxVAt82CEu\n";
 
     public static String createToken(UserInformationService.UserDetailImp userDI){
@@ -66,6 +71,29 @@ public class JWTokenUtils {
         Integer jwtId = (Integer) claims.get("id");
         Long id = Long.valueOf(jwtId);
         return id;
+    }
+
+    private static Key key() {
+        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(ACCESS_TOKEN_SECRET));
+    }
+
+    public static boolean validateJwtToken(String authToken) {
+        try {
+            Jwts.parserBuilder()
+                    .setSigningKey(ACCESS_TOKEN_SECRET.getBytes())
+                    .build().parseClaimsJws(authToken).getBody();
+            return true;
+        } catch (MalformedJwtException e) {
+            logger.error("Invalid JWT token: {}", e.getMessage());
+        } catch (ExpiredJwtException e) {
+            logger.error("JWT token is expired: {}", e.getMessage());
+        } catch (UnsupportedJwtException e) {
+            logger.error("JWT token is unsupported: {}", e.getMessage());
+        } catch (IllegalArgumentException e) {
+            logger.error("JWT claims string is empty: {}", e.getMessage());
+        }
+
+        return false;
     }
 
     public static UsernamePasswordAuthenticationToken getAuthentication(String token){

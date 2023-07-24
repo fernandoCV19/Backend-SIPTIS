@@ -37,6 +37,11 @@ public class DocumentController {
         return createResponseEntity(documentGeneratorService.generateReport(reportDocumentDTO));
     }
 
+    @PostMapping("/create-report-test")
+    ResponseEntity<?> createReportTest(@RequestBody ReportDocumentDTO reportDocumentDTO){
+        return createResponseEntity(documentGeneratorService.generateReportTesting(reportDocumentDTO));
+    }
+
     @GetMapping("/create-solvency/{id}")
     ResponseEntity<?> createSolvency(@PathVariable("id") long userId){
         return createResponseEntity(documentGeneratorService.generateSolvency(userId));

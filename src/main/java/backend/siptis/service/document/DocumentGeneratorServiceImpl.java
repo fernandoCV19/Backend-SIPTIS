@@ -4,6 +4,7 @@ import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.DocumentType;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
+import backend.siptis.model.entity.projectManagement.Phase;
 import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.entity.userData.Document;
 import backend.siptis.model.entity.userData.UserCareer;
@@ -205,5 +206,60 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
         Files.write(tempFilePath, bytes);
 
         return tempFilePath;
+    }
+
+    @Override
+    public ServiceAnswer generateReportTesting (ReportDocumentDTO reportDocumentDTO){
+        Long idProject = reportDocumentDTO.getProjectId();
+        Long userId = reportDocumentDTO.getUserId();
+
+        //Obteniendo el projecto
+        Optional <Project> optionalProject = projectRepository.findById(idProject);
+        if (optionalProject .isEmpty()){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
+        }
+        //se encontro el projecto
+        Project project = optionalProject.get();
+        //obteniendo los nombres de los tutores
+        List<String> tutors = userInformationRepository.getTutorsNames(idProject);
+        //String teacherCompleteName = userInformationRepository.getTeachersNames(idProject).get(0);
+        String teacherCompleteName = "Juan Pablo Rodriguez";
+        //tiitulo del projecto
+        String title = project.getName();
+        int reportNumber = (project.getReportIndex() + 1);
+        //obteniendo estudiante
+        Optional<SiptisUser> oUser = siptisUserRepository.findOneById(userId);
+
+        if (oUser.isEmpty()){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
+        }
+        SiptisUser user = oUser.get();
+        //nombres del postulante
+        String postulant = user.getUserInformation().getNames()+ ' '+user.getUserInformation().getLastnames();
+        //creando la herramienta de generacion de reporte
+        ReportTool reportTool = new ReportTool();
+        String filename = reportTool.generate(postulant,Integer.toString(reportNumber), title,tutors,teacherCompleteName,reportDocumentDTO.getDescription()) ;
+
+        //subiendo a la nube
+        //String key = nube.uploadDocumentToCloud(filename);
+
+        //creando una entidad documento
+        backend.siptis.model.entity.userData.Document document = new backend.siptis.model.entity.userData.Document();
+
+        //guardando el path, y el resto de informacion
+        document.setPath("abc");
+        document.setType(DocumentType.REPORT.toString());
+        document.setDescription(reportDocumentDTO.getShortDescription());
+        document.setSiptisUser(user);
+
+        //guardando el documento en la BD
+        //documentRepository.save(document);
+
+        //actualizando el projecto
+        project.setReportIndex(reportNumber);
+        projectRepository.save(project);
+        //respuesta
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data("abc")
+                .build();
     }
 }

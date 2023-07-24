@@ -29,7 +29,7 @@ public class GeneralInformationController {
     private final AreasService areasService;
 
     @GetMapping("/getAllCareers")
-    //@PreAuthorize("hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('STUDENT')")
     public ResponseEntity<?> getAllCareers(){
         ServiceAnswer answerService = userCareerService.getAllCareers();
         return createResponse(answerService);
