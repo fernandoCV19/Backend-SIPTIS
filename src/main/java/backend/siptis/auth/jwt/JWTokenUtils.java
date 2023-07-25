@@ -73,10 +73,6 @@ public class JWTokenUtils {
         return id;
     }
 
-    private static Key key() {
-        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(ACCESS_TOKEN_SECRET));
-    }
-
     public static boolean validateJwtToken(String authToken) {
         try {
             Jwts.parserBuilder()

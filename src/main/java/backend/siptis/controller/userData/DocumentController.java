@@ -31,7 +31,6 @@ public class DocumentController {
         return createResponseEntity(documentGeneratorService.deleteDocument(documentId));
     }
 
-
     @PostMapping("/create-report")
     ResponseEntity<?> createReport(@RequestBody ReportDocumentDTO reportDocumentDTO){
         return createResponseEntity(documentGeneratorService.generateReport(reportDocumentDTO));

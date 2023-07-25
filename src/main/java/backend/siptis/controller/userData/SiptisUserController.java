@@ -4,8 +4,6 @@ import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.AdminRegisterDTO;
-import backend.siptis.model.pjo.dto.StudentRegisterDTO;
-import backend.siptis.model.pjo.dto.TeacherRegisterDTO;
 import backend.siptis.model.pjo.dto.records.LogInDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterStudentDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterUserDTO;

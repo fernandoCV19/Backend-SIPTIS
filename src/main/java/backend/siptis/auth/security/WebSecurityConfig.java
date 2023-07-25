@@ -27,6 +27,7 @@ public class WebSecurityConfig {
     private JWTAuthorizationFilter jwtAuthorizationFilter;
 
 
+
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager manager)
             throws Exception {
@@ -96,7 +97,7 @@ public class WebSecurityConfig {
     }
 
     @Bean
-            public AuthenticationEntryPoint authenticationEntryPoint(){
+    public AuthenticationEntryPoint authenticationEntryPoint(){
         return new CustomAuthenticationEntryPoint();
     }
 }
