@@ -1,5 +1,6 @@
 package backend.siptis.service.userData;
 
+import backend.siptis.auth.entity.RefreshToken;
 import backend.siptis.auth.entity.Role;
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.auth.jwt.JWTokenUtils;
@@ -10,6 +11,7 @@ import backend.siptis.model.entity.userData.UserArea;
 import backend.siptis.model.entity.userData.UserCareer;
 import backend.siptis.model.entity.userData.UserInformation;
 import backend.siptis.model.pjo.dto.*;
+import backend.siptis.model.pjo.dto.authentication.TokenDTO;
 import backend.siptis.model.pjo.dto.records.LogInDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterStudentDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterUserDTO;
@@ -25,6 +27,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.sql.Ref;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -39,6 +43,7 @@ public class SiptisUserServiceImpl implements SiptisUserService {
     private final UserCareerService userCareerService;
     private final AuthenticationManager authenticationManager;
     private final UserInformationService userInformationService;
+    private final RefreshTokenService refreshTokenService;
 
 
     @Override
@@ -343,8 +348,12 @@ public ServiceAnswer registerStudent(RegisterStudentDTO dto) {
             if (auth.isAuthenticated()){
                 UserInformationService.UserDetailImp userDetails= (UserInformationService.UserDetailImp) auth.getPrincipal();
                 String token = JWTokenUtils.createToken(userDetails);
+                RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails);
+                TokenDTO tokenDTO = new TokenDTO();
+                tokenDTO.setToken(token);
+                tokenDTO.setRefreshToken(refreshToken.getToken());
 
-                return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(token).build();
+                return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(tokenDTO).build();
 
             } else {
                 String message = "Ocurrió un error al iniciar Sesión.";
