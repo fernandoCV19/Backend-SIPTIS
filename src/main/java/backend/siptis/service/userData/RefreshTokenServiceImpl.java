@@ -46,10 +46,24 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     }
 
     @Override
+    public RefreshToken createRefreshToken(SiptisUser user) {
+        RefreshToken token = new RefreshToken();
+        if(refreshTokenRepository.existsBySiptisUser(user)){
+            token = refreshTokenRepository.findBySiptisUser(user);
+        }
+        token.setSiptisUser(user);
+        token.setExpireDate(Instant.now().plusMillis(REFRESH_TOKEN_EXPIRE_TIME_DURATION));
+        token.setToken(UUID.randomUUID().toString());
+        refreshTokenRepository.save(token);
+        return token;
+    }
+
+    @Override
     public RefreshToken verifyExpirationDate(RefreshToken refreshToken) {
         if (refreshToken.getExpireDate().compareTo(Instant.now()) < 0) {
             refreshTokenRepository.delete(refreshToken);
-            throw new RefreshTokenException("El Refresh Token expiró");
+            //throw new RefreshTokenException("El Refresh Token expiró");
+            return null;
         }
 
         return refreshToken;

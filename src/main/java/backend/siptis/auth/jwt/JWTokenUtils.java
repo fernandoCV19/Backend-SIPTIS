@@ -2,6 +2,7 @@ package backend.siptis.auth.jwt;
 
 import backend.siptis.auth.entity.Role;
 import backend.siptis.auth.entity.SiptisUser;
+import backend.siptis.exception.RefreshTokenException;
 import backend.siptis.service.userData.UserInformationService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -24,6 +25,7 @@ public class JWTokenUtils {
     private static final Logger logger = LoggerFactory.getLogger(JWTokenUtils.class);
     private static final String ACCESS_TOKEN_SECRET= "$2a$12$JTfIoPcl28jeEFio3aHBa.rcqtBUgvykiKYgKxvikVzzxVAt82CEu\n";
 
+
     public static String createToken(UserInformationService.UserDetailImp userDI){
         Date fechaExpiracion =new Date(System.currentTimeMillis() + EXPIRE_TIME_DURATION);
 
@@ -35,7 +37,16 @@ public class JWTokenUtils {
                 .compact();
     }
 
+    public static String createToken(SiptisUser user){
+        Date fechaExpiracion =new Date(System.currentTimeMillis() + EXPIRE_TIME_DURATION);
 
+        return Jwts.builder().setSubject(user.getEmail())
+                .setExpiration(fechaExpiracion)
+                .claim("id", user.getId())
+                .claim("roles", user.getRoles())
+                .signWith(Keys.hmacShaKeyFor(ACCESS_TOKEN_SECRET.getBytes()))
+                .compact();
+    }
 
     public static UserDetails getUserDetails(String token){
         SiptisUser siptisUserDetails =new SiptisUser();
@@ -83,6 +94,7 @@ public class JWTokenUtils {
             logger.error("Invalid JWT token: {}", e.getMessage());
         } catch (ExpiredJwtException e) {
             logger.error("JWT token is expired: {}", e.getMessage());
+            //throw new RefreshTokenException("El Refresh Token expiró");
         } catch (UnsupportedJwtException e) {
             logger.error("JWT token is unsupported: {}", e.getMessage());
         } catch (IllegalArgumentException e) {

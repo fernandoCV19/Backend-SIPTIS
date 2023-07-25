@@ -1,5 +1,7 @@
 package backend.siptis.auth.jwt;
 
+import backend.siptis.exception.RefreshTokenException;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,7 +19,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain)
-            throws ServletException, IOException {
+            throws ServletException, IOException, RefreshTokenException, ExpiredJwtException {
         String bearerToken =request.getHeader("Authorization");
 
         if(bearerToken != null && bearerToken.startsWith("Bearer ")){

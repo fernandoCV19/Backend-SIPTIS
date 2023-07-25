@@ -368,6 +368,26 @@ public ServiceAnswer registerStudent(RegisterStudentDTO dto) {
     }
 
     @Override
+    public ServiceAnswer updateToken(String refreshToken) {
+        RefreshToken token = refreshTokenService.findByToken(refreshToken);
+        if(token == null){
+            return createResponse(ServiceMessage.ERROR,"El token no existe");
+        }
+        token = refreshTokenService.verifyExpirationDate(token);
+        if(token == null){
+            return createResponse(ServiceMessage.ERROR,"El token ya expiro");
+        }
+        SiptisUser user = token.getSiptisUser();
+        String updatedToken = JWTokenUtils.createToken(user);
+        RefreshToken newRefreshToken = refreshTokenService.createRefreshToken(user);
+        TokenDTO tokenDTO = new TokenDTO();
+        tokenDTO.setToken(updatedToken);
+        tokenDTO.setRefreshToken(newRefreshToken.getToken());
+
+        return createResponse(ServiceMessage.OK, tokenDTO);
+    }
+
+    @Override
     public Long getIdFromToken(String token){
         token = token.replace("Bearer ","");
         return JWTokenUtils.getId(token);

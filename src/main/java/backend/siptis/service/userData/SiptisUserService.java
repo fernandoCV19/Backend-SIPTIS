@@ -51,6 +51,7 @@ public interface SiptisUserService {
 
     ServiceAnswer logIn(LogInDTO logInDTO);
 
+    ServiceAnswer updateToken(String refreshToken);
     Optional<SiptisUser> findByTokenPassword(String tokenPassword);
 
 }

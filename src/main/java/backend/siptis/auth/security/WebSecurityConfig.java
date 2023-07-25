@@ -43,7 +43,7 @@ public class WebSecurityConfig {
                         "/user/login", "/user/todos", "/user/editUser/*",
                         "/user/register/student", "/user/register/admin","/user/personal-activities/*",
                         "/user/buscarUser/**", "/user/personalInformation",
-                        "/user/updateAreas/**",
+                        "/user/updateAreas/**", "/user/refreshtoken",
 
                         "/document/**",
 

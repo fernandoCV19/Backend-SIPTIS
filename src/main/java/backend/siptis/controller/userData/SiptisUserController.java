@@ -1,12 +1,17 @@
 package backend.siptis.controller.userData;
 
+import backend.siptis.auth.entity.RefreshToken;
+import backend.siptis.auth.entity.SiptisUser;
+import backend.siptis.auth.jwt.JWTokenUtils;
 import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.AdminRegisterDTO;
+import backend.siptis.model.pjo.dto.authentication.RefreshTokenDTO;
 import backend.siptis.model.pjo.dto.records.LogInDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterStudentDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterUserDTO;
+import backend.siptis.service.userData.RefreshTokenService;
 import backend.siptis.service.userData.SiptisUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -21,12 +26,21 @@ import org.springframework.web.bind.annotation.*;
 public class SiptisUserController {
 
     private final SiptisUserService userService;
+    private final RefreshTokenService refreshTokenService;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(
             @RequestBody LogInDTO logInDTO) {
         ServiceAnswer answerService = userService.logIn(logInDTO);
         return createResponseEntity(answerService);
+    }
+
+    @PostMapping("/refreshtoken")
+    public ResponseEntity<?> refreshtoken(@RequestBody RefreshTokenDTO request) {
+        String refreshToken = request.getRefreshToken();
+
+        ServiceAnswer answer = userService.updateToken(refreshToken);
+        return createResponseEntity(answer);
     }
 
 
