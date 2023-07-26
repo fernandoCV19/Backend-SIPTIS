@@ -20,7 +20,8 @@ import java.util.Date;
 @Component
 public class JWTokenUtils {
 
-    private static final long EXPIRE_TIME_DURATION = 1000; // media hora.
+    private static final long EXPIRE_TIME_DURATION = 1000 ; // media hora.
+    private static final long EXPIRE_TIME_DURATION_2 = 1000 * 60 * 60; // media hora.
     private static final long REFRESH_TOKEN_EXPIRE_TIME_DURATION = 60 * 60 * 1000; //1 horas
     private static final Logger logger = LoggerFactory.getLogger(JWTokenUtils.class);
     private static final String ACCESS_TOKEN_SECRET= "$2a$12$JTfIoPcl28jeEFio3aHBa.rcqtBUgvykiKYgKxvikVzzxVAt82CEu\n";
@@ -38,12 +39,13 @@ public class JWTokenUtils {
     }
 
     public static String createToken(SiptisUser user){
-        Date fechaExpiracion =new Date(System.currentTimeMillis() + EXPIRE_TIME_DURATION);
+        UserInformationService.UserDetailImp userDI = new UserInformationService.UserDetailImp(user);
+        Date fechaExpiracion =new Date(System.currentTimeMillis() + EXPIRE_TIME_DURATION_2);
 
         return Jwts.builder().setSubject(user.getEmail())
                 .setExpiration(fechaExpiracion)
-                .claim("id", user.getId())
-                .claim("roles", user.getRoles())
+                .claim("id", userDI.getId())
+                .claim("roles", userDI.getRoles())
                 .signWith(Keys.hmacShaKeyFor(ACCESS_TOKEN_SECRET.getBytes()))
                 .compact();
     }

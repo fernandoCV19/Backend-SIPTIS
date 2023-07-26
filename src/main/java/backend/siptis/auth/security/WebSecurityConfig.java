@@ -66,7 +66,7 @@ public class WebSecurityConfig {
                         "/supervisor/**")
                 .permitAll()
                 .anyRequest().authenticated()
-                .and().exceptionHandling().authenticationEntryPoint(authenticationEntryPoint())
+                //.and().exceptionHandling().authenticationEntryPoint(authenticationEntryPoint())
                 .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().addFilter(jwtAuthenticationFilter)
