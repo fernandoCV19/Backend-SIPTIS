@@ -307,17 +307,21 @@ INSERT INTO project_student(id, user_id, project_id) VALUES (13, 17, 13);
 
 // review projects
 
-INSERT INTO siptis_user(id, email, password) VALUES (30, 'usuarioReview@mail.com', '12345678');
+INSERT INTO siptis_user(id, email, password) VALUES (30, 'usuarioReview@mail.com', '$2a$10$JZDKlrNbRrGF81sgSC50SuF9NjfAEy80I5iOV4NuVCmWLBWlZIP1O');
 
 INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, user_id) VALUES (30, '2000-1-20', '2234568', '2000000', '22345670', 'ApellidosReview', 'NombresReview', 30);
 
-INSERT INTO siptis_user(id, email, password) VALUES (31, 'estudiante1@mail.com', '12345678');
+INSERT INTO siptis_user(id, email, password) VALUES (31, 'estudiante1@mail.com', '$2a$10$JZDKlrNbRrGF81sgSC50SuF9NjfAEy80I5iOV4NuVCmWLBWlZIP1O');
+
+INSERT INTO siptis_user_role(siptis_user_id, role_id) VALUES (31, 1);
 
 INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, user_id) VALUES (31, '2000-1-20', '2234568', '2000000', '22345670', 'ApellidosEstudiante1', 'NombresEstudiante1', 31);
 
-INSERT INTO siptis_user(id, email, password) VALUES (32, 'estudiante2@mail.com', '12345678');
+INSERT INTO siptis_user(id, email, password) VALUES (32, 'estudiante2@mail.com', '$2a$10$JZDKlrNbRrGF81sgSC50SuF9NjfAEy80I5iOV4NuVCmWLBWlZIP1O');
 
 INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, user_id) VALUES (32, '2000-1-20', '2234568', '2000000', '22345670', 'ApellidosEstudiante2', 'NombresEstudiante2', 32);
+
+INSERT INTO siptis_user_role(siptis_user_id, role_id) VALUES (32, 1);
 
 
 
@@ -443,17 +447,21 @@ INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id,
 
 --cambiar de fase proyectos
 
-INSERT INTO siptis_user(id, email, password) VALUES (50, 'tribunal@mail.com', '12345678');
+INSERT INTO siptis_user(id, email, password) VALUES (50, 'tribunal@mail.com', '$2a$10$JZDKlrNbRrGF81sgSC50SuF9NjfAEy80I5iOV4NuVCmWLBWlZIP1O');
 INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, user_id) VALUES (50, '2000-1-20', '2234568', '2000000', '22345670', 'ApellidosTribunal', 'NombresTribunal', 50);
+INSERT INTO siptis_user_role(siptis_user_id, role_id) VALUES (50, 6);
 
-INSERT INTO siptis_user(id, email, password) VALUES (51, 'tutor@mail.com', '12345678');
+INSERT INTO siptis_user(id, email, password) VALUES (51, 'tutor@mail.com', '$2a$10$JZDKlrNbRrGF81sgSC50SuF9NjfAEy80I5iOV4NuVCmWLBWlZIP1O');
 INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, user_id) VALUES (51, '2000-1-20', '2234568', '2000000', '22345670', 'ApellidosTutor', 'NombresTutor', 51);
+INSERT INTO siptis_user_role(siptis_user_id, role_id) VALUES (51, 4);
 
-INSERT INTO siptis_user(id, email, password) VALUES (52, 'supervisor@mail.com', '12345678');
+INSERT INTO siptis_user(id, email, password) VALUES (52, 'supervisor@mail.com', '$2a$10$JZDKlrNbRrGF81sgSC50SuF9NjfAEy80I5iOV4NuVCmWLBWlZIP1O');
 INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, user_id) VALUES (52, '2000-1-20', '2234568', '2000000', '22345670', 'ApellidosSupervisor', 'NombresSupervisor', 52);
+INSERT INTO siptis_user_role(siptis_user_id, role_id) VALUES (52, 5);
 
-INSERT INTO siptis_user(id, email, password) VALUES (53, 'docente@mail.com', '12345678');
+INSERT INTO siptis_user(id, email, password) VALUES (53, 'docente@mail.com', '$2a$10$JZDKlrNbRrGF81sgSC50SuF9NjfAEy80I5iOV4NuVCmWLBWlZIP1O');
 INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names, user_id) VALUES (53, '2000-1-20', '2234568', '2000000', '22345670', 'ApellidosDocente', 'NombresDocente', 53);
+INSERT INTO siptis_user_role(siptis_user_id, role_id) VALUES (53, 3);
 
 
 INSERT INTO project(id, blue_book_path, perfil_path, project_path, phase, name, state_id, modality_id) VALUES (50, 'Libro1', null, 'Proyecto1', 'TRIBUNALS_PHASE', 'ProyectoGrado1', null, 1);
@@ -583,6 +591,10 @@ INSERT INTO activity (id, activity_name, activity_description, activity_date, pr
 INSERT INTO activity (id, activity_name, activity_description, activity_date, project_id) VALUES (9, 'Actividad 9', 'Descripcion 9', '2023-8-9', 4);
 
 INSERT INTO activity (id, activity_name, activity_description, activity_date, project_id) VALUES (10, 'Actividad 10', 'Descripcion 10', '2023-8-10', 5);
+
+INSERT INTO activity (id, activity_name, activity_description, activity_date, project_id) VALUES (11, 'Actividad 10', 'Descripcion 11', '2023-8-10', 31);
+
+INSERT INTO activity (id, activity_name, activity_description, activity_date, project_id) VALUES (12, 'Actividad 10', 'Descripcion 12', '2023-8-10', 31);
 
 
 

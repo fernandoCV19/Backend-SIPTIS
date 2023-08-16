@@ -1,10 +1,10 @@
-package backend.siptis.controller.records;
+package backend.siptis.controller.notifications;
 
 import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.model.pjo.dto.records.ActivityDTO;
-import backend.siptis.service.records.ActivityService;
+import backend.siptis.model.pjo.dto.notifications.ActivityDTO;
+import backend.siptis.service.notifications.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

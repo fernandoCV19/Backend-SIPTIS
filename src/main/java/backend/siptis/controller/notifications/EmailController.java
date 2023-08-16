@@ -1,10 +1,10 @@
-package backend.siptis.controller.records;
+package backend.siptis.controller.notifications;
 
 import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.TokenPasswordDTO;
-import backend.siptis.service.records.EmailServiceImpl;
+import backend.siptis.service.notifications.EmailServiceImpl;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

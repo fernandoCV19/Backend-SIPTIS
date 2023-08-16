@@ -6,7 +6,7 @@ import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.userData.UserArea;
 import backend.siptis.model.entity.userData.UserCareer;
 import backend.siptis.model.entity.userData.UserInformation;
-import backend.siptis.model.pjo.dto.records.PersonalInformationDTO;
+import backend.siptis.model.pjo.dto.notifications.PersonalInformationDTO;
 import backend.siptis.model.repository.userData.UserInformationRepository;
 import backend.siptis.service.userData.SiptisUserService;
 import backend.siptis.service.userData.checkUserInformation.CheckUserInformation;

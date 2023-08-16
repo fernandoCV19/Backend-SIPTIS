@@ -1,4 +1,4 @@
-package backend.siptis.model.entity.records;
+package backend.siptis.model.entity.notifications;
 
 import backend.siptis.model.entity.projectManagement.Project;
 import com.fasterxml.jackson.annotation.JsonBackReference;

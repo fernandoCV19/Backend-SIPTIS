@@ -1,6 +1,6 @@
-package backend.siptis.service.records;
+package backend.siptis.service.notifications;
 
-import backend.siptis.model.pjo.dto.records.ActivityDTO;
+import backend.siptis.model.pjo.dto.notifications.ActivityDTO;
 import backend.siptis.model.pjo.vo.ActivityVO;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,14 +1,13 @@
-package backend.siptis.service.records;
+package backend.siptis.service.notifications;
 
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.projectManagement.Project;
-import backend.siptis.model.entity.records.Activity;
-import backend.siptis.model.entity.records.GeneralActivity;
-import backend.siptis.model.pjo.dto.records.ActivityDTO;
+import backend.siptis.model.entity.notifications.Activity;
+import backend.siptis.model.pjo.dto.notifications.ActivityDTO;
 import backend.siptis.model.pjo.vo.ActivityVO;
 import backend.siptis.model.repository.projectManagement.ProjectRepository;
-import backend.siptis.model.repository.records.ActivityRepository;
+import backend.siptis.model.repository.notifications.ActivityRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

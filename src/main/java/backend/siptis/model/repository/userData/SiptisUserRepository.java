@@ -2,7 +2,7 @@ package backend.siptis.model.repository.userData;
 
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.model.entity.projectManagement.Project;
-import backend.siptis.model.entity.records.Activity;
+import backend.siptis.model.entity.notifications.Activity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

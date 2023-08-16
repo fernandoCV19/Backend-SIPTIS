@@ -1,21 +1,15 @@
-package backend.siptis.controller.records;
+package backend.siptis.controller.notifications;
 
 import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.model.entity.records.GeneralActivity;
-import backend.siptis.model.pjo.dto.records.GeneralActivityDTO;
-import backend.siptis.model.pjo.vo.GeneralActivityVO;
-import backend.siptis.service.records.GeneralActivityService;
+import backend.siptis.model.pjo.dto.notifications.GeneralActivityDTO;
+import backend.siptis.service.notifications.GeneralActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/general-activity")

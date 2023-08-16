@@ -1,15 +1,14 @@
-package backend.siptis.service.records;
+package backend.siptis.service.notifications;
 
 
 import backend.siptis.commons.ServiceAnswer;
-import backend.siptis.model.entity.records.Activity;
-import backend.siptis.model.pjo.dto.records.ActivityDTO;
+import backend.siptis.model.entity.notifications.Activity;
+import backend.siptis.model.pjo.dto.notifications.ActivityDTO;
 import backend.siptis.model.pjo.vo.ActivityVO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ActivityService {
     ServiceAnswer findById(long id);

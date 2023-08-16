@@ -1,11 +1,8 @@
-package backend.siptis.service.records;
+package backend.siptis.service.notifications;
 
-import backend.siptis.commons.ServiceAnswer;
-import backend.siptis.model.entity.records.GeneralActivity;
-import backend.siptis.model.pjo.dto.records.GeneralActivityDTO;
+import backend.siptis.model.pjo.dto.notifications.GeneralActivityDTO;
 import backend.siptis.model.pjo.vo.GeneralActivityVO;
 import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +17,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Date;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
