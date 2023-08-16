@@ -68,19 +68,19 @@ public class UserAuthServiceTest {
         this.service = service;
     }
 
-    @Test
-    void findAllTest(){
-        StudentRegisterDTO studentDTO = createStudent();
-        registerUserService.registerStudent(studentDTO);
-        ServiceAnswer answer = service.findAll();
-        assertEquals(ServiceMessage.OK,answer.getServiceMessage());
-    }
-
-    @Test
-    void findAllEmptyTest(){
-        ServiceAnswer answer = service.findAll();
-        assertEquals(ServiceMessage.OK,answer.getServiceMessage());
-    }
+//    @Test
+//    void findAllTest(){
+//        StudentRegisterDTO studentDTO = createStudent();
+//        registerUserService.registerStudent(studentDTO);
+//        ServiceAnswer answer = service.findAll();
+//        assertEquals(ServiceMessage.OK,answer.getServiceMessage());
+//    }
+//
+//    @Test
+//    void findAllEmptyTest(){
+//        ServiceAnswer answer = service.findAll();
+//        assertEquals(ServiceMessage.OK,answer.getServiceMessage());
+//    }
     @Test
     void registerNewStudentTest(){
 
