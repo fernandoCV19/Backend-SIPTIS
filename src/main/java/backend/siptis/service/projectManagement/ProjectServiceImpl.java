@@ -323,7 +323,7 @@ public class ProjectServiceImpl implements ProjectService {
     private UserDefenseScheduleVO createDefenseInfo(SiptisUser student) {
         HashMap<String, List<String[]>> schedules = new HashMap<>();
         for(Schedule schedule:student.getAvailableSchedules()){
-            String day = schedule.getDayS();
+            String day = schedule.getDay();
             String start = schedule.getHourStart();
             String finish = schedule.getHourFinish();
             if(!schedules.containsKey(day)){

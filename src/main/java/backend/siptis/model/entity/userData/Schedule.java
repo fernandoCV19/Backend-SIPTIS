@@ -16,7 +16,7 @@ public class Schedule {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
-    private String dayS;
+    private String day;
     private String hourStart;
     private String hourFinish;
 
