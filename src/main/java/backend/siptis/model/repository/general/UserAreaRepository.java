@@ -11,4 +11,7 @@ public interface UserAreaRepository extends JpaRepository<UserArea, Integer > {
 
     @Override
     List<UserArea> findAll();
+
+    boolean existsUserAreaById(Long id);
+    boolean existsUserAreaByName(String name);
 }

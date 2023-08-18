@@ -2,10 +2,8 @@ package backend.siptis.auth.jwt;
 
 import backend.siptis.auth.entity.Role;
 import backend.siptis.auth.entity.SiptisUser;
-import backend.siptis.exception.RefreshTokenException;
 import backend.siptis.service.userData.UserInformationService;
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +18,8 @@ import java.util.Date;
 @Component
 public class JWTokenUtils {
 
-    private static final long EXPIRE_TIME_DURATION = 1000 ; // media hora.
-    private static final long EXPIRE_TIME_DURATION_2 = 1000 * 60 * 60; // media hora.
+    private static final long EXPIRE_TIME_DURATION = 60 * 60 * 1000 ; // hora.
+    private static final long EXPIRE_TIME_DURATION_2 = 1000 * 60 * 60; // hora.
     private static final long REFRESH_TOKEN_EXPIRE_TIME_DURATION = 60 * 60 * 1000; //1 horas
     private static final Logger logger = LoggerFactory.getLogger(JWTokenUtils.class);
     private static final String ACCESS_TOKEN_SECRET= "$2a$12$JTfIoPcl28jeEFio3aHBa.rcqtBUgvykiKYgKxvikVzzxVAt82CEu\n";

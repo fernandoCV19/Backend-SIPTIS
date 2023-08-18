@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 @CrossOrigin
 public class ListOfUsersController {
-
+/*
     private final UserInformationService userInformationService;
 
     @GetMapping("/adminList")
@@ -64,4 +64,6 @@ public class ListOfUsersController {
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(data).message(messageService.toString()).build();
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
+
+ */
 }

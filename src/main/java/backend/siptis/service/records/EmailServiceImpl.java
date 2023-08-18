@@ -101,6 +101,11 @@ public class EmailServiceImpl implements EmailService{
     }
 
     @Override
+    public ServiceAnswer changePassword(TokenPasswordDTO tokenPasswordDTO) {
+        return null;
+    }
+/*
+    @Override
     public ServiceAnswer changePassword(TokenPasswordDTO dto){
         boolean check = (boolean) siptisUserService.existsTokenPassword(dto.getTokenPassword()).getData();
         if(!check){
@@ -122,7 +127,7 @@ public class EmailServiceImpl implements EmailService{
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
                 .data("La contrasena se actualizó correctamente.").build();
     }
-
+*/
 
     private Address[] getAllEmails(List<SiptisUser> users) throws MessagingException {
         Address[] addresses = new Address[users.size()];
@@ -180,6 +185,17 @@ public class EmailServiceImpl implements EmailService{
 
         mailSender.send(message);
     }
+
+    @Override
+    public ServiceAnswer sendRecoverPasswordEmail(String email) throws MessagingException, IOException {
+        return null;
+    }
+
+    @Override
+    public ChangePasswordDTO createChangePasswordDTO(String email) {
+        return null;
+    }
+    /*
     @Override
     public ServiceAnswer sendRecoverPasswordEmail(String email) throws MessagingException {
 
@@ -225,4 +241,5 @@ public class EmailServiceImpl implements EmailService{
 
         return dto;
     }
+    */
 }

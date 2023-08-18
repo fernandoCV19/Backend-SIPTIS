@@ -68,8 +68,12 @@ public class SiptisUser implements UserDetails {
     /*@OneToOne(mappedBy = "siptisUser")
     private UserCareer career;*/
 
-    @OneToOne(mappedBy = "siptisUser", cascade = CascadeType.ALL, optional = false)
+    @OneToOne(mappedBy = "siptisUser", cascade = CascadeType.ALL, optional = true)
     private UserInformation userInformation;
+
+    @OneToOne(mappedBy = "siptisUser", cascade = CascadeType.ALL, optional = true)
+    private RefreshToken refreshToken;
+
 
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "siptisUser")
     @JsonManagedReference

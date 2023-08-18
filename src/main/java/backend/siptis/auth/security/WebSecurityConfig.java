@@ -63,6 +63,8 @@ public class WebSecurityConfig {
 
                         "/cloud/**",
 
+                        "/userArea/**",
+
                         "/supervisor/**")
                 .permitAll()
                 .anyRequest().authenticated()

@@ -39,9 +39,9 @@ public interface UserInformationService {
     ServiceAnswer searchUserByNameAndRole(String name, Long role_id);
 
     ServiceAnswer getUserPersonalInformation(SiptisUser user);
-    ServiceAnswer getTeacherNotSelectedAreasById(Long id);
 
-    ServiceAnswer registerUserInformation(RegisterUserDTO dto);
+
+    ServiceAnswer registerUserInformation(RegisterUserDTO dto, SiptisUser user);
 
     ServiceAnswer registerStudentInformation(StudentRegisterDTO dto);
     ServiceAnswer registerTeacherInformation(TeacherRegisterDTO dto);

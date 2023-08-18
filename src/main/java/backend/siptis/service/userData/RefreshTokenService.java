@@ -2,6 +2,7 @@ package backend.siptis.service.userData;
 
 import backend.siptis.auth.entity.RefreshToken;
 import backend.siptis.auth.entity.SiptisUser;
+import backend.siptis.commons.ServiceAnswer;
 
 public interface RefreshTokenService {
 
@@ -13,6 +14,12 @@ public interface RefreshTokenService {
 
     RefreshToken verifyExpirationDate(RefreshToken refreshToken);
 
+    ServiceAnswer getAllToken();
+
+    ServiceAnswer getToken(Long id);
+    ServiceAnswer getToken(String token);
+
+    Long getTokenUser(String token);
 
 
     int deleteToken(Long userId);
