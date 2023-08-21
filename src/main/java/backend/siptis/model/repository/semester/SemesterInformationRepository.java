@@ -21,5 +21,7 @@ public interface SemesterInformationRepository extends JpaRepository<SemesterInf
 
     Optional<SemesterInformation> findById(long id);
 
+    boolean existsSemesterInformationById(Long id);
+
 
 }

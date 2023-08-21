@@ -65,7 +65,7 @@ public class WebSecurityConfig {
 
                         "/userArea/**",
                         "/area/**",
-
+                        "/semester/**",
                         "/supervisor/**")
                 .permitAll()
                 .anyRequest().authenticated()
