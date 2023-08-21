@@ -11,7 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
-@Controller
+@RestController
 @RequestMapping("/activity")
 public class ActivityController {
     private final ActivityService activityService;
@@ -19,7 +19,7 @@ public class ActivityController {
     public ActivityController(ActivityService activityService){
         this.activityService = activityService;
     }
-    @PostMapping()
+    @PostMapping("/create")
     public ResponseEntity<?> saveActivity(@RequestBody ActivityDTO activityDTO){
         return createResponse(activityService.persistActivity(activityDTO));
     }

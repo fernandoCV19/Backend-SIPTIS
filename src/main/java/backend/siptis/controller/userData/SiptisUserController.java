@@ -102,7 +102,12 @@ public class SiptisUserController {
         ServiceAnswer answer = userEditInformationService.teacherEditPersonalInfo(id, dto);
         return crearResponseEntityRegistrar(answer);
     }
-
+    @GetMapping("/project/{userId}")
+    public ResponseEntity<?> getProjectById(@PathVariable int userId){
+        Long id = Long.valueOf(userId);
+        userService.getProjectById(id);
+        return null;
+    }
     private ResponseEntity<?> crearResponseEntityRegistrar(ServiceAnswer serviceAnswer) {
         Object data = serviceAnswer.getData();
         ServiceMessage messageService = serviceAnswer.getServiceMessage();

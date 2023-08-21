@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
-@Controller
+@RestController
 @RequestMapping("/email")
 public class EmailController {
     private EmailServiceImpl emailServiceImpl;

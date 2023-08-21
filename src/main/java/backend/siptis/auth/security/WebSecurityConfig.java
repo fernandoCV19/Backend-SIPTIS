@@ -43,6 +43,8 @@ public class WebSecurityConfig {
                         "/user/register/student", "/user/register/admin","/user/personal-activities/*",
                         "/user/buscarUser/**", "/user/personalInformation",
                         "/user/updateAreas/**",
+                        "/user/project/**",
+                        "/user/project/*",
 
                         "/document/**",
 
@@ -64,7 +66,8 @@ public class WebSecurityConfig {
 
                         "/supervisor/**",
 
-                        "/phase/**")
+                        "/phase/**",
+                        "/wpp")
                 .permitAll()
                 .anyRequest().authenticated()
                 .and().exceptionHandling().authenticationEntryPoint(authenticationEntryPoint())

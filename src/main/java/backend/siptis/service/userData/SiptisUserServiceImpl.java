@@ -4,6 +4,7 @@ import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.notifications.Activity;
+import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.pjo.dto.*;
 import backend.siptis.model.pjo.vo.userData.TribunalInfoToAssignSection;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
@@ -103,6 +104,14 @@ public class SiptisUserServiceImpl implements SiptisUserService {
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(activities).build();
     }
 
+    @Override
+    public ServiceAnswer getProjectById(Long id) {
+        Optional<Project> project = usuarioCommonRepository.findProjectById(id);
+        System.out.print(project);
+        return project.isEmpty() ?
+                ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(project).build() :
+                ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(project).build();
+    }
     private UserGeneralInformationDTO convertToDTO(SiptisUser user) {
         UserGeneralInformationDTO userDTO = new UserGeneralInformationDTO();
         userDTO.setId(user.getId());
