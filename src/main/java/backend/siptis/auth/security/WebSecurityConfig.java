@@ -64,6 +64,7 @@ public class WebSecurityConfig {
                         "/cloud/**",
 
                         "/userArea/**",
+                        "/area/**",
 
                         "/supervisor/**")
                 .permitAll()

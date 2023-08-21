@@ -4,7 +4,7 @@ import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.UserSelectedAreasDTO;
-import backend.siptis.service.generalInformation.AreasService;
+import backend.siptis.service.projectManagement.AreaService;
 import backend.siptis.service.generalInformation.UserAreaService;
 import backend.siptis.service.generalInformation.UserCareerService;
 import backend.siptis.service.userData.GeneralInformation.GeneralInformationService;
@@ -26,7 +26,7 @@ public class GeneralInformationController {
 
     private final UserCareerService userCareerService;
     private final UserAreaService userAreaService;
-    private final AreasService areasService;
+    private final AreaService areaService;
 
     @GetMapping("/getAllCareers")
     @PreAuthorize("hasAuthority('STUDENT')")
@@ -43,7 +43,7 @@ public class GeneralInformationController {
 
     @GetMapping("/getAllProjectAreas")
     public ResponseEntity<?> getAllProjectAreas(){
-        ServiceAnswer answerService = areasService.getAllAreas();
+        ServiceAnswer answerService = areaService.getAllAreas();
         return createResponse(answerService);
     }
 

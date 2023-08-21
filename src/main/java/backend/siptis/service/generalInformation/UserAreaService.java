@@ -2,13 +2,13 @@ package backend.siptis.service.generalInformation;
 
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.model.entity.userData.UserArea;
-import backend.siptis.model.pjo.dto.generalInformation.userArea.CreateUserAreaDTO;
+import backend.siptis.model.pjo.dto.generalInformation.userArea.CreateAreaDTO;
 
 public interface UserAreaService {
 
     ServiceAnswer getAllUserAreas();
 
-    ServiceAnswer createUserArea(CreateUserAreaDTO dto);
+    ServiceAnswer createUserArea(CreateAreaDTO dto);
 
     ServiceAnswer deleteUserArea(Long id);
 

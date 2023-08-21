@@ -1,27 +1,26 @@
-package backend.siptis.controller.generalInformation;
+package backend.siptis.controller.projectManagement;
 
 import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.generalInformation.userArea.CreateAreaDTO;
-import backend.siptis.service.generalInformation.UserAreaService;
+import backend.siptis.service.projectManagement.AreaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/userArea")
+@RequestMapping("/area")
 @RequiredArgsConstructor
 @CrossOrigin
-public class UserAreaController {
+public class AreaController {
 
-    private final UserAreaService userAreaService;
-
+    private final AreaService areaService;
 
     @GetMapping("/getAreas")
     public ResponseEntity<?> getAllAreas() {
-        ServiceAnswer answerService = userAreaService.getAllUserAreas();
+        ServiceAnswer answerService = areaService.getAllAreas();
         return createResponseEntity(answerService);
     }
 
@@ -29,7 +28,7 @@ public class UserAreaController {
     @PostMapping("/createArea")
     public ResponseEntity<?> createArea(
             @RequestBody CreateAreaDTO dto) {
-        ServiceAnswer answerService = userAreaService.createUserArea(dto);
+        ServiceAnswer answerService = areaService.createArea(dto);
         return createResponseEntity(answerService);
     }
 
@@ -37,7 +36,7 @@ public class UserAreaController {
     public ResponseEntity<?> deleteArea(
             @PathVariable int userId) {
         Long id = Long.valueOf(userId);
-        ServiceAnswer answerService = userAreaService.deleteUserArea(id);
+        ServiceAnswer answerService = areaService.deleteArea(id);
         return createResponseEntity(answerService);
     }
 

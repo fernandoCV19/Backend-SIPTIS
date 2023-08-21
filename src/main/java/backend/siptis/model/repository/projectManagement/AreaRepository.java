@@ -9,4 +9,7 @@ import java.util.List;
 public interface AreaRepository extends JpaRepository<Area, Integer> {
     @Override
     List<Area> findAll();
+
+    boolean existsAreaById(Long id);
+    boolean existsAreaByName(String name);
 }

@@ -5,6 +5,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CreateUserAreaDTO {
+public class CreateAreaDTO {
     private String name;
 }

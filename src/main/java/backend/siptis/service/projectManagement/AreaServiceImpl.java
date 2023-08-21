@@ -1,52 +1,50 @@
-package backend.siptis.service.generalInformation;
+package backend.siptis.service.projectManagement;
 
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
+import backend.siptis.model.entity.projectManagement.Area;
 import backend.siptis.model.entity.userData.UserArea;
 import backend.siptis.model.pjo.dto.generalInformation.userArea.CreateAreaDTO;
-import backend.siptis.model.repository.general.UserAreaRepository;
+import backend.siptis.model.repository.projectManagement.AreaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
-public class UserAreaServiceImpl implements UserAreaService{
+public class AreaServiceImpl implements AreaService {
 
+    private final AreaRepository areaRepository;
 
-    private final UserAreaRepository userAreaRepository;
 
     @Override
-    public ServiceAnswer getAllUserAreas() {
-
+    public ServiceAnswer getAllAreas() {
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
-                .data(userAreaRepository.findAll()).build();
-
+                .data(areaRepository.findAll()).build();
     }
 
     @Override
-    public ServiceAnswer createUserArea(CreateAreaDTO dto) {
-        ServiceAnswer answer = validateCreateUserArea(dto.getName());
+    public ServiceAnswer createArea(CreateAreaDTO dto) {
+        ServiceAnswer answer = validateCreateArea(dto.getName());
         if (answer != null){
             return answer;
         }
-        UserArea userArea = new UserArea();
-        userArea.setName(dto.getName());
-        userAreaRepository.save(userArea);
+
+        Area area = new Area();
+        area.setName(dto.getName());
+        areaRepository.save(area);
         return ServiceAnswer.builder()
                 .serviceMessage(ServiceMessage.OK)
                 .data("El area fue creada exitosamente.").build();
     }
 
-    private ServiceAnswer validateCreateUserArea(String name){
+    private ServiceAnswer validateCreateArea(String name){
         if(name == null || name.length()<2){
             return ServiceAnswer.builder()
                     .serviceMessage(ServiceMessage.ERROR)
                     .data("Ingrese un nombre valido.").build();
         }
 
-        if(userAreaRepository.existsUserAreaByName(name)){
+        if(areaRepository.existsAreaByName(name)){
             return ServiceAnswer.builder()
                     .serviceMessage(ServiceMessage.ERROR)
                     .data("El area ya se encuentra registrada.").build();
@@ -54,45 +52,43 @@ public class UserAreaServiceImpl implements UserAreaService{
         return null;
     }
 
-    private ServiceAnswer validateDeleteUserArea(Long id){
+    private ServiceAnswer validateDeleteArea(Long id){
 
-        if(!userAreaRepository.existsUserAreaById(id)){
+        if(!areaRepository.existsAreaById(id)){
             return ServiceAnswer.builder()
                     .serviceMessage(ServiceMessage.ERROR)
                     .data("No pudimos encontrar el area solicitada.").build();
         }
-        UserArea area = userAreaRepository.findById(id.intValue()).get();
-        if(area.getSiptisUsers().size() > 0){
+        Area area = areaRepository.findById(id.intValue()).get();
+        if(area.getProjects().size() > 0){
             return ServiceAnswer.builder()
                     .serviceMessage(ServiceMessage.ERROR)
-                    .data("No se puede eliminar el area, existen usuarios asignados.").build();
+                    .data("No se puede eliminar el area, existen proyectos asignados.").build();
         }
         return null;
 
     }
 
     @Override
-    public ServiceAnswer deleteUserArea(Long id) {
-        ServiceAnswer answer = validateDeleteUserArea(id);
+    public ServiceAnswer deleteArea(Long id) {
+        ServiceAnswer answer = validateDeleteArea(id);
         if (answer != null){
             return answer;
         }
-        userAreaRepository.deleteById(id.intValue());
+        areaRepository.deleteById(id.intValue());
 
         return ServiceAnswer.builder()
-                .serviceMessage(ServiceMessage.USER_AREA_DELETED)
+                .serviceMessage(ServiceMessage.AREA_DELETED)
                 .data("El area fue eliminada correctamente.").build();
     }
 
     @Override
-    public UserArea getUserAreaById(int id) {
-        Optional<UserArea> area = userAreaRepository.findById(id);
-        return area.get();
-
+    public UserArea getAreaById(int id) {
+        return null;
     }
 
     @Override
-    public boolean userAreaExistById(int id) {
-        return userAreaRepository.existsById(id);
+    public boolean AreaExistById(int id) {
+        return false;
     }
 }
