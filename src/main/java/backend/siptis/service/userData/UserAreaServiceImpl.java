@@ -1,10 +1,10 @@
-package backend.siptis.service.generalInformation;
+package backend.siptis.service.userData;
 
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.userData.UserArea;
 import backend.siptis.model.pjo.dto.generalInformation.userArea.CreateAreaDTO;
-import backend.siptis.model.repository.general.UserAreaRepository;
+import backend.siptis.model.repository.userData.UserAreaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package backend.siptis.service.generalInformation;
+package backend.siptis.service.userData;
 
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;

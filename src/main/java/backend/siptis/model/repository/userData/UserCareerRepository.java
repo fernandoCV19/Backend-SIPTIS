@@ -1,4 +1,4 @@
-package backend.siptis.model.repository.general;
+package backend.siptis.model.repository.userData;
 
 import backend.siptis.model.entity.userData.UserCareer;
 import org.springframework.data.jpa.repository.JpaRepository;

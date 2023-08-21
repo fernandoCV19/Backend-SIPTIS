@@ -1,9 +1,9 @@
-package backend.siptis.service.generalInformation;
+package backend.siptis.service.userData;
 
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.userData.UserCareer;
-import backend.siptis.model.repository.general.UserCareerRepository;
+import backend.siptis.model.repository.userData.UserCareerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

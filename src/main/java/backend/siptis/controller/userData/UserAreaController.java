@@ -1,10 +1,10 @@
-package backend.siptis.controller.generalInformation;
+package backend.siptis.controller.userData;
 
 import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.generalInformation.userArea.CreateAreaDTO;
-import backend.siptis.service.generalInformation.UserAreaService;
+import backend.siptis.service.userData.UserAreaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
