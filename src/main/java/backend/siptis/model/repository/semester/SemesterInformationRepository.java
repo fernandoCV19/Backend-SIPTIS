@@ -15,9 +15,10 @@ public interface SemesterInformationRepository extends JpaRepository<SemesterInf
 
 
     @Query(value ="SELECT * " +
-            "FROM user_information ui " +
-            "WHERE ui.in_progress = true ORDER BY end_date DESC LIMIT 1", nativeQuery = true)
+            "FROM semester_information si " +
+            "WHERE si.in_progress = true ORDER BY end_date DESC LIMIT 1", nativeQuery = true)
     Optional<SemesterInformation> findActiveSemester();
+
 
     Optional<SemesterInformation> findById(long id);
 

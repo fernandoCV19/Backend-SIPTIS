@@ -26,4 +26,14 @@ public class SemesterInformation {
     private Date endDate;
     @Column (name = "in_progress")
     private boolean inProgress;
+
+    public String getStartDateString(){
+        String[] date = startDate.toString().split(" ");
+        return date[0];
+    }
+
+    public String getEndDateString(){
+        String[] date = endDate.toString().split(" ");
+        return date[0];
+    }
 }

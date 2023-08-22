@@ -31,6 +31,7 @@ public class JWTokenUtils {
         return Jwts.builder().setSubject(userDI.getUsername())
                 .setExpiration(fechaExpiracion)
                 .claim("id", userDI.getId())
+                .claim("projects", userDI.getProjects())
                 .claim("roles", userDI.getRoles())
                 .signWith(Keys.hmacShaKeyFor(ACCESS_TOKEN_SECRET.getBytes()))
                 .compact();
@@ -43,6 +44,7 @@ public class JWTokenUtils {
         return Jwts.builder().setSubject(user.getEmail())
                 .setExpiration(fechaExpiracion)
                 .claim("id", userDI.getId())
+                .claim("projects", userDI.getProjects())
                 .claim("roles", userDI.getRoles())
                 .signWith(Keys.hmacShaKeyFor(ACCESS_TOKEN_SECRET.getBytes()))
                 .compact();

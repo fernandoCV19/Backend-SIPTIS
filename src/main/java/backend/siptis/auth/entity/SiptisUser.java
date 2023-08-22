@@ -140,6 +140,15 @@ public class SiptisUser implements UserDetails {
         return password;
     }
 
+    public ArrayList<Long> getProjects(){
+        Collection<ProjectStudent> projects = getStudents();
+        ArrayList<Long> ids = new ArrayList<>();
+        for ( ProjectStudent project :  projects) {
+            ids.add(project.getProject().getId());
+        }
+        return ids;
+    }
+
     @Override
     public String getUsername() {
         return email;

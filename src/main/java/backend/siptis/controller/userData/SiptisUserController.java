@@ -181,6 +181,7 @@ public class SiptisUserController {
         return createResponseEntity(answerService);
     }
 
+    //cambiar a put
     @PostMapping("/updateAreas")
     public ResponseEntity<?> updateAreas(
             @RequestHeader(name="Authorization") String token,
@@ -235,40 +236,6 @@ public class SiptisUserController {
     }
     /*
 
-    @GetMapping("/userCareerById/{userId}")
-    public ResponseEntity<?> getCareer(
-            @PathVariable int userId){
-        Long id = Long.valueOf(userId);
-        ServiceAnswer answerService =
-                userService.getStudentCareerById(id);
-
-        return createResponseEntity(answerService);
-    }
-
-    @GetMapping("/userAreasById/{userId}")
-    public ResponseEntity<?> getAreas(
-            @PathVariable int userId){
-
-        Long id = Long.valueOf(userId);
-        ServiceAnswer answerService = userService.getTeacherAreasById(id);
-
-        return createResponseEntity(answerService);
-    }
-
-
-
-    @GetMapping("/userNotSelectedAreasById/{userId}")
-    public ResponseEntity<?> getNotSelectedAreasById(
-            @PathVariable int userId){
-
-        Long id = Long.valueOf(userId);
-        //ServiceAnswer answerService = userAuthService.userInfo(id);
-        ServiceAnswer answerService =
-                userService.getTeacherNotSelectedAreasById(id);
-
-        return createResponseEntity(answerService);
-    }
-
 
 
 /*
@@ -279,7 +246,7 @@ public class SiptisUserController {
     public ResponseEntity<?> getAll() {
         ServiceAnswer answerService = userService.findAll();
         return crearResponseEntityRegistrar(answerService);
-    }
+    }   
 
     @PostMapping("/editUser/{userId}")
     public ResponseEntity<?> editUser(

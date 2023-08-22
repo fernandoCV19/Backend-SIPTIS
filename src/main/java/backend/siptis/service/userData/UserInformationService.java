@@ -3,6 +3,7 @@ package backend.siptis.service.userData;
 import backend.siptis.auth.entity.Role;
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ServiceAnswer;
+import backend.siptis.model.entity.editorsAndReviewers.ProjectStudent;
 import backend.siptis.model.entity.userData.UserInformation;
 import backend.siptis.model.pjo.dto.AdminEditUserPersonalInformationDTO;
 import backend.siptis.model.pjo.dto.StudentRegisterDTO;
@@ -65,6 +66,10 @@ public interface UserInformationService {
 
         public Long getId() {
             return siptisUser.getId();
+        }
+
+        public ArrayList<Long> getProjects(){
+            return siptisUser.getProjects();
         }
 
         @Override

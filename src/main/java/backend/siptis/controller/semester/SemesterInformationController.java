@@ -20,9 +20,15 @@ public class SemesterInformationController {
     private final SemesterInformationRepository repository;
     private final SemesterInformationService semesterService;
 
+    @GetMapping("/checkActiveSemester")
+    public ResponseEntity<?> checkActiveSemester(){
+        ServiceAnswer answerService = semesterService.existActiveSemester();
+        return createResponse(answerService);
+    }
+
     @GetMapping("/getActiveSemesterInformation")
     public ResponseEntity<?> getActiveSemester(){
-        ServiceAnswer answerService = ServiceAnswer.builder().data(repository.findActiveSemester()).build();
+        ServiceAnswer answerService = semesterService.getCurrentSemester();
         return createResponse(answerService);
     }
 
