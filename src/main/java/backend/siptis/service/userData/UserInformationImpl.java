@@ -7,6 +7,7 @@ import backend.siptis.model.entity.userData.UserInformation;
 import backend.siptis.model.pjo.dto.*;
 import backend.siptis.model.pjo.dto.records.PersonalInformationDTO;
 import backend.siptis.model.pjo.dto.stadisticsDTO.AdminListItemDTO;
+import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterSpecialUserDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterUserDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.UserPersonalInformationDTO;
 import backend.siptis.model.repository.userData.UserInformationRepository;
@@ -174,13 +175,38 @@ public class UserInformationImpl implements UserInformationService{
 
 
     @Override
-    public ServiceAnswer registerStudentInformation(StudentRegisterDTO dto) {
-        return null;
-    }
+    public ServiceAnswer registerSpecialUserInformation(RegisterSpecialUserDTO dto, SiptisUser user) {
 
-    @Override
-    public ServiceAnswer registerTeacherInformation(TeacherRegisterDTO dto) {
-        return null;
+        ServiceAnswer answer = validateNames(dto.getNames());
+        if(answer != null){
+            return answer;
+        }
+        answer = validateLastNames(dto.getLastnames());
+        if(answer != null){
+            return answer;
+        }
+        answer = validateCi(dto.getCi());
+        if(answer != null){
+            return answer;
+        }
+        answer = validateBirthDate(dto.getBirthDate());
+        if(answer != null){
+            return answer;
+        }
+        answer = validateCelNumber(dto.getCelNumber());
+        if(answer != null){
+            return answer;
+        }
+
+        UserInformation userInformation = new UserInformation();
+        userInformation.setNames(dto.getNames());
+        userInformation.setLastnames(dto.getLastnames());
+        userInformation.setCi(dto.getCi());
+        userInformation.setCelNumber(dto.getCelNumber());
+        userInformation.setBirthDate(dto.getBirthDate());
+        userInformation.setSiptisUser(user);
+
+        return createAnswer(ServiceMessage.OK, userInformation);
     }
 
 

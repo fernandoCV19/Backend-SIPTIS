@@ -10,6 +10,7 @@ import backend.siptis.model.pjo.dto.StudentRegisterDTO;
 import backend.siptis.model.pjo.dto.TeacherRegisterDTO;
 import backend.siptis.model.pjo.dto.UserEditPersonalInformationDTO;
 import backend.siptis.model.pjo.dto.records.PersonalInformationDTO;
+import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterSpecialUserDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterUserDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.UserPersonalInformationDTO;
 import jakarta.mail.search.SearchTerm;
@@ -43,11 +44,7 @@ public interface UserInformationService {
 
 
     ServiceAnswer registerUserInformation(RegisterUserDTO dto, SiptisUser user);
-
-    ServiceAnswer registerStudentInformation(StudentRegisterDTO dto);
-    ServiceAnswer registerTeacherInformation(TeacherRegisterDTO dto);
-
-
+    ServiceAnswer registerSpecialUserInformation(RegisterSpecialUserDTO dto, SiptisUser user);
 
     @AllArgsConstructor
     class UserDetailImp implements UserDetails {

@@ -19,7 +19,7 @@ import java.util.Date;
 public class JWTokenUtils {
 
     private static final long EXPIRE_TIME_DURATION = 60 * 60 * 1000 ; // hora.
-    private static final long EXPIRE_TIME_DURATION_2 = 1000 * 60 * 60; // hora.
+    private static final long EXPIRE_TIME_DURATION_2 = 60 * 60 * 1000; // hora.
     private static final long REFRESH_TOKEN_EXPIRE_TIME_DURATION = 60 * 60 * 1000; //1 horas
     private static final Logger logger = LoggerFactory.getLogger(JWTokenUtils.class);
     private static final String ACCESS_TOKEN_SECRET= "$2a$12$JTfIoPcl28jeEFio3aHBa.rcqtBUgvykiKYgKxvikVzzxVAt82CEu\n";
