@@ -726,3 +726,58 @@ INSERT INTO schedule(id, day, hour_finish, hour_start, user_id) VALUES (71, 'Vie
 INSERT INTO schedule(id, day, hour_finish, hour_start, user_id) VALUES (72, 'Viernes', '34:82', '80:17', 101);
 INSERT INTO schedule(id, day, hour_finish, hour_start, user_id) VALUES (73, 'Viernes', '35:80', '47:28', 102);
 INSERT INTO schedule(id, day, hour_finish, hour_start, user_id) VALUES (74, 'Viernes', '39:84', '17:80', 103);
+
+
+
+
+
+INSERT INTO siptis_user(id, email, password) VALUES (1000, 'admin@gmail.com', '$2a$10$JZDKlrNbRrGF81sgSC50SuF9NjfAEy80I5iOV4NuVCmWLBWlZIP1O');
+
+INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names,  user_id) VALUES (1000, '2000-1-19', '1234567', '1000000', '12345670', 'Apellidos103', 'Nombres103',  1000);
+
+INSERT INTO siptis_user_role(siptis_user_id, role_id) VALUES (1000, 1);
+
+
+INSERT INTO project(id, blue_book_path, perfil_path, project_path, phase, name, state_id, modality_id) VALUES (1000, 'Libro1000', 'Perfil1000', 'Proyecto1000', 'DEFENSE_PHASE', 'ProyectoGrado1000', null, 1);
+
+INSERT INTO project(id, blue_book_path, perfil_path, project_path, phase, name, state_id, modality_id) VALUES (1001, 'Libro1000', 'Perfil1000', 'Proyecto1000', 'DEFENSE_PHASE', 'ProyectoGrado1000', null, 1);
+
+INSERT INTO project(id, blue_book_path, perfil_path, project_path, phase, name, state_id, modality_id) VALUES (1002, 'Libro1000', 'Perfil1000', 'Proyecto1000', 'DEFENSE_PHASE', 'ProyectoGrado1000', null, 1);
+
+INSERT INTO project(id, blue_book_path, perfil_path, project_path, phase, name, state_id, modality_id) VALUES (1003, 'Libro1000', 'Perfil1000', 'Proyecto1000', 'DEFENSE_PHASE', 'ProyectoGrado1000', null, 1);
+
+INSERT INTO project(id, blue_book_path, perfil_path, project_path, phase, name, state_id, modality_id) VALUES (1004, 'Libro1000', 'Perfil1000', 'Proyecto1000', 'TRIBUNALS_PHASE', 'ProyectoGrado1000', null, 1);
+
+INSERT INTO project(id, blue_book_path, perfil_path, project_path, phase, name, state_id, modality_id) VALUES (1005, 'Libro1000', 'Perfil1000', 'Proyecto1000', 'TRIBUNALS_PHASE', 'ProyectoGrado1000', null, 1);
+
+INSERT INTO project(id, blue_book_path, perfil_path, project_path, phase, name, state_id, modality_id) VALUES (1006, 'Libro1000', 'Perfil1000', 'Proyecto1000', 'TRIBUNALS_PHASE', 'ProyectoGrado1000', null, 1);
+
+
+INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id, user_id) VALUES (1000, false, null, false, 1000, 1);
+
+INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id, user_id) VALUES (1001, false, null, false, 1000, 2);
+
+INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id, user_id) VALUES (1002, false, null, false, 1000, 3);
+
+
+
+INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id, user_id) VALUES (1003, false, null, false, 1001, 6);
+
+INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id, user_id) VALUES (1004, false, null, false, 1001, 5);
+
+INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id, user_id) VALUES (1005, false, null, false, 1001, 4);
+
+
+INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id, user_id) VALUES (1006, false, null, false, 1002, 6);
+
+INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id, user_id) VALUES (1007, false, null, false, 1002, 5);
+
+INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id, user_id) VALUES (1008, false, null, false, 1002, 4);
+
+
+
+INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id, user_id) VALUES (1009, false, null, false, 1003, 1);
+
+INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id, user_id) VALUES (1010, false, null, false, 1003, 2);
+
+INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id, user_id) VALUES (1011, false, null, false, 1003, 3);
