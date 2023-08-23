@@ -6,14 +6,13 @@ import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.projectManagement.Area;
 import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.entity.userData.UserArea;
-import backend.siptis.model.entity.userData.UserCareer;
 import backend.siptis.model.pjo.dto.PotentialTribunalDTO;
 import backend.siptis.model.pjo.dto.ProjectDTO;
 import backend.siptis.model.pjo.dto.ProjectInfoDTO;
 import backend.siptis.model.pjo.dto.UserSelectedAreasDTO;
 import backend.siptis.model.pjo.dto.stadisticsDTO.UserTribunalDTO;
-import backend.siptis.model.repository.general.UserAreaRepository;
-import backend.siptis.model.repository.general.UserCareerRepository;
+import backend.siptis.model.repository.userData.UserAreaRepository;
+import backend.siptis.model.repository.userData.UserCareerRepository;
 import backend.siptis.model.repository.projectManagement.AreaRepository;
 import backend.siptis.model.repository.projectManagement.ProjectRepository;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
@@ -44,42 +43,8 @@ public class GeneralInformationImpl implements GeneralInformationService{
     @Autowired
     private final ProjectRepository projectRepository;
 
-    @Override
-    public ServiceAnswer getAllCareers() {
-        List<UserCareer> careers = careerRepository.findAll();
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(careers).build();
 
-    }
 
-    @Override
-    public ServiceAnswer getAllUserAreas() {
-        List<UserArea> areas = areaRepository.findAll();
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(areas).build();
-
-    }
-
-    @Override
-    public ServiceAnswer getAllProjectAreas() {
-        List<Area> areas = projectAreaRepository.findAll();
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(areas).build();
-
-    }
-
-    @Override
-    public ServiceAnswer getAreaById(int id) {
-        Optional<UserArea> area = areaRepository.findById(id);
-        UserArea response = area.get();
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(response).build();
-
-    }
-
-    @Override
-    public ServiceAnswer getCareerById(int id) {
-        Optional<UserCareer> career = careerRepository.findById(id);
-        UserCareer response = career.get();
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(response).build();
-
-    }
 
     @Override
     public ServiceAnswer getAllPotentialTribunals() {

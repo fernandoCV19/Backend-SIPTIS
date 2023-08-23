@@ -31,10 +31,14 @@ public class DocumentController {
         return createResponseEntity(documentGeneratorService.deleteDocument(documentId));
     }
 
-
     @PostMapping("/create-report")
     ResponseEntity<?> createReport(@RequestBody ReportDocumentDTO reportDocumentDTO){
         return createResponseEntity(documentGeneratorService.generateReport(reportDocumentDTO));
+    }
+
+    @PostMapping("/create-report-test")
+    ResponseEntity<?> createReportTest(@RequestBody ReportDocumentDTO reportDocumentDTO){
+        return createResponseEntity(documentGeneratorService.generateReportTesting(reportDocumentDTO));
     }
 
     @GetMapping("/create-solvency/{id}")

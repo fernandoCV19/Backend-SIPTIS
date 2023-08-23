@@ -4,12 +4,15 @@ import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.UserSelectedAreasDTO;
+import backend.siptis.service.projectManagement.AreaService;
+import backend.siptis.service.userData.UserAreaService;
+import backend.siptis.service.userData.UserCareerService;
 import backend.siptis.service.userData.GeneralInformation.GeneralInformationService;
-import backend.siptis.service.userData.userAuthentication.UserAuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,21 +24,26 @@ public class GeneralInformationController {
     @Autowired
     private final GeneralInformationService generalInformationService;
 
+    private final UserCareerService userCareerService;
+    private final UserAreaService userAreaService;
+    private final AreaService areaService;
+
     @GetMapping("/getAllCareers")
+    @PreAuthorize("hasAuthority('STUDENT')")
     public ResponseEntity<?> getAllCareers(){
-        ServiceAnswer answerService = generalInformationService.getAllCareers();
+        ServiceAnswer answerService = userCareerService.getAllCareers();
         return createResponse(answerService);
     }
 
     @GetMapping("/getAllAreas")
-    public ResponseEntity<?> getAllAreas(){
-        ServiceAnswer answerService = generalInformationService.getAllUserAreas();
+    public ResponseEntity<?> getAllUserAreas(){
+        ServiceAnswer answerService = userAreaService.getAllUserAreas();
         return createResponse(answerService);
     }
 
     @GetMapping("/getAllProjectAreas")
     public ResponseEntity<?> getAllProjectAreas(){
-        ServiceAnswer answerService = generalInformationService.getAllProjectAreas();
+        ServiceAnswer answerService = areaService.getAllAreas();
         return createResponse(answerService);
     }
 
@@ -49,7 +57,6 @@ public class GeneralInformationController {
     public ResponseEntity<?> getPotentialTribunalsByAreas(
             @RequestBody UserSelectedAreasDTO areas
     ){
-        System.out.println(areas.getIds().toString());
         ServiceAnswer answerService = generalInformationService.getPotentialTribunalsByAreas(areas);
         return createResponse(answerService);
     }

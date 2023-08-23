@@ -12,4 +12,6 @@ public interface StadisticsService {
 
     ServiceAnswer getStudentsByYear();
 
+    ServiceAnswer getStudentsByYearAndCareer(String career);
+
 }

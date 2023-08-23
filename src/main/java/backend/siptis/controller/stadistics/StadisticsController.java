@@ -51,6 +51,15 @@ public class StadisticsController {
         return crearResponseEntityRegistrar(answerService);
     }
 
+    @GetMapping("/studentsByYearAndCareer/{career}")
+    public ResponseEntity<?> getStudentsByYearAndCareer(@PathVariable String career){
+
+        ServiceAnswer answerService =
+                stadisticsService.getStudentsByYearAndCareer(career);
+
+        return crearResponseEntityRegistrar(answerService);
+    }
+
     private ResponseEntity<?> crearResponseEntityRegistrar(ServiceAnswer serviceAnswer){
         Object data = serviceAnswer.getData();
         ServiceMessage messageService = serviceAnswer.getServiceMessage();

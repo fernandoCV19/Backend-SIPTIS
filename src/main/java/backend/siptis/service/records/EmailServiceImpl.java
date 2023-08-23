@@ -101,12 +101,18 @@ public class EmailServiceImpl implements EmailService{
     }
 
     @Override
+    public ServiceAnswer changePassword(TokenPasswordDTO tokenPasswordDTO) {
+        return null;
+    }
+/*
+    @Override
     public ServiceAnswer changePassword(TokenPasswordDTO dto){
-        if(!siptisUserService.existsTokenPassword(dto.getTokenPassword())){
+        boolean check = (boolean) siptisUserService.existsTokenPassword(dto.getTokenPassword()).getData();
+        if(!check){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.INVALID_TOKEN)
                     .data("El token para el cambio de contraseña no es valido").build();
         }
-        SiptisUser user = siptisUserService.findByTokenPassword(dto.getTokenPassword());
+        SiptisUser user = siptisUserService.findByTokenPassword(dto.getTokenPassword()).get();
         //System.out.println("REVISION");
         System.out.println(user.getEmail());
         System.out.println(dto.getTokenPassword());
@@ -121,7 +127,7 @@ public class EmailServiceImpl implements EmailService{
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
                 .data("La contrasena se actualizó correctamente.").build();
     }
-
+*/
 
     private Address[] getAllEmails(List<SiptisUser> users) throws MessagingException {
         Address[] addresses = new Address[users.size()];
@@ -179,15 +185,27 @@ public class EmailServiceImpl implements EmailService{
 
         mailSender.send(message);
     }
+
+    @Override
+    public ServiceAnswer sendRecoverPasswordEmail(String email) throws MessagingException, IOException {
+        return null;
+    }
+
+    @Override
+    public ChangePasswordDTO createChangePasswordDTO(String email) {
+        return null;
+    }
+    /*
     @Override
     public ServiceAnswer sendRecoverPasswordEmail(String email) throws MessagingException {
 
-        if(!siptisUserService.existsByEmail(email)){
+        boolean checkUser = (boolean) siptisUserService.existsByEmail(email).getData();
+        if(!checkUser){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.EMAIL_NOT_EXIST)
                     .data("El correo electronico no se encuentra registrado en el sistema").build();
         }
         MimeMessage message = mailSender.createMimeMessage();
-        SiptisUser user = siptisUserService.findByEmail(email);
+        SiptisUser user = (SiptisUser) siptisUserService.findByEmail(email).getData();
 
         ChangePasswordDTO dto = createChangePasswordDTO(email);
         //String url = "http://127.0.0.1:5173/changePassword/";
@@ -223,4 +241,5 @@ public class EmailServiceImpl implements EmailService{
 
         return dto;
     }
+    */
 }
