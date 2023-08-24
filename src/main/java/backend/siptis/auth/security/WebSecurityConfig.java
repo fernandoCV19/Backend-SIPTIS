@@ -44,7 +44,7 @@ public class WebSecurityConfig {
                         "/user/buscarUser/**", "/user/personalInformation",
                         "/user/updateAreas/**",
 
-                        "/document/**",
+                        "/document/**", "/document",
 
                         "/tribunal/**", "/teacher/**", "/tutor/**",
 

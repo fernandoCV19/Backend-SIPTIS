@@ -4,12 +4,14 @@ import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.DocumentType;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
+import backend.siptis.model.entity.projectManagement.Phase;
 import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.entity.userData.Document;
 import backend.siptis.model.entity.userData.UserCareer;
 import backend.siptis.model.entity.userData.UserInformation;
 import backend.siptis.model.pjo.dto.document.ReportDocumentDTO;
 import backend.siptis.model.pjo.dto.document.DocumentaryRecordDto;
+import backend.siptis.model.repository.projectManagement.PhaseRepository;
 import backend.siptis.model.repository.projectManagement.ProjectRepository;
 import backend.siptis.model.repository.userData.DocumentRepository;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
@@ -26,7 +28,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,6 +48,9 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
 
     @Autowired
     private DocumentRepository documentRepository;
+
+    @Autowired
+    private PhaseRepository phaseRepository;
 
     @Override
     public ServiceAnswer getAllDocumentsFromUser (long idUser){
@@ -117,6 +121,10 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
         }
         SiptisUser user = oUser.get();
+
+        Optional<Phase> oPhase = phaseRepository.findById(1L);
+        Phase phase = oPhase.get();
+
         UserInformation info = user.getUserInformation();
         String name = info.getNames() + " " + info.getLastnames();
         String ci = info.getCi();
@@ -144,6 +152,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
         document.setType(DocumentType.FORM.toString());
         document.setDescription("Formulario de Solvencia");
         document.setSiptisUser(user);
+        document.setPhase(phase);
         documentRepository.save(document);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
     }

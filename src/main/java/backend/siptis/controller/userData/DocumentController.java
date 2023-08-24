@@ -6,7 +6,8 @@ import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.document.DocumentaryRecordDto;
 import backend.siptis.model.pjo.dto.document.ReportDocumentDTO;
 import backend.siptis.service.document.DocumentGeneratorServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import backend.siptis.service.userData.userAuthentication.UserAuthService;
+import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,18 +15,18 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/document")
+@RequiredArgsConstructor
 @CrossOrigin
 public class DocumentController {
 
-    @Autowired
-    private DocumentGeneratorServiceImpl documentGeneratorService;
+    private final DocumentGeneratorServiceImpl documentGeneratorService;
+    private final UserAuthService userAuthService;
 
-
-    @GetMapping("/{id}")
-    ResponseEntity<?> getDocumentsFromUser(@PathVariable("id") long userId){
+    @GetMapping("/")
+    ResponseEntity<?> getDocumentsFromUser(@RequestHeader(name = "Authorization") String token){
+        Long userId = userAuthService.getIdFromToken(token);
         return createResponseEntity(documentGeneratorService.getAllDocumentsFromUser(userId));
     }
-
     @DeleteMapping("/{id}")
     ResponseEntity<?> deleteDocument(@PathVariable("id") long documentId){
         return createResponseEntity(documentGeneratorService.deleteDocument(documentId));
@@ -37,8 +38,9 @@ public class DocumentController {
         return createResponseEntity(documentGeneratorService.generateReport(reportDocumentDTO));
     }
 
-    @GetMapping("/create-solvency/{id}")
-    ResponseEntity<?> createSolvency(@PathVariable("id") long userId){
+    @GetMapping("/create-solvency")
+    ResponseEntity<?> createSolvency(@RequestHeader(name = "Authorization") String token){
+        Long userId = userAuthService.getIdFromToken(token);
         return createResponseEntity(documentGeneratorService.generateSolvency(userId));
     }
 
