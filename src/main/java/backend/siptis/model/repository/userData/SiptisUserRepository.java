@@ -53,7 +53,7 @@ public interface SiptisUserRepository extends JpaRepository<SiptisUser, Long> {
             ")", nativeQuery = true)
     List <UserAreaDTO> getNotSelectedAreas (Long id);
 
-    @Query(value ="SELECT su.id, ui.names, ui.lastnames, ui.codsis, role.name " +
+    @Query(value ="SELECT su.id, ui.names, ui.lastnames, su.email, ui.codsis, role.name " +
             " FROM siptis_user su, user_information ui,  siptis_user_role sur, role role" +
             " WHERE su.id = ui.user_id AND sur.siptis_user_id = su.id " +
             " AND sur.role_id = role.id AND role.name LIKE :roleName" +

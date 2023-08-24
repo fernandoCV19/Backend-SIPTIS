@@ -11,6 +11,7 @@ public interface UserListItemDTO {
     //private String lastname;
     //private String role;
     Long getId();
+    String getEmail();
     String getNames();
     String getLastnames();
     String getCodSIS();

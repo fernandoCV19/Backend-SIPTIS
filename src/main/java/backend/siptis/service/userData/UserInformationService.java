@@ -25,18 +25,14 @@ import java.util.Set;
 
 public interface UserInformationService {
 
-    ServiceAnswer existByCodSIS(String codSIS);
-    ServiceAnswer existByCi(String ci);
-    ServiceAnswer existsById(Long id);
 
     ServiceAnswer findById(Long id);
 
-    ServiceAnswer getAllStudents();
-    ServiceAnswer getAllTeachers();
-    ServiceAnswer getAllAdmin();
 
-    ServiceAnswer userEditLimitedInformation(UserEditPersonalInformationDTO dto);
-    ServiceAnswer adminEditUserFullInformation(AdminEditUserPersonalInformationDTO dto);
+    ServiceAnswer userEditLimitedInformation(UserInformation userInformation, UserEditPersonalInformationDTO dto);
+    ServiceAnswer adminEditUserFullInformation(UserInformation userInformation, AdminEditUserPersonalInformationDTO dto);
+
+
 
     ServiceAnswer searchUserByNameAndRole(String name, Long role_id);
 

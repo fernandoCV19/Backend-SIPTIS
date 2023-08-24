@@ -3,8 +3,10 @@ package backend.siptis.service.userData;
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.model.pjo.dto.AdminRegisterDTO;
+import backend.siptis.model.pjo.dto.UserEditPersonalInformationDTO;
 import backend.siptis.model.pjo.dto.UserSelectedAreasDTO;
 import backend.siptis.model.pjo.dto.records.LogInDTO;
+import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterSpecialUserDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterStudentDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterUserDTO;
 import org.springframework.data.domain.Page;
@@ -23,9 +25,11 @@ public interface SiptisUserService {
     ServiceAnswer registerTeacher(RegisterUserDTO dto);
     ServiceAnswer registerAdmin(AdminRegisterDTO dto);
     ServiceAnswer registerStudent(RegisterStudentDTO dto);
+    ServiceAnswer registerSpecialUser(RegisterSpecialUserDTO dto);
 
     ServiceAnswer getStudentList(String search,Pageable pageable);
     ServiceAnswer getTeacherList(String search,Pageable pageable);
+    ServiceAnswer getSpecialUserList(String search,Pageable pageable);
     ServiceAnswer getAdminList(Pageable pageable);
 
     ServiceAnswer deleteUser(Long id);
@@ -34,10 +38,13 @@ public interface SiptisUserService {
     ServiceAnswer updateToken(String refreshToken);
     Long getIdFromToken(String token);
 
+    ServiceAnswer getPossibleTribunals();
+
     ServiceAnswer getTeacherAreasById(Long id);
     ServiceAnswer getTeacherNotSelectedAreasById(Long id);
 
-    ServiceAnswer userEditPersonalInformation();
+    ServiceAnswer userEditPersonalInformation(Long id, UserEditPersonalInformationDTO dto);
+    ServiceAnswer specialUserEditPersonalInformation();
 
     ServiceAnswer updateAreas(Long id, UserSelectedAreasDTO dto);
 

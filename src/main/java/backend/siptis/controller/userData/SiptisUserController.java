@@ -4,13 +4,17 @@ import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.AdminRegisterDTO;
+import backend.siptis.model.pjo.dto.UserEditPersonalInformationDTO;
 import backend.siptis.model.pjo.dto.UserSelectedAreasDTO;
 import backend.siptis.model.pjo.dto.authentication.RefreshTokenDTO;
 import backend.siptis.model.pjo.dto.records.LogInDTO;
+import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterSpecialUserDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterStudentDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterUserDTO;
+import backend.siptis.model.pjo.dto.usersInformationDTO.ValidationUserPersonalInformationDTO;
 import backend.siptis.service.userData.RefreshTokenService;
 import backend.siptis.service.userData.SiptisUserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -37,7 +41,7 @@ public class SiptisUserController {
     @PostMapping("/register/teacher")
     // @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> registerTeacher(
-            @RequestBody RegisterUserDTO dto){
+            @Valid @RequestBody RegisterUserDTO dto){
 
         ServiceAnswer student = userService.registerTeacher(dto);
         return createResponseEntity(student);
@@ -56,9 +60,18 @@ public class SiptisUserController {
     @PostMapping("/register/student")
     // @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> registerStudent(
-            @RequestBody RegisterStudentDTO dto){
+            @Valid @RequestBody RegisterStudentDTO dto){
 
         ServiceAnswer student = userService.registerStudent(dto);
+        return createResponseEntity(student);
+    }
+
+    @PostMapping("/register/special_user")
+    // @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<?> registerSpecialUser(
+            @RequestBody RegisterSpecialUserDTO dto){
+
+        ServiceAnswer student = userService.registerSpecialUser(dto);
         return createResponseEntity(student);
     }
 
@@ -123,6 +136,14 @@ public class SiptisUserController {
         return createResponseEntity(answerService);
     }
 
+    @GetMapping("/list/special_users")
+    public ResponseEntity<?> getSpecialUserList(String search, Pageable pageable){
+        ServiceAnswer answerService =
+                userService.getSpecialUserList(search, pageable);
+
+        return createResponseEntity(answerService);
+    }
+
     @GetMapping("/list/admins")
     public ResponseEntity<?> getAdminList(Pageable pageable){
         ServiceAnswer answerService =
@@ -179,6 +200,26 @@ public class SiptisUserController {
                 userService.getTeacherNotSelectedAreasById(id);
 
         return createResponseEntity(answerService);
+    }
+
+    @PutMapping("/editInformation")
+    public ResponseEntity<?> editInformation(
+            @RequestHeader(name="Authorization") String token,
+            @Valid @RequestBody UserEditPersonalInformationDTO dto){
+
+        Long id = userService.getIdFromToken(token);
+        ServiceAnswer answer = userService.userEditPersonalInformation(id, dto);
+        return createResponseEntity(answer);
+    }
+
+    @PutMapping("/testInfo")
+    public ResponseEntity<?> testInfo(
+            @RequestHeader(name="Authorization") String token,
+            @Valid @RequestBody ValidationUserPersonalInformationDTO dto){
+
+        Long id = userService.getIdFromToken(token);
+        ServiceAnswer answer = userService.getUserById(id);
+        return createResponseEntity(answer);
     }
 
     //cambiar a put
@@ -258,27 +299,6 @@ public class SiptisUserController {
         return crearResponseEntityRegistrar(answer);
     }
 
-    @PostMapping("/editTeacher/{userId}")
-    public ResponseEntity<?> editTeacher(
-            @PathVariable int userId,
-            @RequestBody EditTeacherInformationDTO dto) {
-
-        Long id = Long.valueOf(userId);
-        ServiceAnswer answer = adminEditInformationService.editTeacherInformation(id, dto);
-        return crearResponseEntityRegistrar(answer);
-    }
-
-
-    @PostMapping("/editTeacher")
-    public ResponseEntity<?> editMiInformationTeacher(
-            @RequestBody TeacherEditPersonalInfoDTO dto,
-            @RequestHeader(name = "Authorization") String token) {
-
-        Long id = userService.getIdFromToken(token);
-
-        ServiceAnswer answer = userEditInformationService.teacherEditPersonalInfo(id, dto);
-        return crearResponseEntityRegistrar(answer);
-    }
 
     */
 }
