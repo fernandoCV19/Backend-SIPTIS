@@ -5,15 +5,15 @@ import backend.siptis.model.pjo.dto.UserSelectedAreasDTO;
 
 public interface GeneralInformationService {
 
-    ServiceAnswer getAllCareers();
+    //ServiceAnswer getAllCareers();
 
-    ServiceAnswer getAllUserAreas();
+    //ServiceAnswer getAllUserAreas();
 
-    ServiceAnswer getAllProjectAreas();
+    //ServiceAnswer getAllProjectAreas();
 
-    ServiceAnswer getAreaById(int id);
+    //ServiceAnswer getAreaById(int id);
 
-    ServiceAnswer getCareerById(int id);
+    //ServiceAnswer getCareerById(int id);
 
     ServiceAnswer getAllPotentialTribunals();
 

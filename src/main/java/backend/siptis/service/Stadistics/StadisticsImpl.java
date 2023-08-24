@@ -44,6 +44,14 @@ public class StadisticsImpl implements StadisticsService{
                 ).build();
     }
 
+    @Override
+    public ServiceAnswer getStudentsByYearAndCareer(String career) {
+        return ServiceAnswer.builder().serviceMessage(
+                ServiceMessage.OK)
+                .data(stadisticsRepository.getNumberOfStudentsByYearAndCareer(career)
+                ).build();
+    }
+
     private ServiceAnswer createResponse(ServiceMessage serviceMessage, String errorMessage){
         return ServiceAnswer.builder().serviceMessage(
                 serviceMessage).data(errorMessage

@@ -6,7 +6,7 @@ import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.document.DocumentaryRecordDto;
 import backend.siptis.model.pjo.dto.document.ReportDocumentDTO;
 import backend.siptis.service.document.DocumentGeneratorServiceImpl;
-import backend.siptis.service.userData.userAuthentication.UserAuthService;
+import backend.siptis.service.userData.RefreshTokenService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class DocumentController {
 
     private final DocumentGeneratorServiceImpl documentGeneratorService;
-    private final UserAuthService userAuthService;
+    private final RefreshTokenService userAuthService;
 
     @GetMapping("/")
     ResponseEntity<?> getDocumentsFromUser(@RequestHeader(name = "Authorization") String token){
@@ -39,9 +39,13 @@ public class DocumentController {
     }
 
     @GetMapping("/create-solvency")
-    ResponseEntity<?> createSolvency(@RequestHeader(name = "Authorization") String token){
+    ResponseEntity<?> createSolvency(@RequestHeader(name = "Authorization") String token) {
         Long userId = userAuthService.getIdFromToken(token);
         return createResponseEntity(documentGeneratorService.generateSolvency(userId));
+    }
+    @PostMapping("/create-report-test")
+    ResponseEntity<?> createReportTest(@RequestBody ReportDocumentDTO reportDocumentDTO){
+        return createResponseEntity(documentGeneratorService.generateReportTesting(reportDocumentDTO));
     }
 
     @PostMapping("/create-documentary-record")

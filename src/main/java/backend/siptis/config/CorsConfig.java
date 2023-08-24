@@ -23,6 +23,11 @@ public class CorsConfig {
                         .allowedMethods("*")
                         .exposedHeaders("*");
 
+                registry.addMapping("/semester/*")
+                        .allowedOrigins(localUI)
+                        .allowedMethods("*")
+                        .exposedHeaders("*");
+
                 registry.addMapping("/user/login")
                         .allowedOrigins(localUI)
                         .allowedMethods("*")

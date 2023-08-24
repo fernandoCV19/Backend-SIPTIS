@@ -42,7 +42,7 @@ public class WebSecurityConfig {
                         "/user/login", "/user/todos", "/user/editUser/*",
                         "/user/register/student", "/user/register/admin","/user/personal-activities/*",
                         "/user/buscarUser/**", "/user/personalInformation",
-                        "/user/updateAreas/**",
+                        "/user/updateAreas/**", "/user/refreshtoken",
 
                         "/document/**", "/document",
 
@@ -64,10 +64,13 @@ public class WebSecurityConfig {
 
                         "/bot/**",
 
+                        "/userArea/**",
+                        "/area/**",
+                        "/semester/**",
                         "/supervisor/**")
                 .permitAll()
                 .anyRequest().authenticated()
-                .and().exceptionHandling().authenticationEntryPoint(authenticationEntryPoint())
+                //.and().exceptionHandling().authenticationEntryPoint(authenticationEntryPoint())
                 .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().addFilter(jwtAuthenticationFilter)

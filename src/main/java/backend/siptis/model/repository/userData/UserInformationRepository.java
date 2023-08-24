@@ -5,12 +5,14 @@ import backend.siptis.model.pjo.dto.PotentialTribunalDTO;
 import backend.siptis.model.pjo.dto.UserAreaDTO;
 import backend.siptis.model.pjo.dto.stadisticsDTO.AdminListItemDTO;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import backend.siptis.model.pjo.dto.UserListItemDTO;
 import org.springframework.stereotype.Repository;
 
+import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +24,8 @@ public interface UserInformationRepository extends JpaRepository<UserInformation
     boolean existsByCi(String ci);
 
     boolean existsByCodSIS(String codSIS);
+
+    Optional<UserInformation> findById(Long id);
 
 
     @Query(value ="SELECT su.id, ui.names, ui.lastnames, ui.codSIS" +
@@ -61,15 +65,6 @@ public interface UserInformationRepository extends JpaRepository<UserInformation
             "    WHERE pt.project_id = :idProject" +
             ")", nativeQuery = true)
     List <String> getTutorsNames (Long idProject);
-
-    @Query(value = "SELECT ua.id, ua.name " +
-            "FROM user_area ua " +
-            "WHERE ua.id NOT IN (" +
-            "    SELECT ua2.id " +
-            "    FROM user_area ua2, siptis_user_area sua " +
-            "    WHERE ua2.id = sua.area_id AND sua.siptisuser_id = :id" +
-            ")", nativeQuery = true)
-    List <UserAreaDTO> getNotSelectedAreas (Long id);
 
     @Modifying
     @Query(value = "DELETE FROM siptis_user_area sua " +

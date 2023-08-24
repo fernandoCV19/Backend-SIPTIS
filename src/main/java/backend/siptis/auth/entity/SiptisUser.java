@@ -68,8 +68,12 @@ public class SiptisUser implements UserDetails {
     /*@OneToOne(mappedBy = "siptisUser")
     private UserCareer career;*/
 
-    @OneToOne(mappedBy = "siptisUser", cascade = CascadeType.ALL, optional = false)
+    @OneToOne(mappedBy = "siptisUser", cascade = CascadeType.ALL, optional = true)
     private UserInformation userInformation;
+
+    @OneToOne(mappedBy = "siptisUser", cascade = CascadeType.ALL, optional = true)
+    private RefreshToken refreshToken;
+
 
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "siptisUser")
     @JsonManagedReference
@@ -134,6 +138,15 @@ public class SiptisUser implements UserDetails {
     @Override
     public String getPassword() {
         return password;
+    }
+
+    public ArrayList<Long> getProjects(){
+        Collection<ProjectStudent> projects = getStudents();
+        ArrayList<Long> ids = new ArrayList<>();
+        for ( ProjectStudent project :  projects) {
+            ids.add(project.getProject().getId());
+        }
+        return ids;
     }
 
     @Override

@@ -42,9 +42,21 @@ public interface StadisticsRepository extends JpaRepository<SiptisUser, Integer 
     @Query(value ="SELECT SUBSTRING (info.codsis, 1, 4) AS userYear, COUNT(siptis_user.id) AS cant " +
             " FROM siptis_user siptis_user, siptis_user_role user_role, user_information info" +
             " WHERE siptis_user.id = user_role.siptis_user_id AND " +
-            " user_role.role_id = 1 AND info.user_id = siptis_user.id" +
+            " user_role.role_id = 2 AND info.user_id = siptis_user.id" +
             " GROUP BY (userYear) " , nativeQuery = true)
     List<Object> getNumberOfStudentsByYear();
+
+    @Query(value ="SELECT SUBSTRING (info.codsis, 1, 4) AS userYear, COUNT(siptis_user.id) AS cant " +
+            " FROM siptis_user siptis_user, siptis_user_role user_role," +
+            " user_information info, siptis_user_career user_career, " +
+            " user_career career " +
+            " WHERE siptis_user.id = user_role.siptis_user_id AND " +
+            " user_role.role_id = 2" +
+            " AND siptis_user.id = user_career.siptisuser_id" +
+            " AND user_career.career_id = career.id " +
+            " AND career.name LIKE CONCAT( '%', :careerName, '%')  AND info.user_id = siptis_user.id" +
+            " GROUP BY (userYear) " , nativeQuery = true)
+    List<Object> getNumberOfStudentsByYearAndCareer(String careerName);
 
 
 
