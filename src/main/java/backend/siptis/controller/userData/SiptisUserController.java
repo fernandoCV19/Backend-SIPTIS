@@ -8,10 +8,7 @@ import backend.siptis.model.pjo.dto.UserEditPersonalInformationDTO;
 import backend.siptis.model.pjo.dto.UserSelectedAreasDTO;
 import backend.siptis.model.pjo.dto.authentication.RefreshTokenDTO;
 import backend.siptis.model.pjo.dto.records.LogInDTO;
-import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterSpecialUserDTO;
-import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterStudentDTO;
-import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterUserDTO;
-import backend.siptis.model.pjo.dto.usersInformationDTO.ValidationUserPersonalInformationDTO;
+import backend.siptis.model.pjo.dto.usersInformationDTO.*;
 import backend.siptis.service.userData.RefreshTokenService;
 import backend.siptis.service.userData.SiptisUserService;
 import jakarta.validation.Valid;
@@ -211,6 +208,27 @@ public class SiptisUserController {
         ServiceAnswer answer = userService.userEditPersonalInformation(id, dto);
         return createResponseEntity(answer);
     }
+
+    @PutMapping("/editUserInformation/{userId}")
+    public ResponseEntity<?> editUser(
+            @PathVariable int userId,
+            @Valid @RequestBody UniversityUserPersonalInformationDTO dto) {
+
+        Long id = Long.valueOf(userId);
+        ServiceAnswer answer = userService.adminEditUserPersonalInformation(id, dto);
+        return createResponseEntity(answer);
+    }
+
+    @PutMapping("/editSpecialUserInformation/{userId}")
+    public ResponseEntity<?> editSpecialUser(
+            @PathVariable int userId,
+            @Valid @RequestBody GeneralUserPersonalInformationDTO dto) {
+
+        Long id = Long.valueOf(userId);
+        ServiceAnswer answer = userService.adminEditSpecialUserPersonalInformation(id, dto);
+        return createResponseEntity(answer);
+    }
+
 
     @PutMapping("/testInfo")
     public ResponseEntity<?> testInfo(

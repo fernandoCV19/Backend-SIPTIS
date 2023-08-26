@@ -1,18 +1,12 @@
 package backend.siptis.service.userData;
 
-import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.model.pjo.dto.AdminRegisterDTO;
 import backend.siptis.model.pjo.dto.UserEditPersonalInformationDTO;
 import backend.siptis.model.pjo.dto.UserSelectedAreasDTO;
 import backend.siptis.model.pjo.dto.records.LogInDTO;
-import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterSpecialUserDTO;
-import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterStudentDTO;
-import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterUserDTO;
-import org.springframework.data.domain.Page;
+import backend.siptis.model.pjo.dto.usersInformationDTO.*;
 import org.springframework.data.domain.Pageable;
-
-import java.util.Optional;
 
 public interface SiptisUserService {
 
@@ -44,7 +38,9 @@ public interface SiptisUserService {
     ServiceAnswer getTeacherNotSelectedAreasById(Long id);
 
     ServiceAnswer userEditPersonalInformation(Long id, UserEditPersonalInformationDTO dto);
-    ServiceAnswer specialUserEditPersonalInformation();
+
+    ServiceAnswer adminEditUserPersonalInformation(Long id, UniversityUserPersonalInformationDTO dto);
+    ServiceAnswer adminEditSpecialUserPersonalInformation(Long id, GeneralUserPersonalInformationDTO dto);
 
     ServiceAnswer updateAreas(Long id, UserSelectedAreasDTO dto);
 

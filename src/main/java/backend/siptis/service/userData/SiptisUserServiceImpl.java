@@ -12,9 +12,7 @@ import backend.siptis.model.entity.userData.UserInformation;
 import backend.siptis.model.pjo.dto.*;
 import backend.siptis.model.pjo.dto.authentication.TokenDTO;
 import backend.siptis.model.pjo.dto.records.LogInDTO;
-import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterSpecialUserDTO;
-import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterStudentDTO;
-import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterUserDTO;
+import backend.siptis.model.pjo.dto.usersInformationDTO.*;
 import backend.siptis.model.pjo.vo.userData.TribunalInfoToAssignSection;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
 import lombok.RequiredArgsConstructor;
@@ -391,19 +389,18 @@ public class SiptisUserServiceImpl implements SiptisUserService {
     }
 
     @Override
-    public ServiceAnswer userEditPersonalInformation(Long id, UserEditPersonalInformationDTO dto)
-    {
-        if(!existsUserById(id)){
+    public ServiceAnswer userEditPersonalInformation(Long id, UserEditPersonalInformationDTO dto){
+        if(!existsUserById(id))
             return createResponse(ServiceMessage.ID_DOES_NOT_EXIST, "No pudimos encontrar al usuario");
-        }
+
         ServiceAnswer answer;
         SiptisUser user = siptisUserRepository.findById(id).get();
-        if(!user.getEmail().equals(dto.getEmail())){
-            answer = validateEmail(dto.getEmail());
-            if(answer != null){
-                return answer;
-            }
-        }
+
+        if(!user.getEmail().equals(dto.getEmail()))
+            if(existsUserByEmail(dto.getEmail()))
+                return createResponse(ServiceMessage.ERROR, "El correo electronico ya se encuentra ocupado.");
+
+
         UserInformation userInformation = user.getUserInformation();
         answer = userInformationService.userEditLimitedInformation(userInformation, dto);
         if(!answer.getServiceMessage().equals(ServiceMessage.OK)) {
@@ -416,42 +413,60 @@ public class SiptisUserServiceImpl implements SiptisUserService {
     }
 
     @Override
-    public ServiceAnswer specialUserEditPersonalInformation() {
-        return null;
+    public ServiceAnswer adminEditUserPersonalInformation(Long id, UniversityUserPersonalInformationDTO dto) {
+        if(!existsUserById(id))
+            return createResponse(ServiceMessage.ID_DOES_NOT_EXIST, "No pudimos encontrar al usuario");
+
+        ServiceAnswer answer;
+        SiptisUser user = siptisUserRepository.findById(id).get();
+
+        if(!user.getEmail().equals(dto.getEmail()))
+            if(existsUserByEmail(dto.getEmail()))
+                return createResponse(ServiceMessage.ERROR, "El correo electronico ya se encuentra ocupado.");
+
+
+        UserInformation userInformation = user.getUserInformation();
+        answer = userInformationService.adminEditUserFullInformation(userInformation, dto);
+        if(!answer.getServiceMessage().equals(ServiceMessage.OK)) {
+            return answer;
+        }
+        user.setEmail(dto.getEmail());
+        user.setUserInformation((UserInformation) answer.getData());
+        siptisUserRepository.save(user);
+        return createResponse(ServiceMessage.OK, "Su cuenta fue modificada exitosamente.");
     }
 
-    private ServiceAnswer validateEmail(String email){
-        if(email == null || email == ""){
-            return createResponse(ServiceMessage.ERROR_REGISTER_ACCOUNT_EMAIL, "Tiene que ingresar un correo.");
+    @Override
+    public ServiceAnswer adminEditSpecialUserPersonalInformation(Long id, GeneralUserPersonalInformationDTO dto) {
+        if(!existsUserById(id))
+            return createResponse(ServiceMessage.ID_DOES_NOT_EXIST, "No pudimos encontrar al usuario");
+
+        ServiceAnswer answer;
+        SiptisUser user = siptisUserRepository.findById(id).get();
+
+        if(!user.getEmail().equals(dto.getEmail()))
+            if(existsUserByEmail(dto.getEmail()))
+                return createResponse(ServiceMessage.ERROR, "El correo electronico ya se encuentra ocupado.");
+
+
+        UserInformation userInformation = user.getUserInformation();
+        answer = userInformationService.adminEditUserFullInformation(userInformation, dto);
+        if(!answer.getServiceMessage().equals(ServiceMessage.OK)) {
+            return answer;
         }
-            if(!Pattern.compile("^(.+)@(\\S+)$").matcher(email).matches()){
-            return createResponse(ServiceMessage.ERROR_REGISTER_ACCOUNT_EMAIL, "El correo no tiene el formato correcto.");
-        }
-        if(existsUserByEmail(email)){
-            return createResponse(ServiceMessage.ERROR_REGISTER_ACCOUNT_EMAIL, "El correo ya se encuentra registrado.");
-        }
-        return null;
+        user.setEmail(dto.getEmail());
+        user.setUserInformation((UserInformation) answer.getData());
+        siptisUserRepository.save(user);
+        return createResponse(ServiceMessage.OK, "Su cuenta fue modificada exitosamente.");
     }
 
-    private ServiceAnswer validatePassword(String password){
-        if(password == null || password == ""){
-            return createResponse(ServiceMessage.ERROR_REGISTER_ACCOUNT_PASSWORD, "Tiene que ingresar una contraseña.");
-        }
-        if(password.length() < 6 ){
-            return createResponse(ServiceMessage.ERROR_REGISTER_ACCOUNT_PASSWORD, "La contraseña es muy corta.");
-        }
-        return null;
-    }
+
 
     private ServiceAnswer registerUser(String email, String password) {
-        ServiceAnswer answer = validateEmail(email);
-        if(answer != null){
-            return answer;
-        }
-        answer = validatePassword(password);
-        if(answer != null){
-            return answer;
-        }
+
+        if(existsUserByEmail(email))
+            return createResponse(ServiceMessage.ERROR_REGISTER_ACCOUNT_EMAIL, "El correo electronico ya se encuentra ocupado.");
+
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String userPassword = encoder.encode(password);
         return createResponse(ServiceMessage.OK, new SiptisUser(email, userPassword));
