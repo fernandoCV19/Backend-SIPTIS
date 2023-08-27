@@ -46,6 +46,12 @@ public class DocumentController {
         return createResponseEntity(documentGeneratorService.generateSolvency(userId));
     }
 
+    @GetMapping("/create-solvency-test/{id}")
+    ResponseEntity<?> createSolvencyTest(@PathVariable("id") long userId){
+        return createResponseEntity(documentGeneratorService.generateSolvencyTesting(userId));
+    }
+
+
     @PostMapping("/create-documentary-record")
     ResponseEntity<?> createDocumentaryRecord(@RequestBody DocumentaryRecordDto documentaryRecordDto){
         return createResponseEntity(documentGeneratorService.generateDocumentaryRecord(documentaryRecordDto));

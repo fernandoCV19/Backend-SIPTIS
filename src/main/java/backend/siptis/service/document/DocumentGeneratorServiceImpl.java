@@ -209,13 +209,53 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
     }
 
     @Override
+    public ServiceAnswer generateSolvencyTesting(long idUser){
+        Optional<SiptisUser> oUser = siptisUserRepository.findOneById(idUser);
+
+        if (oUser.isEmpty()){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
+        }
+        SiptisUser user = oUser.get();
+        UserInformation info = user.getUserInformation();
+        String name = info.getNames() + " " + info.getLastnames();
+        String ci = info.getCi();
+        UserCareer career = null;
+        String careerName = "";
+        for (UserCareer userCareer : user.getCareer()) {
+            career = userCareer;
+        }
+        if(career != null)
+            careerName = career.getName();
+
+        Path location = null;
+        try {
+            location = blueprintRetrieve("CertificadoSolvencia.pdf");
+        }catch(IOException e){
+            System.err.println(e.getMessage());
+        }
+
+        SolvencyTool solvencyTool = new SolvencyTool(location);
+        String filename = solvencyTool.generate(name, ci, careerName);
+
+        String key = "123";
+        // String key = nube.uploadDocumentToCloud(filename);
+        backend.siptis.model.entity.userData.Document document = new backend.siptis.model.entity.userData.Document();
+        //document.setPath(key);
+        document.setType(DocumentType.FORM.toString());
+        document.setDescription("Formulario de Solvencia");
+        //document.setSiptisUser(user);
+        //documentRepository.save(document);
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
+    }
+
+    @Override
     public ServiceAnswer generateReportTesting (ReportDocumentDTO reportDocumentDTO){
         Long idProject = reportDocumentDTO.getProjectId();
         Long userId = reportDocumentDTO.getUserId();
 
         //Obteniendo el projecto
         Optional <Project> optionalProject = projectRepository.findById(idProject);
-        if (optionalProject .isEmpty()){
+        if (optionalProject.isEmpty()){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
         }
         //se encontro el projecto

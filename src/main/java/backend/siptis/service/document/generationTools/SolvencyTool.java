@@ -54,7 +54,7 @@ public class SolvencyTool {
             cr.go();
             stamper.close();
             reader.close();
-            Files.delete(temporal);
+            // Files.delete(temporal);
             return fileName;
         }catch(IOException de) {
             System.err.println(de.getMessage());

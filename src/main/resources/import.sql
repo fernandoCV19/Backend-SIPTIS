@@ -1,5 +1,5 @@
 -- Proyecto
-
+/*
 INSERT INTO place_to_defense(id, capacity, location, name) VALUES (1, 20, 'Departamento informatica-sistemas', 'Auditorio');
 INSERT INTO place_to_defense(id, capacity, location, name) VALUES (2, 200, 'Edificio nuevo', 'Auditorio');
 INSERT INTO place_to_defense(id, capacity, location, name) VALUES (3, 50, 'Edificio nuevo', 'Aula 692B');
@@ -726,3 +726,5 @@ INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (71, 'Vi
 INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (72, 'Viernes', '34:82', '80:17', 101);
 INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (73, 'Viernes', '35:80', '47:28', 102);
 INSERT INTO schedule(id, days, hour_finish, hour_start, user_id) VALUES (74, 'Viernes', '39:84', '17:80', 103);
+
+ */

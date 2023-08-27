@@ -15,5 +15,7 @@ public interface DocumentGeneratorService {
 
     ServiceAnswer generateSolvency(long idUser);
 
+    ServiceAnswer generateSolvencyTesting(long idUser);
+
     ServiceAnswer generateDocumentaryRecord(DocumentaryRecordDto documentaryRecordDto);
 }
