@@ -58,7 +58,9 @@ public interface UserInformationService {
         }
 
         public ArrayList<Long> getProjects(){
-            return siptisUser.getProjects();
+            if(siptisUser.getProjects() != null)
+                return siptisUser.getProjects();
+            return new ArrayList<Long>();
         }
 
         @Override
