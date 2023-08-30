@@ -15,7 +15,8 @@ INSERT INTO sub_area(id, name) VALUES (2, 'SubArea2');
 INSERT INTO modality(id, name) VALUES (1, 'Adscripcion');
 
 
-INSERT INTO project(id, blue_book_path, perfil_path, project_path, phase, name,  state_id, modality_id) VALUES (1, 'Libro1', 'Perfil1', 'Proyecto1', 'Fase1', 'ProyectoGrado1',  null, 1);
+INSERT INTO project(id, blue_book_path, perfil_path, project_path, phase, name,  state_id, modality_id)
+VALUES (1, 'Libro1', 'Perfil1', 'Proyecto1', 'Fase1', 'ProyectoGrado1',  null, 1);
 
 INSERT INTO project_area(project_id, area_id) VALUES (1, 1);
 
@@ -541,7 +542,8 @@ INSERT INTO project_teacher(id, accepted, reviewed, project_id, user_id) VALUES 
 
 
 
-INSERT INTO project(id, blue_book_path, perfil_path, project_path, phase, name, state_id, modality_id) VALUES (57, 'Libro7', null, 'Proyecto7', 'REVIEWERS_PHASE', 'ProyectoGrado7', null, 1);
+INSERT INTO project(id, blue_book_path, perfil_path, project_path, phase, name, state_id, modality_id)
+VALUES (57, 'Libro7', null, 'Proyecto7', 'REVIEWERS_PHASE', 'ProyectoGrado7', null, 1);
 
 INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id, user_id) VALUES (59, false, null, false, 57, 50);
 
@@ -588,7 +590,8 @@ INSERT INTO activity (id, activity_name, activity_description, activity_date, pr
 
 ---- get schedule info
 
-INSERT INTO project(id, blue_book_path, perfil_path, project_path, phase, name, state_id, modality_id) VALUES (100, 'Libro100', 'Perfil100', 'Proyecto100', 'Fase100', 'ProyectoGrado100', null, 1);
+INSERT INTO project(id, blue_book_path, perfil_path, project_path, phase, name, state_id, modality_id)
+VALUES (100, 'Libro100', 'Perfil100', 'Proyecto100', 'Fase100', 'ProyectoGrado100', null, 1);
 
 INSERT INTO project_area(project_id, area_id) VALUES (100, 1);
 

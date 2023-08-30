@@ -10,8 +10,12 @@ import backend.siptis.model.entity.projectManagement.*;
 import backend.siptis.model.entity.userData.Schedule;
 import backend.siptis.model.pjo.dto.projectManagement.AssignTribunalsDTO;
 import backend.siptis.model.pjo.dto.projectManagement.DefenseDTO;
+import backend.siptis.model.pjo.dto.projectManagement.NewProjectDTO;
 import backend.siptis.model.pjo.vo.projectManagement.*;
+import backend.siptis.model.repository.editorsAndReviewers.ModalityRepository;
+import backend.siptis.model.repository.editorsAndReviewers.ProjectStudentRepository;
 import backend.siptis.model.repository.editorsAndReviewers.ProjectTribunalRepository;
+import backend.siptis.model.repository.editorsAndReviewers.ProjectTutorRepository;
 import backend.siptis.model.repository.projectManagement.*;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectTutor;
 import backend.siptis.model.entity.projectManagement.Presentation;
@@ -38,12 +42,67 @@ import java.util.concurrent.TimeUnit;
 public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
+    private final ProjectStudentRepository projectStudentRepository;
+    private final ProjectTutorRepository projectTutorRepository;
+    private final ModalityRepository modalityRepository;
     private final PresentationRepository presentationRepository;
     private final ReviewRepository reviewRepository;
     private final SiptisUserRepository siptisUserRepository;
     private final ProjectTribunalRepository projectTribunalRepository;
     private final PlaceToDefenseRepository placeToDefenseRepository;
     private final DefenseRepository defenseRepository;
+
+    @Override
+    public ServiceAnswer createProject(NewProjectDTO dto) {
+        if(projectRepository.existsByName(dto.getName()))
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR)
+                    .data("El nombre ya se encuentra registrado").build();
+        if(!modalityRepository.existsById(dto.getModalityId()))
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR)
+                    .data("No se pudo encontrar la modalidad solicitada.").build();
+
+        Project newProject = new Project();
+        ArrayList<ProjectStudent> students = new ArrayList<>();
+
+        for (Long studentId: dto.getStudentsId()) {
+            if(!siptisUserRepository.existsById(studentId))
+                return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR)
+                        .data("No se pudo encontrar al estudiante solicitado.").build();
+
+            ProjectStudent projectStudent = new ProjectStudent();
+            projectStudent.setStudent(siptisUserRepository.findById(studentId).get());
+            projectStudent.setProject(newProject);
+            students.add(projectStudent);
+        }
+
+        ArrayList<ProjectTutor> tutors = new ArrayList<>();
+        for (Long tutorId: dto.getTutorsId()) {
+            if(!siptisUserRepository.existsById(tutorId))
+                return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR)
+                        .data("No se pudo encontrar al usuario solicitado.").build();
+
+            ProjectTutor projectTutor = new ProjectTutor();
+            projectTutor.setTutor(siptisUserRepository.findById(tutorId).get());
+            projectTutor.setProject(newProject);
+            tutors.add(projectTutor);
+        }
+
+        newProject.setName(dto.getName());
+        newProject.setModality(modalityRepository.findModalityById(dto.getModalityId()));
+        newProject.setStudents(students);
+        newProject.setTutors(tutors);
+
+        projectRepository.save(newProject);
+
+        for (ProjectStudent projectStudent: students)
+            projectStudentRepository.save(projectStudent);
+
+        for (ProjectTutor projectTutor: tutors)
+            projectTutorRepository.save(projectTutor);
+
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
+                    .data("El proyecto fue registrado correctamente.").build();
+    }
 
     @Override
     public ServiceAnswer getProjects(){

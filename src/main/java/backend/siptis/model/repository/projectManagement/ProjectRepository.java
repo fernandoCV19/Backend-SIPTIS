@@ -66,4 +66,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
             " WHERE project.modality_id = modality.id ", nativeQuery = true )
     List<ProjectInfoDTO> getProjectsList();
 
+
+    boolean existsByName(String name);
+
 }

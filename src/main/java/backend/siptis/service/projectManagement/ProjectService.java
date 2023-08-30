@@ -3,8 +3,11 @@ package backend.siptis.service.projectManagement;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.model.pjo.dto.projectManagement.AssignTribunalsDTO;
 import backend.siptis.model.pjo.dto.projectManagement.DefenseDTO;
+import backend.siptis.model.pjo.dto.projectManagement.NewProjectDTO;
 
 public interface ProjectService {
+
+    ServiceAnswer createProject(NewProjectDTO dto);
 
     ServiceAnswer getProjects();
 
