@@ -69,6 +69,7 @@ public class ActivityServiceImpl implements ActivityService{
         List<Activity> activitiesList = activityRepository.findAll();
         ArrayList<ActivityVO> activityArrayList = new ArrayList<>();
         for (Activity activity : activitiesList){
+            //if(activity.get)
             activityArrayList.add(entityToVO(activity));
         }
         return activityArrayList;
@@ -92,7 +93,7 @@ public class ActivityServiceImpl implements ActivityService{
 
             return ServiceAnswer.builder()
                     .serviceMessage(ServiceMessage.OK)
-                    .data(entityToVO(activity)).build();
+                    .data(activity ).build();
         }
         return ServiceAnswer.builder()
                 .serviceMessage(ServiceMessage.NOT_FOUND)
@@ -123,6 +124,7 @@ public class ActivityServiceImpl implements ActivityService{
     public ActivityVO entityToVO(Activity activity) {
         ActivityVO activityVO = new ActivityVO();
         BeanUtils.copyProperties(activity, activityVO);
+        System.out.print(activityVO);
         return activityVO;
     }
 }

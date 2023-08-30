@@ -45,7 +45,7 @@ public class GeneralActivityServiceImpl implements GeneralActivityService {
         GeneralActivity generalActivity = new GeneralActivity();
         generalActivity.setActivityDescription(generalActivityDTO.getActivityDescription());
         generalActivity.setActivityDate(generalActivityDTO.getActivityDate());
-        generalActivity.setActivityName(generalActivityDTO.getGeneralActivityName());
+        generalActivity.setActivityName(generalActivityDTO.getActivityName());
         generalActivity = generalActivityRepository.save(generalActivity);
 
         return ServiceAnswer.builder()
@@ -77,7 +77,7 @@ public class GeneralActivityServiceImpl implements GeneralActivityService {
 
         if(!optionalGeneralActivity.isEmpty()){
             GeneralActivity generalActivity = optionalGeneralActivity.get();
-            generalActivity.setActivityName(generalActivityDTO.getGeneralActivityName());
+            generalActivity.setActivityName(generalActivityDTO.getActivityName());
             generalActivity.setActivityDescription(generalActivityDTO.getActivityDescription());
             generalActivity.setActivityDate(generalActivityDTO.getActivityDate());
             generalActivityRepository.save(generalActivity);

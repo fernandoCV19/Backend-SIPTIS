@@ -105,12 +105,14 @@ public class SiptisUserServiceImpl implements SiptisUserService {
     }
 
     @Override
-    public ServiceAnswer getProjectById(Long id) {
+    public Long getProjectById(Long id) {
         Optional<Project> project = usuarioCommonRepository.findProjectById(id);
-        System.out.print(project);
-        return project.isEmpty() ?
+        /*return project.isEmpty() ?
                 ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(project).build() :
-                ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(project).build();
+                ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(project).build();*/
+        if(project.isEmpty()) return null;
+        Long idL = project.get().getId();
+        return idL;
     }
     private UserGeneralInformationDTO convertToDTO(SiptisUser user) {
         UserGeneralInformationDTO userDTO = new UserGeneralInformationDTO();

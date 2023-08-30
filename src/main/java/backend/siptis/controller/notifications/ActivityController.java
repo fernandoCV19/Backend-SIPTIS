@@ -5,22 +5,28 @@ import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.notifications.ActivityDTO;
 import backend.siptis.service.notifications.ActivityService;
-import org.springframework.beans.factory.annotation.Autowired;
+import backend.siptis.service.userData.SiptisUserService;
+import backend.siptis.service.userData.userAuthentication.UserAuthService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
 @RestController
 @RequestMapping("/activity")
+@AllArgsConstructor
+@CrossOrigin
 public class ActivityController {
     private final ActivityService activityService;
-    @Autowired
-    public ActivityController(ActivityService activityService){
-        this.activityService = activityService;
-    }
+    private final UserAuthService userAuthService;
+    private final SiptisUserService userService;
     @PostMapping("/create")
-    public ResponseEntity<?> saveActivity(@RequestBody ActivityDTO activityDTO){
+    public ResponseEntity<?> saveActivity(@RequestHeader(name = "Authorization") String token,
+                                          @RequestBody ActivityDTO activityDTO){
+
+        Long idL = userAuthService.getIdFromToken(token);
+        Long idP = userService.getProjectById(idL);
+        activityDTO.setIdProject(idP);
         return createResponse(activityService.persistActivity(activityDTO));
     }
     @GetMapping()
@@ -32,6 +38,7 @@ public class ActivityController {
     }
     @PutMapping("/{id}")
     public ResponseEntity<?> updateActivity(@PathVariable int id, @RequestBody ActivityDTO activityDTO){
+        System.out.println(activityDTO);
         return createResponse(activityService.update(activityDTO, id));
     }
     @DeleteMapping("/{id}")

@@ -62,6 +62,8 @@ public class WebSecurityConfig {
 
                         "/general-activity", "/general-activity/create","/general-activity/*",
 
+                        "/activity", "/activity/create","/activity/*",
+
                         "/cloud/**",
 
                         "/supervisor/**",

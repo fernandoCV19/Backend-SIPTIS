@@ -39,7 +39,7 @@ class GeneralActivityServiceImplTest {
     @BeforeEach
     void setUp() {
         activityDTO.setActivityDate(new Date(2022, 1, 1));
-        activityDTO.setGeneralActivityName("test activity");
+        activityDTO.setActivityName("test activity");
         activityDTO.setActivityDescription("test activity description");
     }
     @Test
@@ -194,7 +194,7 @@ class GeneralActivityServiceImplTest {
     @Test
     @Rollback
     void updateGeneralActivity() {
-        activityDTO.setGeneralActivityName("modificacion");
+        activityDTO.setActivityName("modificacion");
         GeneralActivityVO generalActivity = (GeneralActivityVO) generalActivityService.update(activityDTO, 5).getData();
 
         assertEquals("modificacion", generalActivity.getActivityName());

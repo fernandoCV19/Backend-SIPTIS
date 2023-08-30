@@ -8,7 +8,7 @@ import java.util.Date;
 @Getter
 @Setter
 public class GeneralActivityDTO {
-    private String generalActivityName;
+    private String activityName;
     private String activityDescription;
     private Date activityDate;
 }
