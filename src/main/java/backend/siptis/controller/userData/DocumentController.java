@@ -48,10 +48,16 @@ public class DocumentController {
         return createResponseEntity(documentGeneratorService.generateSolvency(userId));
     }
 
-    @GetMapping("/prueba")
-    ResponseEntity<?> prueba() throws IOException {
-        return createResponseEntity(documentGeneratorService.pruebaDoc());
+    @GetMapping("/create-trbunal-request/{id}")
+    ResponseEntity<?> createTribunalRequest(@PathVariable("id") long id) throws IOException {
+        return createResponseEntity(documentGeneratorService.tribunalRequest(id));
     }
+
+    @GetMapping("/create-trbunal-approval/{id}")
+    ResponseEntity<?> createTribunalApproval(@PathVariable("id") long id) throws IOException {
+        return createResponseEntity(documentGeneratorService.generateTribunalApproval(id));
+    }
+
     @GetMapping("/create-solvency-test/{id}")
     ResponseEntity<?> createSolvencyTest(@PathVariable("id") long userId){
         return createResponseEntity(documentGeneratorService.generateSolvencyTesting(userId));

@@ -19,7 +19,9 @@ public interface DocumentGeneratorService {
 
     ServiceAnswer generateSolvencyTesting(long idUser);
 
-    ServiceAnswer pruebaDoc() throws IOException;
+    ServiceAnswer tribunalRequest(long id) throws IOException;
+
+    ServiceAnswer generateTribunalApproval(Long id) throws IOException;
 
     ServiceAnswer generateDocumentaryRecord(DocumentaryRecordDto documentaryRecordDto);
 }

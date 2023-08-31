@@ -6,7 +6,7 @@ import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectStudent;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectTeacher;
-import backend.siptis.model.entity.editorsAndReviewers.ProjectTutor;
+import backend.siptis.model.entity.editorsAndReviewers.ProjectTribunal;
 import backend.siptis.model.entity.projectManagement.Phase;
 import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.entity.userData.Document;
@@ -261,10 +261,10 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
     }
 
     @Override
-    public ServiceAnswer pruebaDoc() throws IOException {
+    public ServiceAnswer tribunalRequest(long id) throws IOException {
         LetterTool letterTool = new LetterTool();
 
-        if(!projectRepository.existsById(52L))
+        if(!projectRepository.existsById(id))
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
         Project project = projectRepository.findById(52L).get();
         String projectName = project.getName();
@@ -287,7 +287,50 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
                     studentName, "Calancha Navia Boris Marcelo", careerName, projectName, teacherName);
             response.add(filename);
 
-            key = nube.uploadLetterToCloud(filename);
+            //key = nube.uploadLetterToCloud(filename);
+
+            backend.siptis.model.entity.userData.Document document = new backend.siptis.model.entity.userData.Document();
+            document.setPath(key);
+            document.setPhase(phaseRepository.findById(1l).get());
+            document.setType(DocumentType.LETTER.toString());
+            document.setDescription("Solicitud de tribunales");
+            document.setSiptisUser(projectStudent.getStudent());
+            documentRepository.save(document);
+
+        }
+
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
+    }
+
+    @Override
+    public ServiceAnswer generateTribunalApproval(Long id) throws IOException {
+        LetterTool letterTool = new LetterTool();
+
+        if(!projectRepository.existsById(id))
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
+        Project project = projectRepository.findById(52L).get();
+        String projectName = project.getName();
+        Collection<ProjectStudent> students = project.getStudents();
+        Collection<ProjectTribunal> tribunals = project.getTribunals();
+        // Collection<ProjectTutor> tutors = project.getTutors();
+        ProjectStudent projectStudent = students.iterator().next();
+        UserInformation student = projectStudent.getStudent().getUserInformation();
+        String studentName = student.getLastnames() + " " + student.getNames();
+        Set<UserCareer> career = projectStudent.getStudent().getCareer();
+        String careerName = career.iterator().next().getName();
+
+        ArrayList<String> response = new ArrayList<>();
+        String key = "";
+
+        for (ProjectTribunal tribunal: tribunals) {
+
+            UserInformation tribunalInfo = tribunal.getTribunal().getUserInformation();
+            String tribunalName = tribunalInfo.getLastnames() + " " + tribunalInfo.getNames();
+            String filename = letterTool.generateTribunalApproval(
+                    studentName, "Calancha Navia Boris Marcelo", careerName, projectName, tribunalName);
+            response.add(filename);
+
+            //key = nube.uploadLetterToCloud(filename);
 
             backend.siptis.model.entity.userData.Document document = new backend.siptis.model.entity.userData.Document();
             document.setPath(key);
