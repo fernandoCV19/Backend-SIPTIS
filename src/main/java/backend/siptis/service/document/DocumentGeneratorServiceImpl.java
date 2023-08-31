@@ -4,6 +4,9 @@ import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.DocumentType;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
+import backend.siptis.model.entity.editorsAndReviewers.ProjectStudent;
+import backend.siptis.model.entity.editorsAndReviewers.ProjectTeacher;
+import backend.siptis.model.entity.editorsAndReviewers.ProjectTutor;
 import backend.siptis.model.entity.projectManagement.Phase;
 import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.entity.userData.Document;
@@ -11,25 +14,31 @@ import backend.siptis.model.entity.userData.UserCareer;
 import backend.siptis.model.entity.userData.UserInformation;
 import backend.siptis.model.pjo.dto.document.ReportDocumentDTO;
 import backend.siptis.model.pjo.dto.document.DocumentaryRecordDto;
+import backend.siptis.model.repository.projectManagement.PhaseRepository;
 import backend.siptis.model.repository.projectManagement.ProjectRepository;
 import backend.siptis.model.repository.userData.DocumentRepository;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
 import backend.siptis.model.repository.userData.UserInformationRepository;
 import backend.siptis.service.cloud.CloudManagementService;
 import backend.siptis.service.document.generationTools.DocumentaryRecordTool;
+import backend.siptis.service.document.generationTools.LetterTool;
 import backend.siptis.service.document.generationTools.ReportTool;
 import backend.siptis.service.document.generationTools.SolvencyTool;
+import com.lowagie.text.pdf.PdfReader;
+import com.lowagie.text.pdf.PdfStamper;
+import com.lowagie.text.pdf.PdfWriter;
 import lombok.RequiredArgsConstructor;
+import org.apache.poi.xwpf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.nio.file.Paths;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -48,6 +57,9 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
 
     @Autowired
     private DocumentRepository documentRepository;
+
+    @Autowired
+    private PhaseRepository phaseRepository;
 
     @Override
     public ServiceAnswer getAllDocumentsFromUser (long idUser){
@@ -246,6 +258,94 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
         //document.setSiptisUser(user);
         //documentRepository.save(document);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
+    }
+
+    @Override
+    public ServiceAnswer pruebaDoc() throws IOException {
+        LetterTool letterTool = new LetterTool();
+
+        if(!projectRepository.existsById(52L))
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
+        Project project = projectRepository.findById(52L).get();
+        String projectName = project.getName();
+        Collection<ProjectStudent> students = project.getStudents();
+        // Collection<ProjectTutor> tutors = project.getTutors();
+        Collection<ProjectTeacher> teachers = project.getTeachers();
+        UserInformation teacher = teachers.iterator().next().getTeacher().getUserInformation();
+        String teacherName = teacher.getLastnames() + " " + teacher.getNames();
+
+        ArrayList<String> response = new ArrayList<>();
+        String key = "";
+
+        for (ProjectStudent projectStudent: students) {
+            UserInformation student = projectStudent.getStudent().getUserInformation();
+            String studentName = student.getLastnames() + " " + student.getNames();
+            Set<UserCareer> career = projectStudent.getStudent().getCareer();
+            String careerName = career.iterator().next().getName();
+
+            String filename = letterTool.generateTribunalRequest(
+                    studentName, "Calancha Navia Boris Marcelo", careerName, projectName, teacherName);
+            response.add(filename);
+
+            key = nube.uploadLetterToCloud(filename);
+
+            backend.siptis.model.entity.userData.Document document = new backend.siptis.model.entity.userData.Document();
+            document.setPath(key);
+            document.setPhase(phaseRepository.findById(1l).get());
+            document.setType(DocumentType.LETTER.toString());
+            document.setDescription("Solicitud de tribunales");
+            document.setSiptisUser(projectStudent.getStudent());
+            documentRepository.save(document);
+
+        }
+
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
+    }
+
+    public ServiceAnswer pruebaDoc1() throws IOException {
+
+        String filePath = getClass().getClassLoader()
+                .getResource("modeloDocentePrueba.docx")
+                .getPath();
+        try (InputStream inputStream = new FileInputStream(filePath)) {
+            XWPFDocument doc = new XWPFDocument(inputStream);
+            doc = replaceText(doc, "date", "Hello");
+            saveFile(filePath, doc);
+            doc.close();
+        }
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data("asd").build();
+    }
+
+    private void saveFile(String filePath, XWPFDocument doc) throws IOException {
+        try (FileOutputStream out = new FileOutputStream(filePath)) {
+            doc.write(out);
+        }
+    }
+
+    private XWPFDocument replaceText(XWPFDocument doc, String originalText, String updatedText) {
+        replaceTextInParagraphs(doc.getParagraphs(), originalText, updatedText);
+        for (XWPFTable tbl : doc.getTables()) {
+            for (XWPFTableRow row : tbl.getRows()) {
+                for (XWPFTableCell cell : row.getTableCells()) {
+                    replaceTextInParagraphs(cell.getParagraphs(), originalText, updatedText);
+                }
+            }
+        }
+        return doc;
+    }
+
+    private void replaceTextInParagraphs(List<XWPFParagraph> paragraphs, String originalText, String updatedText) {
+        paragraphs.forEach(paragraph -> replaceTextInParagraph(paragraph, originalText, updatedText));
+    }
+    private void replaceTextInParagraph(XWPFParagraph paragraph, String originalText, String updatedText) {
+        List<XWPFRun> runs = paragraph.getRuns();
+        for (XWPFRun run : runs) {
+            String text = run.getText(0);
+            if (text != null && text.contains(originalText)) {
+                String updatedRunText = text.replace(originalText, updatedText);
+                run.setText(updatedRunText, 0);
+            }
+        }
     }
 
     @Override

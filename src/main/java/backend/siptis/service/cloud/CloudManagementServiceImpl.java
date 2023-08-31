@@ -116,4 +116,11 @@ public class CloudManagementServiceImpl implements CloudManagementService {
         boolean bandera = document.delete();
         return key;
     }
+    @Override
+    public String uploadLetterToCloud(String filename){
+        File document = new File(filename);
+        String key = putObject(document, "Cartas/");
+        boolean bandera = document.delete();
+        return key;
+    }
 }

@@ -4,6 +4,8 @@ import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.model.pjo.dto.document.DocumentaryRecordDto;
 import backend.siptis.model.pjo.dto.document.ReportDocumentDTO;
 
+import java.io.IOException;
+
 public interface DocumentGeneratorService {
     ServiceAnswer getAllDocumentsFromUser (long idUser);
 
@@ -16,6 +18,8 @@ public interface DocumentGeneratorService {
     ServiceAnswer generateSolvency(long idUser);
 
     ServiceAnswer generateSolvencyTesting(long idUser);
+
+    ServiceAnswer pruebaDoc() throws IOException;
 
     ServiceAnswer generateDocumentaryRecord(DocumentaryRecordDto documentaryRecordDto);
 }

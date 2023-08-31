@@ -21,6 +21,9 @@ repositories {
 
 dependencies {
 	// https://mvnrepository.com/artifact/org.postgresql/postgresql
+	// https://mvnrepository.com/artifact/com.itextpdf/itextpdf
+	implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.3'
+
 
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -55,12 +58,12 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 
 	//testImplementation 'org.springframework.security:spring-security-test'
-
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 	testImplementation 'com.icegreen:greenmail-junit5:1.6.9'
     testImplementation 'org.awaitility:awaitility:4.2.0'
+
 
 
 }

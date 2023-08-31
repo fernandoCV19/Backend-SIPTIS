@@ -60,6 +60,15 @@ public interface SiptisUserRepository extends JpaRepository<SiptisUser, Long> {
             " ORDER BY ui.lastnames ASC" , nativeQuery = true)
     Page<UserListItemDTO> searchUserList(String search_name, String roleName, Pageable pageable);
 
+    @Query(value ="SELECT su.id, ui.names, ui.lastnames, su.email, ui.codsis, role.name " +
+            " FROM siptis_user su, user_information ui,  siptis_user_role sur, role role" +
+            " WHERE su.id = ui.user_id AND sur.siptis_user_id = su.id " +
+            " AND sur.role_id = role.id AND ( role.name LIKE :roleName1 OR role.name LIKE :roleName2)" +
+            " AND ( LOWER( ui.names ) LIKE LOWER( CONCAT( '%', :search_name, '%')) " +
+            " OR LOWER( ui.lastnames ) LIKE LOWER( CONCAT( '%', :search_name, '%') ))" +
+            " ORDER BY ui.lastnames ASC" , nativeQuery = true)
+    Page<UserListItemDTO> searchPotentialTutorsList(String search_name, String roleName1, String roleName2, Pageable pageable);
+
 
     @Query(value ="SELECT su.id, role.name " +
             " FROM siptis_user su, siptis_user_role sur, role role" +

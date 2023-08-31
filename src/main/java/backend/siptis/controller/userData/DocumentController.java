@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/document")
 @CrossOrigin
@@ -46,6 +48,10 @@ public class DocumentController {
         return createResponseEntity(documentGeneratorService.generateSolvency(userId));
     }
 
+    @GetMapping("/prueba")
+    ResponseEntity<?> prueba() throws IOException {
+        return createResponseEntity(documentGeneratorService.pruebaDoc());
+    }
     @GetMapping("/create-solvency-test/{id}")
     ResponseEntity<?> createSolvencyTest(@PathVariable("id") long userId){
         return createResponseEntity(documentGeneratorService.generateSolvencyTesting(userId));

@@ -25,6 +25,7 @@ public interface SiptisUserService {
     ServiceAnswer getTeacherList(String search,Pageable pageable);
     ServiceAnswer getSpecialUserList(String search,Pageable pageable);
     ServiceAnswer getAdminList(Pageable pageable);
+    ServiceAnswer getPotentialTutorsList(String search,Pageable pageable);
 
     ServiceAnswer deleteUser(Long id);
     ServiceAnswer getUserPersonalInformation(Long id);

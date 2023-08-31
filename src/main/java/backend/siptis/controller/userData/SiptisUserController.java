@@ -141,6 +141,14 @@ public class SiptisUserController {
         return createResponseEntity(answerService);
     }
 
+    @GetMapping("/list/potentialTutors")
+    public ResponseEntity<?> getPotentialTutors(String search, Pageable pageable){
+        ServiceAnswer answerService =
+                userService.getPotentialTutorsList(search, pageable);
+
+        return createResponseEntity(answerService);
+    }
+
     @GetMapping("/list/admins")
     public ResponseEntity<?> getAdminList(Pageable pageable){
         ServiceAnswer answerService =

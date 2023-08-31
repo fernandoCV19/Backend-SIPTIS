@@ -269,6 +269,16 @@ public class SiptisUserServiceImpl implements SiptisUserService {
     }
 
     @Override
+    public ServiceAnswer getPotentialTutorsList(String search, Pageable pageable) {
+        int pageNumber = pageable.getPageNumber();
+        int pageSize = pageable.getPageSize();
+        int offset = (pageNumber - 1) * pageSize;
+        return createResponse(ServiceMessage.OK,
+                siptisUserRepository.searchPotentialTutorsList(search, "SPECIAL_USER", "TEACHER", pageable));
+        //siptisUserRepository.searchUser(search));
+    }
+
+    @Override
     public ServiceAnswer deleteUser(Long id) {
         if(!siptisUserRepository.existsById(id)){
             return createResponse(ServiceMessage.ID_DOES_NOT_EXIST, "No pudimos encontrar al usuario");
