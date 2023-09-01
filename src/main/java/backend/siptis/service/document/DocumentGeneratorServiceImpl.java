@@ -161,7 +161,6 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
         document.setType(DocumentType.FORM.toString());
         document.setDescription("Formulario de Solvencia");
         document.setSiptisUser(user);
-        document.setPhase(phase);
         documentRepository.save(document);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
     }

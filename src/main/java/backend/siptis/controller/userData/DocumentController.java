@@ -60,10 +60,6 @@ public class DocumentController {
         Long userId = userAuthService.getIdFromToken(token);
         return createResponseEntity(documentGeneratorService.generateSolvency(userId));
     }
-    @PostMapping("/create-report-test")
-    ResponseEntity<?> createReportTest(@RequestBody ReportDocumentDTO reportDocumentDTO){
-        return createResponseEntity(documentGeneratorService.generateReportTesting(reportDocumentDTO));
-    }
 
     @PostMapping("/create-documentary-record")
     ResponseEntity<?> createDocumentaryRecord(@RequestBody DocumentaryRecordDto documentaryRecordDto){
