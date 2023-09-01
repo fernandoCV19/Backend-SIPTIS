@@ -6,7 +6,6 @@ import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.notifications.ActivityDTO;
 import backend.siptis.service.notifications.ActivityService;
 import backend.siptis.service.userData.SiptisUserService;
-import backend.siptis.service.userData.userAuthentication.UserAuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,13 +17,12 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 public class ActivityController {
     private final ActivityService activityService;
-    private final UserAuthService userAuthService;
     private final SiptisUserService userService;
     @PostMapping("/create")
     public ResponseEntity<?> saveActivity(@RequestHeader(name = "Authorization") String token,
                                           @RequestBody ActivityDTO activityDTO){
 
-        Long idL = userAuthService.getIdFromToken(token);
+        Long idL = userService.getIdFromToken(token);
         Long idP = userService.getProjectById(idL);
         activityDTO.setIdProject(idP);
         return createResponse(activityService.persistActivity(activityDTO));
