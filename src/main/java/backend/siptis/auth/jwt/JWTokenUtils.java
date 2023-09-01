@@ -86,6 +86,14 @@ public class JWTokenUtils {
         return id;
     }
 
+    public static Integer [] getProjects(String token){
+        Claims claims = getClaims(token);
+
+        Integer [] jwtId = (Integer[]) claims.get("projects");
+        //Long id = Long.valueOf(jwtId);
+        return jwtId;
+    }
+
     public static boolean validateJwtToken(String authToken) {
         try {
             Jwts.parserBuilder()
