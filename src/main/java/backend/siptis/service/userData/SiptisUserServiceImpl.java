@@ -206,6 +206,12 @@ public class SiptisUserServiceImpl implements SiptisUserService {
     }
 
     @Override
+    public ArrayList<?> getProjectsFromToken(String token){
+        token = token.replace("Bearer ","");
+        return JWTokenUtils.getProjects(token);
+    }
+
+    @Override
     public ServiceAnswer getStudentList(String search,Pageable pageable){
         int pageNumber = pageable.getPageNumber();
         int pageSize = pageable.getPageSize();

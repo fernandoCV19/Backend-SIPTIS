@@ -10,6 +10,7 @@ import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterUserDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 public interface SiptisUserService {
@@ -34,6 +35,7 @@ public interface SiptisUserService {
     ServiceAnswer updateToken(String refreshToken);
     Long getIdFromToken(String token);
 
+    ArrayList<?> getProjectsFromToken(String token);
     ServiceAnswer getTeacherAreasById(Long id);
     ServiceAnswer getTeacherNotSelectedAreasById(Long id);
 

@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 
 
 import java.security.Key;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 @Component
@@ -86,12 +88,11 @@ public class JWTokenUtils {
         return id;
     }
 
-    public static Integer [] getProjects(String token){
+    public static ArrayList <?> getProjects(String token){
         Claims claims = getClaims(token);
 
-        Integer [] jwtId = (Integer[]) claims.get("projects");
-        //Long id = Long.valueOf(jwtId);
-        return jwtId;
+        //Long id = Long.valueOf(jwtId)
+        return (ArrayList <?>) claims.get("projects");
     }
 
     public static boolean validateJwtToken(String authToken) {
