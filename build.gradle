@@ -22,8 +22,6 @@ repositories {
 dependencies {
 	// https://mvnrepository.com/artifact/org.postgresql/postgresql
 	// https://mvnrepository.com/artifact/com.itextpdf/itextpdf
-	implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.3'
-
 
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-security'

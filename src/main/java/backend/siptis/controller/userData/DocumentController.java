@@ -38,11 +38,6 @@ public class DocumentController {
         return createResponseEntity(documentGeneratorService.generateReport(reportDocumentDTO));
     }
 
-    @PostMapping("/create-report-test")
-    ResponseEntity<?> createReportTest(@RequestBody ReportDocumentDTO reportDocumentDTO){
-        return createResponseEntity(documentGeneratorService.generateReportTesting(reportDocumentDTO));
-    }
-
     @GetMapping("/create-solvency/{id}")
     ResponseEntity<?> createSolvency(@PathVariable("id") long userId){
         return createResponseEntity(documentGeneratorService.generateSolvency(userId));
@@ -58,10 +53,6 @@ public class DocumentController {
         return createResponseEntity(documentGeneratorService.generateTribunalApproval(id));
     }
 
-    @GetMapping("/create-solvency-test/{id}")
-    ResponseEntity<?> createSolvencyTest(@PathVariable("id") long userId){
-        return createResponseEntity(documentGeneratorService.generateSolvencyTesting(userId));
-    }
 
 
     @PostMapping("/create-documentary-record")

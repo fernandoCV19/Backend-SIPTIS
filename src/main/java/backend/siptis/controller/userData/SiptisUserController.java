@@ -248,8 +248,7 @@ public class SiptisUserController {
         return createResponseEntity(answer);
     }
 
-    //cambiar a put
-    @PostMapping("/updateAreas")
+    @PutMapping("/updateAreas")
     public ResponseEntity<?> updateAreas(
             @RequestHeader(name="Authorization") String token,
             @RequestBody UserSelectedAreasDTO dto) {

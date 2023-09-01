@@ -69,4 +69,13 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     boolean existsByName(String name);
 
+    @Query(value = "SELECT  project.id AS id, project.name AS name, " +
+            "project.perfil_path AS perfil, modality.name AS modality," +
+            " modality.id AS modalityId  " +
+            " FROM project project, modality modality " +
+            " WHERE project.modality_id = modality.id " +
+            " AND LOWER( project.name ) LIKE LOWER( CONCAT( '%', :search, '%'))  ", nativeQuery = true )
+    Page <ProjectInfoDTO> searchProject(String search, Pageable pageable );
+
+
 }

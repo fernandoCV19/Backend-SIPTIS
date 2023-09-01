@@ -28,7 +28,6 @@ import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfStamper;
 import com.lowagie.text.pdf.PdfWriter;
 import lombok.RequiredArgsConstructor;
-import org.apache.poi.xwpf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -221,46 +220,6 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
     }
 
     @Override
-    public ServiceAnswer generateSolvencyTesting(long idUser){
-        Optional<SiptisUser> oUser = siptisUserRepository.findOneById(idUser);
-
-        if (oUser.isEmpty()){
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
-        }
-        SiptisUser user = oUser.get();
-        UserInformation info = user.getUserInformation();
-        String name = info.getNames() + " " + info.getLastnames();
-        String ci = info.getCi();
-        UserCareer career = null;
-        String careerName = "";
-        for (UserCareer userCareer : user.getCareer()) {
-            career = userCareer;
-        }
-        if(career != null)
-            careerName = career.getName();
-
-        Path location = null;
-        try {
-            location = blueprintRetrieve("CertificadoSolvencia.pdf");
-        }catch(IOException e){
-            System.err.println(e.getMessage());
-        }
-
-        SolvencyTool solvencyTool = new SolvencyTool(location);
-        String filename = solvencyTool.generate(name, ci, careerName);
-
-        String key = "123";
-        // String key = nube.uploadDocumentToCloud(filename);
-        backend.siptis.model.entity.userData.Document document = new backend.siptis.model.entity.userData.Document();
-        //document.setPath(key);
-        document.setType(DocumentType.FORM.toString());
-        document.setDescription("Formulario de Solvencia");
-        //document.setSiptisUser(user);
-        //documentRepository.save(document);
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
-    }
-
-    @Override
     public ServiceAnswer tribunalRequest(long id) throws IOException {
         LetterTool letterTool = new LetterTool();
 
@@ -287,7 +246,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
                     studentName, "Calancha Navia Boris Marcelo", careerName, projectName, teacherName);
             response.add(filename);
 
-            //key = nube.uploadLetterToCloud(filename);
+            key = nube.uploadLetterToCloud(filename);
 
             backend.siptis.model.entity.userData.Document document = new backend.siptis.model.entity.userData.Document();
             document.setPath(key);
@@ -330,7 +289,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
                     studentName, "Calancha Navia Boris Marcelo", careerName, projectName, tribunalName);
             response.add(filename);
 
-            //key = nube.uploadLetterToCloud(filename);
+            key = nube.uploadLetterToCloud(filename);
 
             backend.siptis.model.entity.userData.Document document = new backend.siptis.model.entity.userData.Document();
             document.setPath(key);
@@ -345,104 +304,5 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
     }
 
-    public ServiceAnswer pruebaDoc1() throws IOException {
 
-        String filePath = getClass().getClassLoader()
-                .getResource("modeloDocentePrueba.docx")
-                .getPath();
-        try (InputStream inputStream = new FileInputStream(filePath)) {
-            XWPFDocument doc = new XWPFDocument(inputStream);
-            doc = replaceText(doc, "date", "Hello");
-            saveFile(filePath, doc);
-            doc.close();
-        }
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data("asd").build();
-    }
-
-    private void saveFile(String filePath, XWPFDocument doc) throws IOException {
-        try (FileOutputStream out = new FileOutputStream(filePath)) {
-            doc.write(out);
-        }
-    }
-
-    private XWPFDocument replaceText(XWPFDocument doc, String originalText, String updatedText) {
-        replaceTextInParagraphs(doc.getParagraphs(), originalText, updatedText);
-        for (XWPFTable tbl : doc.getTables()) {
-            for (XWPFTableRow row : tbl.getRows()) {
-                for (XWPFTableCell cell : row.getTableCells()) {
-                    replaceTextInParagraphs(cell.getParagraphs(), originalText, updatedText);
-                }
-            }
-        }
-        return doc;
-    }
-
-    private void replaceTextInParagraphs(List<XWPFParagraph> paragraphs, String originalText, String updatedText) {
-        paragraphs.forEach(paragraph -> replaceTextInParagraph(paragraph, originalText, updatedText));
-    }
-    private void replaceTextInParagraph(XWPFParagraph paragraph, String originalText, String updatedText) {
-        List<XWPFRun> runs = paragraph.getRuns();
-        for (XWPFRun run : runs) {
-            String text = run.getText(0);
-            if (text != null && text.contains(originalText)) {
-                String updatedRunText = text.replace(originalText, updatedText);
-                run.setText(updatedRunText, 0);
-            }
-        }
-    }
-
-    @Override
-    public ServiceAnswer generateReportTesting (ReportDocumentDTO reportDocumentDTO){
-        Long idProject = reportDocumentDTO.getProjectId();
-        Long userId = reportDocumentDTO.getUserId();
-
-        //Obteniendo el projecto
-        Optional <Project> optionalProject = projectRepository.findById(idProject);
-        if (optionalProject.isEmpty()){
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
-        }
-        //se encontro el projecto
-        Project project = optionalProject.get();
-        //obteniendo los nombres de los tutores
-        List<String> tutors = userInformationRepository.getTutorsNames(idProject);
-        //String teacherCompleteName = userInformationRepository.getTeachersNames(idProject).get(0);
-        String teacherCompleteName = "Juan Pablo Rodriguez";
-        //tiitulo del projecto
-        String title = project.getName();
-        int reportNumber = (project.getReportIndex() + 1);
-        //obteniendo estudiante
-        Optional<SiptisUser> oUser = siptisUserRepository.findOneById(userId);
-
-        if (oUser.isEmpty()){
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
-        }
-        SiptisUser user = oUser.get();
-        //nombres del postulante
-        String postulant = user.getUserInformation().getNames()+ ' '+user.getUserInformation().getLastnames();
-        //creando la herramienta de generacion de reporte
-        ReportTool reportTool = new ReportTool();
-        String filename = reportTool.generate(postulant,Integer.toString(reportNumber), title,tutors,teacherCompleteName,reportDocumentDTO.getDescription()) ;
-
-        //subiendo a la nube
-        //String key = nube.uploadDocumentToCloud(filename);
-
-        //creando una entidad documento
-        backend.siptis.model.entity.userData.Document document = new backend.siptis.model.entity.userData.Document();
-
-        //guardando el path, y el resto de informacion
-        document.setPath("abc");
-        document.setType(DocumentType.REPORT.toString());
-        document.setDescription(reportDocumentDTO.getShortDescription());
-        document.setSiptisUser(user);
-
-        //guardando el documento en la BD
-        //documentRepository.save(document);
-
-        //actualizando el projecto
-        project.setReportIndex(reportNumber);
-        projectRepository.save(project);
-        //respuesta
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data("abc")
-                .build();
-    }
 }

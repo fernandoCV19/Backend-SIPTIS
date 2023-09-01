@@ -112,6 +112,16 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    public ServiceAnswer getProjectsList(String search, Pageable pageable) {
+        int pageNumber = pageable.getPageNumber();
+        int pageSize = pageable.getPageSize();
+        int offset = (pageNumber - 1) * pageSize;
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
+                .data( projectRepository.searchProject(search, pageable))
+                .build();
+    }
+
+    @Override
     public ServiceAnswer getPaginatedCompletedProjects(int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<Project> projectPage = projectRepository.findAllWithDefense(pageable);
