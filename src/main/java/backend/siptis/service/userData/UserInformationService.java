@@ -3,17 +3,12 @@ package backend.siptis.service.userData;
 import backend.siptis.auth.entity.Role;
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ServiceAnswer;
-import backend.siptis.model.entity.editorsAndReviewers.ProjectStudent;
 import backend.siptis.model.entity.userData.UserInformation;
-import backend.siptis.model.pjo.dto.AdminEditUserPersonalInformationDTO;
-import backend.siptis.model.pjo.dto.StudentRegisterDTO;
-import backend.siptis.model.pjo.dto.TeacherRegisterDTO;
+import backend.siptis.model.pjo.dto.usersInformationDTO.GeneralUserPersonalInformationDTO;
 import backend.siptis.model.pjo.dto.UserEditPersonalInformationDTO;
-import backend.siptis.model.pjo.dto.records.PersonalInformationDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterSpecialUserDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterUserDTO;
-import backend.siptis.model.pjo.dto.usersInformationDTO.UserPersonalInformationDTO;
-import jakarta.mail.search.SearchTerm;
+import backend.siptis.model.pjo.dto.usersInformationDTO.UniversityUserPersonalInformationDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,18 +20,15 @@ import java.util.Set;
 
 public interface UserInformationService {
 
-    ServiceAnswer existByCodSIS(String codSIS);
-    ServiceAnswer existByCi(String ci);
-    ServiceAnswer existsById(Long id);
 
     ServiceAnswer findById(Long id);
 
-    ServiceAnswer getAllStudents();
-    ServiceAnswer getAllTeachers();
-    ServiceAnswer getAllAdmin();
 
-    ServiceAnswer userEditLimitedInformation(UserEditPersonalInformationDTO dto);
-    ServiceAnswer adminEditUserFullInformation(AdminEditUserPersonalInformationDTO dto);
+    ServiceAnswer userEditLimitedInformation(UserInformation userInformation, UserEditPersonalInformationDTO dto);
+
+    ServiceAnswer adminEditUserFullInformation(UserInformation userInformation, GeneralUserPersonalInformationDTO dto);
+    ServiceAnswer adminEditUserFullInformation(UserInformation userInformation, UniversityUserPersonalInformationDTO dto);
+
 
     ServiceAnswer searchUserByNameAndRole(String name, Long role_id);
 
@@ -66,7 +58,9 @@ public interface UserInformationService {
         }
 
         public ArrayList<Long> getProjects(){
-            return siptisUser.getProjects();
+            if(siptisUser.getProjects() != null)
+                return siptisUser.getProjects();
+            return new ArrayList<Long>();
         }
 
         @Override

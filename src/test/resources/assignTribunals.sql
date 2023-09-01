@@ -1,3 +1,4 @@
+/*
 create sequence activity_seq start with 1 increment by 50;
 create sequence area_seq start with 1 increment by 50;
 create sequence defense_seq start with 1 increment by 50;
@@ -128,3 +129,6 @@ INSERT INTO siptis_user(id, email, password) VALUES (9, 'usuario9@mail.com', '12
 INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names,  user_id) VALUES (9, '2000-1-19', '1234575', '1000008', '12345678', 'Apellidos9', 'Nombres9',  9);
 
 INSERT INTO siptis_user_role(siptis_user_id, role_id) VALUES (9, 2);
+
+
+ */

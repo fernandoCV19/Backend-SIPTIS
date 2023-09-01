@@ -5,8 +5,11 @@ import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.model.pjo.dto.projectManagement.AssignTribunalsDTO;
 import backend.siptis.model.pjo.dto.projectManagement.DefenseDTO;
+import backend.siptis.model.pjo.dto.projectManagement.NewProjectDTO;
 import backend.siptis.service.projectManagement.ProjectService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +20,21 @@ import org.springframework.web.bind.annotation.*;
 public class ProjectController {
     @Autowired
     public ProjectService projectService;
+
+
+    @PostMapping("/newProject")
+    public ResponseEntity<?> createProject(@Valid @RequestBody NewProjectDTO dto){
+        ServiceAnswer serviceAnswer = projectService.createProject(dto);
+        return createResponseEntity(serviceAnswer);
+    }
+
+    @GetMapping("/projectList")
+    public ResponseEntity<?> searchProjects(String search, Pageable pageable){
+        ServiceAnswer serviceAnswer = projectService.getProjectsList(search, pageable);
+        return createResponseEntity(serviceAnswer);
+    }
+
+
 
     @GetMapping("/presentations/{id}")
     public ResponseEntity<?> getPresentaciones(@PathVariable ("id") Long idProyecto){

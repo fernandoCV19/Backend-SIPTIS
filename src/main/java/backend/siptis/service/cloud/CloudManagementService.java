@@ -19,4 +19,6 @@ public interface CloudManagementService {
     List<String> getObjectslistFromFolder(String folderKey) ;
 
      String uploadDocumentToCloud(String filename);
+
+     String uploadLetterToCloud(String filename);
 }

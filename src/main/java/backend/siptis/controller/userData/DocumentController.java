@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/document")
 @CrossOrigin
@@ -36,15 +38,22 @@ public class DocumentController {
         return createResponseEntity(documentGeneratorService.generateReport(reportDocumentDTO));
     }
 
-    @PostMapping("/create-report-test")
-    ResponseEntity<?> createReportTest(@RequestBody ReportDocumentDTO reportDocumentDTO){
-        return createResponseEntity(documentGeneratorService.generateReportTesting(reportDocumentDTO));
-    }
-
     @GetMapping("/create-solvency/{id}")
     ResponseEntity<?> createSolvency(@PathVariable("id") long userId){
         return createResponseEntity(documentGeneratorService.generateSolvency(userId));
     }
+
+    @GetMapping("/create-trbunal-request/{id}")
+    ResponseEntity<?> createTribunalRequest(@PathVariable("id") long id) throws IOException {
+        return createResponseEntity(documentGeneratorService.tribunalRequest(id));
+    }
+
+    @GetMapping("/create-trbunal-approval/{id}")
+    ResponseEntity<?> createTribunalApproval(@PathVariable("id") long id) throws IOException {
+        return createResponseEntity(documentGeneratorService.generateTribunalApproval(id));
+    }
+
+
 
     @PostMapping("/create-documentary-record")
     ResponseEntity<?> createDocumentaryRecord(@RequestBody DocumentaryRecordDto documentaryRecordDto){

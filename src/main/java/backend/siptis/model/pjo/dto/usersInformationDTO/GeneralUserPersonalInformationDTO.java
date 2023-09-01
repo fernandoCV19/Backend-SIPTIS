@@ -10,9 +10,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class RegisterSpecialUserDTO {
-
-
+public class GeneralUserPersonalInformationDTO {
     @NotEmpty(message = "Los nombres no pueden ser vacios.")
     @Size(min = 2, message = "Los nombres tienen que ser mayor a 1 caracter")
     @Size(max = 50, message = "Los nombres tienen que ser menor a 50 caracteres")
@@ -26,10 +24,6 @@ public class RegisterSpecialUserDTO {
     @Pattern(regexp = "^(.+)@(\\S+)$", message = "El correo tiene que cumplir con el formato adecuado.")
     @Size(max = 50, message = "El correo tiene que ser menor a 50 caracteres.")
     private String email;
-    @NotEmpty(message = "La contraseña no pueden ser vacia.")
-    @Size(min = 2, message = "La contraseña tiene que ser mayor a 6 caracteres")
-    @Size(max = 50, message = "La contraseña tiene que ser menor a 20 caracteres")
-    private String password;
     @NotEmpty(message = "El número personal no puede ser vacio.")
     @Size(min = 2, message = "El número personal tiene que ser mayor a 1 digito")
     @Size(max = 50, message = "El número tiene que ser menor a 10 digitos")
@@ -40,4 +34,5 @@ public class RegisterSpecialUserDTO {
     private String ci;
 
     private Date birthDate;
+
 }

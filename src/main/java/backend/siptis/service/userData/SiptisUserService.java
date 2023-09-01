@@ -1,16 +1,12 @@
 package backend.siptis.service.userData;
 
-import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.model.pjo.dto.AdminRegisterDTO;
+import backend.siptis.model.pjo.dto.UserEditPersonalInformationDTO;
 import backend.siptis.model.pjo.dto.UserSelectedAreasDTO;
 import backend.siptis.model.pjo.dto.records.LogInDTO;
-import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterStudentDTO;
-import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterUserDTO;
-import org.springframework.data.domain.Page;
+import backend.siptis.model.pjo.dto.usersInformationDTO.*;
 import org.springframework.data.domain.Pageable;
-
-import java.util.Optional;
 
 public interface SiptisUserService {
 
@@ -23,10 +19,13 @@ public interface SiptisUserService {
     ServiceAnswer registerTeacher(RegisterUserDTO dto);
     ServiceAnswer registerAdmin(AdminRegisterDTO dto);
     ServiceAnswer registerStudent(RegisterStudentDTO dto);
+    ServiceAnswer registerSpecialUser(RegisterSpecialUserDTO dto);
 
     ServiceAnswer getStudentList(String search,Pageable pageable);
     ServiceAnswer getTeacherList(String search,Pageable pageable);
+    ServiceAnswer getSpecialUserList(String search,Pageable pageable);
     ServiceAnswer getAdminList(Pageable pageable);
+    ServiceAnswer getPotentialTutorsList(String search,Pageable pageable);
 
     ServiceAnswer deleteUser(Long id);
     ServiceAnswer getUserPersonalInformation(Long id);
@@ -34,10 +33,15 @@ public interface SiptisUserService {
     ServiceAnswer updateToken(String refreshToken);
     Long getIdFromToken(String token);
 
+    ServiceAnswer getPossibleTribunals();
+
     ServiceAnswer getTeacherAreasById(Long id);
     ServiceAnswer getTeacherNotSelectedAreasById(Long id);
 
-    ServiceAnswer userEditPersonalInformation();
+    ServiceAnswer userEditPersonalInformation(Long id, UserEditPersonalInformationDTO dto);
+
+    ServiceAnswer adminEditUserPersonalInformation(Long id, UniversityUserPersonalInformationDTO dto);
+    ServiceAnswer adminEditSpecialUserPersonalInformation(Long id, GeneralUserPersonalInformationDTO dto);
 
     ServiceAnswer updateAreas(Long id, UserSelectedAreasDTO dto);
 

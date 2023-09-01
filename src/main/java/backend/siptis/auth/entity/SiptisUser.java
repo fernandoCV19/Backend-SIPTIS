@@ -143,6 +143,8 @@ public class SiptisUser implements UserDetails {
     public ArrayList<Long> getProjects(){
         Collection<ProjectStudent> projects = getStudents();
         ArrayList<Long> ids = new ArrayList<>();
+        if(projects == null)
+            return ids;
         for ( ProjectStudent project :  projects) {
             ids.add(project.getProject().getId());
         }
