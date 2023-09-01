@@ -6,26 +6,20 @@ import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.auth.jwt.JWTokenUtils;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
+import backend.siptis.model.entity.notifications.Activity;
+import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.entity.userData.UserArea;
 import backend.siptis.model.entity.userData.UserCareer;
 import backend.siptis.model.entity.userData.UserInformation;
 import backend.siptis.model.pjo.dto.*;
 import backend.siptis.model.pjo.dto.authentication.TokenDTO;
-import backend.siptis.model.pjo.dto.records.LogInDTO;
+import backend.siptis.model.pjo.dto.notifications.LogInDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.*;
 import backend.siptis.model.pjo.vo.userData.TribunalInfoToAssignSection;
+import backend.siptis.model.repository.projectManagement.ProjectRepository;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
 import lombok.RequiredArgsConstructor;
-import backend.siptis.model.entity.notifications.Activity;
-import backend.siptis.model.entity.projectManagement.Project;
-import backend.siptis.model.pjo.dto.*;
-import backend.siptis.model.pjo.vo.userData.TribunalInfoToAssignSection;
-import backend.siptis.model.repository.userData.SiptisUserRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
-import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,13 +27,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-import java.util.regex.Pattern;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.*;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -52,6 +42,7 @@ public class SiptisUserServiceImpl implements SiptisUserService {
     private final UserCareerService userCareerService;
     private final UserInformationService userInformationService;
     private final UserAreaService userAreaService;
+    private final ProjectRepository projectRepository;
 
 
     @Override
@@ -261,13 +252,6 @@ public class SiptisUserServiceImpl implements SiptisUserService {
         return createResponse(ServiceMessage.OK,
                 siptisUserRepository.searchUserList(search, "TEACHER", pageable));
         //siptisUserRepository.searchUser(search));
-    }
-
-    @Override
-    public ServiceAnswer getPossibleTribunals() {
-        List<SiptisUser> query = siptisUserRepository.findByRolesName("TRIBUNAL");
-        List<TribunalInfoToAssignSection> res = query.stream().map(TribunalInfoToAssignSection::new).toList();
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(res).build();
     }
 
     @Override
@@ -568,7 +552,23 @@ public class SiptisUserServiceImpl implements SiptisUserService {
         ).build();
     }
 
+    @Override
+    public Long getProjectById(Long id) {
+        Optional<Project> project = siptisUserRepository.findProjectById(id);
+        if(project.isEmpty()) return null;
+        Long idL = project.get().getId();
+        return idL;
+    }
 
+    @Override
+    public ServiceAnswer getPersonalActivities(Long id, Pageable pageable) {
+        LocalDateTime now = LocalDateTime.now();
+        Date actual = new Date(now.getYear()-1900, now.getMonthValue()-1, now.getDayOfMonth()-1);
+
+        Page<Activity> activities = siptisUserRepository.findAllPersonalActivities(id,actual, pageable);
+
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(activities).build();
+    }
 
     /*
     private final SiptisUserRepository siptisUserRepository;
@@ -645,11 +645,6 @@ public class SiptisUserServiceImpl implements SiptisUserService {
     }
 
 
-    public ServiceAnswer getPossibleTribunals() {
-        List<SiptisUser> query = siptisUserRepository.findByRolesName("TRIBUNAL");
-        List<TribunalInfoToAssignSection> res = query.stream().map(TribunalInfoToAssignSection::new).toList();
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(res).build();
-    }
 
 
 
@@ -672,22 +667,13 @@ public class SiptisUserServiceImpl implements SiptisUserService {
 
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(activities).build();
     }
-    @Override
-    public Long getProjectById(Long id) {
-        Optional<Project> project = usuarioCommonRepository.findProjectById(id);
-        /*return project.isEmpty() ?
-                ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(project).build() :
-                ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(project).build();*/
-        if(project.isEmpty()) return null;
-        Long idL = project.get().getId();
-        return idL;
-    }
+
     private UserGeneralInformationDTO convertToDTO(SiptisUser user) {
         UserGeneralInformationDTO userDTO = new UserGeneralInformationDTO();
         userDTO.setId(user.getId());
         userDTO.setEmail(user.getEmail());
         return userDTO;
     }
-**/
+*/
 }
 

@@ -2,7 +2,6 @@ package backend.siptis.model.repository.userData;
 
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.model.entity.projectManagement.Project;
-import backend.siptis.model.entity.records.Activity;
 import backend.siptis.model.pjo.dto.UserAreaDTO;
 import backend.siptis.model.pjo.dto.UserListItemDTO;
 import backend.siptis.model.entity.notifications.Activity;

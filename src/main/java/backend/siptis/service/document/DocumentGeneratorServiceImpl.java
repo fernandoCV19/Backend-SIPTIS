@@ -250,7 +250,6 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
 
             backend.siptis.model.entity.userData.Document document = new backend.siptis.model.entity.userData.Document();
             document.setPath(key);
-            document.setPhase(phaseRepository.findById(1l).get());
             document.setType(DocumentType.LETTER.toString());
             document.setDescription("Solicitud de tribunales");
             document.setSiptisUser(projectStudent.getStudent());
@@ -293,7 +292,6 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
 
             backend.siptis.model.entity.userData.Document document = new backend.siptis.model.entity.userData.Document();
             document.setPath(key);
-            document.setPhase(phaseRepository.findById(1l).get());
             document.setType(DocumentType.LETTER.toString());
             document.setDescription("Solicitud de tribunales");
             document.setSiptisUser(projectStudent.getStudent());

@@ -4,7 +4,7 @@ import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.model.pjo.dto.AdminRegisterDTO;
 import backend.siptis.model.pjo.dto.UserEditPersonalInformationDTO;
 import backend.siptis.model.pjo.dto.UserSelectedAreasDTO;
-import backend.siptis.model.pjo.dto.records.LogInDTO;
+import backend.siptis.model.pjo.dto.notifications.LogInDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.*;
 import org.springframework.data.domain.Pageable;
 
@@ -46,8 +46,6 @@ public interface SiptisUserService {
     ServiceAnswer updateAreas(Long id, UserSelectedAreasDTO dto);
 
     ServiceAnswer getStudentCareerById(Long id);
-
-    ServiceAnswer getPossibleTribunals();
     /*
     ServiceAnswer existsById(int id);
     ServiceAnswer existsByEmail(String email);
@@ -78,4 +76,6 @@ public interface SiptisUserService {
     Optional<SiptisUser> findByTokenPassword(String tokenPassword);
 */
     Long getProjectById(Long id);
+
+    ServiceAnswer getPersonalActivities(Long id, Pageable pageable);
 }

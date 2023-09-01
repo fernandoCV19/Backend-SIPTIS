@@ -5,7 +5,7 @@ import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.userData.UserInformation;
 import backend.siptis.model.pjo.dto.*;
-import backend.siptis.model.pjo.dto.records.PersonalInformationDTO;
+import backend.siptis.model.pjo.dto.notifications.PersonalInformationDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.GeneralUserPersonalInformationDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterSpecialUserDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterUserDTO;
