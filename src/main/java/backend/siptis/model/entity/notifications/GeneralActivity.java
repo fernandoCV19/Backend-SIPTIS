@@ -1,4 +1,4 @@
-package backend.siptis.model.entity.records;
+package backend.siptis.model.entity.notifications;
 
 import jakarta.persistence.*;
 import lombok.*;

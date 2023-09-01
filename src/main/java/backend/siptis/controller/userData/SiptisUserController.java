@@ -12,6 +12,12 @@ import backend.siptis.model.pjo.dto.usersInformationDTO.*;
 import backend.siptis.service.userData.RefreshTokenService;
 import backend.siptis.service.userData.SiptisUserService;
 import jakarta.validation.Valid;
+import backend.siptis.model.pjo.dto.*;
+import backend.siptis.model.pjo.dto.notifications.LogInDTO;
+import backend.siptis.service.userData.SiptisUserService;
+import backend.siptis.service.userData.userAuthentication.UserAuthService;
+import backend.siptis.service.userData.userPersonalInformation.AdminEditInformation;
+import backend.siptis.service.userData.userPersonalInformation.UserEditInformation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -329,5 +335,51 @@ public class SiptisUserController {
     }
 
 
-    */
+        Long id = Long.valueOf(userId);
+        ServiceAnswer answer = adminEditInformationService.editTeacherInformation(id, dto);
+        return crearResponseEntityRegistrar(answer);
+    }
+
+
+    @GetMapping("/personal-activities")
+    public ResponseEntity<?> getPersonalProjectActivities(
+            @RequestHeader(name = "Authorization") String token,
+            Pageable pageable) {
+        Long idL = userAuthService.getIdFromToken(token);
+        ServiceAnswer answer = userService.getPersonalActivities(idL, pageable);
+        return crearResponseEntityRegistrar(answer);
+    }
+
+    @PostMapping("/editTeacher")
+    public ResponseEntity<?> editMiInformationTeacher(
+            @RequestBody TeacherEditPersonalInfoDTO dto,
+            @RequestHeader(name = "Authorization") String token) {
+
+        Long id = userAuthService.getIdFromToken(token);
+
+        ServiceAnswer answer = userEditInformationService.teacherEditPersonalInfo(id, dto);
+        return crearResponseEntityRegistrar(answer);
+    }
+    @GetMapping("/project/{userId}")
+    public ResponseEntity<?> getProjectById(@PathVariable int userId){
+        Long id = Long.valueOf(userId);
+        userService.getProjectById(id);
+        return null;
+    }
+    private ResponseEntity<?> crearResponseEntityRegistrar(ServiceAnswer serviceAnswer) {
+        Object data = serviceAnswer.getData();
+        ServiceMessage messageService = serviceAnswer.getServiceMessage();
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+
+        if (messageService == ServiceMessage.OK) {
+            httpStatus = HttpStatus.OK;
+        }
+
+
+        if (messageService == ServiceMessage.NOT_FOUND || messageService == ServiceMessage.ERROR)
+            httpStatus = HttpStatus.NOT_FOUND;
+
+        ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(data).message(messageService.toString()).build();
+        return new ResponseEntity<>(controllerAnswer, httpStatus);
+    }
 }

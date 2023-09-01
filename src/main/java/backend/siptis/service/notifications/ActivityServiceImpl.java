@@ -1,21 +1,22 @@
-package backend.siptis.service.records;
+package backend.siptis.service.notifications;
 
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.projectManagement.Project;
-import backend.siptis.model.entity.records.Activity;
-import backend.siptis.model.entity.records.GeneralActivity;
-import backend.siptis.model.pjo.dto.records.ActivityDTO;
+import backend.siptis.model.entity.notifications.Activity;
+import backend.siptis.model.pjo.dto.notifications.ActivityDTO;
 import backend.siptis.model.pjo.vo.ActivityVO;
 import backend.siptis.model.repository.projectManagement.ProjectRepository;
-import backend.siptis.model.repository.records.ActivityRepository;
+import backend.siptis.model.repository.notifications.ActivityRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,6 +70,7 @@ public class ActivityServiceImpl implements ActivityService{
     public List<ActivityVO> findAllVO() {
         List<Activity> activitiesList = activityRepository.findAll();
         ArrayList<ActivityVO> activityArrayList = new ArrayList<>();
+
         for (Activity activity : activitiesList){
             activityArrayList.add(entityToVO(activity));
         }
@@ -93,7 +95,7 @@ public class ActivityServiceImpl implements ActivityService{
 
             return ServiceAnswer.builder()
                     .serviceMessage(ServiceMessage.OK)
-                    .data(entityToVO(activity)).build();
+                    .data(activity ).build();
         }
         return ServiceAnswer.builder()
                 .serviceMessage(ServiceMessage.NOT_FOUND)
@@ -124,6 +126,7 @@ public class ActivityServiceImpl implements ActivityService{
     public ActivityVO entityToVO(Activity activity) {
         ActivityVO activityVO = new ActivityVO();
         BeanUtils.copyProperties(activity, activityVO);
+        System.out.print(activityVO);
         return activityVO;
     }
 }

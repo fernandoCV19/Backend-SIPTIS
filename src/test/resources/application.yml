@@ -1,9 +1,14 @@
 spring:
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:jpa_jbd
-    username: sa
-    password:
+    url: jdbc:postgresql://localhost:5432/siptis2
+    username: postgres
+    password: serrano123
+    driver-class-name: org.postgresql.Driver
+  servlet:
+    multipart:
+    enabled: true
+    max-file-size: 50MB
+    max-request-size: 50MB
   jpa:
     hibernate:
       ddl-auto: 'create-drop'

@@ -77,4 +77,5 @@ public interface SiptisUserService {
 
     Optional<SiptisUser> findByTokenPassword(String tokenPassword);
 */
+    Long getProjectById(Long id);
 }

@@ -1,4 +1,4 @@
-package backend.siptis.service.records;
+package backend.siptis.service.notifications;
 
 import com.icegreen.greenmail.configuration.GreenMailConfiguration;
 import com.icegreen.greenmail.junit5.GreenMailExtension;

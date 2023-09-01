@@ -1,6 +1,7 @@
 package backend.siptis.model.entity.projectManagement;
 
 import backend.siptis.model.entity.userData.Document;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -20,8 +21,14 @@ public class Phase {
     private Long id;
 
     private String name;
-
-    @OneToMany(mappedBy = "phase", fetch = FetchType.LAZY)
+    private String descriptionPhase;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "modality_id")
+    private Modality modality;
+    /*@OneToMany(mappedBy = "phase", fetch = FetchType.LAZY)
     @JsonManagedReference
-    private Collection<Document> documents;
+    private Collection<DocumentPhase> documents;*/
+    @OneToMany(mappedBy = "phase")
+    @JsonBackReference
+    private Collection<DocumentPhase> documents;
 }

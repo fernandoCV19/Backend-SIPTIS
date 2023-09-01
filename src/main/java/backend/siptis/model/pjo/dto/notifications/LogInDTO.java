@@ -1,4 +1,4 @@
-package backend.siptis.model.pjo.dto.records;
+package backend.siptis.model.pjo.dto.notifications;
 
 import lombok.Getter;
 import lombok.Setter;

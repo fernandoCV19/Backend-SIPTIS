@@ -1,4 +1,4 @@
-package backend.siptis.service.records;
+package backend.siptis.service.notifications;
 
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.model.pjo.dto.ChangePasswordDTO;

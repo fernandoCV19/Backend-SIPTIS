@@ -2,32 +2,33 @@ package backend.siptis.model.entity.projectManagement;
 
 import backend.siptis.auth.entity.SiptisUser;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.*;
-
-import java.util.Collection;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Table(name = "modality")
+@Table(name = "document_phase")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class Modality {
+public class DocumentPhase {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
-
+    private String path;
     private String name;
+    private String description;
 
-    @OneToMany(mappedBy = "modality")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "phase_id", nullable = false)
     @JsonBackReference
-    private Collection<Project> projects;
+    private Phase phase;
 
-    @OneToMany(mappedBy = "modality")
-    @JsonBackReference
-    private  Collection<Phase> phases;
+
+
 }

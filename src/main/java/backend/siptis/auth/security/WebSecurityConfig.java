@@ -44,6 +44,9 @@ public class WebSecurityConfig {
                         "/user/register/student", "/user/register/admin","/user/personal-activities/*",
                         "/user/buscarUser/**", "/user/personalInformation",
                         "/user/updateAreas/**", "/user/refreshtoken","/user/**",
+                        "/user/updateAreas/**",
+                        "/user/project/**",
+                        "/user/project/*",
 
                         "/document/**",
 
@@ -61,6 +64,8 @@ public class WebSecurityConfig {
 
                         "/general-activity", "/general-activity/create","/general-activity/*",
 
+                        "/activity", "/activity/create","/activity/*",
+
                         "/cloud/**",
                         "/modality/**",
 
@@ -68,6 +73,10 @@ public class WebSecurityConfig {
                         "/area/**",
                         "/semester/**",
                         "/supervisor/**")
+                        "/supervisor/**",
+
+                        "/phase/**",
+                        "/wpp")
                 .permitAll()
                 .anyRequest().authenticated()
                 //.and().exceptionHandling().authenticationEntryPoint(authenticationEntryPoint())

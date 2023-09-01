@@ -16,6 +16,16 @@ import backend.siptis.model.pjo.dto.usersInformationDTO.*;
 import backend.siptis.model.pjo.vo.userData.TribunalInfoToAssignSection;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
 import lombok.RequiredArgsConstructor;
+import backend.siptis.model.entity.notifications.Activity;
+import backend.siptis.model.entity.projectManagement.Project;
+import backend.siptis.model.pjo.dto.*;
+import backend.siptis.model.pjo.vo.userData.TribunalInfoToAssignSection;
+import backend.siptis.model.repository.userData.SiptisUserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
+import org.springframework.cglib.core.Local;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,6 +35,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.regex.Pattern;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -650,15 +665,29 @@ public class SiptisUserServiceImpl implements SiptisUserService {
 
     @Override
     public ServiceAnswer getPersonalActivities(Long id, Pageable pageable) {
-        Page<Activity> activities = siptisUserRepository.findAllPersonalActivities(id, pageable);
+        LocalDateTime now = LocalDateTime.now();
+        Date actual = new Date(now.getYear()-1900, now.getMonthValue()-1, now.getDayOfMonth()-1);
+
+        Page<Activity> activities = usuarioCommonRepository.findAllPersonalActivities(id,actual, pageable);
+
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(activities).build();
     }
-
-
     @Override
-    public Optional<SiptisUser> findByTokenPassword(String tokenPassword){
-        return siptisUserRepository.findByTokenPassword(tokenPassword);
+    public Long getProjectById(Long id) {
+        Optional<Project> project = usuarioCommonRepository.findProjectById(id);
+        /*return project.isEmpty() ?
+                ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(project).build() :
+                ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(project).build();*/
+        if(project.isEmpty()) return null;
+        Long idL = project.get().getId();
+        return idL;
     }
-*/
+    private UserGeneralInformationDTO convertToDTO(SiptisUser user) {
+        UserGeneralInformationDTO userDTO = new UserGeneralInformationDTO();
+        userDTO.setId(user.getId());
+        userDTO.setEmail(user.getEmail());
+        return userDTO;
+    }
+**/
 }
 
