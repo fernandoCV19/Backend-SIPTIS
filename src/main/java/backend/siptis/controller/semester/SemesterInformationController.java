@@ -50,7 +50,7 @@ public class SemesterInformationController {
     private ResponseEntity<?> createResponse(ServiceAnswer serviceAnswer){
         Object data = serviceAnswer.getData();
         ServiceMessage messageService = serviceAnswer.getServiceMessage();
-        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        HttpStatus httpStatus = HttpStatus.OK;
 
         if(messageService == ServiceMessage.OK){
             httpStatus = HttpStatus.OK;

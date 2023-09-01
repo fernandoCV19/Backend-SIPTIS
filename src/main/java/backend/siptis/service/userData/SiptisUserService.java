@@ -1,5 +1,6 @@
 package backend.siptis.service.userData;
 
+import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.model.pjo.dto.AdminRegisterDTO;
 import backend.siptis.model.pjo.dto.UserEditPersonalInformationDTO;
@@ -46,6 +47,10 @@ public interface SiptisUserService {
     ServiceAnswer updateAreas(Long id, UserSelectedAreasDTO dto);
 
     ServiceAnswer getStudentCareerById(Long id);
+
+    ServiceAnswer existsTokenPassword(String tokenPassword);
+    SiptisUser findByTokenPassword(String tokenPassword);
+
     /*
     ServiceAnswer existsById(int id);
     ServiceAnswer existsByEmail(String email);

@@ -9,6 +9,7 @@ import backend.siptis.model.pjo.dto.ChangePasswordDTO;
 import backend.siptis.model.pjo.dto.TokenPasswordDTO;
 import backend.siptis.model.pjo.vo.ActivityVO;
 import backend.siptis.model.pjo.vo.GeneralActivityVO;
+import backend.siptis.model.repository.userData.SiptisUserRepository;
 import backend.siptis.service.userData.SiptisUserService;
 import jakarta.mail.Address;
 import jakarta.mail.MessagingException;
@@ -37,6 +38,7 @@ public class EmailServiceImpl implements EmailService{
     private final ActivityService activityService;
     private final GeneralActivityService generalActivityService;
     private final SiptisUserService siptisUserService;
+    private final SiptisUserRepository siptisUserRepository;
 
 
     @Override
@@ -101,18 +103,13 @@ public class EmailServiceImpl implements EmailService{
     }
 
     @Override
-    public ServiceAnswer changePassword(TokenPasswordDTO tokenPasswordDTO) {
-        return null;
-    }
-/*
-    @Override
     public ServiceAnswer changePassword(TokenPasswordDTO dto){
         boolean check = (boolean) siptisUserService.existsTokenPassword(dto.getTokenPassword()).getData();
         if(!check){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.INVALID_TOKEN)
                     .data("El token para el cambio de contraseña no es valido").build();
         }
-        SiptisUser user = siptisUserService.findByTokenPassword(dto.getTokenPassword()).get();
+        SiptisUser user = siptisUserService.findByTokenPassword(dto.getTokenPassword());
         //System.out.println("REVISION");
         System.out.println(user.getEmail());
         System.out.println(dto.getTokenPassword());
@@ -127,7 +124,7 @@ public class EmailServiceImpl implements EmailService{
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
                 .data("La contrasena se actualizó correctamente.").build();
     }
-*/
+
 
     private Address[] getAllEmails(List<SiptisUser> users) throws MessagingException {
         Address[] addresses = new Address[users.size()];
@@ -187,25 +184,15 @@ public class EmailServiceImpl implements EmailService{
     }
 
     @Override
-    public ServiceAnswer sendRecoverPasswordEmail(String email) throws MessagingException, IOException {
-        return null;
-    }
-
-    @Override
-    public ChangePasswordDTO createChangePasswordDTO(String email) {
-        return null;
-    }
-    /*
-    @Override
     public ServiceAnswer sendRecoverPasswordEmail(String email) throws MessagingException {
 
-        boolean checkUser = (boolean) siptisUserService.existsByEmail(email).getData();
+        boolean checkUser = (boolean) siptisUserRepository.existsByEmail(email);
         if(!checkUser){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.EMAIL_NOT_EXIST)
                     .data("El correo electronico no se encuentra registrado en el sistema").build();
         }
         MimeMessage message = mailSender.createMimeMessage();
-        SiptisUser user = (SiptisUser) siptisUserService.findByEmail(email).getData();
+        SiptisUser user =  siptisUserRepository.findOneByEmail(email).get();
 
         ChangePasswordDTO dto = createChangePasswordDTO(email);
         //String url = "http://127.0.0.1:5173/changePassword/";
@@ -215,7 +202,6 @@ public class EmailServiceImpl implements EmailService{
             message.setRecipients(MimeMessage.RecipientType.TO, email);
             message.setSubject(dto.getSubject());
             user.setTokenPassword(dto.getTokenPassword());
-            siptisUserService.save(user);
 
             String htmlTemplate = readFile("recoverpassword.html");
             htmlTemplate = htmlTemplate.replace("#url", dto.getTokenPassword());
@@ -230,6 +216,21 @@ public class EmailServiceImpl implements EmailService{
                 .data("Se ha enviado un correo a su cuenta.").build();
 
     }
+
+    @Override
+    public ChangePasswordDTO createChangePasswordDTO(String email){
+        ChangePasswordDTO dto = new ChangePasswordDTO();
+        dto.setEmailFrom("siptis.umss@gmail.com");
+        dto.setEmailTo(email);
+        dto.setSubject("Respuesta solicitud recuperacion de contraseña SIPTIS");
+        UUID uuid = UUID.randomUUID();
+        dto.setTokenPassword(uuid.toString());
+
+        return dto;
+    }
+
+    /*
+
     @Override
     public ChangePasswordDTO createChangePasswordDTO(String email){
         ChangePasswordDTO dto = new ChangePasswordDTO();

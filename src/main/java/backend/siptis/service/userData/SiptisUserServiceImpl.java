@@ -33,7 +33,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class SiptisUserServiceImpl implements SiptisUserService {
+public class SiptisUserServiceImpl implements SiptisUserService{
 
     private final SiptisUserRepository siptisUserRepository;
     private final AuthenticationManager authenticationManager;
@@ -553,6 +553,20 @@ public class SiptisUserServiceImpl implements SiptisUserService {
     }
 
     @Override
+    public ServiceAnswer existsTokenPassword(String tokenPassword) {
+
+        boolean response = siptisUserRepository.existsByTokenPassword(tokenPassword);
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
+                .data(response).build();
+    }
+
+    @Override
+    public SiptisUser findByTokenPassword(String tokenPassword) {
+        return null;
+    }
+
+
+    @Override
     public Long getProjectById(Long id) {
         Optional<Project> project = siptisUserRepository.findProjectById(id);
         if(project.isEmpty()) return null;
@@ -624,13 +638,6 @@ public class SiptisUserServiceImpl implements SiptisUserService {
                 .data(findUserByEmail(email)).build();
     }
 
-    @Override
-    public ServiceAnswer existsTokenPassword(String tokenPassword) {
-
-        boolean response = siptisUserRepository.existsByTokenPassword(tokenPassword);
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
-                .data(response).build();
-    }
 
     @Override
     public ServiceAnswer findById(long id) {
