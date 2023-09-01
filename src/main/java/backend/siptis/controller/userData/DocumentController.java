@@ -6,7 +6,9 @@ import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.document.DocumentaryRecordDto;
 import backend.siptis.model.pjo.dto.document.ReportDocumentDTO;
 import backend.siptis.service.document.DocumentGeneratorServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import backend.siptis.service.userData.RefreshTokenService;
+import backend.siptis.service.userData.SiptisUserService;
+import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,31 +18,29 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/document")
+@RequiredArgsConstructor
 @CrossOrigin
 public class DocumentController {
 
-    @Autowired
-    private DocumentGeneratorServiceImpl documentGeneratorService;
+    private final DocumentGeneratorServiceImpl documentGeneratorService;
+    private final SiptisUserService userAuthService;
 
-
-    @GetMapping("/{id}")
-    ResponseEntity<?> getDocumentsFromUser(@PathVariable("id") long userId){
+    @GetMapping("/")
+    ResponseEntity<?> getDocumentsFromUser(@RequestHeader(name = "Authorization") String token){
+        Long userId = userAuthService.getIdFromToken(token);
         return createResponseEntity(documentGeneratorService.getAllDocumentsFromUser(userId));
     }
-
     @DeleteMapping("/{id}")
     ResponseEntity<?> deleteDocument(@PathVariable("id") long documentId){
         return createResponseEntity(documentGeneratorService.deleteDocument(documentId));
     }
 
-    @PostMapping("/create-report")
-    ResponseEntity<?> createReport(@RequestBody ReportDocumentDTO reportDocumentDTO){
-        return createResponseEntity(documentGeneratorService.generateReport(reportDocumentDTO));
-    }
 
-    @GetMapping("/create-solvency/{id}")
-    ResponseEntity<?> createSolvency(@PathVariable("id") long userId){
-        return createResponseEntity(documentGeneratorService.generateSolvency(userId));
+    @PostMapping("/create-report")
+    ResponseEntity<?> createReport(@RequestHeader(name = "Authorization") String token, @RequestBody ReportDocumentDTO reportDocumentDTO){
+        Long userId = userAuthService.getIdFromToken(token);
+
+        return createResponseEntity(documentGeneratorService.generateReport(reportDocumentDTO));
     }
 
     @GetMapping("/create-trbunal-request/{id}")
@@ -54,6 +54,16 @@ public class DocumentController {
     }
 
 
+
+    @GetMapping("/create-solvency")
+    ResponseEntity<?> createSolvency(@RequestHeader(name = "Authorization") String token) {
+        Long userId = userAuthService.getIdFromToken(token);
+        return createResponseEntity(documentGeneratorService.generateSolvency(userId));
+    }
+    @PostMapping("/create-report-test")
+    ResponseEntity<?> createReportTest(@RequestBody ReportDocumentDTO reportDocumentDTO){
+        return createResponseEntity(documentGeneratorService.generateReportTesting(reportDocumentDTO));
+    }
 
     @PostMapping("/create-documentary-record")
     ResponseEntity<?> createDocumentaryRecord(@RequestBody DocumentaryRecordDto documentaryRecordDto){

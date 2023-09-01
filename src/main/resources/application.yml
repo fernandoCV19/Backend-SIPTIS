@@ -51,5 +51,14 @@ logging:
       amazonaws:
         util:
           EC2MetadataUtils: error
+    org:
+      springframework:
+        web:
+          client:
+            RestTemplate: DEBUG
 
-
+openai:
+  api:
+    url: https://api.openai.com/v1/chat/completions
+    key: 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
+  model: gpt-3.5-turbo

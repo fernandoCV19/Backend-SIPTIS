@@ -8,6 +8,9 @@ import backend.siptis.model.pjo.dto.notifications.LogInDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.*;
 import org.springframework.data.domain.Pageable;
 
+import java.util.ArrayList;
+import java.util.Optional;
+
 public interface SiptisUserService {
 
     ServiceAnswer logIn(LogInDTO logInDTO);
@@ -35,6 +38,7 @@ public interface SiptisUserService {
 
     ServiceAnswer getPossibleTribunals();
 
+    ArrayList<?> getProjectsFromToken(String token);
     ServiceAnswer getTeacherAreasById(Long id);
     ServiceAnswer getTeacherNotSelectedAreasById(Long id);
 

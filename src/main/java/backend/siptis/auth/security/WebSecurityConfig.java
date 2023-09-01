@@ -27,7 +27,6 @@ public class WebSecurityConfig {
     private JWTAuthorizationFilter jwtAuthorizationFilter;
 
 
-
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager manager)
             throws Exception {
@@ -48,7 +47,7 @@ public class WebSecurityConfig {
                         "/user/project/**",
                         "/user/project/*",
 
-                        "/document/**",
+                        "/document/**", "/document",
 
                         "/tribunal/**", "/teacher/**", "/tutor/**",
 
@@ -68,6 +67,8 @@ public class WebSecurityConfig {
 
                         "/cloud/**",
                         "/modality/**",
+
+                        "/bot/**",
 
                         "/userArea/**",
                         "/area/**",

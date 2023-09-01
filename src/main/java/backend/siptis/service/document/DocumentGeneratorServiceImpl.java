@@ -38,6 +38,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -129,6 +130,10 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
         }
         SiptisUser user = oUser.get();
+
+        Optional<Phase> oPhase = phaseRepository.findById(1L);
+        Phase phase = oPhase.get();
+
         UserInformation info = user.getUserInformation();
         String name = info.getNames() + " " + info.getLastnames();
         String ci = info.getCi();
@@ -156,6 +161,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
         document.setType(DocumentType.FORM.toString());
         document.setDescription("Formulario de Solvencia");
         document.setSiptisUser(user);
+        document.setPhase(phase);
         documentRepository.save(document);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
     }
