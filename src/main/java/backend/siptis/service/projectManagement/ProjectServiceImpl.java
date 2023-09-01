@@ -243,6 +243,9 @@ public class ProjectServiceImpl implements ProjectService {
             projectTribunalRepository.save(projectTribunal);
         }
 
+        Project projectNotOptional = project.get();
+        projectNotOptional.setPhase(Phase.DEFENSE_PHASE.toString());
+
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("Tribunals has been assigned to the project").build();
     }
 
@@ -305,8 +308,8 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ServiceAnswer getProjectsWithoutAndWithTribunals() {
         List<Project> projects = projectRepository.findAll();
-        List<ProjectCompleteInfoVO> withTribunals = projects.stream().filter(project -> project.getPhase().equals(Phase.DEFENSE_PHASE.toString())).map(ProjectCompleteInfoVO::new).toList();
-        List<ProjectCompleteInfoVO> withoutTribunals = projects.stream().filter(project -> project.getPhase().equals(Phase.TRIBUNALS_PHASE.toString())).map(ProjectCompleteInfoVO::new).toList();
+        List<ProjectCompleteInfoVO> withTribunals = projects.stream().filter(project -> !project.getTribunals().isEmpty()).map(ProjectCompleteInfoVO::new).toList();
+        List<ProjectCompleteInfoVO> withoutTribunals = projects.stream().filter(project -> project.getTribunals().isEmpty()).map(ProjectCompleteInfoVO::new).toList();
         ProjectsWithoutAndWithTribunalsVO data = new ProjectsWithoutAndWithTribunalsVO(withTribunals, withoutTribunals);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(data).build();
     }

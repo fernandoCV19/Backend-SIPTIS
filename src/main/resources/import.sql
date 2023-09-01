@@ -8,10 +8,13 @@ INSERT INTO area(id, name) VALUES (1, 'Area1');
 
 INSERT INTO area(id, name) VALUES (2, 'Area2');
 
+INSERT INTO area(id, name) VALUES (3, 'Area3');
+
 INSERT INTO sub_area(id, name) VALUES (1, 'SubArea1');
 
 INSERT INTO sub_area(id, name) VALUES (2, 'SubArea2');
 
+INSERT INTO sub_area(id, name) VALUES (3, 'SubArea3');
 INSERT INTO modality(id, name) VALUES (1, 'Adscripcion');
 
 
@@ -266,13 +269,13 @@ INSERT INTO project_teacher(id, accepted, reviewed, project_id, user_id) VALUES 
 INSERT INTO project_teacher(id, accepted, reviewed, project_id, user_id) VALUES (3, true, false, 9, 3);
 
 
-INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id, user_id) VALUES (1, false, null, false, 10, 4);
-
-INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id, user_id) VALUES (2, false, null, true, 11, 4);
-
-INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id, user_id) VALUES (3, true, null, false, 12, 4);
-
-INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id, user_id) VALUES (4, true, 100, false, 13, 4);
+--INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id, user_id) VALUES (1, false, null, false, 10, 4);
+--
+--INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id, user_id) VALUES (2, false, null, true, 11, 4);
+--
+--INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id, user_id) VALUES (3, true, null, false, 12, 4);
+--
+--INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id, user_id) VALUES (4, true, 100, false, 13, 4);
 
 
 INSERT INTO project_student(id, user_id, project_id) VALUES (1, 5, 1);
@@ -746,12 +749,21 @@ INSERT INTO project(id, blue_book_path, perfil_path, project_path, phase, name, 
 
 INSERT INTO project(id, blue_book_path, perfil_path, project_path, phase, name, state_id, modality_id) VALUES (1003, 'Libro1000', 'Perfil1000', 'Proyecto1000', 'DEFENSE_PHASE', 'ProyectoGrado1000', null, 1);
 
-INSERT INTO project(id, blue_book_path, perfil_path, project_path, phase, name, state_id, modality_id) VALUES (1004, 'Libro1000', 'Perfil1000', 'Proyecto1000', 'TRIBUNALS_PHASE', 'ProyectoGrado1000', null, 1);
+INSERT INTO project(id, blue_book_path, perfil_path, project_path, phase, name, state_id, modality_id) VALUES (1004, 'Libro1000', 'Perfil1000', 'Proyecto1000', 'TRIBUNALS_PHASE', 'Proyecto sin tribunales', null, 1);
 
 INSERT INTO project(id, blue_book_path, perfil_path, project_path, phase, name, state_id, modality_id) VALUES (1005, 'Libro1000', 'Perfil1000', 'Proyecto1000', 'TRIBUNALS_PHASE', 'ProyectoGrado1000', null, 1);
 
 INSERT INTO project(id, blue_book_path, perfil_path, project_path, phase, name, state_id, modality_id) VALUES (1006, 'Libro1000', 'Perfil1000', 'Proyecto1000', 'TRIBUNALS_PHASE', 'ProyectoGrado1000', null, 1);
 
+
+INSERT INTO project_student(id, user_id, project_id) VALUES (1000, 30, 1004);
+INSERT INTO project_student(id, user_id, project_id) VALUES (1001, 31, 1004);
+INSERT INTO project_area(project_id, area_id) VALUES (1004, 1);
+INSERT INTO project_area(project_id, area_id) VALUES (1004, 2);
+INSERT INTO project_area(project_id, area_id) VALUES (1004, 3);
+INSERT INTO project_sub_area(project_id, sub_area_id) VALUES (1004, 1);
+INSERT INTO project_sub_area(project_id, sub_area_id) VALUES (1004, 2);
+INSERT INTO project_sub_area(project_id, sub_area_id) VALUES (1004, 3);
 
 INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id, user_id) VALUES (1000, false, null, false, 1000, 1);
 
