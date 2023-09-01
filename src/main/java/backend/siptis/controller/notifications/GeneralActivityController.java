@@ -35,10 +35,10 @@ public class GeneralActivityController {
     }
 
     @GetMapping()
-    public ResponseEntity<?> findAllGeneralActivit(Pageable pageable) {
+    public ResponseEntity<?> findAllGeneralActivity(Pageable pageable) {
         return new ResponseEntity<>(
                 ControllerAnswer.builder()
-                        .data(generalActivityService.findAllVO(pageable))
+                        .data(generalActivityService.findAll(pageable))
                         .message("General activities found successfully")
                         .build(), null, 200);
     }

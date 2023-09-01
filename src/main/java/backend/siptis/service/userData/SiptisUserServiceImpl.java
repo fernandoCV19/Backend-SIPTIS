@@ -9,11 +9,16 @@ import backend.siptis.model.pjo.dto.*;
 import backend.siptis.model.pjo.vo.userData.TribunalInfoToAssignSection;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
+import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -100,10 +105,13 @@ public class SiptisUserServiceImpl implements SiptisUserService {
 
     @Override
     public ServiceAnswer getPersonalActivities(Long id, Pageable pageable) {
-        Page<Activity> activities = usuarioCommonRepository.findAllPersonalActivities(id, pageable);
+        LocalDateTime now = LocalDateTime.now();
+        Date actual = new Date(now.getYear()-1900, now.getMonthValue()-1, now.getDayOfMonth()-1);
+
+        Page<Activity> activities = usuarioCommonRepository.findAllPersonalActivities(id,actual, pageable);
+
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(activities).build();
     }
-
     @Override
     public Long getProjectById(Long id) {
         Optional<Project> project = usuarioCommonRepository.findProjectById(id);

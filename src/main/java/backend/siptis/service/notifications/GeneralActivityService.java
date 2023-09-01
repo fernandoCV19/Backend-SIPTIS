@@ -14,6 +14,7 @@ public interface GeneralActivityService {
     ServiceAnswer persistGeneralActivity(GeneralActivityDTO generalActivityDTO);
     List<GeneralActivityVO> findAllVO();
     Page<GeneralActivityVO> findAllVO(Pageable pageable);
+    Page<GeneralActivity> findAll(Pageable pageable);
     ServiceAnswer update(GeneralActivityDTO generalActivityDTO, long id);
     ServiceAnswer delete(long id);
     GeneralActivityVO entityToVO(GeneralActivity generalActivity);

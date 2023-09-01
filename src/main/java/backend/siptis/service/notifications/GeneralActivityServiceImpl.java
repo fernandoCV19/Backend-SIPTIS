@@ -2,6 +2,7 @@ package backend.siptis.service.notifications;
 
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
+import backend.siptis.model.entity.notifications.Activity;
 import backend.siptis.model.entity.notifications.GeneralActivity;
 import backend.siptis.model.pjo.dto.notifications.GeneralActivityDTO;
 import backend.siptis.model.pjo.vo.GeneralActivityVO;
@@ -13,7 +14,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,12 +68,33 @@ public class GeneralActivityServiceImpl implements GeneralActivityService {
     }
 
     @Override
+    public Page<GeneralActivity> findAll(Pageable pageable){
+        LocalDateTime now = LocalDateTime.now();
+        Date actual = new Date(now.getYear()-1900, now.getMonthValue()-1, now.getDayOfMonth()-1);
+        return generalActivityRepository.findAllAfterADate(actual, pageable);
+    }
+    @Override
     public Page<GeneralActivityVO> findAllVO(Pageable pageable) {
         Page<GeneralActivity> pageFound = generalActivityRepository.findAll(pageable);
-        List<GeneralActivity> activityList = pageFound.getContent();
-        return new PageImpl(entityToVO(activityList), pageable, pageFound.getTotalElements());
-    }
+        List<GeneralActivity> generalList = generalActivityRepository.findAll();
 
+        List<GeneralActivity> activityList = pageFound.getContent();
+
+        List<GeneralActivity> activitiesRes = new ArrayList<>();
+        for (GeneralActivity activity : generalList) {
+            if (isAfter(activity.getActivityDate())) {
+                activitiesRes.add(activity);
+            }
+        }
+        return new PageImpl(entityToVO(activitiesRes), pageable, pageFound.getTotalElements());
+    }
+    private boolean isAfter(Date date){
+        int mesActual = LocalDateTime.now().getMonthValue();
+        int diaActual = LocalDateTime.now().getDayOfMonth();
+        int anioActual = LocalDateTime.now().getYear();
+        Date actual = new Date(anioActual-1900, mesActual-1, diaActual-1);
+        return date.after(actual);
+    }
     @Override
     public ServiceAnswer update(GeneralActivityDTO generalActivityDTO, long id) {
         Optional<GeneralActivity> optionalGeneralActivity = generalActivityRepository.findById(id);

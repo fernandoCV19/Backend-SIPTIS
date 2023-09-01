@@ -561,30 +561,34 @@ INSERT INTO project_supervisor(id, accepted, reviewed, project_id, user_id) VALU
 
 INSERT INTO project_teacher(id, accepted, reviewed, project_id, user_id) VALUES (57, false, false, 57, 53);
 // General Activities
-INSERT INTO general_activity(id, activity_name, activity_description, activity_date) VALUES (109, 'Actividad General 1', 'Descripcion 1', '2023-4-15');
+INSERT INTO general_activity(id, activity_name, activity_description, activity_date) VALUES (109, 'Actividad General 1', 'Descripcion 1', '2024-4-15');
 
-INSERT INTO general_activity(id, activity_name, activity_description, activity_date) VALUES (108, 'Actividad General 2', 'Descripcion 2', '2023-7-2');
+INSERT INTO general_activity(id, activity_name, activity_description, activity_date) VALUES (108, 'Actividad General 2', 'Descripcion 2', '2024-7-2');
 
-INSERT INTO general_activity(id, activity_name, activity_description, activity_date) VALUES (107, 'Actividad General 3', 'Descripcion 3', '2023-7-3');
+INSERT INTO general_activity(id, activity_name, activity_description, activity_date) VALUES (107, 'Actividad General 3', 'Descripcion 3', '2024-7-3');
 
-INSERT INTO general_activity(id, activity_name, activity_description, activity_date) VALUES (106, 'Actividad General 4', 'Descripcion 4', '2023-7-4');
+INSERT INTO general_activity(id, activity_name, activity_description, activity_date) VALUES (106, 'Actividad General 4', 'Descripcion 4', '2024-7-4');
 
-INSERT INTO general_activity(id, activity_name, activity_description, activity_date) VALUES (105, 'Actividad General 5', 'Descripcion 5', '2023-7-5');
+INSERT INTO general_activity(id, activity_name, activity_description, activity_date) VALUES (105, 'Actividad General 5', 'Descripcion 5', '2024-7-5');
+
+INSERT INTO general_activity(id, activity_name, activity_description, activity_date) VALUES (1010, 'Actividad General 5', 'Descripcion 5', '2023-7-5');
+INSERT INTO general_activity(id, activity_name, activity_description, activity_date) VALUES (1011, 'Actividad General 5', 'Descripcion 5', '2023-7-5');
+INSERT INTO general_activity(id, activity_name, activity_description, activity_date) VALUES (1012, 'Actividad General 5', 'Descripcion 5', '2023-7-5');
 
 
-INSERT INTO activity (id, activity_name, activity_description, activity_date, project_id) VALUES (101, 'Actividad 1', 'Descripcion 1', '2023-8-1', 30);
-INSERT INTO activity (id, activity_name, activity_description, activity_date, project_id) VALUES (102, 'Actividad 2', 'Descripcion 2', '2023-8-2', 31);
-INSERT INTO activity (id, activity_name, activity_description, activity_date, project_id) VALUES (103, 'Actividad 3', 'Descripcion 3', '2023-8-3', 32);
-INSERT INTO activity (id, activity_name, activity_description, activity_date, project_id) VALUES (104, 'Actividad 4', 'Descripcion 4', '2023-8-4', 33);
-INSERT INTO activity (id, activity_name, activity_description, activity_date, project_id) VALUES (105, 'Actividad 5', 'Descripcion 5', '2023-8-5', 34);
-INSERT INTO activity (id, activity_name, activity_description, activity_date, project_id) VALUES (106, 'Actividad 6', 'Descripcion 6', '2023-8-6', 30);
-INSERT INTO activity (id, activity_name, activity_description, activity_date, project_id) VALUES (107, 'Actividad 7', 'Descripcion 7', '2023-8-7', 31);
-INSERT INTO activity (id, activity_name, activity_description, activity_date, project_id) VALUES (108, 'Actividad 8', 'Descripcion 8', '2023-8-8', 32);
-INSERT INTO activity (id, activity_name, activity_description, activity_date, project_id) VALUES (109, 'Actividad 9', 'Descripcion 9', '2023-8-9', 33);
-INSERT INTO activity (id, activity_name, activity_description, activity_date, project_id) VALUES (11010, 'Actividad 10', 'Descripcion 10', '2023-8-10', 34);
-INSERT INTO activity (id, activity_name, activity_description, activity_date, project_id) VALUES (11011, 'Actividad 10', 'Descripcion 11', '2023-8-10', 35);
+INSERT INTO activity (id, activity_name, activity_description, activity_date, project_id) VALUES (101, 'Actividad 1', 'Descripcion 1', '2024-8-1', 30);
+INSERT INTO activity (id, activity_name, activity_description, activity_date, project_id) VALUES (102, 'Actividad 2', 'Descripcion 2', '2024-8-2', 31);
+INSERT INTO activity (id, activity_name, activity_description, activity_date, project_id) VALUES (103, 'Actividad 3', 'Descripcion 3', '2024-8-3', 32);
+INSERT INTO activity (id, activity_name, activity_description, activity_date, project_id) VALUES (104, 'Actividad 4', 'Descripcion 4', '2024-8-4', 33);
+INSERT INTO activity (id, activity_name, activity_description, activity_date, project_id) VALUES (105, 'Actividad 5', 'Descripcion 5', '2024-8-5', 34);
+INSERT INTO activity (id, activity_name, activity_description, activity_date, project_id) VALUES (106, 'Actividad 6', 'Descripcion 6', '2024-8-6', 30);
+INSERT INTO activity (id, activity_name, activity_description, activity_date, project_id) VALUES (107, 'Actividad 7', 'Descripcion 7', '2024-8-7', 31);
+INSERT INTO activity (id, activity_name, activity_description, activity_date, project_id) VALUES (108, 'Actividad 8', 'Descripcion 8', '2024-8-8', 32);
+INSERT INTO activity (id, activity_name, activity_description, activity_date, project_id) VALUES (109, 'Actividad 9', 'Descripcion 9', '2024-8-9', 33);
+INSERT INTO activity (id, activity_name, activity_description, activity_date, project_id) VALUES (11010, 'Actividad 10', 'Descripcion 10', '2024-8-10', 34);
+INSERT INTO activity (id, activity_name, activity_description, activity_date, project_id) VALUES (11011, 'Actividad 10', 'Descripcion 11', '2024-8-10', 35);
 
-INSERT INTO activity (id, activity_name, activity_description, activity_date, project_id) VALUES (1012, 'Actividad 10', 'Descripcion 12', '2023-8-10', 30);
+INSERT INTO activity (id, activity_name, activity_description, activity_date, project_id) VALUES (1012, 'Actividad 10', 'Descripcion 12', '2024-8-10', 30);
 
 
 
