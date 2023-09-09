@@ -793,3 +793,45 @@ INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id,
 INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id, user_id) VALUES (1010, false, null, false, 1003, 2);
 
 INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id, user_id) VALUES (1011, false, null, false, 1003, 3);
+
+
+
+
+INSERT INTO siptis_user(id, email, password) VALUES (1001, 'docente@gmail.com', '$2a$10$JZDKlrNbRrGF81sgSC50SuF9NjfAEy80I5iOV4NuVCmWLBWlZIP1O');
+
+INSERT INTO user_information(id, birth_date, cel_number, ci, codsis, lastnames, names,  user_id) VALUES (1001, '2000-1-19', '1234567', '1000000', '12345670', 'Apellidos103', 'Nombres103',  1001);
+
+INSERT INTO siptis_user_role(siptis_user_id, role_id) VALUES (1001, 1);
+INSERT INTO siptis_user_role(siptis_user_id, role_id) VALUES (1001, 2);
+INSERT INTO siptis_user_role(siptis_user_id, role_id) VALUES (1001, 3);
+INSERT INTO siptis_user_role(siptis_user_id, role_id) VALUES (1001, 4);
+INSERT INTO siptis_user_role(siptis_user_id, role_id) VALUES (1001, 5);
+
+
+INSERT INTO project_supervisor(id, accepted, reviewed, project_id, user_id) VALUES (10010, false, false, 1, 1001);
+
+INSERT INTO project_supervisor(id, accepted, reviewed, project_id, user_id) VALUES (10020, false, true, 2, 1001);
+
+INSERT INTO project_supervisor(id, accepted, reviewed, project_id, user_id) VALUES (10030, true, false, 3, 1001);
+
+
+INSERT INTO project_tutor(id, accepted, reviewed, project_id, user_id) VALUES (10010, false, false, 4, 1001);
+
+INSERT INTO project_tutor(id, accepted, reviewed, project_id, user_id) VALUES (10020, false, true, 5, 1001);
+
+INSERT INTO project_tutor(id, accepted, reviewed, project_id, user_id) VALUES (10030, true, false, 6, 1001);
+
+
+INSERT INTO project_teacher(id, accepted, reviewed, project_id, user_id) VALUES (10010, false, false, 7, 1001);
+
+INSERT INTO project_teacher(id, accepted, reviewed, project_id, user_id) VALUES (10020, false, true, 8, 1001);
+
+INSERT INTO project_teacher(id, accepted, reviewed, project_id, user_id) VALUES (10030, true, false, 9, 1001);
+
+INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id, user_id) VALUES (10010, false, null, false, 10, 1001);
+
+INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id, user_id) VALUES (10020, false, null, true, 11, 1001);
+
+INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id, user_id) VALUES (10030, true, null, false, 12, 1001);
+
+INSERT INTO project_tribunal(id, accepted, defense_points, reviewed, project_id, user_id) VALUES (10040, true, 100, false, 13, 1001);

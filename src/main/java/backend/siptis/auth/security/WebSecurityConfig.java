@@ -46,6 +46,8 @@ public class WebSecurityConfig {
                         "/user/updateAreas/**",
                         "/user/project/**",
                         "/user/project/*",
+                        "/schedule/**",
+                        "/schedule/*",
 
                         "/document/**", "/document",
 
