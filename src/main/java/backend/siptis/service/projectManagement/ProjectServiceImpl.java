@@ -6,10 +6,9 @@ import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectStudent;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectTribunal;
-import backend.siptis.model.entity.projectManagement.*;
 import backend.siptis.model.entity.userData.Schedule;
 import backend.siptis.model.pjo.dto.projectManagement.AssignTribunalsDTO;
-import backend.siptis.model.pjo.dto.projectManagement.DefenseDTO;
+import backend.siptis.model.pjo.vo.projectManagement.DefenseVO;
 import backend.siptis.model.pjo.dto.projectManagement.NewProjectDTO;
 import backend.siptis.model.pjo.vo.projectManagement.*;
 import backend.siptis.model.repository.editorsAndReviewers.ModalityRepository;
@@ -336,32 +335,38 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ServiceAnswer addDefense(DefenseDTO defenseDTO) {
-        Optional<Project> query = projectRepository.findById(defenseDTO.getIdProject());
-        if(query.isEmpty()){
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data(null).build();
-        }
-        Project project = query.get();
-        List<Defense> reservations = defenseRepository.findByplaceToDefenseId(defenseDTO.getIdProject());
-        for(Defense defense: reservations){
-            long diffMillis = defenseDTO.getDate().getTime() - defense.getDate().getTime() ;
-            long diffHours = TimeUnit.HOURS.convert(diffMillis, TimeUnit.MILLISECONDS);
-            if(Math.abs(diffHours) <= 1){
-                return ServiceAnswer.builder().serviceMessage(ServiceMessage.THERE_IS_ANOTHER_RESERVATION_TOO_CLOSE).data(defense.getDate()).build();
-            }
-        }
-        if(project.getDefense() != null){
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_HAS_ALREADY_A_DEFENSE_DATE).data(null).build();
-        }
-        Optional<PlaceToDefense> place = placeToDefenseRepository.findById(defenseDTO.getIdPlace());
-        if(place.isEmpty()){
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_PLACE_DOES_NOT_EXIST).data(null).build();
-        }
-        Defense newDefense =  new Defense(place.get(), project, defenseDTO.getDate());
-        defenseRepository.save(newDefense);
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("Defense created").build();
+    public ServiceAnswer addDefense(DefenseVO defenseVO) {
+        return null;
     }
 
+    /*
+        @Override
+        public ServiceAnswer addDefense(DefenseDTO defenseDTO) {
+            Optional<Project> query = projectRepository.findById(defenseDTO.getIdProject());
+            if(query.isEmpty()){
+                return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data(null).build();
+            }
+            Project project = query.get();
+            List<Defense> reservations = defenseRepository.findByplaceToDefenseId(defenseDTO.getIdProject());
+            for(Defense defense: reservations){
+                long diffMillis = defenseDTO.getDate().getTime() - defense.getDate().getTime() ;
+                long diffHours = TimeUnit.HOURS.convert(diffMillis, TimeUnit.MILLISECONDS);
+                if(Math.abs(diffHours) <= 1){
+                    return ServiceAnswer.builder().serviceMessage(ServiceMessage.THERE_IS_ANOTHER_RESERVATION_TOO_CLOSE).data(defense.getDate()).build();
+                }
+            }
+            if(project.getDefense() != null){
+                return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_HAS_ALREADY_A_DEFENSE_DATE).data(null).build();
+            }
+            Optional<PlaceToDefense> place = placeToDefenseRepository.findById(defenseDTO.getIdPlace());
+            if(place.isEmpty()){
+                return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_PLACE_DOES_NOT_EXIST).data(null).build();
+            }
+            Defense newDefense =  new Defense(place.get(), project, defenseDTO.getDate());
+            defenseRepository.save(newDefense);
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("Defense created").build();
+        }
+    */
     @Override
     public ServiceAnswer getProjectsToDefenseOrDefended(Long userId) {
         Optional<SiptisUser> userOptional = siptisUserRepository.findById(userId);

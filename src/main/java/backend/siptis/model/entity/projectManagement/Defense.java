@@ -5,7 +5,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "defense")
@@ -28,23 +29,12 @@ public class Defense {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
     private Project project;
-
-    private Date date;
+    private LocalDate date;
+    private LocalTime startTime;
+    private LocalTime endTime;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id")
     private SiptisUser director;
 
-    public Defense(PlaceToDefense placeToDefense, Project project, Date date) {
-        this.placeToDefense = placeToDefense;
-        this.project = project;
-        this.date = date;
-    }
-
-    public Defense(PlaceToDefense placeToDefense, Project project, Date date, Long id) {
-        this.id = id;
-        this.placeToDefense = placeToDefense;
-        this.project = project;
-        this.date = date;
-    }
 }

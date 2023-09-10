@@ -17,13 +17,10 @@ public class ModalityController {
     @Autowired
     private ModalityService modalityService;
 
-
     @GetMapping("")
     ResponseEntity<?> getAllModalities(){
         return createResponseEntity(modalityService.getAllModalities());
     }
-
-
 
     private ResponseEntity<?> createResponseEntity(ServiceAnswer serviceAnswer){
         Object data = serviceAnswer.getData();

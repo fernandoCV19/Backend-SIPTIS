@@ -4,7 +4,7 @@ import backend.siptis.commons.ServiceMessage;
 import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.model.pjo.dto.projectManagement.AssignTribunalsDTO;
-import backend.siptis.model.pjo.dto.projectManagement.DefenseDTO;
+import backend.siptis.model.pjo.vo.projectManagement.DefenseVO;
 import backend.siptis.model.pjo.dto.projectManagement.NewProjectDTO;
 import backend.siptis.service.projectManagement.ProjectService;
 import jakarta.validation.Valid;
@@ -194,8 +194,8 @@ public class ProjectController {
     }
 
     @PostMapping("/createDefense")
-    public ResponseEntity<?> createDefense(@RequestBody DefenseDTO defenseDTO){
-        ServiceAnswer serviceAnswer = projectService.addDefense(defenseDTO);
+    public ResponseEntity<?> createDefense(@RequestBody DefenseVO defenseVO){
+        ServiceAnswer serviceAnswer = projectService.addDefense(defenseVO);
         HttpStatus httpStatus = HttpStatus.OK;
         if(serviceAnswer.getServiceMessage() != ServiceMessage.OK){
             httpStatus = HttpStatus.BAD_REQUEST;
