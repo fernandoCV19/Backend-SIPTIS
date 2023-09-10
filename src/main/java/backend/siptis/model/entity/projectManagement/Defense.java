@@ -1,5 +1,6 @@
 package backend.siptis.model.entity.projectManagement;
 
+import backend.siptis.auth.entity.SiptisUser;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -29,6 +30,10 @@ public class Defense {
     private Project project;
 
     private Date date;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id")
+    private SiptisUser director;
 
     public Defense(PlaceToDefense placeToDefense, Project project, Date date) {
         this.placeToDefense = placeToDefense;
