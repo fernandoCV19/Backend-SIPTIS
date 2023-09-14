@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/document")
@@ -39,8 +40,9 @@ public class DocumentController {
     @PostMapping("/create-report")
     ResponseEntity<?> createReport(@RequestHeader(name = "Authorization") String token, @RequestBody ReportDocumentDTO reportDocumentDTO){
         Long userId = userAuthService.getIdFromToken(token);
-
-        return createResponseEntity(documentGeneratorService.generateReport(reportDocumentDTO));
+        ArrayList <?> projects = userAuthService.getProjectsFromToken(token);
+        int projectId = (int)projects.get(0);
+        return createResponseEntity(documentGeneratorService.generateReport(reportDocumentDTO, userId, (long) projectId));
     }
 
     @GetMapping("/create-solvency")
@@ -50,8 +52,11 @@ public class DocumentController {
     }
 
     @PostMapping("/create-documentary-record")
-    ResponseEntity<?> createDocumentaryRecord(@RequestBody DocumentaryRecordDto documentaryRecordDto){
-        return createResponseEntity(documentGeneratorService.generateDocumentaryRecord(documentaryRecordDto));
+    ResponseEntity<?> createDocumentaryRecord(@RequestHeader(name = "Authorization") String token, @RequestBody DocumentaryRecordDto documentaryRecordDto){
+        Long userId = userAuthService.getIdFromToken(token);
+        ArrayList <?> projects = userAuthService.getProjectsFromToken(token);
+        int projectId = (int)projects.get(0);
+        return createResponseEntity(documentGeneratorService.generateDocumentaryRecord(documentaryRecordDto, userId,(long) projectId));
     }
 
     @GetMapping("/create-trbunal-request/{id}")

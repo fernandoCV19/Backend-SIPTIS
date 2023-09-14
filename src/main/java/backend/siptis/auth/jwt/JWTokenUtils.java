@@ -89,8 +89,6 @@ public class JWTokenUtils {
 
     public static ArrayList<?> getProjects(String token){
         Claims claims = getClaims(token);
-
-        //Long id = Long.valueOf(jwtId)
         return (ArrayList <?>) claims.get("projects");
     }
 

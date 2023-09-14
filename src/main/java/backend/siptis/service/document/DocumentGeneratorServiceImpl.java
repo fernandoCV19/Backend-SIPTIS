@@ -85,9 +85,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
     }
 
     @Override
-    public ServiceAnswer generateReport (ReportDocumentDTO reportDocumentDTO){
-        Long idProject = reportDocumentDTO.getProjectId();
-        Long userId = reportDocumentDTO.getUserId();
+    public ServiceAnswer generateReport (ReportDocumentDTO reportDocumentDTO, Long idUser, Long idProject){
         Optional <Project> optionalProject = projectRepository.findById(idProject);
         if (optionalProject .isEmpty()){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
@@ -99,7 +97,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
         //String tutorCompleteName = userInformationRepository.getTutorsNames(idProject).get(0);
         String title = project.getName();
         int reportNumber = (project.getReportIndex() + 1);
-        Optional<SiptisUser> oUser = siptisUserRepository.findOneById(userId);
+        Optional<SiptisUser> oUser = siptisUserRepository.findOneById(idUser);
 
         if (oUser.isEmpty()){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
@@ -160,9 +158,8 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
     }
     @Override
-    public ServiceAnswer generateDocumentaryRecord(DocumentaryRecordDto documentaryRecordDto){
-        Long idProject = documentaryRecordDto.getProjectId();
-        Long userId = documentaryRecordDto.getUserId();
+    public ServiceAnswer generateDocumentaryRecord(DocumentaryRecordDto documentaryRecordDto, Long idUser, Long idProject){
+
         Optional <Project> optionalProject = projectRepository.findById(idProject);
         if (optionalProject .isEmpty()){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
@@ -172,7 +169,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
         List<String> tutors = userInformationRepository.getTutorsNames(idProject);
         String title = project.getName();
 
-        Optional<SiptisUser> oUser = siptisUserRepository.findOneById(userId);
+        Optional<SiptisUser> oUser = siptisUserRepository.findOneById(idUser);
 
         if (oUser.isEmpty()){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();

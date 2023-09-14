@@ -11,13 +11,13 @@ public interface DocumentGeneratorService {
 
     ServiceAnswer deleteDocument (long idDocument);
 
-    ServiceAnswer generateReport (ReportDocumentDTO reportDocumentDTO);
+    ServiceAnswer generateReport (ReportDocumentDTO reportDocumentDTO, Long idUser, Long idProject);
 
+    ServiceAnswer generateDocumentaryRecord(DocumentaryRecordDto documentaryRecordDto, Long idUser, Long idProject);
     ServiceAnswer generateSolvency(long idUser);
 
     ServiceAnswer tribunalRequest(long id) throws IOException;
 
     ServiceAnswer generateTribunalApproval(Long id) throws IOException;
 
-    ServiceAnswer generateDocumentaryRecord(DocumentaryRecordDto documentaryRecordDto);
 }

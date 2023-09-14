@@ -6,8 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ReportDocumentDTO {
-    private long userId;
-    private long projectId;
     private String description;
     private String shortDescription;
     //private MultipartFile tutorSignature;

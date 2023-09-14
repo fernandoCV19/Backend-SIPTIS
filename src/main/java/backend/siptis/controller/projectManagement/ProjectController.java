@@ -132,7 +132,7 @@ public class ProjectController {
         HttpStatus httpStatus = HttpStatus.OK;
 
         if(serviceMessage == ServiceMessage.NOT_FOUND || serviceMessage == ServiceMessage.ERROR)
-            httpStatus = HttpStatus.NOT_FOUND;
+            httpStatus = HttpStatus.OK;
 
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(data).message(serviceAnswer.getServiceMessage().toString()).build();
         return new ResponseEntity<>(controllerAnswer, httpStatus);
