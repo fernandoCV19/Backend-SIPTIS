@@ -8,7 +8,7 @@ import backend.siptis.model.entity.editorsAndReviewers.ProjectStudent;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectTribunal;
 import backend.siptis.model.entity.userData.Schedule;
 import backend.siptis.model.pjo.dto.projectManagement.AssignTribunalsDTO;
-import backend.siptis.model.pjo.vo.projectManagement.DefenseVO;
+import backend.siptis.model.pjo.dto.projectManagement.DefenseDTO;
 import backend.siptis.model.pjo.dto.projectManagement.NewProjectDTO;
 import backend.siptis.model.pjo.vo.projectManagement.*;
 import backend.siptis.model.repository.editorsAndReviewers.ModalityRepository;
@@ -287,6 +287,17 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    public ServiceAnswer getInvolvedPeople(Long idProject) {
+        Optional<Project> query = projectRepository.findById(idProject);
+        if(query.isEmpty()){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data(null).build();
+        }
+
+        Project project = query.get();
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(new InvolvedPeopleVO(project)).build();
+    }
+
+    @Override
     public ServiceAnswer assignTribunals(AssignTribunalsDTO assignTribunalsDTO) {
         List<Long> tribunalsIds = assignTribunalsDTO.getTribunalsIds();
         Long projectId = assignTribunalsDTO.getProjectId();
@@ -332,11 +343,6 @@ public class ProjectServiceImpl implements ProjectService {
         List<UserDefenseScheduleVO> tribunalsDefenseInfo = tribunalsList.stream().map(this::createDefenseInfo).toList();
         InfoToCreateADefenseVO data = new InfoToCreateADefenseVO(studentsDefenseInfo, tribunalsDefenseInfo);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(data).build();
-    }
-
-    @Override
-    public ServiceAnswer addDefense(DefenseVO defenseVO) {
-        return null;
     }
 
     /*

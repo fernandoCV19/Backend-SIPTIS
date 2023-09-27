@@ -16,7 +16,6 @@ import java.util.*;
 public class PlaceReservedByMonthVO {
     private Map<LocalDate, List<DefenseVO>> reservedSchedulesByDay;
 
-
     public PlaceReservedByMonthVO(List<Defense> defenses, Integer month) {
         this.reservedSchedulesByDay = orderDefensesByDay(defenses, month);
     }

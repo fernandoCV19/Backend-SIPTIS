@@ -34,7 +34,7 @@ public class ProjectCompleteInfoVO {
         blueBookPath = project.getBlueBookPath();
         projectPath = project.getProjectPath();
         phase = project.getPhase();
-        defense = new DefenseVO(project.getDefense());
+        defense = project.getDefense() != null ? new DefenseVO(project.getDefense()) : null;
         modality = project.getModality().toString();
         subAreas = project.getSubAreas() != null ? project.getSubAreas().stream().map(SubArea::getName).toList() : null;
         areas = project.getAreas() != null ? project.getAreas().stream().map(Area::getName).toList() : null;

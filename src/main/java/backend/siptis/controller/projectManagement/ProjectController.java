@@ -4,7 +4,7 @@ import backend.siptis.commons.ServiceMessage;
 import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.model.pjo.dto.projectManagement.AssignTribunalsDTO;
-import backend.siptis.model.pjo.vo.projectManagement.DefenseVO;
+import backend.siptis.model.pjo.dto.projectManagement.DefenseDTO;
 import backend.siptis.model.pjo.dto.projectManagement.NewProjectDTO;
 import backend.siptis.service.projectManagement.ProjectService;
 import jakarta.validation.Valid;
@@ -171,6 +171,17 @@ public class ProjectController {
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
 
+    @GetMapping("/getInvolvedPeople/{projectId}")
+    public ResponseEntity<?> getShortInfo(@PathVariable("projectId") Long projectId){
+        ServiceAnswer serviceAnswer = projectService.getInvolvedPeople(projectId);
+        HttpStatus httpStatus = HttpStatus.OK;
+        if(serviceAnswer.getServiceMessage() != ServiceMessage.OK){
+            httpStatus = HttpStatus.BAD_REQUEST;
+        }
+        ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
+        return new ResponseEntity<>(controllerAnswer, httpStatus);
+    }
+
     @PostMapping("/assignTribunals")
     public ResponseEntity<?> assignTribunal(@RequestBody AssignTribunalsDTO assignTribunalsDTO){
         ServiceAnswer serviceAnswer = projectService.assignTribunals(assignTribunalsDTO);
@@ -193,16 +204,7 @@ public class ProjectController {
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
 
-    @PostMapping("/createDefense")
-    public ResponseEntity<?> createDefense(@RequestBody DefenseVO defenseVO){
-        ServiceAnswer serviceAnswer = projectService.addDefense(defenseVO);
-        HttpStatus httpStatus = HttpStatus.OK;
-        if(serviceAnswer.getServiceMessage() != ServiceMessage.OK){
-            httpStatus = HttpStatus.BAD_REQUEST;
-        }
-        ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
-        return new ResponseEntity<>(controllerAnswer, httpStatus);
-    }
+
 
     @GetMapping("/defenses/{tribunalID}")
     public ResponseEntity<?> getProjectsToDefenseOrDefended(@PathVariable("tribunalID") Long tribunalID){

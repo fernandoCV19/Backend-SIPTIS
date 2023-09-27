@@ -9,18 +9,20 @@ import java.time.LocalTime;
 @Data
 public class DefenseVO {
     private Long projectId;
-    private Long placeId;
-    private Long directorId;
+    private String projectName;
+    private PlaceToDefenseVO place;
     private LocalDate date;
     private LocalTime startTime;
     private LocalTime endTime;
+    private String substituteName;
 
     public DefenseVO(Defense defense) {
-        projectId = defense.getId();
-        placeId = defense.getPlaceToDefense().getId();
-        directorId = defense.getDirector().getId();
+        projectId = defense.getProject().getId();
+        projectName = defense.getProject().getName();
+        place = new PlaceToDefenseVO(defense.getPlaceToDefense());
         date = defense.getDate();
         startTime = defense.getStartTime();
         endTime = defense.getEndTime();
+        substituteName = defense.getSubstituteName();
     }
 }

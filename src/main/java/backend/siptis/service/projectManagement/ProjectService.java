@@ -2,7 +2,7 @@ package backend.siptis.service.projectManagement;
 
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.model.pjo.dto.projectManagement.AssignTribunalsDTO;
-import backend.siptis.model.pjo.vo.projectManagement.DefenseVO;
+import backend.siptis.model.pjo.dto.projectManagement.DefenseDTO;
 import backend.siptis.model.pjo.dto.projectManagement.NewProjectDTO;
 import org.springframework.data.domain.Pageable;
 
@@ -34,11 +34,11 @@ public interface ProjectService {
 
     ServiceAnswer getProjectInfoToAssignTribunals(Long idProject);
 
+    ServiceAnswer getInvolvedPeople(Long idProject);
+
     ServiceAnswer assignTribunals(AssignTribunalsDTO assignTribunalsDTO);
 
     ServiceAnswer getSchedulesInfoToAssignADefense(Long projectId);
-
-    ServiceAnswer addDefense(DefenseVO defenseVO);
 
     ServiceAnswer getProjectsToDefenseOrDefended(Long userId);
 

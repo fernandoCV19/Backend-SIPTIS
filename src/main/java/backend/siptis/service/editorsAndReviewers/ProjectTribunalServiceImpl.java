@@ -15,6 +15,8 @@ import backend.siptis.model.repository.userData.SiptisUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -147,14 +149,14 @@ public class ProjectTribunalServiceImpl implements ProjectTribunalService {
         Project project = projectOptional.get();
         Defense defense = project.getDefense();
 
-        Date now = new Date();
-        long diffMillis = now.getTime() - defense.getDate().getTime() ;
-        long diffHours = TimeUnit.MINUTES.convert(diffMillis, TimeUnit.MILLISECONDS);
-        if(diffHours < 0){
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime defenseStart = defense.getDate().atTime(defense.getStartTime());
+        LocalDateTime defenseFinish = defense.getDate().atTime(defense.getEndTime());
+        if(now.isBefore(defenseStart)){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.DEFENSE_HAS_NOT_STARTED).data(null).build();
         }
 
-        if(diffHours > 180){
+        if(now.isAfter(defenseFinish)){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.DEFENSE_HAS_FINISHED).data(null).build();
         }
 

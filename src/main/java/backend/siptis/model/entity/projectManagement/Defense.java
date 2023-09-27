@@ -32,9 +32,14 @@ public class Defense {
     private LocalDate date;
     private LocalTime startTime;
     private LocalTime endTime;
+    private String substituteName;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
-    private SiptisUser director;
-
+    public Defense(PlaceToDefense placeToDefense, Project project, LocalDate date, LocalTime startTime, LocalTime endTime, String substituteName) {
+        this.placeToDefense = placeToDefense;
+        this.project = project;
+        this.date = date;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.substituteName = substituteName;
+    }
 }
