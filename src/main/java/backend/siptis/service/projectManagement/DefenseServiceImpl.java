@@ -2,6 +2,7 @@ package backend.siptis.service.projectManagement;
 
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
+import backend.siptis.model.entity.editorsAndReviewers.ProjectTribunal;
 import backend.siptis.model.entity.projectManagement.Defense;
 import backend.siptis.model.entity.projectManagement.PlaceToDefense;
 import backend.siptis.model.entity.projectManagement.Project;
@@ -56,6 +57,14 @@ public class DefenseServiceImpl implements DefenseService{
 
     @Override
     public ServiceAnswer registerDefense(DefenseDTO newDefense) {
+        if(newDefense.getDate() == null){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.INVALID_DATE).data("The date is mandatory").build();
+        }
+
+        if(newDefense.getStartTime() == null || newDefense.getEndTime() == null){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.INVALID_HOUR).data("Start time and end time is mandatory").build();
+        }
+
         LocalTime startTime = newDefense.getStartTime();
         LocalTime endTime = newDefense.getEndTime();
         LocalDate date = newDefense.getDate();
@@ -95,6 +104,20 @@ public class DefenseServiceImpl implements DefenseService{
         defenseRepository.save(defense);
 
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("The defense has been registered").build();
+    }
+
+    @Override
+    public ServiceAnswer removeDefense(Long projectId) {
+        Optional<Project> optionalProject = projectRepository.findById(projectId);
+        if(optionalProject.isEmpty()){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data("").build();
+        }
+        Project project = optionalProject.get();
+        if(project.getDefense() == null){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.DEFENSE_ERROR).data("Project does not have a defense").build();
+        }
+        defenseRepository.deleteADefense(project.getDefense().getId());
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("Defense has been deleted").build();
     }
 
 }

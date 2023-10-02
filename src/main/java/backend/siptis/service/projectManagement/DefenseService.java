@@ -9,4 +9,6 @@ public interface DefenseService {
     public ServiceAnswer getPlaceReservationsAndDirectorByMonth(Integer month);
 
     public ServiceAnswer registerDefense(DefenseDTO newDefense);
+
+    public ServiceAnswer removeDefense(Long projectId);
 }

@@ -39,4 +39,15 @@ public class DefenseController {
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
+
+    @DeleteMapping("/removeDefense/{id}")
+    public ResponseEntity<?> removeDefenseFromAProject(@PathVariable("id") Long projectId){
+        ServiceAnswer serviceAnswer = defenseService.removeDefense(projectId);
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        if(serviceAnswer.getServiceMessage().equals(ServiceMessage.OK)){
+            httpStatus = HttpStatus.OK;
+        }
+        ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
+        return new ResponseEntity<>(controllerAnswer, httpStatus);
+    }
 }
