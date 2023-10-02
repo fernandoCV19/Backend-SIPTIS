@@ -75,6 +75,17 @@ public class ProjectTribunalController {
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
 
+    @DeleteMapping("/removeTribunals/{id}")
+    public ResponseEntity<?> removeTribunalsFromAProject(@PathVariable("id") Long projectId){
+        ServiceAnswer serviceAnswer = projectTribunalService.removeTribunals(projectId);
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        if(serviceAnswer.getServiceMessage().equals(ServiceMessage.OK)){
+            httpStatus = HttpStatus.OK;
+        }
+        ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
+        return new ResponseEntity<>(controllerAnswer, httpStatus);
+    }
+
     private ResponseEntity<?> createResponseEntity(ServiceAnswer serviceAnswer){
         Object data = serviceAnswer.getData();
         ServiceMessage serviceMessage = serviceAnswer.getServiceMessage();

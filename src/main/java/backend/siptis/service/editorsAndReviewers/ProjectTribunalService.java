@@ -18,4 +18,6 @@ public interface ProjectTribunalService {
     ServiceAnswer removeAcceptProject(Long idTribunal, Long idProject);
 
     ServiceAnswer reviewADefense(ReviewADefenseDTO reviewADefenseDTO);
+
+    ServiceAnswer removeTribunals(Long projectId);
 }

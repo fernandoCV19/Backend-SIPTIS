@@ -50,35 +50,7 @@ public interface SiptisUserService {
     ServiceAnswer updateAreas(Long id, UserSelectedAreasDTO dto);
 
     ServiceAnswer getStudentCareerById(Long id);
-    /*
-    ServiceAnswer existsById(int id);
-    ServiceAnswer existsByEmail(String email);
-    ServiceAnswer existsTokenPassword(String tokenPassword);
 
-    ServiceAnswer findById(long id);
-    ServiceAnswer findByEmail(String email);
-    ServiceAnswer getAllUsers();
-
-    ServiceAnswer getUserPersonalInformation(long id);
-
-    SiptisUser save(SiptisUser user);
-
-    ServiceAnswer obtenerProyectosSupervisorParaMenuPrincipalPorIdUsuario(Long id);
-
-    ServiceAnswer obtenerProyectosSupervisorParaMenuPrincipalPorIdUsuario(Integer id);
-
-
-
-    ServiceAnswer adminEditUserPersonalInformation();
-
-    ServiceAnswer getUserPersonalInformation(Long id);
-    ServiceAnswer getUserStudentPersonalInformation(Long id);
-    ServiceAnswer getPersonalActivities(Long id, Pageable pageable);
-
-
-
-    Optional<SiptisUser> findByTokenPassword(String tokenPassword);
-*/
     Long getProjectById(Long id);
 
     ServiceAnswer getPersonalActivities(Long id, Pageable pageable);

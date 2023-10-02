@@ -177,6 +177,24 @@ public class ProjectTribunalServiceImpl implements ProjectTribunalService {
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("SCORE HAS BEEN ASSIGNED").build();
     }
 
+    @Override
+    public ServiceAnswer removeTribunals(Long projectId) {
+        Optional<Project> optionalProject = projectRepository.findById(projectId);
+        if(optionalProject.isEmpty()){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data("").build();
+        }
+        Project project = optionalProject.get();
+        if(project.getTribunals().isEmpty()){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.TRIBUNALS_ERROR).data("PROJECT DOES NOT HAVE TRIBUNALS TO REMOVE").build();
+        }
+
+        for (ProjectTribunal tribunal: project.getTribunals()) {
+            projectTribunalRepository.delete(tribunal);
+        }
+
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("TRIBUNALS HAS BEEN REMOVED").build();
+    }
+
     private ServiceAnswer verifyChangeOfFase(ProjectTribunal query) {
         Project project = query.getProject();
         boolean allTribunalsHaveAccepted = project.getTribunals().stream().allMatch(ProjectTribunal::getAccepted);
