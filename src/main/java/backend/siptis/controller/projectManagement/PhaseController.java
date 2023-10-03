@@ -18,35 +18,39 @@ public class PhaseController {
     private final SiptisUserService userService;
 
     @GetMapping("")
-    public ResponseEntity<?> findAll(){
+    public ResponseEntity<?> findAll() {
         return new ResponseEntity<>(ControllerAnswer.builder()
                 .data(phaseService.findAllPhases())
                 .message("Phase found").build(), null, 200);
     }
+
     @GetMapping("/{idPhase}")
-    public ResponseEntity<?> findById(@PathVariable int idPhase){
+    public ResponseEntity<?> findById(@PathVariable int idPhase) {
         Long id = Long.valueOf(idPhase);
 
         return new ResponseEntity<>(ControllerAnswer.builder()
                 .data(phaseService.findPhaseByUserId(id))
                 .message("Phase found").build(), null, 200);
     }
+
     @GetMapping("/modality/{idModality}")
-    public ResponseEntity<?> findByModalityId(@PathVariable int idModality){
+    public ResponseEntity<?> findByModalityId(@PathVariable int idModality) {
         Long id = Long.valueOf(idModality);
 
         return new ResponseEntity<>(ControllerAnswer.builder()
                 .data(phaseService.findPhaseByModalityId(id))
                 .message("Phase found").build(), null, 200);
     }
+
     @GetMapping("/user")
-    public ResponseEntity<?> getPhasesByUserId(@RequestHeader(name = "Authorization") String token){
+    public ResponseEntity<?> getPhasesByUserId(@RequestHeader(name = "Authorization") String token) {
         Long idL = userService.getIdFromToken(token);
         return new ResponseEntity<>(ControllerAnswer.builder()
                 .data(createResponse(phaseService.getPhasesByUserId(idL)))
                 .message("Phase found").build(), null, 200);
 
     }
+
     private ResponseEntity<?> createResponse(ServiceAnswer serviceAnswer) {
         ServiceMessage serviceMessage = serviceAnswer.getServiceMessage();
         if (serviceMessage == ServiceMessage.NOT_FOUND)

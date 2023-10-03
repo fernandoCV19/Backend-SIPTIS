@@ -18,7 +18,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         SiptisUser siptisUser = siptisUserRepository.findOneByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException(
-                        "El usuario con el nombre "+email+" no existe"
+                        "El usuario con el nombre " + email + " no existe"
                 ));
 
         return new UserInformationService.UserDetailImp(siptisUser);

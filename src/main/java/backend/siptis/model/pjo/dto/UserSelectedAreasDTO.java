@@ -1,6 +1,5 @@
 package backend.siptis.model.pjo.dto;
 
-import backend.siptis.model.entity.userData.UserArea;
 import lombok.Getter;
 import lombok.Setter;
 

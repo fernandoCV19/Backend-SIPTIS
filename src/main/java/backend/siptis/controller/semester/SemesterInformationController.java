@@ -21,41 +21,41 @@ public class SemesterInformationController {
     private final SemesterInformationService semesterService;
 
     @GetMapping("/checkActiveSemester")
-    public ResponseEntity<?> checkActiveSemester(){
+    public ResponseEntity<?> checkActiveSemester() {
         ServiceAnswer answerService = semesterService.existActiveSemester();
         return createResponse(answerService);
     }
 
     @GetMapping("/getActiveSemesterInformation")
-    public ResponseEntity<?> getActiveSemester(){
+    public ResponseEntity<?> getActiveSemester() {
         ServiceAnswer answerService = semesterService.getCurrentSemester();
         return createResponse(answerService);
     }
 
     @PostMapping("/startSemester")
     public ResponseEntity<?> createSemester(
-            @RequestBody SemesterInformationDTO dto){
+            @RequestBody SemesterInformationDTO dto) {
         ServiceAnswer answerService = semesterService.startSemester(dto);
         return createResponse(answerService);
     }
 
     @PutMapping("/closeSemester/{id}")
-    public ResponseEntity<?> closeSemester(@PathVariable int id){
+    public ResponseEntity<?> closeSemester(@PathVariable int id) {
         Long semesterId = Long.valueOf(id);
         ServiceAnswer answerService = semesterService.closeSemester(semesterId);
         return createResponse(answerService);
     }
 
 
-    private ResponseEntity<?> createResponse(ServiceAnswer serviceAnswer){
+    private ResponseEntity<?> createResponse(ServiceAnswer serviceAnswer) {
         Object data = serviceAnswer.getData();
         ServiceMessage messageService = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
-        if(messageService == ServiceMessage.OK){
+        if (messageService == ServiceMessage.OK) {
             httpStatus = HttpStatus.OK;
         }
-        if(messageService == ServiceMessage.NOT_FOUND || messageService == ServiceMessage.ERROR)
+        if (messageService == ServiceMessage.NOT_FOUND || messageService == ServiceMessage.ERROR)
             httpStatus = HttpStatus.NOT_FOUND;
 
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(data).message(messageService.toString()).build();

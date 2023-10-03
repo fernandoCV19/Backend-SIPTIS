@@ -11,41 +11,55 @@ import org.springframework.data.domain.Pageable;
 public interface SiptisUserService {
 
     ServiceAnswer logIn(LogInDTO logInDTO);
+
     ServiceAnswer getAllUsers();
 
     ServiceAnswer getUserById(Long id);
+
     ServiceAnswer getUserByEmail(String email);
 
     ServiceAnswer registerTeacher(RegisterUserDTO dto);
+
     ServiceAnswer registerAdmin(AdminRegisterDTO dto);
+
     ServiceAnswer registerStudent(RegisterStudentDTO dto);
+
     ServiceAnswer registerSpecialUser(RegisterSpecialUserDTO dto);
 
-    ServiceAnswer getStudentList(String search,Pageable pageable);
-    ServiceAnswer getTeacherList(String search,Pageable pageable);
-    ServiceAnswer getSpecialUserList(String search,Pageable pageable);
+    ServiceAnswer getStudentList(String search, Pageable pageable);
+
+    ServiceAnswer getTeacherList(String search, Pageable pageable);
+
+    ServiceAnswer getSpecialUserList(String search, Pageable pageable);
+
     ServiceAnswer getAdminList(Pageable pageable);
-    ServiceAnswer getPotentialTutorsList(String search,Pageable pageable);
+
+    ServiceAnswer getPotentialTutorsList(String search, Pageable pageable);
 
     ServiceAnswer deleteUser(Long id);
+
     ServiceAnswer getUserPersonalInformation(Long id);
 
     ServiceAnswer updateToken(String refreshToken);
+
     Long getIdFromToken(String token);
 
     ServiceAnswer getPossibleTribunals();
 
     ServiceAnswer getTeacherAreasById(Long id);
+
     ServiceAnswer getTeacherNotSelectedAreasById(Long id);
 
     ServiceAnswer userEditPersonalInformation(Long id, UserEditPersonalInformationDTO dto);
 
     ServiceAnswer adminEditUserPersonalInformation(Long id, UniversityUserPersonalInformationDTO dto);
+
     ServiceAnswer adminEditSpecialUserPersonalInformation(Long id, GeneralUserPersonalInformationDTO dto);
 
     ServiceAnswer updateAreas(Long id, UserSelectedAreasDTO dto);
 
     ServiceAnswer getStudentCareerById(Long id);
+
     /*
     ServiceAnswer existsById(int id);
     ServiceAnswer existsByEmail(String email);

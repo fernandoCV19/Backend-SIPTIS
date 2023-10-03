@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class UserAreaServiceImpl implements UserAreaService{
+public class UserAreaServiceImpl implements UserAreaService {
 
 
     private final UserAreaRepository userAreaRepository;
@@ -28,7 +28,7 @@ public class UserAreaServiceImpl implements UserAreaService{
     @Override
     public ServiceAnswer createUserArea(CreateAreaDTO dto) {
         ServiceAnswer answer = validateCreateUserArea(dto.getName());
-        if (answer != null){
+        if (answer != null) {
             return answer;
         }
         UserArea userArea = new UserArea();
@@ -39,14 +39,14 @@ public class UserAreaServiceImpl implements UserAreaService{
                 .data("El area fue creada exitosamente.").build();
     }
 
-    private ServiceAnswer validateCreateUserArea(String name){
-        if(name == null || name.length()<2){
+    private ServiceAnswer validateCreateUserArea(String name) {
+        if (name == null || name.length() < 2) {
             return ServiceAnswer.builder()
                     .serviceMessage(ServiceMessage.ERROR)
                     .data("Ingrese un nombre valido.").build();
         }
 
-        if(userAreaRepository.existsUserAreaByName(name)){
+        if (userAreaRepository.existsUserAreaByName(name)) {
             return ServiceAnswer.builder()
                     .serviceMessage(ServiceMessage.ERROR)
                     .data("El area ya se encuentra registrada.").build();
@@ -54,15 +54,15 @@ public class UserAreaServiceImpl implements UserAreaService{
         return null;
     }
 
-    private ServiceAnswer validateDeleteUserArea(Long id){
+    private ServiceAnswer validateDeleteUserArea(Long id) {
 
-        if(!userAreaRepository.existsUserAreaById(id)){
+        if (!userAreaRepository.existsUserAreaById(id)) {
             return ServiceAnswer.builder()
                     .serviceMessage(ServiceMessage.ERROR)
                     .data("No pudimos encontrar el area solicitada.").build();
         }
         UserArea area = userAreaRepository.findById(id.intValue()).get();
-        if(area.getSiptisUsers().size() > 0){
+        if (area.getSiptisUsers().size() > 0) {
             return ServiceAnswer.builder()
                     .serviceMessage(ServiceMessage.ERROR)
                     .data("No se puede eliminar el area, existen usuarios asignados.").build();
@@ -74,7 +74,7 @@ public class UserAreaServiceImpl implements UserAreaService{
     @Override
     public ServiceAnswer deleteUserArea(Long id) {
         ServiceAnswer answer = validateDeleteUserArea(id);
-        if (answer != null){
+        if (answer != null) {
             return answer;
         }
         userAreaRepository.deleteById(id.intValue());

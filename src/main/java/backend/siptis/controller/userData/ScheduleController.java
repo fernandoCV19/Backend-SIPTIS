@@ -6,7 +6,6 @@ import backend.siptis.commons.ServiceMessage;
 import backend.siptis.service.userData.ScheduleService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,10 +24,10 @@ public class ScheduleController {
     private final ScheduleService scheduleService;
 
     @GetMapping("/all/{id}")
-    public ResponseEntity<?> getAllSchedulesFromAProject(@PathVariable Long id){
+    public ResponseEntity<?> getAllSchedulesFromAProject(@PathVariable Long id) {
         ServiceAnswer serviceAnswer = scheduleService.getAllSchedulesFromAProject(id);
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
-        if(serviceAnswer.getServiceMessage().equals(ServiceMessage.OK)){
+        if (serviceAnswer.getServiceMessage().equals(ServiceMessage.OK)) {
             httpStatus = HttpStatus.OK;
         }
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();

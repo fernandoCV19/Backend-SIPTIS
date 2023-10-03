@@ -3,7 +3,10 @@ package backend.siptis.model.entity.projectManagement;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Collection;
 import java.util.Date;
@@ -35,7 +38,7 @@ public class Presentation {
     @JsonBackReference
     private Project project;
 
-    @OneToMany(mappedBy = "presentation",  fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "presentation", fetch = FetchType.LAZY)
     @JsonManagedReference
     private Collection<Review> reviews;
 

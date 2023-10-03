@@ -24,7 +24,7 @@ import java.util.Optional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class ReviewServiceImpl implements ReviewService{
+public class ReviewServiceImpl implements ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final PresentationRepository presentationRepository;
@@ -35,32 +35,32 @@ public class ReviewServiceImpl implements ReviewService{
     @Override
     public ServiceAnswer addReview(Long projectId, Long userId, MultipartFile multipartFile, String commentary) {
         Optional<Project> projectOptional = projectRepository.findById(projectId);
-        if(projectOptional.isEmpty()){
+        if (projectOptional.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data(null).build();
         }
         Optional<SiptisUser> userOptional = siptisUserRepository.findById(userId);
-        if(userOptional.isEmpty()){
+        if (userOptional.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.USER_ID_DOES_NOT_EXIST).data(null).build();
         }
         List<Long> reviewersIds = projectRepository.getIdsListFromReviewers(projectId);
-        if(!reviewersIds.contains(userId)){
+        if (!reviewersIds.contains(userId)) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_REVIEWER_DOES_NOT_MATCH_WITH_PROJECT).data(null).build();
         }
         Presentation lastPresentation = presentationRepository.findTopByProjectIdOrderByDateDesc(projectId);
-        if(lastPresentation == null){
+        if (lastPresentation == null) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.THERE_IS_NO_PRESENTATION_YET).data(null).build();
         }
 
-        try{
+        try {
             String newKey = cloudManagementService.putObject(multipartFile, "Reviews/");
             Review newReview = new Review(newKey, commentary, userOptional.get(), lastPresentation, new Date());
             Optional<Review> lastPossibleReview = lastPresentation.getReviews().stream().filter(review -> Objects.equals(review.getSiptisUser().getId(), userId)).findFirst();
-            if(lastPossibleReview.isEmpty()){
+            if (lastPossibleReview.isEmpty()) {
                 newReview.setId(lastPossibleReview.get().getId());
             }
             reviewRepository.save(newReview);
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("REVIEW SAVED").build();
-        }catch (Exception e){
+        } catch (Exception e) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.THERE_IS_A_PROBLEM_WITH_THE_CLOUD).data("REVIEW SAVED").build();
         }
     }

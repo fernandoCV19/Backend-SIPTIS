@@ -9,7 +9,6 @@ import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -17,11 +16,13 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/email")
 public class EmailController {
-    private EmailServiceImpl emailServiceImpl;
+    private final EmailServiceImpl emailServiceImpl;
+
     @Autowired
-    public EmailController(EmailServiceImpl emailServiceImpl){
+    public EmailController(EmailServiceImpl emailServiceImpl) {
         this.emailServiceImpl = emailServiceImpl;
     }
+
     @GetMapping("")
     public String sendNotification() throws MessagingException, IOException {
         System.out.print("hola");
@@ -40,23 +41,23 @@ public class EmailController {
     }
 
     @PostMapping("/changePassword")
-    public ResponseEntity<?> changePassword(@RequestBody TokenPasswordDTO dto){
+    public ResponseEntity<?> changePassword(@RequestBody TokenPasswordDTO dto) {
         ServiceAnswer answer = emailServiceImpl.changePassword(dto);
         return crearResponseEntityRegistrar(answer);
         //return "hola";
     }
 
-    private ResponseEntity<?> crearResponseEntityRegistrar(ServiceAnswer serviceAnswer){
+    private ResponseEntity<?> crearResponseEntityRegistrar(ServiceAnswer serviceAnswer) {
         Object data = serviceAnswer.getData();
         ServiceMessage messageService = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
-        if(messageService == ServiceMessage.OK){
+        if (messageService == ServiceMessage.OK) {
             httpStatus = HttpStatus.OK;
         }
 
 
-        if(messageService == ServiceMessage.NOT_FOUND || messageService == ServiceMessage.ERROR)
+        if (messageService == ServiceMessage.NOT_FOUND || messageService == ServiceMessage.ERROR)
             httpStatus = HttpStatus.NOT_FOUND;
 
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(data).message(messageService.toString()).build();

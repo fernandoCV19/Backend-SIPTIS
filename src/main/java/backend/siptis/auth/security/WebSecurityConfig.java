@@ -26,7 +26,11 @@ public class WebSecurityConfig {
     private UserDetailsService userDetailsService;
     private JWTAuthorizationFilter jwtAuthorizationFilter;
 
-
+    public static void main(String[] args) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String password = passwordEncoder.encode("mavl");
+        System.out.println(password);
+    }
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager manager)
@@ -41,9 +45,9 @@ public class WebSecurityConfig {
                 .requestMatchers("/user/register/student", "/user/register/admin", "/user/test", "/user/information/*",
                         "/user/register/teacher", "/user/editTeacher/*",
                         "/user/login", "/user/todos", "/user/editUser/*",
-                        "/user/register/student", "/user/register/admin","/user/personal-activities/*",
+                        "/user/register/student", "/user/register/admin", "/user/personal-activities/*",
                         "/user/buscarUser/**", "/user/personalInformation",
-                        "/user/updateAreas/**", "/user/refreshtoken","/user/**",
+                        "/user/updateAreas/**", "/user/refreshtoken", "/user/**",
                         "/user/updateAreas/**",
                         "/user/project/**",
                         "/user/project/*",
@@ -62,9 +66,9 @@ public class WebSecurityConfig {
                         "/email/changePassword", "/email/askemail/*",
                         "/email/prueba/*",
 
-                        "/general-activity", "/general-activity/create","/general-activity/*",
+                        "/general-activity", "/general-activity/create", "/general-activity/*",
 
-                        "/activity", "/activity/create","/activity/*",
+                        "/activity", "/activity/create", "/activity/*",
 
                         "/cloud/**",
                         "/modality/**",
@@ -86,7 +90,6 @@ public class WebSecurityConfig {
                 .build();
     }
 
-
     @Bean
     AuthenticationManager authenticationManager(HttpSecurity http,
                                                 PasswordEncoder passwordEncoder) throws Exception {
@@ -95,21 +98,13 @@ public class WebSecurityConfig {
                 .and().build();
     }
 
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-
-    public static void main(String[] args) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String password = passwordEncoder.encode("mavl");
-        System.out.println(password);
-    }
-
     @Bean
-    public AuthenticationEntryPoint authenticationEntryPoint(){
+    public AuthenticationEntryPoint authenticationEntryPoint() {
         return new CustomAuthenticationEntryPoint();
     }
 }

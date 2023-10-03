@@ -11,22 +11,20 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-
-import java.security.Key;
 import java.util.Date;
 
 @Component
 public class JWTokenUtils {
 
-    private static final long EXPIRE_TIME_DURATION = 12 *60 * 60 * 1000 ; // hora.
+    private static final long EXPIRE_TIME_DURATION = 12 * 60 * 60 * 1000; // hora.
     private static final long EXPIRE_TIME_DURATION_2 = 12 * 60 * 60 * 1000; // hora.
     private static final long REFRESH_TOKEN_EXPIRE_TIME_DURATION = 60 * 60 * 1000; //1 horas
     private static final Logger logger = LoggerFactory.getLogger(JWTokenUtils.class);
-    private static final String ACCESS_TOKEN_SECRET= "$2a$12$JTfIoPcl28jeEFio3aHBa.rcqtBUgvykiKYgKxvikVzzxVAt82CEu\n";
+    private static final String ACCESS_TOKEN_SECRET = "$2a$12$JTfIoPcl28jeEFio3aHBa.rcqtBUgvykiKYgKxvikVzzxVAt82CEu\n";
 
 
-    public static String createToken(UserInformationService.UserDetailImp userDI){
-        Date fechaExpiracion =new Date(System.currentTimeMillis() + EXPIRE_TIME_DURATION);
+    public static String createToken(UserInformationService.UserDetailImp userDI) {
+        Date fechaExpiracion = new Date(System.currentTimeMillis() + EXPIRE_TIME_DURATION);
 
         return Jwts.builder().setSubject(userDI.getUsername())
                 .setExpiration(fechaExpiracion)
@@ -37,9 +35,9 @@ public class JWTokenUtils {
                 .compact();
     }
 
-    public static String createToken(SiptisUser user){
+    public static String createToken(SiptisUser user) {
         UserInformationService.UserDetailImp userDI = new UserInformationService.UserDetailImp(user);
-        Date fechaExpiracion =new Date(System.currentTimeMillis() + EXPIRE_TIME_DURATION_2);
+        Date fechaExpiracion = new Date(System.currentTimeMillis() + EXPIRE_TIME_DURATION_2);
 
         return Jwts.builder().setSubject(user.getEmail())
                 .setExpiration(fechaExpiracion)
@@ -50,8 +48,8 @@ public class JWTokenUtils {
                 .compact();
     }
 
-    public static UserDetails getUserDetails(String token){
-        SiptisUser siptisUserDetails =new SiptisUser();
+    public static UserDetails getUserDetails(String token) {
+        SiptisUser siptisUserDetails = new SiptisUser();
         Claims claims = getClaims(token);
         //String subject =claims.getSubject();
         String subject = (String) claims.get(Claims.SUBJECT);
@@ -63,7 +61,7 @@ public class JWTokenUtils {
         for (String aRoleName : roleNames) {
 
             aRoleName = aRoleName.trim();
-            System.out.println("rol actual: "+ aRoleName);
+            System.out.println("rol actual: " + aRoleName);
             siptisUserDetails.addRol(new Role(aRoleName));
 
             siptisUserDetails.setEmail(subject);
@@ -72,13 +70,13 @@ public class JWTokenUtils {
         return siptisUserDetails;
     }
 
-    public static Claims getClaims(String token){
+    public static Claims getClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(ACCESS_TOKEN_SECRET.getBytes())
                 .build().parseClaimsJws(token).getBody();
     }
 
-    public static Long getId(String token){
+    public static Long getId(String token) {
         Claims claims = getClaims(token);
 
         Integer jwtId = (Integer) claims.get("id");
@@ -106,7 +104,7 @@ public class JWTokenUtils {
         return false;
     }
 
-    public static UsernamePasswordAuthenticationToken getAuthentication(String token){
+    public static UsernamePasswordAuthenticationToken getAuthentication(String token) {
         try {
             Claims claims = Jwts.parserBuilder()
                     .setSigningKey(ACCESS_TOKEN_SECRET.getBytes())
@@ -117,9 +115,9 @@ public class JWTokenUtils {
             //String correo =claims.getSubject();
 
             return new UsernamePasswordAuthenticationToken(
-                    userDetails, null,userDetails.getAuthorities()
+                    userDetails, null, userDetails.getAuthorities()
             );
-        }catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
     }

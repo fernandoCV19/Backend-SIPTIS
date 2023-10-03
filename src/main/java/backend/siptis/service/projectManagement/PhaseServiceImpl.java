@@ -16,18 +16,19 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class PhaseServiceImpl implements PhaseService{
+public class PhaseServiceImpl implements PhaseService {
 
     private final PhaseRepository phaseRepository;
     private final SiptisUserService siptisUserService;
     private final ProjectService projectService;
+
     @Override
     public ServiceAnswer createPhase(PhaseDTO phaseDTO) {
         ServiceAnswer serviceAnswer = new ServiceAnswer();
         Phase phase = new Phase();
         phase.setName(phaseDTO.getName());
         phase = phaseRepository.save(phase);
-        return serviceAnswer.builder()
+        return ServiceAnswer.builder()
                 .serviceMessage(ServiceMessage.OK)
                 .data(phase).build();
     }
@@ -36,28 +37,29 @@ public class PhaseServiceImpl implements PhaseService{
     public ServiceAnswer deletePhase(Long idPhase) {
         ServiceAnswer serviceAnswer = new ServiceAnswer();
         Phase phase = phaseRepository.findById(idPhase).orElse(null);
-        if (phase == null){
-            return serviceAnswer.builder()
+        if (phase == null) {
+            return ServiceAnswer.builder()
                     .serviceMessage(ServiceMessage.NOT_FOUND)
                     .build();
         }
         phaseRepository.deleteById(idPhase);
-        return serviceAnswer.builder()
+        return ServiceAnswer.builder()
                 .serviceMessage(ServiceMessage.OK)
                 .build();
     }
+
     @Override
     public ServiceAnswer updatePhase(PhaseDTO phaseDTO, Long idPhase) {
         ServiceAnswer serviceAnswer = new ServiceAnswer();
         Phase phase = phaseRepository.findById(idPhase).orElse(null);
-        if (phase == null){
-            return serviceAnswer.builder()
+        if (phase == null) {
+            return ServiceAnswer.builder()
                     .serviceMessage(ServiceMessage.NOT_FOUND)
                     .build();
         }
         phase.setName(phaseDTO.getName());
         phase = phaseRepository.save(phase);
-        return serviceAnswer.builder()
+        return ServiceAnswer.builder()
                 .serviceMessage(ServiceMessage.OK)
                 .data(phase)
                 .build();
@@ -77,12 +79,12 @@ public class PhaseServiceImpl implements PhaseService{
     public ServiceAnswer findPhaseByUserId(Long idPhase) {
         ServiceAnswer serviceAnswer = new ServiceAnswer();
         Phase phase = phaseRepository.findById(idPhase).orElse(null);
-        if (phase == null){
-            return serviceAnswer.builder()
+        if (phase == null) {
+            return ServiceAnswer.builder()
                     .serviceMessage(ServiceMessage.NOT_FOUND)
                     .build();
         }
-        serviceAnswer.builder()
+        ServiceAnswer.builder()
                 .serviceMessage(ServiceMessage.OK)
                 .data(phase)
                 .build();
@@ -90,24 +92,25 @@ public class PhaseServiceImpl implements PhaseService{
     }
 
     @Override
-    public ServiceAnswer getPhasesByUserId(Long id){
+    public ServiceAnswer getPhasesByUserId(Long id) {
         Long projectId = siptisUserService.getProjectById(id);
         ServiceAnswer projectAnswer = projectService.getProjectById(projectId);
-        if(projectAnswer.getServiceMessage() == ServiceMessage.PROJECT_ID_DOES_NOT_EXIST){
+        if (projectAnswer.getServiceMessage() == ServiceMessage.PROJECT_ID_DOES_NOT_EXIST) {
             return ServiceAnswer.builder()
                     .serviceMessage(ServiceMessage.NOT_FOUND)
                     .build();
         }
 
-        Long modalityId = ((Project)projectAnswer.getData()).getModality().getId();
+        Long modalityId = ((Project) projectAnswer.getData()).getModality().getId();
         List<Phase> list = phaseRepository.findAllByModalityId(modalityId);
         return ServiceAnswer.builder()
                 .serviceMessage(ServiceMessage.OK)
                 .data(list)
                 .build();
     }
+
     @Override
-    public ServiceAnswer findPhaseByModalityId(Long idModality){
+    public ServiceAnswer findPhaseByModalityId(Long idModality) {
         List<Phase> list = phaseRepository.findAllByModalityId(idModality);
 
         return ServiceAnswer.builder()
@@ -115,6 +118,7 @@ public class PhaseServiceImpl implements PhaseService{
                 .data(list.stream().map(this::entityToVO))
                 .build();
     }
+
     @Override
     public PhaseVO entityToVO(Phase phase) {
         PhaseVO phaseVO = new PhaseVO();

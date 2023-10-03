@@ -7,11 +7,11 @@ import backend.siptis.model.pjo.dto.document.ReportDocumentDTO;
 import java.io.IOException;
 
 public interface DocumentGeneratorService {
-    ServiceAnswer getAllDocumentsFromUser (long idUser);
+    ServiceAnswer getAllDocumentsFromUser(long idUser);
 
-    ServiceAnswer deleteDocument (long idDocument);
+    ServiceAnswer deleteDocument(long idDocument);
 
-    ServiceAnswer generateReport (ReportDocumentDTO reportDocumentDTO);
+    ServiceAnswer generateReport(ReportDocumentDTO reportDocumentDTO);
 
     ServiceAnswer generateSolvency(long idUser);
 

@@ -23,7 +23,7 @@ public class PersonalInformationDTO {
     private String birthDate;
     private String codSIS;
 
-    public void setBirthDate(Date date){
+    public void setBirthDate(Date date) {
         DateFormat dtFormat = new SimpleDateFormat("yyyy-MM-dd");
         birthDate = dtFormat.format(date);
     }

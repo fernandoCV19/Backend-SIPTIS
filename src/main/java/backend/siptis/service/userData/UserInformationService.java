@@ -4,8 +4,8 @@ import backend.siptis.auth.entity.Role;
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.model.entity.userData.UserInformation;
-import backend.siptis.model.pjo.dto.usersInformationDTO.GeneralUserPersonalInformationDTO;
 import backend.siptis.model.pjo.dto.UserEditPersonalInformationDTO;
+import backend.siptis.model.pjo.dto.usersInformationDTO.GeneralUserPersonalInformationDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterSpecialUserDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterUserDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.UniversityUserPersonalInformationDTO;
@@ -27,6 +27,7 @@ public interface UserInformationService {
     ServiceAnswer userEditLimitedInformation(UserInformation userInformation, UserEditPersonalInformationDTO dto);
 
     ServiceAnswer adminEditUserFullInformation(UserInformation userInformation, GeneralUserPersonalInformationDTO dto);
+
     ServiceAnswer adminEditUserFullInformation(UserInformation userInformation, UniversityUserPersonalInformationDTO dto);
 
 
@@ -36,6 +37,7 @@ public interface UserInformationService {
 
 
     ServiceAnswer registerUserInformation(RegisterUserDTO dto, SiptisUser user);
+
     ServiceAnswer registerSpecialUserInformation(RegisterSpecialUserDTO dto, SiptisUser user);
 
     @AllArgsConstructor
@@ -57,8 +59,8 @@ public interface UserInformationService {
             return siptisUser.getId();
         }
 
-        public ArrayList<Long> getProjects(){
-            if(siptisUser.getProjects() != null)
+        public ArrayList<Long> getProjects() {
+            if (siptisUser.getProjects() != null)
                 return siptisUser.getProjects();
             return new ArrayList<Long>();
         }
@@ -88,13 +90,13 @@ public interface UserInformationService {
             return true;
         }
 
-        public String getRoles(){
+        public String getRoles() {
             Set<Role> roles = siptisUser.getRoles();
             List<String> rolesResponse = new ArrayList<>();
-            for (Role rol: roles) {
+            for (Role rol : roles) {
                 rolesResponse.add(rol.getName());
             }
-             return siptisUser.getRoles().toString();
+            return siptisUser.getRoles().toString();
             //return rolesResponse;
         }
 

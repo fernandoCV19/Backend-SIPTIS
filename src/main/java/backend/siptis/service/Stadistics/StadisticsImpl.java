@@ -9,10 +9,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class StadisticsImpl implements StadisticsService{
+public class StadisticsImpl implements StadisticsService {
 
     @Autowired
     private final StadisticsRepository stadisticsRepository;
+
     @Override
     public ServiceAnswer StudentsByCareerStadistics() {
 
@@ -31,15 +32,15 @@ public class StadisticsImpl implements StadisticsService{
     @Override
     public ServiceAnswer ProyectsByAreaAndCareer(int idCareer) {
         return ServiceAnswer.builder().serviceMessage(
-                ServiceMessage.OK)
+                        ServiceMessage.OK)
                 .data(stadisticsRepository.getNumberOfProyectsByAreaAndCareer(idCareer)
-        ).build();
+                ).build();
     }
 
     @Override
     public ServiceAnswer getStudentsByYear() {
         return ServiceAnswer.builder().serviceMessage(
-                ServiceMessage.OK)
+                        ServiceMessage.OK)
                 .data(stadisticsRepository.getNumberOfStudentsByYear()
                 ).build();
     }
@@ -47,12 +48,12 @@ public class StadisticsImpl implements StadisticsService{
     @Override
     public ServiceAnswer getStudentsByYearAndCareer(String career) {
         return ServiceAnswer.builder().serviceMessage(
-                ServiceMessage.OK)
+                        ServiceMessage.OK)
                 .data(stadisticsRepository.getNumberOfStudentsByYearAndCareer(career)
                 ).build();
     }
 
-    private ServiceAnswer createResponse(ServiceMessage serviceMessage, String errorMessage){
+    private ServiceAnswer createResponse(ServiceMessage serviceMessage, String errorMessage) {
         return ServiceAnswer.builder().serviceMessage(
                 serviceMessage).data(errorMessage
         ).build();

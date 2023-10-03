@@ -2,7 +2,10 @@ package backend.siptis.model.entity.projectManagement;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Collection;
 
@@ -20,7 +23,7 @@ public class Area {
 
     private String name;
 
-    @ManyToMany( mappedBy = "areas")
+    @ManyToMany(mappedBy = "areas")
     @JsonBackReference
     private Collection<Project> projects;
 }

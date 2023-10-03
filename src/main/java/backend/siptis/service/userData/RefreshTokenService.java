@@ -17,6 +17,7 @@ public interface RefreshTokenService {
     ServiceAnswer getAllToken();
 
     ServiceAnswer getToken(Long id);
+
     ServiceAnswer getToken(String token);
 
     Long getTokenUser(String token);

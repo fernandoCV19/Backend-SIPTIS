@@ -1,9 +1,9 @@
 package backend.siptis.model.pjo.vo.projectManagement;
 
 import backend.siptis.model.entity.projectManagement.Area;
+import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.entity.projectManagement.SubArea;
 import lombok.Data;
-import backend.siptis.model.entity.projectManagement.Project;
 
 import java.util.List;
 

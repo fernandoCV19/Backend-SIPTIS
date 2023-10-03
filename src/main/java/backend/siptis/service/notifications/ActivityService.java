@@ -12,11 +12,18 @@ import java.util.List;
 
 public interface ActivityService {
     ServiceAnswer findById(long id);
+
     ServiceAnswer persistActivity(ActivityDTO ActivityDTO);
+
     List<ActivityVO> findAllVO();
+
     Page<ActivityVO> findAllVO(Pageable pageable);
+
     ServiceAnswer update(ActivityDTO activityDTO, long id);
+
     ServiceAnswer delete(long id);
+
     ActivityVO entityToVO(Activity activity);
+
     List<Activity> findByProjectId(Long id);
 }

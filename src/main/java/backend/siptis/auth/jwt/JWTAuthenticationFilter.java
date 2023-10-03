@@ -19,14 +19,14 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     public Authentication attemptAuthentication(
             HttpServletRequest request,
-            HttpServletResponse response)  {
-        Credentials authCredentials =new Credentials();
+            HttpServletResponse response) {
+        Credentials authCredentials = new Credentials();
         try {
             System.out.println("esta intentando");
             authCredentials = new ObjectMapper().readValue(
                     request.getReader(), Credentials.class
             );
-        } catch (Exception e){
+        } catch (Exception e) {
             //System.out.println("excepcion: "+ e.getMessage());
         }
 
@@ -37,12 +37,12 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                             authCredentials.getPassword(),
                             Collections.emptyList());
             System.out.println(authCredentials);
-            System.out.println("CORREO: "+authCredentials.getEmail());
-            System.out.println("CONTRASENA: "+authCredentials.getPassword());
+            System.out.println("CORREO: " + authCredentials.getEmail());
+            System.out.println("CONTRASENA: " + authCredentials.getPassword());
             return getAuthenticationManager().authenticate(PAToken);
-        }catch (
-    AuthenticationException e){
-            System.out.println("Error de autenticacion: "+e.getMessage());
+        } catch (
+                AuthenticationException e) {
+            System.out.println("Error de autenticacion: " + e.getMessage());
             return null;
         }
     }
@@ -56,10 +56,10 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             Authentication authentication
     ) throws IOException {
         System.out.println("ENTRA AL SUCCESS ");
-        UserInformationService.UserDetailImp userDetails= (UserInformationService.UserDetailImp) authentication.getPrincipal();
+        UserInformationService.UserDetailImp userDetails = (UserInformationService.UserDetailImp) authentication.getPrincipal();
         String token = JWTokenUtils.createToken(userDetails);
-        System.out.println("token: "+token);
-        response.addHeader("Authorization", "Bearer "+ token);
+        System.out.println("token: " + token);
+        response.addHeader("Authorization", "Bearer " + token);
         response.getWriter().flush();
     }
 

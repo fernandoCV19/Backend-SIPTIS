@@ -1,6 +1,5 @@
 package backend.siptis.model.pjo.vo.projectManagement;
 
-import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.model.entity.projectManagement.Project;
 import lombok.Data;
 

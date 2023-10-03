@@ -26,11 +26,12 @@ public interface ProjectService {
 
     ServiceAnswer getPaginatedCompletedProjectsByFilters(int pageNumber, int pageSize, String name, String modality, String area, String subArea);
 
-    ServiceAnswer getPresentations (Long idProyecto);
+    ServiceAnswer getPresentations(Long idProyecto);
 
     ServiceAnswer getProjectInfoToReview(Long idProject, Long idReviewer);
 
     ServiceAnswer getAllProjectInfo(Long idProject);
+
     ServiceAnswer getProjectById(Long id);
 
     ServiceAnswer getProjectInfoToAssignTribunals(Long idProject);

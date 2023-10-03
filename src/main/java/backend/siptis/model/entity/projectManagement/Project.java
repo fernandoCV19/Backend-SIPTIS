@@ -5,7 +5,10 @@ import backend.siptis.model.entity.notifications.Activity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Collection;
 import java.util.Set;
@@ -55,7 +58,7 @@ public class Project {
     @JsonManagedReference
     private Collection<SubArea> subAreas;
 
-    @ManyToMany(fetch =  FetchType.LAZY, cascade = {
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE
     })

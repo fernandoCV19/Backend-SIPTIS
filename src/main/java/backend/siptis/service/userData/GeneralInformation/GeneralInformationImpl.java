@@ -11,11 +11,11 @@ import backend.siptis.model.pjo.dto.ProjectDTO;
 import backend.siptis.model.pjo.dto.ProjectInfoDTO;
 import backend.siptis.model.pjo.dto.UserSelectedAreasDTO;
 import backend.siptis.model.pjo.dto.stadisticsDTO.UserTribunalDTO;
-import backend.siptis.model.repository.userData.UserAreaRepository;
-import backend.siptis.model.repository.userData.UserCareerRepository;
 import backend.siptis.model.repository.projectManagement.AreaRepository;
 import backend.siptis.model.repository.projectManagement.ProjectRepository;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
+import backend.siptis.model.repository.userData.UserAreaRepository;
+import backend.siptis.model.repository.userData.UserCareerRepository;
 import backend.siptis.model.repository.userData.UserInformationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
-public class GeneralInformationImpl implements GeneralInformationService{
+public class GeneralInformationImpl implements GeneralInformationService {
 
     @Autowired
     private final UserAreaRepository areaRepository;
@@ -42,8 +42,6 @@ public class GeneralInformationImpl implements GeneralInformationService{
     private final SiptisUserRepository siptisUserRepository;
     @Autowired
     private final ProjectRepository projectRepository;
-
-
 
 
     @Override
@@ -61,7 +59,7 @@ public class GeneralInformationImpl implements GeneralInformationService{
             tribunalDTOS.add(dto);
         }
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
-                .data(tribunalDTOS ).build();
+                .data(tribunalDTOS).build();
 
     }
 
@@ -83,13 +81,13 @@ public class GeneralInformationImpl implements GeneralInformationService{
         }
 
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
-                .data(response ).build();
+                .data(response).build();
     }
 
     @Override
     public ServiceAnswer getProjectsByAreas(UserSelectedAreasDTO dto) {
         List<Long> selectedAreas = dto.getIds();
-        if (selectedAreas.isEmpty()){
+        if (selectedAreas.isEmpty()) {
             return getProjects();
         }
         List<ProjectDTO> response = new ArrayList<>();
@@ -100,13 +98,13 @@ public class GeneralInformationImpl implements GeneralInformationService{
             Optional<Project> pj = projectRepository.findById(info.getId());
             Set<Area> projectAreas = pj.get().getAreas();
 
-            for (Area area: projectAreas) {
-                if(selectedAreas.contains(area.getId())){
+            for (Area area : projectAreas) {
+                if (selectedAreas.contains(area.getId())) {
                     isValid = true;
                     break;
                 }
             }
-            if(isValid){
+            if (isValid) {
                 ProjectDTO projectDTO = new ProjectDTO();
                 projectDTO.setName(info.getName());
                 projectDTO.setModality(info.getModality());
@@ -120,7 +118,7 @@ public class GeneralInformationImpl implements GeneralInformationService{
         }
 
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
-                .data(response ).build();
+                .data(response).build();
     }
 
     @Override
@@ -128,7 +126,7 @@ public class GeneralInformationImpl implements GeneralInformationService{
         List<UserTribunalDTO> tribunalDTOS = new ArrayList<>();
         List<Long> selectedAreas = areasDto.getIds();
 
-        if (selectedAreas.isEmpty()){
+        if (selectedAreas.isEmpty()) {
             return getAllPotentialTribunals();
         }
 
@@ -138,14 +136,14 @@ public class GeneralInformationImpl implements GeneralInformationService{
             Optional<SiptisUser> siptisUser = siptisUserRepository.findById(user.getId());
             Set<UserArea> userAreas = siptisUser.get().getAreas();
 
-            for (UserArea area: userAreas) {
-                if(selectedAreas.contains(area.getId())){
+            for (UserArea area : userAreas) {
+                if (selectedAreas.contains(area.getId())) {
                     isValid = true;
                     break;
                 }
             }
 
-            if(isValid){
+            if (isValid) {
                 UserTribunalDTO dto = new UserTribunalDTO();
                 dto.setId(user.getId());
                 dto.setNames(user.getNames());
@@ -155,7 +153,7 @@ public class GeneralInformationImpl implements GeneralInformationService{
             }
         }
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
-                .data(tribunalDTOS ).build();
+                .data(tribunalDTOS).build();
 
     }
 }

@@ -21,14 +21,14 @@ public class PlaceToDefenseController {
     private final PlaceToDefenseService placeToDefenseService;
 
     @GetMapping("/all")
-    public ResponseEntity<?> getAllAvailablePlacesToDefense(){
+    public ResponseEntity<?> getAllAvailablePlacesToDefense() {
         ServiceAnswer serviceAnswer = placeToDefenseService.getAvailablePlaces();
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
         return new ResponseEntity<>(controllerAnswer, HttpStatus.OK);
     }
 
     @GetMapping("/reservedDates")
-    public ResponseEntity<?> getReservedDates(){
+    public ResponseEntity<?> getReservedDates() {
         ServiceAnswer serviceAnswer = placeToDefenseService.getReservedDates();
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
         return new ResponseEntity<>(controllerAnswer, HttpStatus.OK);

@@ -20,8 +20,8 @@ public class CloudController {
     private FileManagerService fileDownloaderService;
 
     @GetMapping("/download-file/{folder}/{file}")
-    ResponseEntity<?> downloadFile(@PathVariable String folder, @PathVariable String file){
-        String key = folder+"/"+file;
+    ResponseEntity<?> downloadFile(@PathVariable String folder, @PathVariable String file) {
+        String key = folder + "/" + file;
         ServiceAnswer respuestaServicio = fileDownloaderService.downloadFileFromCloud(key);
         ByteArrayOutputStream downloadInputStream = (ByteArrayOutputStream) respuestaServicio.getData();
         return ResponseEntity.ok()
