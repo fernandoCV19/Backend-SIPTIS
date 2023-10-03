@@ -277,6 +277,16 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    public ServiceAnswer getProjectById(Long id){
+        Optional<Project> query = projectRepository.findById(id);
+        if(query.isEmpty()){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data(null).build();
+        }
+        Project project = query.get();
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(project).build();
+    }
+
+    @Override
     public ServiceAnswer getProjectInfoToAssignTribunals(Long idProject) {
         Optional<Project> query = projectRepository.findById(idProject);
         if(query.isEmpty()){

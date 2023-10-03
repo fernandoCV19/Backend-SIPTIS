@@ -75,7 +75,7 @@ public class WebSecurityConfig {
                         "/supervisor/**",
 
                         "/phase/**",
-                        "/wpp")
+                        "/phase/**")
                 .permitAll()
                 .anyRequest().authenticated()
                 //.and().exceptionHandling().authenticationEntryPoint(authenticationEntryPoint())

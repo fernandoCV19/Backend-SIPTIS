@@ -22,12 +22,12 @@ public class Phase {
 
     private String name;
     private String descriptionPhase;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "modality_id")
-    private Modality modality;
-    /*@OneToMany(mappedBy = "phase", fetch = FetchType.LAZY)
     @JsonManagedReference
-    private Collection<DocumentPhase> documents;*/
+    private Modality modality;
+
     @OneToMany(mappedBy = "phase")
     @JsonBackReference
     private Collection<DocumentPhase> documents;

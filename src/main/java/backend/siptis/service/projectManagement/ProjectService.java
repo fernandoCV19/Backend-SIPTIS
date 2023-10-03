@@ -31,6 +31,7 @@ public interface ProjectService {
     ServiceAnswer getProjectInfoToReview(Long idProject, Long idReviewer);
 
     ServiceAnswer getAllProjectInfo(Long idProject);
+    ServiceAnswer getProjectById(Long id);
 
     ServiceAnswer getProjectInfoToAssignTribunals(Long idProject);
 

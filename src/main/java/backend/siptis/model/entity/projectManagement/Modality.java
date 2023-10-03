@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Collection;
-
+@Data
 @Entity
 @Table(name = "modality")
 @Getter
