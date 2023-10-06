@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -80,11 +81,7 @@ public class SiptisUserController {
         return createResponseEntity(answer);
     }
 
-    @GetMapping("/getAllToken")
-    public ResponseEntity<?> getAllToken() {
-        ServiceAnswer answer = refreshTokenService.getAllToken();
-        return createResponseEntity(answer);
-    }
+
 
     @GetMapping("/getUser/{userId}")
     public ResponseEntity<?> getUser(@PathVariable int userId) {
@@ -107,12 +104,6 @@ public class SiptisUserController {
         return createResponseEntity(answer);
     }
 
-    @GetMapping("/getTokenS/{token}")
-    public ResponseEntity<?> getTokenWithString(@PathVariable String token) {
-        //Long id = Long.valueOf(userId);
-        ServiceAnswer answer = refreshTokenService.getToken(token);
-        return createResponseEntity(answer);
-    }
 
 
     @GetMapping("/list/students")
@@ -259,6 +250,7 @@ public class SiptisUserController {
     }
 
     @GetMapping("/userCareer")
+    @PreAuthorize("hasAuthority('STUDENT')")
     public ResponseEntity<?> getCareer(@RequestHeader(name = "Authorization") String token) {
 
         Long id = siptisUserService.getIdFromToken(token);

@@ -7,6 +7,7 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -18,12 +19,22 @@ import java.util.Date;
 @Component
 public class JWTokenUtils {
 
-    private static final long EXPIRE_TIME_DURATION = 12 *60 * 60 * 1000 ; // hora.
-    private static final long EXPIRE_TIME_DURATION_2 = 12 * 60 * 60 * 1000; // hora.
+    //private static final long EXPIRE_TIME_DURATION = 12 *60 * 60 * 1000 ; // hora.
+    //private static final long EXPIRE_TIME_DURATION_2 = 12 * 60 * 60 * 1000; // hora.
     private static final long REFRESH_TOKEN_EXPIRE_TIME_DURATION = 60 * 60 * 1000; //1 horas
     private static final Logger logger = LoggerFactory.getLogger(JWTokenUtils.class);
-    private static final String ACCESS_TOKEN_SECRET= "$2a$12$JTfIoPcl28jeEFio3aHBa.rcqtBUgvykiKYgKxvikVzzxVAt82CEu\n";
+    private static long EXPIRE_TIME_DURATION;
+    //private static long EXPIRE_TIME_DURATION_2;
+    private static String ACCESS_TOKEN_SECRET;
 
+    @Value("${security.jwt.token.secret-key}")
+    private void setAccessToken(String key){    ACCESS_TOKEN_SECRET = key;  }
+
+    @Value("${security.jwt.token.expire-length}")
+    private void setExpireTime(String time){   EXPIRE_TIME_DURATION  = Long.parseLong( time);  }
+/*
+    @Value("${cloud.aws.credentials.expire-length}")
+    private void setExpireTime2(long time){   EXPIRE_TIME_DURATION_2  = time;  }*/
 
     public static String createToken(UserInformationService.UserDetailImp userDI){
         Date fechaExpiracion =new Date(System.currentTimeMillis() + EXPIRE_TIME_DURATION);
@@ -39,7 +50,7 @@ public class JWTokenUtils {
 
     public static String createToken(SiptisUser user){
         UserInformationService.UserDetailImp userDI = new UserInformationService.UserDetailImp(user);
-        Date fechaExpiracion =new Date(System.currentTimeMillis() + EXPIRE_TIME_DURATION_2);
+        Date fechaExpiracion =new Date(System.currentTimeMillis() + EXPIRE_TIME_DURATION);
 
         return Jwts.builder().setSubject(user.getEmail())
                 .setExpiration(fechaExpiracion)
@@ -96,7 +107,7 @@ public class JWTokenUtils {
             logger.error("Invalid JWT token: {}", e.getMessage());
         } catch (ExpiredJwtException e) {
             logger.error("JWT token is expired: {}", e.getMessage());
-            //throw new RefreshTokenException("El Refresh Token expiró");
+            // throw new ExpiredTokenException();
         } catch (UnsupportedJwtException e) {
             logger.error("JWT token is unsupported: {}", e.getMessage());
         } catch (IllegalArgumentException e) {

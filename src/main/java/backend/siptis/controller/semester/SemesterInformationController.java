@@ -3,9 +3,11 @@ package backend.siptis.controller.semester;
 import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
+import backend.siptis.model.pjo.dto.semester.EditSemesterInfoDTO;
 import backend.siptis.model.pjo.dto.semester.SemesterInformationDTO;
 import backend.siptis.model.repository.semester.SemesterInformationRepository;
 import backend.siptis.service.semester.SemesterInformationService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +19,10 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 public class SemesterInformationController {
 
-    private final SemesterInformationRepository repository;
     private final SemesterInformationService semesterService;
 
     @GetMapping("/checkActiveSemester")
+
     public ResponseEntity<?> checkActiveSemester(){
         ServiceAnswer answerService = semesterService.existActiveSemester();
         return createResponse(answerService);
@@ -32,10 +34,24 @@ public class SemesterInformationController {
         return createResponse(answerService);
     }
 
+    @GetMapping("/getcurrentSemesterPeriod")
+    public ResponseEntity<?> getcurrentSemesterPeriod(){
+        ServiceAnswer answerService = semesterService.getCurrentPeriod();
+        return createResponse(answerService);
+    }
+
     @PostMapping("/startSemester")
     public ResponseEntity<?> createSemester(
             @RequestBody SemesterInformationDTO dto){
         ServiceAnswer answerService = semesterService.startSemester(dto);
+        return createResponse(answerService);
+    }
+
+    @PutMapping("/editSemester")
+    public ResponseEntity<?> editSemester(
+            @Valid @RequestBody EditSemesterInfoDTO dto){
+        // Long semesterId = Long.valueOf(id);
+        ServiceAnswer answerService = semesterService.editSemester(dto);
         return createResponse(answerService);
     }
 

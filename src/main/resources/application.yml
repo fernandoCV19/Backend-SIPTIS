@@ -12,7 +12,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: 'update'
     show-sql: true
     properties:
       hibernate:
@@ -34,6 +34,12 @@ spring:
 
 server:
   port: 9090
+
+security:
+  jwt:
+    token:
+      secret-key: $2a$12$JTfIoPcl28jeEFio3aHBa.rcqtBUgvykiKYgKxvikVzzxVAt82CEu
+      expire-length: 3600000 # hora.
 
 cloud:
   aws:

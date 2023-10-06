@@ -74,16 +74,6 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     }
 
     @Override
-    public ServiceAnswer getAllToken() {
-        List<RefreshToken> tokens = refreshTokenRepository.findAll();
-        System.out.println(tokens);
-        return ServiceAnswer.builder()
-                .serviceMessage(ServiceMessage.OK)
-                .data(tokens).build();
-
-    }
-
-    @Override
     public ServiceAnswer getToken(Long id) {
         RefreshToken token1 = refreshTokenRepository.findById(id).get();
         System.out.println(token1.getToken());
@@ -92,20 +82,6 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
                 .data(token1.getToken()).build();
     }
 
-    @Override
-    public ServiceAnswer getToken(String token) {
-        RefreshToken token1 = refreshTokenRepository.findByToken(token).get();
-        System.out.println(token1.getToken());
-        return ServiceAnswer.builder()
-                .serviceMessage(ServiceMessage.OK)
-                .data(token1.getToken()).build();
-    }
-
-
-    @Override
-    public Long getTokenUser(String token) {
-        return refreshTokenRepository.getSiptisUserId(token);
-    }
 
     @Transactional
     @Override

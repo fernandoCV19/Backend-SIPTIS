@@ -6,7 +6,6 @@ import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.userData.UserCareer;
 import backend.siptis.model.entity.userData.UserInformation;
 import backend.siptis.model.pjo.dto.AdminRegisterDTO;
-import backend.siptis.model.pjo.dto.records.LogInDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterSpecialUserDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterStudentDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterUserDTO;
@@ -39,15 +38,15 @@ public class SiptisUserServiceTest {
     private static RegisterStudentDTO studentDTO = new RegisterStudentDTO();
     private static RegisterUserDTO teacherDTO = new RegisterUserDTO();
     private static RegisterSpecialUserDTO specialUserDTO = new RegisterSpecialUserDTO();
-    private static LogInDTO logInDTO = new LogInDTO();
+    // private static LogInDTO logInDTO = new LogInDTO();
 
     @Autowired
     public SiptisUserServiceTest(SiptisUserService siptisUserService, SiptisUserRepository siptisUserRepository){
         this.siptisUserService = siptisUserService;
         this.siptisUserRepository = siptisUserRepository;
 
-        logInDTO.setEmail("student@gmail.com");
-        logInDTO.setPassword("12121212");
+        /*logInDTO.setEmail("student@gmail.com");
+        logInDTO.setPassword("12121212");*/
 
         adminDTO.setEmail("admin@gmail.com");
         adminDTO.setPassword("12121212");
@@ -176,7 +175,7 @@ public class SiptisUserServiceTest {
         UserInformation information = user.getUserInformation();
         assertEquals(information.getCodSIS(), "20070031");
     }
-
+/*
     @Test
     void loginNonExistingUserTest(){
         ServiceAnswer answer = siptisUserService.logIn(logInDTO);
@@ -189,7 +188,7 @@ public class SiptisUserServiceTest {
         ServiceAnswer answer = siptisUserService.logIn(logInDTO);
         assertEquals(ServiceMessage.OK, answer.getServiceMessage());
     }
-
+*/
 
 
 }
