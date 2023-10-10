@@ -46,7 +46,7 @@ public class AreaController {
         ServiceMessage messageService = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
-        if(messageService == ServiceMessage.OK || messageService == ServiceMessage.USER_AREA_DELETED){
+        if(messageService == ServiceMessage.OK || messageService == ServiceMessage.AREA_DELETED){
             httpStatus = HttpStatus.OK;
         }
 
