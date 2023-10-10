@@ -96,7 +96,6 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
         String teacherCompleteName = userInformationRepository.getTeachersNames(idProject).get(0);
         //String tutorCompleteName = userInformationRepository.getTutorsNames(idProject).get(0);
         String title = project.getName();
-        int reportNumber = (project.getReportIndex() + 1);
         Optional<SiptisUser> oUser = siptisUserRepository.findOneById(idUser);
 
         if (oUser.isEmpty()){
@@ -105,6 +104,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
         SiptisUser user = oUser.get();
         String postulant = user.getUserInformation().getNames()+ ' '+user.getUserInformation().getLastnames();
         ReportTool reportTool = new ReportTool();
+        Integer reportNumber = reportDocumentDTO.getReportNumber();
         String filename = reportTool.generate(postulant,Integer.toString(reportNumber), title,tutors,teacherCompleteName,reportDocumentDTO.getDescription()) ;
         String key = nube.uploadDocumentToCloud(filename);
 
@@ -115,7 +115,6 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
         document.setSiptisUser(user);
         documentRepository.save(document);
 
-        project.setReportIndex(reportNumber);
         projectRepository.save(project);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
     }

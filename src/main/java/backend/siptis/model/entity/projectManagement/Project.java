@@ -22,9 +22,6 @@ public class Project {
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
-    @Column(name = "report_index", columnDefinition = "integer default 0")
-    private Integer reportIndex = 0;
-
     private String name;
 
     @Column(name = "perfil_path")

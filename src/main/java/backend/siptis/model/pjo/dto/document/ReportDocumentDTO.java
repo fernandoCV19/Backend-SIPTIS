@@ -8,6 +8,5 @@ import lombok.Setter;
 public class ReportDocumentDTO {
     private String description;
     private String shortDescription;
-    //private MultipartFile tutorSignature;
-    //private MultipartFile teacherSignature;
+    private Integer reportNumber;
 }
