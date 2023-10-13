@@ -3,7 +3,10 @@ package backend.siptis.service.projectManagement;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.projectManagement.AssignTribunalsDTO;
-import backend.siptis.model.pjo.vo.projectManagement.*;
+import backend.siptis.model.pjo.vo.projectManagement.InfoToCreateADefenseVO;
+import backend.siptis.model.pjo.vo.projectManagement.ProjectCompleteInfoVO;
+import backend.siptis.model.pjo.vo.projectManagement.ProjectInfoToAssignTribunalsVO;
+import backend.siptis.model.pjo.vo.projectManagement.ProjectToReviewSectionVO;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +66,7 @@ class ProjectServiceTest {
         ServiceAnswer query = projectService.getProjectInfoToReview(30L, 10L);
         assertEquals(ServiceMessage.ID_REVIEWER_DOES_NOT_MATCH_WITH_PROJECT, query.getServiceMessage());
     }
+
     @Test
     void getProjectInfoToReviewWithIdReviewerThatDoesNotMatchWithProjectReturnNullData() {
         ServiceAnswer query = projectService.getProjectInfoToReview(30L, 10L);
@@ -84,7 +88,7 @@ class ProjectServiceTest {
     @Test
     void getProjectInfoToReviewWithAProjectThatDoesNotHavePresentationsReturnAnObjectWithCorrectData() {
         ServiceAnswer query = projectService.getProjectInfoToReview(30L, 30L);
-        ProjectToReviewSectionVO projectToReviewSectionVO = (ProjectToReviewSectionVO)query.getData();
+        ProjectToReviewSectionVO projectToReviewSectionVO = (ProjectToReviewSectionVO) query.getData();
         assertFalse(projectToReviewSectionVO.getStudentChanges());
         assertFalse(projectToReviewSectionVO.getReviewed());
         assertEquals(-1, projectToReviewSectionVO.getNumberOfDays());
@@ -105,7 +109,7 @@ class ProjectServiceTest {
     @Test
     void getProjectInfoToReviewWithAProjectThatNotHaveBeenReviewedReturnObjectWithCorrectData() {
         ServiceAnswer query = projectService.getProjectInfoToReview(31L, 30L);
-        ProjectToReviewSectionVO projectToReviewSectionVO = (ProjectToReviewSectionVO)query.getData();
+        ProjectToReviewSectionVO projectToReviewSectionVO = (ProjectToReviewSectionVO) query.getData();
         assertTrue(projectToReviewSectionVO.getStudentChanges());
         assertFalse(projectToReviewSectionVO.getReviewed());
         assertNotEquals(-1, projectToReviewSectionVO.getNumberOfDays());
@@ -126,7 +130,7 @@ class ProjectServiceTest {
     @Test
     void getProjectInfoToReviewWithAProjectThatHaveBeenReviewedByTheReviewerReturnObjectWithCorrectData() {
         ServiceAnswer query = projectService.getProjectInfoToReview(32L, 30L);
-        ProjectToReviewSectionVO projectToReviewSectionVO = (ProjectToReviewSectionVO)query.getData();
+        ProjectToReviewSectionVO projectToReviewSectionVO = (ProjectToReviewSectionVO) query.getData();
         assertFalse(projectToReviewSectionVO.getStudentChanges());
         assertTrue(projectToReviewSectionVO.getReviewed());
         assertNotEquals(-1, projectToReviewSectionVO.getNumberOfDays());
@@ -147,7 +151,7 @@ class ProjectServiceTest {
     @Test
     void getProjectInfoToReviewWithAProjectThatHaveBeenReviewedByAnotherReviewerReturnObjectWithCorrectData() {
         ServiceAnswer query = projectService.getProjectInfoToReview(34L, 30L);
-        ProjectToReviewSectionVO projectToReviewSectionVO = (ProjectToReviewSectionVO)query.getData();
+        ProjectToReviewSectionVO projectToReviewSectionVO = (ProjectToReviewSectionVO) query.getData();
         assertFalse(projectToReviewSectionVO.getStudentChanges());
         assertFalse(projectToReviewSectionVO.getReviewed());
         assertNotEquals(-1, projectToReviewSectionVO.getNumberOfDays());
@@ -189,25 +193,29 @@ class ProjectServiceTest {
         ServiceAnswer query = projectService.getProjectInfoToAssignTribunals(0L);
         assertEquals(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST, query.getServiceMessage());
     }
+
     @Test
     void getProjectInfoToAssignTribunalsWithIncorrectProjectIdReturnDataNull() {
         ServiceAnswer query = projectService.getProjectInfoToAssignTribunals(0L);
         assertNull(query.getData());
     }
+
     @Test
     void getProjectInfoToAssignTribunalsWithCorrectProjectIdReturnOk() {
         ServiceAnswer query = projectService.getProjectInfoToAssignTribunals(1L);
         assertEquals(ServiceMessage.OK, query.getServiceMessage());
     }
+
     @Test
     void getProjectInfoToAssignTribunalsWithCorrectProjectIdReturnDataWithValues() {
         ServiceAnswer query = projectService.getProjectInfoToAssignTribunals(1L);
         assertNotNull(query.getData());
     }
+
     @Test
     void getProjectInfoToAssignTribunalsWithCorrectProjectIdReturnAnObjectWithTheCorrectIdOfTheProject() {
         ServiceAnswer query = projectService.getProjectInfoToAssignTribunals(1L);
-        ProjectInfoToAssignTribunalsVO res = (ProjectInfoToAssignTribunalsVO)query.getData();
+        ProjectInfoToAssignTribunalsVO res = (ProjectInfoToAssignTribunalsVO) query.getData();
         assertEquals("ProyectoGrado1", res.getName());
     }
 
@@ -256,7 +264,7 @@ class ProjectServiceTest {
     }
 
     @Test
-    @Sql(scripts = {"/cleanDB.sql","/assignTribunals.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/cleanDB.sql", "/assignTribunals.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void assignTribunalsWithCorrectDataReturnOk() {
         AssignTribunalsDTO assignTribunalsDTO = new AssignTribunalsDTO(new Long[]{1L, 5L, 9L}, 1L);
         ServiceAnswer query = projectService.assignTribunals(assignTribunalsDTO);
@@ -265,11 +273,11 @@ class ProjectServiceTest {
     }
 
     @Test
-    @Sql(scripts = {"/cleanDB.sql","/assignTribunals.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/cleanDB.sql", "/assignTribunals.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void assignTribunalsWithCorrectDataReturnDataWithAMessage() {
         AssignTribunalsDTO assignTribunalsDTO = new AssignTribunalsDTO(new Long[]{1L, 5L, 9L}, 1L);
         ServiceAnswer query = projectService.assignTribunals(assignTribunalsDTO);
-        assertEquals("Tribunals has been assigned to the project", (String)query.getData());
+        assertEquals("Tribunals has been assigned to the project", (String) query.getData());
         jdbcTemplate.execute("DROP ALL OBJECTS");
     }
 

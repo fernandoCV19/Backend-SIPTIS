@@ -51,27 +51,27 @@ class PresentationServiceTest {
     }
 
     @Test
-    void getLastReviewsFromAPresentationWithProjectThatDoesNotHaveReviewReturnOk(){
+    void getLastReviewsFromAPresentationWithProjectThatDoesNotHaveReviewReturnOk() {
         ServiceAnswer query = presentationService.getLastReviewsFromAPresentation(31L);
         assertEquals(ServiceMessage.OK, query.getServiceMessage());
     }
 
     @Test
-    void getLastReviewsFromAPresentationWithProjectThatDoesNotHaveReviewReturnEmptyList(){
+    void getLastReviewsFromAPresentationWithProjectThatDoesNotHaveReviewReturnEmptyList() {
         ServiceAnswer query = presentationService.getLastReviewsFromAPresentation(31L);
         InfoToReviewAProjectVO listOfReviews = (InfoToReviewAProjectVO) query.getData();
         assertTrue(listOfReviews.getOtherReviews().isEmpty());
     }
 
     @Test
-    void getLastReviewsFromAPresentationReturnAllLastReviewsFromAProject(){
+    void getLastReviewsFromAPresentationReturnAllLastReviewsFromAProject() {
         ServiceAnswer query = presentationService.getLastReviewsFromAPresentation(33L);
         InfoToReviewAProjectVO listOfReviews = (InfoToReviewAProjectVO) query.getData();
         assertEquals(2, listOfReviews.getOtherReviews().size());
     }
 
     @Test
-    void getLastReviewsFromAPresentationReturnAllCorrectLastReviewsFromAProject(){
+    void getLastReviewsFromAPresentationReturnAllCorrectLastReviewsFromAProject() {
         ServiceAnswer query = presentationService.getLastReviewsFromAPresentation(33L);
         InfoToReviewAProjectVO listOfReviews = (InfoToReviewAProjectVO) query.getData();
         assertTrue(listOfReviews.getOtherReviews().get(0).getDocumentPath().equals("documentPath4") && listOfReviews.getOtherReviews().get(1).getDocumentPath().equals("documentPath5"));

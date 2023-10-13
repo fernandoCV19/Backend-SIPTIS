@@ -1,6 +1,5 @@
 package backend.siptis.model.repository.notifications;
 
-import backend.siptis.model.entity.notifications.Activity;
 import backend.siptis.model.entity.notifications.GeneralActivity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

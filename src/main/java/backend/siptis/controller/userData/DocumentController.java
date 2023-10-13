@@ -8,8 +8,6 @@ import backend.siptis.model.pjo.dto.document.ReportDocumentDTO;
 import backend.siptis.service.document.DocumentGeneratorServiceImpl;
 import backend.siptis.service.userData.SiptisUserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,20 +26,21 @@ public class DocumentController {
 
 
     @GetMapping("/")
-    ResponseEntity<?> getDocumentsFromUser(@RequestHeader(name = "Authorization") String token){
+    ResponseEntity<?> getDocumentsFromUser(@RequestHeader(name = "Authorization") String token) {
         Long userId = userAuthService.getIdFromToken(token);
         return createResponseEntity(documentGeneratorService.getAllDocumentsFromUser(userId));
     }
+
     @DeleteMapping("/{id}")
-    ResponseEntity<?> deleteDocument(@PathVariable("id") long documentId){
+    ResponseEntity<?> deleteDocument(@PathVariable("id") long documentId) {
         return createResponseEntity(documentGeneratorService.deleteDocument(documentId));
     }
 
     @PostMapping("/create-report")
-    ResponseEntity<?> createReport(@RequestHeader(name = "Authorization") String token, @RequestBody ReportDocumentDTO reportDocumentDTO){
+    ResponseEntity<?> createReport(@RequestHeader(name = "Authorization") String token, @RequestBody ReportDocumentDTO reportDocumentDTO) {
         Long userId = userAuthService.getIdFromToken(token);
-        ArrayList <?> projects = userAuthService.getProjectsFromToken(token);
-        int projectId = (int)projects.get(0);
+        ArrayList<?> projects = userAuthService.getProjectsFromToken(token);
+        int projectId = (int) projects.get(0);
         return createResponseEntity(documentGeneratorService.generateReport(reportDocumentDTO, userId, (long) projectId));
     }
 
@@ -52,11 +51,11 @@ public class DocumentController {
     }
 
     @PostMapping("/create-documentary-record")
-    ResponseEntity<?> createDocumentaryRecord(@RequestHeader(name = "Authorization") String token, @RequestBody DocumentaryRecordDto documentaryRecordDto){
+    ResponseEntity<?> createDocumentaryRecord(@RequestHeader(name = "Authorization") String token, @RequestBody DocumentaryRecordDto documentaryRecordDto) {
         Long userId = userAuthService.getIdFromToken(token);
-        ArrayList <?> projects = userAuthService.getProjectsFromToken(token);
-        int projectId = (int)projects.get(0);
-        return createResponseEntity(documentGeneratorService.generateDocumentaryRecord(documentaryRecordDto, userId,(long) projectId));
+        ArrayList<?> projects = userAuthService.getProjectsFromToken(token);
+        int projectId = (int) projects.get(0);
+        return createResponseEntity(documentGeneratorService.generateDocumentaryRecord(documentaryRecordDto, userId, (long) projectId));
     }
 
     @GetMapping("/create-trbunal-request/{id}")
@@ -70,12 +69,12 @@ public class DocumentController {
     }
 
 
-    private ResponseEntity<?> createResponseEntity(ServiceAnswer serviceAnswer){
+    private ResponseEntity<?> createResponseEntity(ServiceAnswer serviceAnswer) {
         Object data = serviceAnswer.getData();
         ServiceMessage mensajeServicio = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.OK;
 
-        if(mensajeServicio == ServiceMessage.NOT_FOUND || mensajeServicio == ServiceMessage.ERROR)
+        if (mensajeServicio == ServiceMessage.NOT_FOUND || mensajeServicio == ServiceMessage.ERROR)
             httpStatus = HttpStatus.NOT_FOUND;
 
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(data).message(mensajeServicio.toString()).build();

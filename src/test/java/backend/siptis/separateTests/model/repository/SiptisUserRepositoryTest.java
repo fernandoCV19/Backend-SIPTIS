@@ -56,9 +56,10 @@ public class SiptisUserRepositoryTest {
     void findNonExistingUserWithEmail() {
         Optional<SiptisUser> answer = siptisUserRepository.findOneByEmail("admin@gmail.com");
         SiptisUser user = null;
-        try{
+        try {
             user = answer.get();
-        }catch (Exception e){}
+        } catch (Exception e) {
+        }
         assertNull(user);
     }
 
@@ -67,9 +68,10 @@ public class SiptisUserRepositoryTest {
         siptisUserService.registerAdmin(adminDto);
         Optional<SiptisUser> answer = siptisUserRepository.findOneByEmail("admin@gmail.com");
         SiptisUser user = null;
-        try{
+        try {
             user = answer.get();
-        }catch (Exception e){}
+        } catch (Exception e) {
+        }
         assertNotNull(answer.get());
     }
 
@@ -77,7 +79,7 @@ public class SiptisUserRepositoryTest {
     void findExistingUserWithEmailCheckEmail() {
         siptisUserService.registerAdmin(adminDto);
         SiptisUser user = siptisUserRepository.findOneByEmail("admin@gmail.com").get();
-        assertEquals(user.getEmail(), "admin@gmail.com" );
+        assertEquals(user.getEmail(), "admin@gmail.com");
     }
 
     @Test
@@ -108,19 +110,17 @@ public class SiptisUserRepositoryTest {
     }
 
     @Test
-    void findEmptyListByRolesName(){
+    void findEmptyListByRolesName() {
         List<SiptisUser> list = siptisUserRepository.findByRolesName("ADMIN");
         assertEquals(list.size(), 0);
     }
 
     @Test
-    void findNotEmptyListByRolesName(){
+    void findNotEmptyListByRolesName() {
         siptisUserService.registerAdmin(adminDto);
         List<SiptisUser> list = siptisUserRepository.findByRolesName("ADMIN");
         assertEquals(list.size(), 1);
     }
-
-
 
 
 }

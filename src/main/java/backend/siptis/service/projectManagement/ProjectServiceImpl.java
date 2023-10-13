@@ -6,6 +6,7 @@ import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectStudent;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectTribunal;
+import backend.siptis.model.entity.editorsAndReviewers.ProjectTutor;
 import backend.siptis.model.entity.projectManagement.*;
 import backend.siptis.model.entity.userData.Schedule;
 import backend.siptis.model.pjo.dto.projectManagement.AssignTribunalsDTO;
@@ -17,15 +18,8 @@ import backend.siptis.model.repository.editorsAndReviewers.ProjectStudentReposit
 import backend.siptis.model.repository.editorsAndReviewers.ProjectTribunalRepository;
 import backend.siptis.model.repository.editorsAndReviewers.ProjectTutorRepository;
 import backend.siptis.model.repository.projectManagement.*;
-import backend.siptis.model.entity.editorsAndReviewers.ProjectTutor;
-import backend.siptis.model.entity.projectManagement.Presentation;
-import backend.siptis.model.entity.projectManagement.Project;
-import backend.siptis.model.entity.projectManagement.Review;
-import backend.siptis.model.pjo.vo.projectManagement.ProjectToReviewSectionVO;
-import backend.siptis.model.repository.projectManagement.PresentationRepository;
-import backend.siptis.model.repository.projectManagement.ProjectRepository;
-import backend.siptis.model.repository.projectManagement.ReviewRepository;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
+import backend.siptis.service.semester.SemesterInformationService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -51,21 +45,22 @@ public class ProjectServiceImpl implements ProjectService {
     private final ProjectTribunalRepository projectTribunalRepository;
     private final PlaceToDefenseRepository placeToDefenseRepository;
     private final DefenseRepository defenseRepository;
+    private final SemesterInformationService semesterInformationService;
 
     @Override
     public ServiceAnswer createProject(NewProjectDTO dto) {
-        if(projectRepository.existsByName(dto.getName()))
+        if (projectRepository.existsByName(dto.getName()))
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR)
                     .data("El nombre ya se encuentra registrado").build();
-        if(!modalityRepository.existsById(dto.getModalityId()))
+        if (!modalityRepository.existsById(dto.getModalityId()))
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR)
                     .data("No se pudo encontrar la modalidad solicitada.").build();
 
         Project newProject = new Project();
         ArrayList<ProjectStudent> students = new ArrayList<>();
 
-        for (Long studentId: dto.getStudentsId()) {
-            if(!siptisUserRepository.existsById(studentId))
+        for (Long studentId : dto.getStudentsId()) {
+            if (!siptisUserRepository.existsById(studentId))
                 return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR)
                         .data("No se pudo encontrar al estudiante solicitado.").build();
 
@@ -76,8 +71,8 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
         ArrayList<ProjectTutor> tutors = new ArrayList<>();
-        for (Long tutorId: dto.getTutorsId()) {
-            if(!siptisUserRepository.existsById(tutorId))
+        for (Long tutorId : dto.getTutorsId()) {
+            if (!siptisUserRepository.existsById(tutorId))
                 return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR)
                         .data("No se pudo encontrar al usuario solicitado.").build();
 
@@ -91,23 +86,27 @@ public class ProjectServiceImpl implements ProjectService {
         newProject.setModality(modalityRepository.findModalityById(dto.getModalityId()));
         newProject.setStudents(students);
         newProject.setTutors(tutors);
+        ServiceAnswer periodAnswer = semesterInformationService.getCurrentPeriod();
+        String period = periodAnswer.getData().toString();
+        newProject.setPeriod(period);
 
         projectRepository.save(newProject);
 
-        for (ProjectStudent projectStudent: students)
+        for (ProjectStudent projectStudent : students)
             projectStudentRepository.save(projectStudent);
 
-        for (ProjectTutor projectTutor: tutors)
+        for (ProjectTutor projectTutor : tutors)
             projectTutorRepository.save(projectTutor);
 
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
-                    .data("El proyecto fue registrado correctamente.").build();
+                .data("El proyecto fue registrado correctamente.").build();
     }
 
     @Override
-    public ServiceAnswer getProjects(){
+    public ServiceAnswer getProjects() {
         List<Project> proyectos = projectRepository.findAll();
-        if (proyectos.isEmpty()) return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_PROJECTS).data(proyectos).build();
+        if (proyectos.isEmpty())
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_PROJECTS).data(proyectos).build();
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(proyectos).build();
     }
 
@@ -117,7 +116,7 @@ public class ProjectServiceImpl implements ProjectService {
         int pageSize = pageable.getPageSize();
         int offset = (pageNumber - 1) * pageSize;
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
-                .data( projectRepository.searchProject(search, pageable))
+                .data(projectRepository.searchProject(search, pageable))
                 .build();
     }
 
@@ -125,7 +124,8 @@ public class ProjectServiceImpl implements ProjectService {
     public ServiceAnswer getPaginatedCompletedProjects(int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<Project> projectPage = projectRepository.findAllWithDefense(pageable);
-        if (projectPage.isEmpty()) return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_PROJECTS).data(null).build();
+        if (projectPage.isEmpty())
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_PROJECTS).data(null).build();
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(projectPage).build();
     }
 
@@ -133,7 +133,8 @@ public class ProjectServiceImpl implements ProjectService {
     public ServiceAnswer getPaginatedCompletedProjectsByName(int pageNumber, int pageSize, String name) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<Project> projectPage = projectRepository.findAllByNameWithDefense(pageable, name);
-        if (projectPage.isEmpty()) return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_PROJECTS).data(null).build();
+        if (projectPage.isEmpty())
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_PROJECTS).data(null).build();
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(projectPage).build();
     }
 
@@ -141,7 +142,8 @@ public class ProjectServiceImpl implements ProjectService {
     public ServiceAnswer getPaginatedCompletedProjectsByModality(int pageNumber, int pageSize, String modality) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<Project> projectPage = projectRepository.findAllByModalityWithDefense(pageable, modality);
-        if (projectPage.isEmpty()) return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_PROJECTS).data(null).build();
+        if (projectPage.isEmpty())
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_PROJECTS).data(null).build();
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(projectPage.getContent()).build();
     }
 
@@ -149,35 +151,38 @@ public class ProjectServiceImpl implements ProjectService {
     public ServiceAnswer getPaginatedCompletedProjectsByArea(int pageNumber, int pageSize, String area) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<Project> projectPage = projectRepository.findAllByAreaWithDefense(pageable, area);
-        if (projectPage.isEmpty()) return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_PROJECTS).data(null).build();
+        if (projectPage.isEmpty())
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_PROJECTS).data(null).build();
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(projectPage.getContent()).build();
     }
 
     @Override
-    public ServiceAnswer getPaginatedCompletedProjectsBySubArea(int pageNumber, int pageSize, String subArea){
+    public ServiceAnswer getPaginatedCompletedProjectsBySubArea(int pageNumber, int pageSize, String subArea) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<Project> projectPage = projectRepository.findAllBySubAreaWithDefense(pageable, subArea);
-        if (projectPage.isEmpty()) return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_PROJECTS).data(null).build();
+        if (projectPage.isEmpty())
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_PROJECTS).data(null).build();
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(projectPage.getContent()).build();
     }
 
     @Override
-    public ServiceAnswer getPaginatedCompletedProjectsByFilters(int pageNumber, int pageSize, String name, String modality, String area, String subArea){
+    public ServiceAnswer getPaginatedCompletedProjectsByFilters(int pageNumber, int pageSize, String name, String modality, String area, String subArea) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<Project> projectPage = projectRepository.findAllWithFilters(pageable, name, modality, area, subArea);
-        if (projectPage.isEmpty()) return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_PROJECTS).data(null).build();
+        if (projectPage.isEmpty())
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_PROJECTS).data(null).build();
 
         List<Project> projects = projectPage.getContent();
         int total = projectPage.getTotalPages();
         Map<String, Object> totalResponse = new HashMap<>();
-        totalResponse.put ("totalPages", total);
-        totalResponse.put ("page", pageNumber);
+        totalResponse.put("totalPages", total);
+        totalResponse.put("page", pageNumber);
 
-        List <Map<String, Object>> foundProjects = new ArrayList<>();
+        List<Map<String, Object>> foundProjects = new ArrayList<>();
 
-        for (Project p: projects){
+        for (Project p : projects) {
             Map<String, Object> jsonMap = new HashMap<>();
-            jsonMap.put("id",p.getId());
+            jsonMap.put("id", p.getId());
 
             jsonMap.put("projectName", p.getName());
             jsonMap.put("modality", p.getModality().getName());
@@ -189,21 +194,21 @@ public class ProjectServiceImpl implements ProjectService {
             jsonMap.put("subAreas", p.getSubAreas().toArray());
 
             List<ProjectStudent> projectStudents = p.getStudents().stream().toList();
-            List <String> studentsNames = new ArrayList<>();
-            for (ProjectStudent ps : projectStudents){
+            List<String> studentsNames = new ArrayList<>();
+            for (ProjectStudent ps : projectStudents) {
                 String names = ps.getStudent().getUserInformation().getNames().trim();
                 String lastnames = ps.getStudent().getUserInformation().getLastnames().trim();
-                studentsNames.add(names+ " " +lastnames);
+                studentsNames.add(names + " " + lastnames);
             }
 
             jsonMap.put("students", studentsNames);
 
             List<ProjectTutor> projectTutors = p.getTutors().stream().toList();
-            List <String> tutorsNames = new ArrayList<>();
-            for (ProjectTutor ps : projectTutors){
+            List<String> tutorsNames = new ArrayList<>();
+            for (ProjectTutor ps : projectTutors) {
                 String names = ps.getTutor().getUserInformation().getNames().trim();
                 String lastnames = ps.getTutor().getUserInformation().getLastnames().trim();
-                tutorsNames.add(names+ " " +lastnames);
+                tutorsNames.add(names + " " + lastnames);
             }
             jsonMap.put("tutors", tutorsNames);
             foundProjects.add(jsonMap);
@@ -213,14 +218,14 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ServiceAnswer getPresentations (Long idProyecto){
+    public ServiceAnswer getPresentations(Long idProyecto) {
         Optional<Project> oProyectoGrado = projectRepository.findById(idProyecto);
-        if(oProyectoGrado.isEmpty()){
+        if (oProyectoGrado.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
         }
         Project proyecto = oProyectoGrado.get();
         List<Presentation> presentaciones = proyecto.getPresentations().stream().toList();
-        if (presentaciones.isEmpty()){
+        if (presentaciones.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_PRESENTATIONS).data(null).build();
         }
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(presentaciones).build();
@@ -229,33 +234,33 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ServiceAnswer getProjectInfoToReview(Long idProject, Long idReviewer) {
         Optional<Project> query = projectRepository.findById(idProject);
-        if(query.isEmpty()){
+        if (query.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data(null).build();
         }
-        if(siptisUserRepository.findById(idReviewer).isEmpty()){
+        if (siptisUserRepository.findById(idReviewer).isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.USER_ID_DOES_NOT_EXIST).data(null).build();
         }
         Project project = query.get();
 
         List<Long> reviewerIds = projectRepository.getIdsListFromReviewers(idProject);
-        if(!reviewerIds.contains(idReviewer)){
+        if (!reviewerIds.contains(idReviewer)) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_REVIEWER_DOES_NOT_MATCH_WITH_PROJECT).data(null).build();
         }
 
         Presentation presentation = presentationRepository.findTopByProjectIdOrderByDateDesc(idProject);
-        if(presentation == null){
+        if (presentation == null) {
             ProjectToReviewSectionVO data = new ProjectToReviewSectionVO(project, Boolean.FALSE, -1, Boolean.FALSE);
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.THERE_IS_NO_PRESENTATION_YET).data(data).build();
         }
 
-        if(Boolean.FALSE.equals(presentation.getReviewed())){
+        if (Boolean.FALSE.equals(presentation.getReviewed())) {
             ProjectToReviewSectionVO data = new ProjectToReviewSectionVO(project, Boolean.TRUE, getDaysDifference(presentation.getDate()), Boolean.FALSE);
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(data).build();
         }
 
         Review lastReview = reviewRepository.findTopByPresentationProjectIdAndSiptisUserIdOrderByDateDesc(idProject, idReviewer);
 
-        if(lastReview == null){
+        if (lastReview == null) {
             ProjectToReviewSectionVO data = new ProjectToReviewSectionVO(project, Boolean.FALSE, getDaysDifference(presentation.getDate()), Boolean.FALSE);
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(data).build();
         }
@@ -268,7 +273,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ServiceAnswer getAllProjectInfo(Long idProject) {
         Optional<Project> query = projectRepository.findById(idProject);
-        if(query.isEmpty()){
+        if (query.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data(null).build();
         }
 
@@ -279,7 +284,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ServiceAnswer getProjectInfoToAssignTribunals(Long idProject) {
         Optional<Project> query = projectRepository.findById(idProject);
-        if(query.isEmpty()){
+        if (query.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data(null).build();
         }
 
@@ -292,22 +297,22 @@ public class ProjectServiceImpl implements ProjectService {
         List<Long> tribunalsIds = assignTribunalsDTO.getTribunalsIds();
         Long projectId = assignTribunalsDTO.getProjectId();
         List<SiptisUser> tribunals = new ArrayList<>();
-        for(Long id: tribunalsIds){
+        for (Long id : tribunalsIds) {
             Optional<SiptisUser> user = siptisUserRepository.findById(id);
-            if(user.isEmpty()){
+            if (user.isEmpty()) {
                 return ServiceAnswer.builder().serviceMessage(ServiceMessage.USER_ID_DOES_NOT_EXIST).data(id).build();
             }
-            if(user.get().getRoles().stream().noneMatch(role -> role.getName().equals("TRIBUNAL"))){
+            if (user.get().getRoles().stream().noneMatch(role -> role.getName().equals("TRIBUNAL"))) {
                 return ServiceAnswer.builder().serviceMessage(ServiceMessage.USER_IS_NOT_A_TRIBUNAL).data(id).build();
             }
             tribunals.add(user.get());
         }
         Optional<Project> project = projectRepository.findById(projectId);
-        if(project.isEmpty()){
+        if (project.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data(null).build();
         }
 
-        for(SiptisUser user: tribunals){
+        for (SiptisUser user : tribunals) {
             ProjectTribunal projectTribunal = new ProjectTribunal(user, project.get());
             projectTribunalRepository.save(projectTribunal);
         }
@@ -321,7 +326,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ServiceAnswer getSchedulesInfoToAssignADefense(Long projectId) {
         Optional<Project> query = projectRepository.findById(projectId);
-        if(query.isEmpty()){
+        if (query.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data(null).build();
         }
         Project project = query.get();
@@ -338,26 +343,26 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ServiceAnswer addDefense(DefenseDTO defenseDTO) {
         Optional<Project> query = projectRepository.findById(defenseDTO.getIdProject());
-        if(query.isEmpty()){
+        if (query.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data(null).build();
         }
         Project project = query.get();
         List<Defense> reservations = defenseRepository.findByplaceToDefenseId(defenseDTO.getIdProject());
-        for(Defense defense: reservations){
-            long diffMillis = defenseDTO.getDate().getTime() - defense.getDate().getTime() ;
+        for (Defense defense : reservations) {
+            long diffMillis = defenseDTO.getDate().getTime() - defense.getDate().getTime();
             long diffHours = TimeUnit.HOURS.convert(diffMillis, TimeUnit.MILLISECONDS);
-            if(Math.abs(diffHours) <= 1){
+            if (Math.abs(diffHours) <= 1) {
                 return ServiceAnswer.builder().serviceMessage(ServiceMessage.THERE_IS_ANOTHER_RESERVATION_TOO_CLOSE).data(defense.getDate()).build();
             }
         }
-        if(project.getDefense() != null){
+        if (project.getDefense() != null) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_HAS_ALREADY_A_DEFENSE_DATE).data(null).build();
         }
         Optional<PlaceToDefense> place = placeToDefenseRepository.findById(defenseDTO.getIdPlace());
-        if(place.isEmpty()){
+        if (place.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_PLACE_DOES_NOT_EXIST).data(null).build();
         }
-        Defense newDefense =  new Defense(place.get(), project, defenseDTO.getDate());
+        Defense newDefense = new Defense(place.get(), project, defenseDTO.getDate());
         defenseRepository.save(newDefense);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("Defense created").build();
     }
@@ -365,7 +370,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ServiceAnswer getProjectsToDefenseOrDefended(Long userId) {
         Optional<SiptisUser> userOptional = siptisUserRepository.findById(userId);
-        if(userOptional.isEmpty()){
+        if (userOptional.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.USER_ID_DOES_NOT_EXIST).data(null).build();
         }
         List<Project> projectsToDefend = projectRepository.findByPhaseAndTribunalsTribunalId(Phase.DEFENSE_PHASE.toString(), userId);
@@ -386,19 +391,19 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ServiceAnswer getProjectsWithoutAndWithDefensePlace() {
         List<Project> projects = projectRepository.findAll();
-        List<ProjectCompleteInfoVO> withDefense = projects.stream().filter(project ->  project.getDefense() != null && project.getPhase().equals(Phase.DEFENSE_PHASE.toString())).map(ProjectCompleteInfoVO::new).toList();
-        List<ProjectCompleteInfoVO> withoutDefense = projects.stream().filter(project ->  project.getDefense() == null && project.getPhase().equals(Phase.DEFENSE_PHASE.toString())).map(ProjectCompleteInfoVO::new).toList();
+        List<ProjectCompleteInfoVO> withDefense = projects.stream().filter(project -> project.getDefense() != null && project.getPhase().equals(Phase.DEFENSE_PHASE.toString())).map(ProjectCompleteInfoVO::new).toList();
+        List<ProjectCompleteInfoVO> withoutDefense = projects.stream().filter(project -> project.getDefense() == null && project.getPhase().equals(Phase.DEFENSE_PHASE.toString())).map(ProjectCompleteInfoVO::new).toList();
         ProjectsWithoutAndWithTribunalsVO data = new ProjectsWithoutAndWithTribunalsVO(withDefense, withoutDefense);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(data).build();
     }
 
     private UserDefenseScheduleVO createDefenseInfo(SiptisUser student) {
         HashMap<String, List<String[]>> schedules = new HashMap<>();
-        for(Schedule schedule:student.getAvailableSchedules()){
+        for (Schedule schedule : student.getAvailableSchedules()) {
             String day = schedule.getDay();
             String start = schedule.getHourStart();
             String finish = schedule.getHourFinish();
-            if(!schedules.containsKey(day)){
+            if (!schedules.containsKey(day)) {
                 schedules.put(day, new ArrayList<>());
             }
             List<String[]> aux = schedules.get(day);
@@ -407,11 +412,11 @@ public class ProjectServiceImpl implements ProjectService {
         return new UserDefenseScheduleVO(student.getId(), student.getUserInformation().getNames() + " " + student.getUserInformation().getLastnames(), schedules);
     }
 
-    private Integer getDaysDifference(Date compare){
+    private Integer getDaysDifference(Date compare) {
         Date now = new Date();
 
         // Diferencia en milisegundos
-        long diffMillis = now.getTime() - compare.getTime() ;
+        long diffMillis = now.getTime() - compare.getTime();
 
         // Diferencia en días
         long diffDias = TimeUnit.DAYS.convert(diffMillis, TimeUnit.MILLISECONDS);

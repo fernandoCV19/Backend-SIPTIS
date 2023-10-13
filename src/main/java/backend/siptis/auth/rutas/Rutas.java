@@ -21,13 +21,13 @@ public class Rutas {
 
     @GetMapping("/docente")
     @PreAuthorize("hasAuthority('DOCENTE')")
-    public String soloEditor(){
+    public String soloEditor() {
         return "hola docente";
     }
 
     @GetMapping("/admin")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public String soloAdmin(){
+    public String soloAdmin() {
         return "hola admin";
     }
 }

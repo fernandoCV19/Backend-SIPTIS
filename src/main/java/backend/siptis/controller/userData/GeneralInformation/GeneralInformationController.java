@@ -5,9 +5,9 @@ import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.UserSelectedAreasDTO;
 import backend.siptis.service.projectManagement.AreaService;
+import backend.siptis.service.userData.GeneralInformation.GeneralInformationService;
 import backend.siptis.service.userData.UserAreaService;
 import backend.siptis.service.userData.UserCareerService;
-import backend.siptis.service.userData.GeneralInformation.GeneralInformationService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,25 +30,25 @@ public class GeneralInformationController {
 
     @GetMapping("/getAllCareers")
     @PreAuthorize("hasAuthority('STUDENT')")
-    public ResponseEntity<?> getAllCareers(){
+    public ResponseEntity<?> getAllCareers() {
         ServiceAnswer answerService = userCareerService.getAllCareers();
         return createResponse(answerService);
     }
 
     @GetMapping("/getAllAreas")
-    public ResponseEntity<?> getAllUserAreas(){
+    public ResponseEntity<?> getAllUserAreas() {
         ServiceAnswer answerService = userAreaService.getAllUserAreas();
         return createResponse(answerService);
     }
 
     @GetMapping("/getAllProjectAreas")
-    public ResponseEntity<?> getAllProjectAreas(){
+    public ResponseEntity<?> getAllProjectAreas() {
         ServiceAnswer answerService = areaService.getAllAreas();
         return createResponse(answerService);
     }
 
     @GetMapping("/getAllPotentialTribunals")
-    public ResponseEntity<?> getAllPotentialTribunals(){
+    public ResponseEntity<?> getAllPotentialTribunals() {
         ServiceAnswer answerService = generalInformationService.getAllPotentialTribunals();
         return createResponse(answerService);
     }
@@ -56,7 +56,7 @@ public class GeneralInformationController {
     @PostMapping("/getPotentialTribunalsByAreas")
     public ResponseEntity<?> getPotentialTribunalsByAreas(
             @RequestBody UserSelectedAreasDTO areas
-    ){
+    ) {
         ServiceAnswer answerService = generalInformationService.getPotentialTribunalsByAreas(areas);
         return createResponse(answerService);
     }
@@ -64,19 +64,20 @@ public class GeneralInformationController {
     @PostMapping("/getProjectsByAreas")
     public ResponseEntity<?> getProjectsByAreas(
             @RequestBody UserSelectedAreasDTO areas
-    ){
+    ) {
         ServiceAnswer answerService = generalInformationService.getProjectsByAreas(areas);
         return createResponse(answerService);
     }
-    private ResponseEntity<?> createResponse(ServiceAnswer serviceAnswer){
+
+    private ResponseEntity<?> createResponse(ServiceAnswer serviceAnswer) {
         Object data = serviceAnswer.getData();
         ServiceMessage messageService = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
-        if(messageService == ServiceMessage.OK){
+        if (messageService == ServiceMessage.OK) {
             httpStatus = HttpStatus.OK;
         }
-        if(messageService == ServiceMessage.NOT_FOUND || messageService == ServiceMessage.ERROR)
+        if (messageService == ServiceMessage.NOT_FOUND || messageService == ServiceMessage.ERROR)
             httpStatus = HttpStatus.NOT_FOUND;
 
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(data).message(messageService.toString()).build();

@@ -1,8 +1,8 @@
 package backend.siptis.service.editorsAndReviewers;
 
 import backend.siptis.commons.Phase;
-import backend.siptis.commons.ServiceMessage;
 import backend.siptis.commons.ServiceAnswer;
+import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectSupervisor;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectTeacher;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectTutor;
@@ -29,7 +29,7 @@ public class ProjectSupervisorServiceImpl implements ProjectSupervisorService {
 
     @Override
     public ServiceAnswer getAllProjectsNotAcceptedReviewedBySupervisorId(Long id) {
-        if(siptisUserRepository.findById(id).isEmpty()) {
+        if (siptisUserRepository.findById(id).isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data(null).build();
         }
 
@@ -39,7 +39,7 @@ public class ProjectSupervisorServiceImpl implements ProjectSupervisorService {
 
     @Override
     public ServiceAnswer getAllProjectsNotAcceptedNotReviewedBySupervisorId(Long id) {
-        if(siptisUserRepository.findById(id).isEmpty()) {
+        if (siptisUserRepository.findById(id).isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data(null).build();
         }
 
@@ -49,7 +49,7 @@ public class ProjectSupervisorServiceImpl implements ProjectSupervisorService {
 
     @Override
     public ServiceAnswer getAllProjectsAcceptedBySupervisorId(Long id) {
-        if(siptisUserRepository.findById(id).isEmpty()) {
+        if (siptisUserRepository.findById(id).isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data(null).build();
         }
 
@@ -59,18 +59,18 @@ public class ProjectSupervisorServiceImpl implements ProjectSupervisorService {
 
     @Override
     public ServiceAnswer acceptProject(Long idSupervisor, Long idProject) {
-        if(siptisUserRepository.findById(idSupervisor).isEmpty()){
+        if (siptisUserRepository.findById(idSupervisor).isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.USER_ID_DOES_NOT_EXIST).data(null).build();
         }
-        if(projectRepository.findById(idProject).isEmpty()){
+        if (projectRepository.findById(idProject).isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data(null).build();
         }
         ProjectSupervisor query = projectSupervisorRepository.findBySupervisorIdAndProjectId(idSupervisor, idProject);
-        if(query == null){
+        if (query == null) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_REVIEWER_DOES_NOT_MATCH_WITH_PROJECT).data(null).build();
         }
 
-        if(Boolean.TRUE.equals(query.getAccepted())){
+        if (Boolean.TRUE.equals(query.getAccepted())) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_HAS_ALREADY_BEEN_ACCEPTED).data(null).build();
         }
 
@@ -81,24 +81,24 @@ public class ProjectSupervisorServiceImpl implements ProjectSupervisorService {
 
     @Override
     public ServiceAnswer removeAcceptProject(Long idSupervisor, Long idProject) {
-        if(siptisUserRepository.findById(idSupervisor).isEmpty()){
+        if (siptisUserRepository.findById(idSupervisor).isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.USER_ID_DOES_NOT_EXIST).data(null).build();
         }
-        if(projectRepository.findById(idProject).isEmpty()){
+        if (projectRepository.findById(idProject).isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data(null).build();
         }
         ProjectSupervisor query = projectSupervisorRepository.findBySupervisorIdAndProjectId(idSupervisor, idProject);
-        if(query == null){
+        if (query == null) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_REVIEWER_DOES_NOT_MATCH_WITH_PROJECT).data(null).build();
         }
 
-        if(Boolean.FALSE.equals(query.getAccepted())){
+        if (Boolean.FALSE.equals(query.getAccepted())) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_IS_ALREADY_NOT_ACCEPTED).data(null).build();
         }
 
         Project project = query.getProject();
 
-        if(!project.getPhase().equals(Phase.REVIEWERS_PHASE.toString())){
+        if (!project.getPhase().equals(Phase.REVIEWERS_PHASE.toString())) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_IS_ON_ANOTHER_PHASE).data(null).build();
         }
 
@@ -112,7 +112,7 @@ public class ProjectSupervisorServiceImpl implements ProjectSupervisorService {
         boolean allReviewersHaveAccepted = project.getSupervisors().stream().allMatch(ProjectSupervisor::getAccepted) &&
                 project.getTeachers().stream().allMatch(ProjectTeacher::getAccepted) && project.getTutors().stream().allMatch(ProjectTutor::getAccepted);
 
-        if(allReviewersHaveAccepted){
+        if (allReviewersHaveAccepted) {
             project.setPhase(Phase.TRIBUNALS_PHASE.toString());
             projectRepository.save(project);
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("THE PROJECT HAS CHANGED TO THE PHASE OF TRIBUNALS").build();
@@ -120,8 +120,8 @@ public class ProjectSupervisorServiceImpl implements ProjectSupervisorService {
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("THE PROJECT HAS NOT CHANGED TO THE PHASE OF TRIBUNALS").build();
     }
 
-    private ServiceAnswer getProjects(List<ProjectSupervisor> listaProyectos){
-        if(listaProyectos.isEmpty()){
+    private ServiceAnswer getProjects(List<ProjectSupervisor> listaProyectos) {
+        if (listaProyectos.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.WITHOUT_PROJECTS).data(listaProyectos).build();
         }
 

@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -22,13 +22,13 @@ public class ProjectRepositoryTest {
     private final ProjectRepository projectRepository;
 
     @Autowired
-    public ProjectRepositoryTest(ProjectRepository projectRepository){
+    public ProjectRepositoryTest(ProjectRepository projectRepository) {
         this.projectRepository = projectRepository;
     }
 
 
     @Test
-    void CheckIfExistNonExistingUserTest(){
+    void CheckIfExistNonExistingUserTest() {
         assertFalse(projectRepository.existsByName("example"));
     }
 

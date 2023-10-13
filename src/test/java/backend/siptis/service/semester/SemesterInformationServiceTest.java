@@ -20,11 +20,11 @@ import static org.junit.jupiter.api.Assertions.*;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class SemesterInformationServiceTest {
-    private final SemesterInformationService semesterInformationService;
     private static SemesterInformationDTO dto = new SemesterInformationDTO();
+    private final SemesterInformationService semesterInformationService;
 
     @Autowired
-    public SemesterInformationServiceTest(SemesterInformationService semesterInformationService){
+    public SemesterInformationServiceTest(SemesterInformationService semesterInformationService) {
         this.semesterInformationService = semesterInformationService;
         dto.setStartDate(LocalDate.of(2023, 04, 12));
         dto.setEndDate(LocalDate.of(2023, 04, 12));
@@ -32,21 +32,21 @@ public class SemesterInformationServiceTest {
     }
 
     @Test
-    public void registerSemesterTrue(){
+    public void registerSemesterTrue() {
         System.out.println(dto);
         ServiceAnswer answer = semesterInformationService.startSemester(dto);
         assertEquals(answer.getServiceMessage(), ServiceMessage.OK);
     }
 
     @Test
-    public void checkIfExistActiveSemesterTrueTest(){
+    public void checkIfExistActiveSemesterTrueTest() {
         semesterInformationService.startSemester(dto);
         ServiceAnswer answer = semesterInformationService.existActiveSemester();
         assertTrue((Boolean) answer.getData());
     }
 
     @Test
-    public void checkIfExistActiveSemesterFalseTest(){
+    public void checkIfExistActiveSemesterFalseTest() {
         ServiceAnswer answer = semesterInformationService.existActiveSemester();
         assertFalse((Boolean) answer.getData());
     }

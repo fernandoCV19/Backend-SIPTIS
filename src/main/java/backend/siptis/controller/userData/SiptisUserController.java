@@ -7,11 +7,11 @@ import backend.siptis.model.pjo.dto.AdminRegisterDTO;
 import backend.siptis.model.pjo.dto.UserEditPersonalInformationDTO;
 import backend.siptis.model.pjo.dto.UserSelectedAreasDTO;
 import backend.siptis.model.pjo.dto.authentication.RefreshTokenDTO;
+import backend.siptis.model.pjo.dto.notifications.LogInDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.*;
 import backend.siptis.service.userData.RefreshTokenService;
 import backend.siptis.service.userData.SiptisUserService;
 import jakarta.validation.Valid;
-import backend.siptis.model.pjo.dto.notifications.LogInDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -82,7 +82,6 @@ public class SiptisUserController {
     }
 
 
-
     @GetMapping("/getUser/{userId}")
     public ResponseEntity<?> getUser(@PathVariable int userId) {
         Long id = Long.valueOf(userId);
@@ -103,7 +102,6 @@ public class SiptisUserController {
         ServiceAnswer answer = refreshTokenService.getToken(id);
         return createResponseEntity(answer);
     }
-
 
 
     @GetMapping("/list/students")

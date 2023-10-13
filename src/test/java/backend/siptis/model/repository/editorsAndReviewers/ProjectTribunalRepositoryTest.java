@@ -1,9 +1,7 @@
 package backend.siptis.model.repository.editorsAndReviewers;
 
 import backend.siptis.auth.entity.SiptisUser;
-import backend.siptis.model.entity.editorsAndReviewers.ProjectSupervisor;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectTribunal;
-import backend.siptis.model.entity.editorsAndReviewers.ProjectTutor;
 import backend.siptis.model.entity.projectManagement.Project;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
@@ -17,7 +15,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

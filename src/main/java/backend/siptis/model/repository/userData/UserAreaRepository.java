@@ -7,11 +7,12 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface UserAreaRepository extends JpaRepository<UserArea, Integer > {
+public interface UserAreaRepository extends JpaRepository<UserArea, Integer> {
 
     @Override
     List<UserArea> findAll();
 
     boolean existsUserAreaById(Long id);
+
     boolean existsUserAreaByName(String name);
 }

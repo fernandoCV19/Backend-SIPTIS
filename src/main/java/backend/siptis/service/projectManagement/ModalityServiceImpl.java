@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ModalityServiceImpl implements ModalityService{
+public class ModalityServiceImpl implements ModalityService {
 
     @Autowired
     private ModalityRepository modalityRepository;

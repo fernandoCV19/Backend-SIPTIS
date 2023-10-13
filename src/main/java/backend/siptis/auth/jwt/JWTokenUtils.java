@@ -12,8 +12,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-
-import java.security.Key;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -28,17 +26,8 @@ public class JWTokenUtils {
     //private static long EXPIRE_TIME_DURATION_2;
     private static String ACCESS_TOKEN_SECRET;
 
-    @Value("${security.jwt.token.secret-key}")
-    private void setAccessToken(String key){    ACCESS_TOKEN_SECRET = key;  }
-
-    @Value("${security.jwt.token.expire-length}")
-    private void setExpireTime(String time){   EXPIRE_TIME_DURATION  = Long.parseLong( time);  }
-/*
-    @Value("${cloud.aws.credentials.expire-length}")
-    private void setExpireTime2(long time){   EXPIRE_TIME_DURATION_2  = time;  }*/
-
-    public static String createToken(UserInformationService.UserDetailImp userDI){
-        Date fechaExpiracion =new Date(System.currentTimeMillis() + EXPIRE_TIME_DURATION);
+    public static String createToken(UserInformationService.UserDetailImp userDI) {
+        Date fechaExpiracion = new Date(System.currentTimeMillis() + EXPIRE_TIME_DURATION);
 
         return Jwts.builder().setSubject(userDI.getUsername())
                 .setExpiration(fechaExpiracion)
@@ -49,9 +38,9 @@ public class JWTokenUtils {
                 .compact();
     }
 
-    public static String createToken(SiptisUser user){
+    public static String createToken(SiptisUser user) {
         UserInformationService.UserDetailImp userDI = new UserInformationService.UserDetailImp(user);
-        Date fechaExpiracion =new Date(System.currentTimeMillis() + EXPIRE_TIME_DURATION);
+        Date fechaExpiracion = new Date(System.currentTimeMillis() + EXPIRE_TIME_DURATION);
 
         return Jwts.builder().setSubject(user.getEmail())
                 .setExpiration(fechaExpiracion)
@@ -61,9 +50,12 @@ public class JWTokenUtils {
                 .signWith(Keys.hmacShaKeyFor(ACCESS_TOKEN_SECRET.getBytes()))
                 .compact();
     }
+/*
+    @Value("${cloud.aws.credentials.expire-length}")
+    private void setExpireTime2(long time){   EXPIRE_TIME_DURATION_2  = time;  }*/
 
-    public static UserDetails getUserDetails(String token){
-        SiptisUser siptisUserDetails =new SiptisUser();
+    public static UserDetails getUserDetails(String token) {
+        SiptisUser siptisUserDetails = new SiptisUser();
         Claims claims = getClaims(token);
         //String subject =claims.getSubject();
         String subject = (String) claims.get(Claims.SUBJECT);
@@ -75,7 +67,7 @@ public class JWTokenUtils {
         for (String aRoleName : roleNames) {
 
             aRoleName = aRoleName.trim();
-            System.out.println("rol actual: "+ aRoleName);
+            System.out.println("rol actual: " + aRoleName);
             siptisUserDetails.addRol(new Role(aRoleName));
 
             siptisUserDetails.setEmail(subject);
@@ -84,13 +76,13 @@ public class JWTokenUtils {
         return siptisUserDetails;
     }
 
-    public static Claims getClaims(String token){
+    public static Claims getClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(ACCESS_TOKEN_SECRET.getBytes())
                 .build().parseClaimsJws(token).getBody();
     }
 
-    public static Long getId(String token){
+    public static Long getId(String token) {
         Claims claims = getClaims(token);
 
         Integer jwtId = (Integer) claims.get("id");
@@ -98,9 +90,9 @@ public class JWTokenUtils {
         return id;
     }
 
-    public static ArrayList<?> getProjects(String token){
+    public static ArrayList<?> getProjects(String token) {
         Claims claims = getClaims(token);
-        return (ArrayList <?>) claims.get("projects");
+        return (ArrayList<?>) claims.get("projects");
     }
 
     public static boolean validateJwtToken(String authToken) {
@@ -123,7 +115,7 @@ public class JWTokenUtils {
         return false;
     }
 
-    public static UsernamePasswordAuthenticationToken getAuthentication(String token){
+    public static UsernamePasswordAuthenticationToken getAuthentication(String token) {
         try {
             Claims claims = Jwts.parserBuilder()
                     .setSigningKey(ACCESS_TOKEN_SECRET.getBytes())
@@ -134,11 +126,21 @@ public class JWTokenUtils {
             //String correo =claims.getSubject();
 
             return new UsernamePasswordAuthenticationToken(
-                    userDetails, null,userDetails.getAuthorities()
+                    userDetails, null, userDetails.getAuthorities()
             );
-        }catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
+    }
+
+    @Value("${security.jwt.token.secret-key}")
+    private void setAccessToken(String key) {
+        ACCESS_TOKEN_SECRET = key;
+    }
+
+    @Value("${security.jwt.token.expire-length}")
+    private void setExpireTime(String time) {
+        EXPIRE_TIME_DURATION = Long.parseLong(time);
     }
 
 

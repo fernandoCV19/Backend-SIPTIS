@@ -34,21 +34,21 @@ public class AreaServiceImpl implements AreaService {
                 .data("El area fue creada exitosamente.").build();
     }
 
-    private ServiceAnswer validateCreateArea(String name){
-        if(areaRepository.existsAreaByName(name))
+    private ServiceAnswer validateCreateArea(String name) {
+        if (areaRepository.existsAreaByName(name))
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR)
                     .data("El area ya se encuentra registrada.").build();
         return null;
     }
 
-    private ServiceAnswer validateDeleteArea(Long id){
+    private ServiceAnswer validateDeleteArea(Long id) {
 
-        if(!areaRepository.existsAreaById(id)){
+        if (!areaRepository.existsAreaById(id)) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR)
                     .data("No pudimos encontrar el area solicitada.").build();
         }
         Area area = areaRepository.findById(id.intValue()).get();
-        if(area.getProjects().size() > 0){
+        if (area.getProjects().size() > 0) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR)
                     .data("No se puede eliminar el area, existen proyectos asignados.").build();
         }
@@ -59,7 +59,7 @@ public class AreaServiceImpl implements AreaService {
     @Override
     public ServiceAnswer deleteArea(Long id) {
         ServiceAnswer answer = validateDeleteArea(id);
-        if (answer != null){
+        if (answer != null) {
             return answer;
         }
         areaRepository.deleteById(id.intValue());

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface UserCareerRepository extends JpaRepository<UserCareer, Integer > {
+public interface UserCareerRepository extends JpaRepository<UserCareer, Integer> {
 
     @Override
     List<UserCareer> findAll();

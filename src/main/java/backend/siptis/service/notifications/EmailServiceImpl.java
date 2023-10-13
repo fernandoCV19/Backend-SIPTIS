@@ -28,18 +28,20 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 @Service
 @Transactional
 @AllArgsConstructor
-public class EmailServiceImpl implements EmailService{
-    private JavaMailSender mailSender;
+public class EmailServiceImpl implements EmailService {
     private final ActivityService activityService;
     private final GeneralActivityService generalActivityService;
     private final SiptisUserService siptisUserService;
     private final SiptisUserRepository siptisUserRepository;
-
+    private JavaMailSender mailSender;
 
     @Override
     @Scheduled(cron = "0 0 8 * * *")
@@ -48,33 +50,34 @@ public class EmailServiceImpl implements EmailService{
         int diaActual = LocalDateTime.now().getDayOfMonth();
 
         List<ActivityVO> activityList = activityService.findAllVO();
-        for(ActivityVO vo: activityList){
+        for (ActivityVO vo : activityList) {
 
-            Date date =  vo.getActivityDate();
+            Date date = vo.getActivityDate();
             int activityDay = date.getDate();
-            int activityMonth = date.getMonth()+1;
+            int activityMonth = date.getMonth() + 1;
 
-            if(activityMonth == mesActual &&
+            if (activityMonth == mesActual &&
                     (
                             diaActual == activityDay - 1 ||
-                            diaActual >= activityDay - 3 ||
-                            diaActual >= activityDay - 5
-                            )){
+                                    diaActual >= activityDay - 3 ||
+                                    diaActual >= activityDay - 5
+                    )) {
 
                 Project activityProject = vo.getProject();
-                Collection<ProjectStudent> students =  activityProject.getStudents();
+                Collection<ProjectStudent> students = activityProject.getStudents();
                 Address[] addresses = new Address[students.size()];
                 int i = 0;
-                for(ProjectStudent student: students){
+                for (ProjectStudent student : students) {
                     addresses[i] = new InternetAddress(student.getStudent().getEmail());
                     i++;
                 }
-                List<SiptisUser> users = (List)siptisUserService.getAllUsers().getData();
+                List<SiptisUser> users = (List) siptisUserService.getAllUsers().getData();
                 sendEmailFromTemplate(addresses, vo.getActivityName(), vo.getActivityDescription(), vo.getActivityDate());
 
             }
         }
     }
+
     @Override
     @Scheduled(cron = "0 0 8 * * *")
     public void sendGeneralActivities() throws MessagingException, IOException {
@@ -82,19 +85,19 @@ public class EmailServiceImpl implements EmailService{
         int diaActual = LocalDateTime.now().getDayOfMonth();
 
         List<GeneralActivityVO> generalActivityList = generalActivityService.findAllVO();
-        List<SiptisUser> users = (List)siptisUserService.getAllUsers().getData();
+        List<SiptisUser> users = (List) siptisUserService.getAllUsers().getData();
         Address[] addresses = getAllEmails(users);
-        for(GeneralActivityVO vo: generalActivityList){
+        for (GeneralActivityVO vo : generalActivityList) {
 
-            Date date =  vo.getActivityDate();
+            Date date = vo.getActivityDate();
             int activityDay = date.getDate();
-            int activityMonth = date.getMonth()+1;
-            if(activityMonth == mesActual &&
+            int activityMonth = date.getMonth() + 1;
+            if (activityMonth == mesActual &&
                     (
                             diaActual == activityDay - 1 ||
-                            diaActual >= activityDay - 3 ||
-                            diaActual >= activityDay - 5
-                            )){
+                                    diaActual >= activityDay - 3 ||
+                                    diaActual >= activityDay - 5
+                    )) {
 
                 sendEmailFromTemplate(addresses, vo.getActivityName(), vo.getActivityDescription(), vo.getActivityDate());
 
@@ -103,9 +106,9 @@ public class EmailServiceImpl implements EmailService{
     }
 
     @Override
-    public ServiceAnswer changePassword(TokenPasswordDTO dto){
+    public ServiceAnswer changePassword(TokenPasswordDTO dto) {
         boolean check = (boolean) siptisUserService.existsTokenPassword(dto.getTokenPassword()).getData();
-        if(!check){
+        if (!check) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.INVALID_TOKEN)
                     .data("El token para el cambio de contraseña no es valido").build();
         }
@@ -128,12 +131,13 @@ public class EmailServiceImpl implements EmailService{
 
     private Address[] getAllEmails(List<SiptisUser> users) throws MessagingException {
         Address[] addresses = new Address[users.size()];
-        for(int i = 0; i < users.size(); i++){
+        for (int i = 0; i < users.size(); i++) {
             String email = users.get(i).getEmail();
             addresses[i] = new InternetAddress(email);
         }
         return addresses;
     }
+
     @Override
     public String readFile(String fileName) throws IOException {
         Resource resource = new ClassPathResource(fileName);
@@ -164,6 +168,7 @@ public class EmailServiceImpl implements EmailService{
 
         mailSender.send(message);
     }
+
     @Override
     public void sendSpecificEmail(String email, String messageNotification) throws MessagingException, IOException {
         MimeMessage message = mailSender.createMimeMessage();
@@ -187,17 +192,17 @@ public class EmailServiceImpl implements EmailService{
     public ServiceAnswer sendRecoverPasswordEmail(String email) throws MessagingException {
 
         boolean checkUser = (boolean) siptisUserRepository.existsByEmail(email);
-        if(!checkUser){
+        if (!checkUser) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.EMAIL_NOT_EXIST)
                     .data("El correo electronico no se encuentra registrado en el sistema").build();
         }
         MimeMessage message = mailSender.createMimeMessage();
-        SiptisUser user =  siptisUserRepository.findOneByEmail(email).get();
+        SiptisUser user = siptisUserRepository.findOneByEmail(email).get();
 
         ChangePasswordDTO dto = createChangePasswordDTO(email);
         //String url = "http://127.0.0.1:5173/changePassword/";
 
-        try{
+        try {
             message.setFrom(new InternetAddress(dto.getEmailFrom()));
             message.setRecipients(MimeMessage.RecipientType.TO, email);
             message.setSubject(dto.getSubject());
@@ -208,7 +213,7 @@ public class EmailServiceImpl implements EmailService{
             message.setContent(htmlTemplate, "text/html; charset=utf-8");
             mailSender.send(message);
 
-        }catch (IOException io){
+        } catch (IOException io) {
             System.out.println("Error al enviar mensaje");
         }
 
@@ -218,7 +223,7 @@ public class EmailServiceImpl implements EmailService{
     }
 
     @Override
-    public ChangePasswordDTO createChangePasswordDTO(String email){
+    public ChangePasswordDTO createChangePasswordDTO(String email) {
         ChangePasswordDTO dto = new ChangePasswordDTO();
         dto.setEmailFrom("siptis.umss@gmail.com");
         dto.setEmailTo(email);

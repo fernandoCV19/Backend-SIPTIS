@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 @Table(name = "semester_information")
@@ -21,21 +20,21 @@ public class SemesterInformation {
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
-    @Column (name = "start_date")
+    @Column(name = "start_date")
     private LocalDate startDate;
-    @Column (name = "end_date")
+    @Column(name = "end_date")
     private LocalDate endDate;
-    @Column (name = "period")
+    @Column(name = "period")
     private String period;
-    @Column (name = "in_progress")
+    @Column(name = "in_progress")
     private boolean inProgress;
 
-    public String getStartDateString(){
+    public String getStartDateString() {
         String[] date = startDate.toString().split(" ");
         return date[0];
     }
 
-    public String getEndDateString(){
+    public String getEndDateString() {
         String[] date = endDate.toString().split(" ");
         return date[0];
     }

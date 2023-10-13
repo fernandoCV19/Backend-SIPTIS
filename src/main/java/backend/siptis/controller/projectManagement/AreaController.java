@@ -41,16 +41,16 @@ public class AreaController {
         return createResponseEntity(answerService);
     }
 
-    private ResponseEntity<?> createResponseEntity(ServiceAnswer serviceAnswer){
+    private ResponseEntity<?> createResponseEntity(ServiceAnswer serviceAnswer) {
         Object data = serviceAnswer.getData();
         ServiceMessage messageService = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
-        if(messageService == ServiceMessage.OK || messageService == ServiceMessage.AREA_DELETED){
+        if (messageService == ServiceMessage.OK || messageService == ServiceMessage.AREA_DELETED) {
             httpStatus = HttpStatus.OK;
         }
 
-        if(messageService == ServiceMessage.NOT_FOUND )
+        if (messageService == ServiceMessage.NOT_FOUND)
             httpStatus = HttpStatus.NOT_FOUND;
 
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(data).message(messageService.toString()).build();

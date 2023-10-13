@@ -22,15 +22,17 @@ import java.util.List;
 
 public class DocumentaryRecordTool {
     private Path location;
-    public DocumentaryRecordTool (Path location){
+
+    public DocumentaryRecordTool(Path location) {
         this.location = location;
     }
-    public String generate(DocumentaryRecordDto documentaryRecordDto,String modality ,String career, String names, String lastNames, List<String> tutors, String title )  {
+
+    public String generate(DocumentaryRecordDto documentaryRecordDto, String modality, String career, String names, String lastNames, List<String> tutors, String title) {
         LocalDate today = LocalDate.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String date = today.format(dateTimeFormatter);
-        String fileName =   names+ lastNames +"Ficha"+ date +".pdf";
-        fileName = fileName.replaceAll(" ","");
+        String fileName = names + lastNames + "Ficha" + date + ".pdf";
+        fileName = fileName.replaceAll(" ", "");
         try {
             Path temporal = location;
             PdfReader reader = new PdfReader(temporal.toString());
@@ -42,7 +44,7 @@ public class DocumentaryRecordTool {
             Paragraph element = new Paragraph(new Phrase(0, "X", font));
             //24.3 cm = 678f
             float degreeLocation = 142;
-            if (!documentaryRecordDto.isDegree()){
+            if (!documentaryRecordDto.isDegree()) {
                 degreeLocation = 444;
             }
             element.setIndentationLeft(degreeLocation);
@@ -51,13 +53,13 @@ public class DocumentaryRecordTool {
             element = new Paragraph(new Phrase(0, "X", font));
             element.setSpacingBefore(30);
             float modalityLocation = 42;
-            if (modality.equals(Modality.PROYECTO_DE_GRADO.toString())){
+            if (modality.equals(Modality.PROYECTO_DE_GRADO.toString())) {
                 modalityLocation = 195;
             }
-            if (modality.equals(Modality.TRABAJO_DIRIGIDO.toString())){
+            if (modality.equals(Modality.TRABAJO_DIRIGIDO.toString())) {
                 modalityLocation = 338;
             }
-            if (modality.equals(Modality.ADSCRIPCION.toString())){
+            if (modality.equals(Modality.ADSCRIPCION.toString())) {
                 modalityLocation = 449;
             }
             element.setIndentationLeft(modalityLocation);
@@ -105,8 +107,8 @@ public class DocumentaryRecordTool {
             element.setSpacingAfter(38);
             cr.addElement(element);
             //corregir linea texto
-            ArrayList <String> totalSummary = flowText(documentaryRecordDto.getSummary());
-            for(String s:totalSummary){
+            ArrayList<String> totalSummary = flowText(documentaryRecordDto.getSummary());
+            for (String s : totalSummary) {
                 element = new Paragraph(new Phrase(0, s, font));
                 element.setSpacingBefore(13);
                 element.setIndentationLeft(4);
@@ -114,7 +116,7 @@ public class DocumentaryRecordTool {
             }
             cr.go();
 
-             cr = new ColumnText(cb);
+            cr = new ColumnText(cb);
             cr.setSimpleColumn(75f, 30f, 600f, 175f);
 
             element = new Paragraph(new Phrase(0, documentaryRecordDto.getKeyWords(), font));
@@ -141,65 +143,70 @@ public class DocumentaryRecordTool {
             reader.close();
             Files.delete(temporal);
             return fileName;
-        }catch(IOException de) {
+        } catch (IOException de) {
             System.err.println(de.getMessage());
         }
         return fileName;
     }
-    private String anidateListNames(List<String> names){
-        StringBuilder res= new StringBuilder();
-        for (String s:names){
+
+    private String anidateListNames(List<String> names) {
+        StringBuilder res = new StringBuilder();
+        for (String s : names) {
             res.append(s).append(" ");
         }
         return res.toString().trim();
     }
-    private String autoIndentNames (String lastNames, String names){
-        String [] lnParts = lastNames.split(" ", 2);
+
+    private String autoIndentNames(String lastNames, String names) {
+        String[] lnParts = lastNames.split(" ", 2);
         String fLastName = lnParts[0];
         String mLastName = lnParts[1];
-        String space1 = spacing(43-fLastName.length());
-        String space2 = spacing(50-mLastName.length());
+        String space1 = spacing(43 - fLastName.length());
+        String space2 = spacing(50 - mLastName.length());
 
         return fLastName + space1 + mLastName + space2 + names;
     }
-    private String spacing (int quantity){
+
+    private String spacing(int quantity) {
         return " ".repeat(Math.max(0, quantity));
     }
-    private ArrayList<String> flowText(String text){
-        ArrayList<String>  res = new ArrayList<>();
-        if (text.length()<100 && !text.contains("\n")){
+
+    private ArrayList<String> flowText(String text) {
+        ArrayList<String> res = new ArrayList<>();
+        if (text.length() < 100 && !text.contains("\n")) {
             res.add(text);
             return res;
         }
         String aux = text;
-        while (aux.length() >= 100 ) {
+        while (aux.length() >= 100) {
             int actualIndex = 100;
             char c = aux.charAt(actualIndex);
             if (c != ' ') {
-                actualIndex = lookForSpacingIndex(aux, actualIndex-1);
+                actualIndex = lookForSpacingIndex(aux, actualIndex - 1);
             }
             String added = aux.substring(0, actualIndex);
-            if (added.contains("\n")){
+            if (added.contains("\n")) {
                 actualIndex = added.indexOf('\n');
-                res.add(added.substring(0,actualIndex));
+                res.add(added.substring(0, actualIndex));
             }
-            if (!added.contains("\n")){
+            if (!added.contains("\n")) {
                 res.add(added);
             }
-            aux = aux.substring(actualIndex+1);
+            aux = aux.substring(actualIndex + 1);
         }
-        if (aux.contains("\n")){
+        if (aux.contains("\n")) {
             int postndex = aux.indexOf('\n');
-            res.add(aux.substring(0,postndex));
+            res.add(aux.substring(0, postndex));
         }
-        if (!aux.contains("\n")){
+        if (!aux.contains("\n")) {
             res.add(aux);
         }
         return res;
     }
-    private int lookForSpacingIndex(String text, int reason){
-        for (int i = reason; i>0; i--){
-            if (text.charAt(i)==' ' || text.charAt(i)=='\n'){
+
+    private int lookForSpacingIndex(String text, int reason) {
+        for (int i = reason; i > 0; i--) {
+            if (text.charAt(i) == ' ' || text.charAt(i) == '\n') {
                 return i;
             }
         }

@@ -1,17 +1,13 @@
 package backend.siptis.auth.jwt;
 
 import backend.siptis.exception.RefreshTokenException;
-import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -23,11 +19,11 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain)
             throws ServletException, IOException, RefreshTokenException {
-        String bearerToken =request.getHeader("Authorization");
+        String bearerToken = request.getHeader("Authorization");
 
-        if(bearerToken != null && bearerToken.startsWith("Bearer ")){
-            String token =bearerToken.replace("Bearer ", "");
-            if(JWTokenUtils.validateJwtToken(token)){
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            String token = bearerToken.replace("Bearer ", "");
+            if (JWTokenUtils.validateJwtToken(token)) {
                 UsernamePasswordAuthenticationToken
                         usernamePAT = JWTokenUtils.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(usernamePAT);

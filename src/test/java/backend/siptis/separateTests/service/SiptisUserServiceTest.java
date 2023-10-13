@@ -20,7 +20,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
-
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,16 +31,16 @@ import static org.junit.jupiter.api.Assertions.*;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class SiptisUserServiceTest {
 
-    private final SiptisUserService siptisUserService;
-    private final SiptisUserRepository siptisUserRepository;
     private static AdminRegisterDTO adminDTO = new AdminRegisterDTO();
     private static RegisterStudentDTO studentDTO = new RegisterStudentDTO();
     private static RegisterUserDTO teacherDTO = new RegisterUserDTO();
     private static RegisterSpecialUserDTO specialUserDTO = new RegisterSpecialUserDTO();
+    private final SiptisUserService siptisUserService;
+    private final SiptisUserRepository siptisUserRepository;
     // private static LogInDTO logInDTO = new LogInDTO();
 
     @Autowired
-    public SiptisUserServiceTest(SiptisUserService siptisUserService, SiptisUserRepository siptisUserRepository){
+    public SiptisUserServiceTest(SiptisUserService siptisUserService, SiptisUserRepository siptisUserRepository) {
         this.siptisUserService = siptisUserService;
         this.siptisUserRepository = siptisUserRepository;
 
@@ -81,41 +80,44 @@ public class SiptisUserServiceTest {
 
     }
 
-/*
+    /*
+        @Test
+        void findById() {
+            ActivityVO activityVO = (ActivityVO) activityService.findById(1).getData();
+            assertNotNull(activityVO);
+        }
+        */
     @Test
-    void findById() {
-        ActivityVO activityVO = (ActivityVO) activityService.findById(1).getData();
-        assertNotNull(activityVO);
-    }
-    */
-    @Test
-    void registerStudentTest(){
+    void registerStudentTest() {
         ServiceAnswer answer = siptisUserService.registerStudent(studentDTO);
         assertEquals(answer.getServiceMessage(), ServiceMessage.OK);
     }
 
     @Test
-    void checkIfExistRegisteredStudentTest(){
+    void checkIfExistRegisteredStudentTest() {
         ServiceAnswer answer = siptisUserService.registerStudent(studentDTO);
         SiptisUser user = siptisUserRepository.findOneByEmail("student@gmail.com").get();
         assertNotNull(user);
     }
+
     @Test
-    void checkRegisteredStudentInformationCiTest(){
+    void checkRegisteredStudentInformationCiTest() {
         siptisUserService.registerStudent(studentDTO);
         SiptisUser user = siptisUserRepository.findOneByEmail("student@gmail.com").get();
         UserInformation information = user.getUserInformation();
         assertEquals(information.getCi(), "123123123");
     }
+
     @Test
-    void checkRegisteredStudentInformationCodSisTest(){
+    void checkRegisteredStudentInformationCodSisTest() {
         ServiceAnswer answer = siptisUserService.registerStudent(studentDTO);
         SiptisUser user = siptisUserRepository.findOneByEmail("student@gmail.com").get();
         UserInformation information = user.getUserInformation();
         assertEquals(information.getCodSIS(), "201900188");
     }
+
     @Test
-    void checkRegisteredStudentCareerTest(){
+    void checkRegisteredStudentCareerTest() {
         siptisUserService.registerStudent(studentDTO);
         SiptisUser user = siptisUserRepository.findOneByEmail("student@gmail.com").get();
         Set<UserCareer> career = user.getCareer();
@@ -124,25 +126,28 @@ public class SiptisUserServiceTest {
 
 
     @Test
-    void registerSpecialUserTest(){
+    void registerSpecialUserTest() {
         ServiceAnswer answer = siptisUserService.registerSpecialUser(specialUserDTO);
         assertEquals(answer.getServiceMessage(), ServiceMessage.OK);
     }
+
     @Test
-    void checkIfExistRegisteredSpecialUserTest(){
+    void checkIfExistRegisteredSpecialUserTest() {
         siptisUserService.registerSpecialUser(specialUserDTO);
         SiptisUser user = siptisUserRepository.findOneByEmail("specialUser@gmail.com").get();
         assertNotNull(user);
     }
+
     @Test
-    void checkRegisteredSpecialUserInformationCiTest(){
+    void checkRegisteredSpecialUserInformationCiTest() {
         siptisUserService.registerSpecialUser(specialUserDTO);
         SiptisUser user = siptisUserRepository.findOneByEmail("specialUser@gmail.com").get();
         UserInformation information = user.getUserInformation();
         assertEquals(information.getCi(), "55699963");
     }
+
     @Test
-    void checkRegisteredSpecialUserInformationCodSisTest(){
+    void checkRegisteredSpecialUserInformationCodSisTest() {
         siptisUserService.registerSpecialUser(specialUserDTO);
         SiptisUser user = siptisUserRepository.findOneByEmail("specialUser@gmail.com").get();
         UserInformation information = user.getUserInformation();
@@ -151,25 +156,28 @@ public class SiptisUserServiceTest {
 
 
     @Test
-    void registerTeacherTest(){
+    void registerTeacherTest() {
         ServiceAnswer answer = siptisUserService.registerTeacher(teacherDTO);
         assertEquals(answer.getServiceMessage(), ServiceMessage.OK);
     }
+
     @Test
-    void checkIfExistRegisteredTeacherTest(){
+    void checkIfExistRegisteredTeacherTest() {
         siptisUserService.registerTeacher(teacherDTO);
         SiptisUser user = siptisUserRepository.findOneByEmail("teacher@gmail.com").get();
         assertNotNull(user);
     }
+
     @Test
-    void checkRegisteredTeacherInformationCiTest(){
+    void checkRegisteredTeacherInformationCiTest() {
         siptisUserService.registerTeacher(teacherDTO);
         SiptisUser user = siptisUserRepository.findOneByEmail("teacher@gmail.com").get();
         UserInformation information = user.getUserInformation();
         assertEquals(information.getCi(), "2333234");
     }
+
     @Test
-    void checkRegisteredTeacherInformationCodSisTest(){
+    void checkRegisteredTeacherInformationCodSisTest() {
         siptisUserService.registerTeacher(teacherDTO);
         SiptisUser user = siptisUserRepository.findOneByEmail("teacher@gmail.com").get();
         UserInformation information = user.getUserInformation();

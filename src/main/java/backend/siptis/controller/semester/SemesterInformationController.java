@@ -5,7 +5,6 @@ import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.semester.EditSemesterInfoDTO;
 import backend.siptis.model.pjo.dto.semester.SemesterInformationDTO;
-import backend.siptis.model.repository.semester.SemesterInformationRepository;
 import backend.siptis.service.semester.SemesterInformationService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -23,55 +22,55 @@ public class SemesterInformationController {
 
     @GetMapping("/checkActiveSemester")
 
-    public ResponseEntity<?> checkActiveSemester(){
+    public ResponseEntity<?> checkActiveSemester() {
         ServiceAnswer answerService = semesterService.existActiveSemester();
         return createResponse(answerService);
     }
 
     @GetMapping("/getActiveSemesterInformation")
-    public ResponseEntity<?> getActiveSemester(){
+    public ResponseEntity<?> getActiveSemester() {
         ServiceAnswer answerService = semesterService.getCurrentSemester();
         return createResponse(answerService);
     }
 
     @GetMapping("/getcurrentSemesterPeriod")
-    public ResponseEntity<?> getcurrentSemesterPeriod(){
+    public ResponseEntity<?> getcurrentSemesterPeriod() {
         ServiceAnswer answerService = semesterService.getCurrentPeriod();
         return createResponse(answerService);
     }
 
     @PostMapping("/startSemester")
     public ResponseEntity<?> createSemester(
-            @RequestBody SemesterInformationDTO dto){
+            @RequestBody SemesterInformationDTO dto) {
         ServiceAnswer answerService = semesterService.startSemester(dto);
         return createResponse(answerService);
     }
 
     @PutMapping("/editSemester")
     public ResponseEntity<?> editSemester(
-            @Valid @RequestBody EditSemesterInfoDTO dto){
+            @Valid @RequestBody EditSemesterInfoDTO dto) {
         // Long semesterId = Long.valueOf(id);
         ServiceAnswer answerService = semesterService.editSemester(dto);
         return createResponse(answerService);
     }
 
     @PutMapping("/closeSemester/{id}")
-    public ResponseEntity<?> closeSemester(@PathVariable int id){
+    public ResponseEntity<?> closeSemester(@PathVariable int id) {
         Long semesterId = Long.valueOf(id);
         ServiceAnswer answerService = semesterService.closeSemester(semesterId);
         return createResponse(answerService);
     }
 
 
-    private ResponseEntity<?> createResponse(ServiceAnswer serviceAnswer){
+    private ResponseEntity<?> createResponse(ServiceAnswer serviceAnswer) {
         Object data = serviceAnswer.getData();
         ServiceMessage messageService = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.OK;
 
-        if(messageService == ServiceMessage.OK){
+        if (messageService == ServiceMessage.OK) {
             httpStatus = HttpStatus.OK;
         }
-        if(messageService == ServiceMessage.NOT_FOUND || messageService == ServiceMessage.ERROR)
+        if (messageService == ServiceMessage.NOT_FOUND || messageService == ServiceMessage.ERROR)
             httpStatus = HttpStatus.NOT_FOUND;
 
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(data).message(messageService.toString()).build();

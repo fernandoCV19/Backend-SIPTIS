@@ -2,7 +2,6 @@ package backend.siptis.service.notifications;
 
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.model.entity.notifications.Activity;
 import backend.siptis.model.entity.notifications.GeneralActivity;
 import backend.siptis.model.pjo.dto.notifications.GeneralActivityDTO;
 import backend.siptis.model.pjo.vo.GeneralActivityVO;
@@ -24,15 +23,17 @@ import java.util.Optional;
 public class GeneralActivityServiceImpl implements GeneralActivityService {
 
     private final GeneralActivityRepository generalActivityRepository;
+
     @Autowired
     public GeneralActivityServiceImpl(GeneralActivityRepository generalActivityRepository) {
         this.generalActivityRepository = generalActivityRepository;
     }
+
     @Override
     public ServiceAnswer findById(long id) {
         Optional<GeneralActivity> generalActivityOptional = generalActivityRepository.findById(id);
 
-        if(!generalActivityOptional.isEmpty()){
+        if (!generalActivityOptional.isEmpty()) {
             return ServiceAnswer.builder()
                     .serviceMessage(ServiceMessage.OK)
                     .data(entityToVO(generalActivityOptional.get()))
@@ -61,18 +62,19 @@ public class GeneralActivityServiceImpl implements GeneralActivityService {
     public List<GeneralActivityVO> findAllVO() {
         List<GeneralActivity> generalActivitiesList = generalActivityRepository.findAll();
         ArrayList<GeneralActivityVO> generalActivityArrayList = new ArrayList<>();
-        for(GeneralActivity generalActivity: generalActivitiesList){
+        for (GeneralActivity generalActivity : generalActivitiesList) {
             generalActivityArrayList.add(entityToVO(generalActivity));
         }
         return generalActivityArrayList;
     }
 
     @Override
-    public Page<GeneralActivity> findAll(Pageable pageable){
+    public Page<GeneralActivity> findAll(Pageable pageable) {
         LocalDateTime now = LocalDateTime.now();
-        Date actual = new Date(now.getYear()-1900, now.getMonthValue()-1, now.getDayOfMonth()-1);
+        Date actual = new Date(now.getYear() - 1900, now.getMonthValue() - 1, now.getDayOfMonth() - 1);
         return generalActivityRepository.findAllAfterADate(actual, pageable);
     }
+
     @Override
     public Page<GeneralActivityVO> findAllVO(Pageable pageable) {
         Page<GeneralActivity> pageFound = generalActivityRepository.findAll(pageable);
@@ -88,18 +90,20 @@ public class GeneralActivityServiceImpl implements GeneralActivityService {
         }
         return new PageImpl(entityToVO(activitiesRes), pageable, pageFound.getTotalElements());
     }
-    private boolean isAfter(Date date){
+
+    private boolean isAfter(Date date) {
         int mesActual = LocalDateTime.now().getMonthValue();
         int diaActual = LocalDateTime.now().getDayOfMonth();
         int anioActual = LocalDateTime.now().getYear();
-        Date actual = new Date(anioActual-1900, mesActual-1, diaActual-1);
+        Date actual = new Date(anioActual - 1900, mesActual - 1, diaActual - 1);
         return date.after(actual);
     }
+
     @Override
     public ServiceAnswer update(GeneralActivityDTO generalActivityDTO, long id) {
         Optional<GeneralActivity> optionalGeneralActivity = generalActivityRepository.findById(id);
 
-        if(!optionalGeneralActivity.isEmpty()){
+        if (!optionalGeneralActivity.isEmpty()) {
             GeneralActivity generalActivity = optionalGeneralActivity.get();
             generalActivity.setActivityName(generalActivityDTO.getActivityName());
             generalActivity.setActivityDescription(generalActivityDTO.getActivityDescription());
@@ -121,7 +125,7 @@ public class GeneralActivityServiceImpl implements GeneralActivityService {
     @Override
     public ServiceAnswer delete(long id) {
         Optional<GeneralActivity> generalActivity = generalActivityRepository.findById(id);
-        if(!generalActivity.isEmpty()) {
+        if (!generalActivity.isEmpty()) {
             generalActivityRepository.deleteById(id);
 
             return ServiceAnswer.builder()
@@ -140,7 +144,8 @@ public class GeneralActivityServiceImpl implements GeneralActivityService {
         BeanUtils.copyProperties(generalActivity, generalActivityVO);
         return generalActivityVO;
     }
-    private List<GeneralActivityVO> entityToVO(List<GeneralActivity> list){
+
+    private List<GeneralActivityVO> entityToVO(List<GeneralActivity> list) {
         List<GeneralActivityVO> generalActivityVOList = new ArrayList<>();
         for (GeneralActivity generalActivity : list) {
             GeneralActivityVO generalActivityVO = new GeneralActivityVO();

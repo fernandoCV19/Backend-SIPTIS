@@ -15,7 +15,6 @@ public interface RefreshTokenService {
     RefreshToken verifyExpirationDate(RefreshToken refreshToken);
 
 
-
     ServiceAnswer getToken(Long id);
 
     int deleteToken(Long userId);

@@ -18,7 +18,7 @@ public class TeacherInformationDTO {
     private Long careerId;
     private Set<UserArea> areas;
 
-    public void setBirthDate(Date date){
+    public void setBirthDate(Date date) {
         DateFormat dtFormat = new SimpleDateFormat("yyyy-MM-dd");
         birthDate = dtFormat.format(date);
     }

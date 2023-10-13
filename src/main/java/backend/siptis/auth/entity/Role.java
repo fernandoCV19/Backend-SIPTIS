@@ -2,7 +2,10 @@ package backend.siptis.auth.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Collection;
 
@@ -23,7 +26,7 @@ public class Role {
     @JsonBackReference
     private Collection<SiptisUser> siptisUsers;
 
-    public Role(String rolName){
+    public Role(String rolName) {
         this.name = rolName;
     }
 
@@ -32,7 +35,7 @@ public class Role {
         this.id = id;
     }
 
-    public String toString(){
+    public String toString() {
         return name;
     }
 }

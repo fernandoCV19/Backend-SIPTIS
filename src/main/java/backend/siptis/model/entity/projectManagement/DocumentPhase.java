@@ -1,6 +1,5 @@
 package backend.siptis.model.entity.projectManagement;
 
-import backend.siptis.auth.entity.SiptisUser;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -28,7 +27,6 @@ public class DocumentPhase {
     @JoinColumn(name = "phase_id", nullable = false)
     @JsonBackReference
     private Phase phase;
-
 
 
 }

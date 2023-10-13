@@ -8,13 +8,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class RoleServiceImpl implements RoleService{
+public class RoleServiceImpl implements RoleService {
 
     private final RoleRepository roleRepository;
+
     @Override
     public ServiceAnswer getRoleByName(String name) {
 
-        if(!roleRepository.existsRoleByName(name)){
+        if (!roleRepository.existsRoleByName(name)) {
             return createResponse(ServiceMessage.ERROR, "No se pudo encotrar el rol.");
         }
 
@@ -23,7 +24,7 @@ public class RoleServiceImpl implements RoleService{
     }
 
 
-    private ServiceAnswer createResponse(ServiceMessage serviceMessage, Object data){
+    private ServiceAnswer createResponse(ServiceMessage serviceMessage, Object data) {
         return ServiceAnswer.builder().serviceMessage(
                 serviceMessage).data(data
         ).build();

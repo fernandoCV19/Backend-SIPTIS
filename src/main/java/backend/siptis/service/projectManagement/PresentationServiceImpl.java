@@ -1,19 +1,20 @@
 package backend.siptis.service.projectManagement;
 
 import backend.siptis.commons.Phase;
-import backend.siptis.commons.ServiceMessage;
 import backend.siptis.commons.ServiceAnswer;
+import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.projectManagement.Presentation;
 import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.pjo.vo.projectManagement.InfoToReviewAProjectVO;
 import backend.siptis.model.pjo.vo.projectManagement.ReviewShortInfoVO;
 import backend.siptis.model.repository.projectManagement.PresentationRepository;
 import backend.siptis.model.repository.projectManagement.ProjectRepository;
-import jakarta.transaction.Transactional;
 import backend.siptis.service.cloud.CloudManagementService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -27,13 +28,13 @@ public class PresentationServiceImpl implements PresentationService {
     private final ProjectRepository projectRepository;
 
     @Override
-    public ServiceAnswer createPresentation (Long idProyecto, Phase fase){
-        Optional <Presentation> presentacionesNoEntregadas = presentationRepository.findByProjectIdAndReviewed(idProyecto, false);
-        if (presentacionesNoEntregadas.isPresent()){
+    public ServiceAnswer createPresentation(Long idProyecto, Phase fase) {
+        Optional<Presentation> presentacionesNoEntregadas = presentationRepository.findByProjectIdAndReviewed(idProyecto, false);
+        if (presentacionesNoEntregadas.isPresent()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PENDING_PRESENTATION).data(null).build();
         }
         Optional<Project> oproyectoGrado = projectRepository.findById(idProyecto);
-        if (oproyectoGrado.isEmpty()){
+        if (oproyectoGrado.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
         }
         Project project = oproyectoGrado.get();
@@ -47,9 +48,9 @@ public class PresentationServiceImpl implements PresentationService {
     }
 
     @Override
-    public ServiceAnswer gradePresentation (Long idPresentacion){
-        Optional <Presentation> opresentacion = presentationRepository.findById(idPresentacion);
-        if (opresentacion.isEmpty()){
+    public ServiceAnswer gradePresentation(Long idPresentacion) {
+        Optional<Presentation> opresentacion = presentationRepository.findById(idPresentacion);
+        if (opresentacion.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
         }
         Presentation presentation = opresentacion.get();
@@ -67,48 +68,50 @@ public class PresentationServiceImpl implements PresentationService {
     }
 
     @Override
-    public ServiceAnswer attachFile (Long idPresentacion, MultipartFile file, String path){
+    public ServiceAnswer attachFile(Long idPresentacion, MultipartFile file, String path) {
         path = correctFileContext(path);
-        if (path.equals("Unknown")){
+        if (path.equals("Unknown")) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
         }
-        Optional <Presentation> opresentacion = presentationRepository.findById(idPresentacion);
-        if (opresentacion.isEmpty()){
+        Optional<Presentation> opresentacion = presentationRepository.findById(idPresentacion);
+        if (opresentacion.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
         }
         Presentation presentation = opresentacion.get();
-        String key = nube.putObject(file,path);
-        if (path.equals("Libro-Azul/")){
-            presentation.setBlueBookPath(key);}
-        if (path.equals("Trabajos-Grado/")){
-            presentation.setProjectPath(key);}
+        String key = nube.putObject(file, path);
+        if (path.equals("Libro-Azul/")) {
+            presentation.setBlueBookPath(key);
+        }
+        if (path.equals("Trabajos-Grado/")) {
+            presentation.setProjectPath(key);
+        }
 
         presentationRepository.saveAndFlush(presentation);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.CLOUD_OPERATION_COMPLETE).data(key).build();
     }
 
     @Override
-    public ServiceAnswer removeFile (Long idPresentacion, String path){
+    public ServiceAnswer removeFile(Long idPresentacion, String path) {
         path = correctFileContext(path);
-        if (path.equals("Unknown")){
+        if (path.equals("Unknown")) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
         }
-        Optional <Presentation> opresentacion = presentationRepository.findById(idPresentacion);
-        if (opresentacion.isEmpty()){
+        Optional<Presentation> opresentacion = presentationRepository.findById(idPresentacion);
+        if (opresentacion.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
         }
         Presentation presentation = opresentacion.get();
         String key = "";
-        if (path.equals("Libro-Azul/")){
+        if (path.equals("Libro-Azul/")) {
             key = presentation.getBlueBookPath();
-            if(key == null){
+            if (key == null) {
                 return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_FILE_ATTACHED).data(null).build();
             }
             presentation.setBlueBookPath(null);
         }
-        if (path.equals("Trabajos-Grado/")){
+        if (path.equals("Trabajos-Grado/")) {
             key = presentation.getProjectPath();
-            if(key == null){
+            if (key == null) {
                 return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_FILE_ATTACHED).data(null).build();
             }
             presentation.setProjectPath(null);
@@ -119,14 +122,14 @@ public class PresentationServiceImpl implements PresentationService {
     }
 
     @Override
-    public ServiceAnswer delete (Long idPresentacion){
-        Optional <Presentation> presentacion = presentationRepository.findById(idPresentacion);
-        if (presentacion.isPresent()){
+    public ServiceAnswer delete(Long idPresentacion) {
+        Optional<Presentation> presentacion = presentationRepository.findById(idPresentacion);
+        if (presentacion.isPresent()) {
             String blue = presentacion.get().getBlueBookPath();
             String project = presentacion.get().getProjectPath();
-            if (blue!= null)
+            if (blue != null)
                 nube.deleteObject(blue);
-            if (project!=null)
+            if (project != null)
                 nube.deleteObject(project);
             presentationRepository.deleteById(idPresentacion);
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PRESENTATION_DELETED).data(null).build();
@@ -135,15 +138,14 @@ public class PresentationServiceImpl implements PresentationService {
     }
 
 
-
     @Override
     public ServiceAnswer getLastReviewsFromAPresentation(Long projectId) {
         Optional<Project> projectOptinal = projectRepository.findById(projectId);
-        if(projectOptinal.isEmpty()){
+        if (projectOptinal.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data(null).build();
         }
         Presentation presentation = presentationRepository.findTopByProjectIdOrderByDateDesc(projectId);
-        if(presentation == null){
+        if (presentation == null) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.THERE_IS_NO_PRESENTATION_YET).data(null).build();
         }
         List<ReviewShortInfoVO> reviews = presentation.getReviews().stream().map(ReviewShortInfoVO::new).toList();
@@ -151,9 +153,13 @@ public class PresentationServiceImpl implements PresentationService {
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(data).build();
     }
 
-    private String correctFileContext (String context){
-        if (context.equals("libro-azul")){return "Libro-Azul/";}
-        if (context.equals("trabajo-grado")){return "Trabajos-Grado/";}
+    private String correctFileContext(String context) {
+        if (context.equals("libro-azul")) {
+            return "Libro-Azul/";
+        }
+        if (context.equals("trabajo-grado")) {
+            return "Trabajos-Grado/";
+        }
         return "Unknown";
     }
 }

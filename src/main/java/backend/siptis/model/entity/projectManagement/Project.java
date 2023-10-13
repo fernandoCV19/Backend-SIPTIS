@@ -5,7 +5,10 @@ import backend.siptis.model.entity.notifications.Activity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Collection;
 import java.util.Set;
@@ -33,7 +36,11 @@ public class Project {
     @Column(name = "project_path")
     private String projectPath;
 
+    @Column(name = "phase")
     private String phase;
+
+    @Column(name = "period")
+    private String period;
 
     @OneToOne(mappedBy = "project", cascade = CascadeType.ALL, optional = true)
     @JoinColumn(name = "defense_id")
@@ -52,7 +59,7 @@ public class Project {
     @JsonManagedReference
     private Collection<SubArea> subAreas;
 
-    @ManyToMany(fetch =  FetchType.LAZY, cascade = {
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE
     })

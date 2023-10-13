@@ -25,7 +25,7 @@ public class StudentInformationDTO {
     private Long careerId;
     private String career;
 
-    public void setBirthDate(Date date){
+    public void setBirthDate(Date date) {
         DateFormat dtFormat = new SimpleDateFormat("yyyy-MM-dd");
         birthDate = dtFormat.format(date);
     }

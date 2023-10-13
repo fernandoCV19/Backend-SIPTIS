@@ -10,9 +10,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class PhaseServiceImpl implements PhaseService{
+public class PhaseServiceImpl implements PhaseService {
 
     private final PhaseRepository phaseRepository;
+
     @Override
     public ServiceAnswer createPhase(PhaseDTO phaseDTO) {
         ServiceAnswer serviceAnswer = new ServiceAnswer();
@@ -28,7 +29,7 @@ public class PhaseServiceImpl implements PhaseService{
     public ServiceAnswer deletePhase(Long idPhase) {
         ServiceAnswer serviceAnswer = new ServiceAnswer();
         Phase phase = phaseRepository.findById(idPhase).orElse(null);
-        if (phase == null){
+        if (phase == null) {
             return serviceAnswer.builder()
                     .serviceMessage(ServiceMessage.NOT_FOUND)
                     .build();
@@ -38,11 +39,12 @@ public class PhaseServiceImpl implements PhaseService{
                 .serviceMessage(ServiceMessage.OK)
                 .build();
     }
+
     @Override
     public ServiceAnswer updatePhase(PhaseDTO phaseDTO, Long idPhase) {
         ServiceAnswer serviceAnswer = new ServiceAnswer();
         Phase phase = phaseRepository.findById(idPhase).orElse(null);
-        if (phase == null){
+        if (phase == null) {
             return serviceAnswer.builder()
                     .serviceMessage(ServiceMessage.NOT_FOUND)
                     .build();
@@ -69,7 +71,7 @@ public class PhaseServiceImpl implements PhaseService{
     public ServiceAnswer findPhaseById(Long idPhase) {
         ServiceAnswer serviceAnswer = new ServiceAnswer();
         Phase phase = phaseRepository.findById(idPhase).orElse(null);
-        if (phase == null){
+        if (phase == null) {
             return serviceAnswer.builder()
                     .serviceMessage(ServiceMessage.NOT_FOUND)
                     .build();

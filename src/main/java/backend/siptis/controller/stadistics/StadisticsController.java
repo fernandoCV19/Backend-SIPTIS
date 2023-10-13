@@ -20,7 +20,7 @@ public class StadisticsController {
     private final StadisticsService stadisticsService;
 
     @GetMapping("/studentsByCareer")
-    public ResponseEntity<?> getStudentsByCareer(){
+    public ResponseEntity<?> getStudentsByCareer() {
 
         ServiceAnswer answerService = stadisticsService.StudentsByCareerStadistics();
 
@@ -28,7 +28,7 @@ public class StadisticsController {
     }
 
     @GetMapping("/userByArea")
-    public ResponseEntity<?> getUsersByArea(){
+    public ResponseEntity<?> getUsersByArea() {
 
         ServiceAnswer answerService = stadisticsService.UserByAreaStadistics();
 
@@ -36,7 +36,7 @@ public class StadisticsController {
     }
 
     @GetMapping("/projectsByArea/{careerId}")
-    public ResponseEntity<?> getProjectsByAreaAndCareer(@PathVariable int careerId){
+    public ResponseEntity<?> getProjectsByAreaAndCareer(@PathVariable int careerId) {
 
         ServiceAnswer answerService = stadisticsService.ProyectsByAreaAndCareer(careerId);
 
@@ -44,7 +44,7 @@ public class StadisticsController {
     }
 
     @GetMapping("/ ")
-    public ResponseEntity<?> getStudentsByYear(){
+    public ResponseEntity<?> getStudentsByYear() {
 
         ServiceAnswer answerService = stadisticsService.getStudentsByYear();
 
@@ -52,7 +52,7 @@ public class StadisticsController {
     }
 
     @GetMapping("/studentsByYearAndCareer/{career}")
-    public ResponseEntity<?> getStudentsByYearAndCareer(@PathVariable String career){
+    public ResponseEntity<?> getStudentsByYearAndCareer(@PathVariable String career) {
 
         ServiceAnswer answerService =
                 stadisticsService.getStudentsByYearAndCareer(career);
@@ -60,17 +60,17 @@ public class StadisticsController {
         return crearResponseEntityRegistrar(answerService);
     }
 
-    private ResponseEntity<?> crearResponseEntityRegistrar(ServiceAnswer serviceAnswer){
+    private ResponseEntity<?> crearResponseEntityRegistrar(ServiceAnswer serviceAnswer) {
         Object data = serviceAnswer.getData();
         ServiceMessage messageService = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
-        if(messageService == ServiceMessage.OK){
+        if (messageService == ServiceMessage.OK) {
             httpStatus = HttpStatus.OK;
         }
 
 
-        if(messageService == ServiceMessage.NOT_FOUND || messageService == ServiceMessage.ERROR)
+        if (messageService == ServiceMessage.NOT_FOUND || messageService == ServiceMessage.ERROR)
             httpStatus = HttpStatus.NOT_FOUND;
 
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(data).message(messageService.toString()).build();

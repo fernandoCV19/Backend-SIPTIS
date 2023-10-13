@@ -1,6 +1,5 @@
 package backend.siptis.separateTests.service;
 
-import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.pjo.dto.projectManagement.NewProjectDTO;
@@ -18,10 +17,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -30,18 +28,18 @@ import java.util.List;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class ProjectServiceTest {
 
-    private final ProjectService projectService;
-    private final SiptisUserService siptisUserService;
-    private final SiptisUserRepository siptisUserRepository;
     private static RegisterStudentDTO studentDTO = new RegisterStudentDTO();
     private static RegisterUserDTO teacherDTO = new RegisterUserDTO();
     private static NewProjectDTO newProjectDTO = new NewProjectDTO();
+    private final ProjectService projectService;
+    private final SiptisUserService siptisUserService;
+    private final SiptisUserRepository siptisUserRepository;
     private Long studentId;
     private Long teacherId;
 
     @Autowired
     public ProjectServiceTest(ProjectService projectService,
-                              SiptisUserService siptisUserService, SiptisUserRepository siptisUserRepository){
+                              SiptisUserService siptisUserService, SiptisUserRepository siptisUserRepository) {
         this.projectService = projectService;
         this.siptisUserService = siptisUserService;
         this.siptisUserRepository = siptisUserRepository;
@@ -85,21 +83,22 @@ public class ProjectServiceTest {
     }
 
     @Test
-    void getEmptyProjectListTest(){
+    void getEmptyProjectListTest() {
         ServiceAnswer answer = projectService.getProjects();
         List<Project> projects = (List<Project>) answer.getData();
         assertEquals(0, 0);
     }
 
     @Test
-    void createProjectTest(){
-        projectService.createProject(newProjectDTO);ServiceAnswer answer = projectService.getProjects();
+    void createProjectTest() {
+        projectService.createProject(newProjectDTO);
+        ServiceAnswer answer = projectService.getProjects();
         List<Project> projects = (List<Project>) answer.getData();
         assertEquals(projects.size(), 1);
     }
 
     @Test
-    void getNotEmptyProjectListTest(){
+    void getNotEmptyProjectListTest() {
         ServiceAnswer answer = projectService.getProjects();
         List<Project> projects = (List<Project>) answer.getData();
         assertEquals(projects.size(), 0);

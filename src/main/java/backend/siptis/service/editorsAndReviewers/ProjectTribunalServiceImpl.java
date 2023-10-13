@@ -1,9 +1,8 @@
 package backend.siptis.service.editorsAndReviewers;
 
 import backend.siptis.commons.Phase;
-import backend.siptis.commons.ServiceMessage;
 import backend.siptis.commons.ServiceAnswer;
-import backend.siptis.model.entity.editorsAndReviewers.ProjectTeacher;
+import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectTribunal;
 import backend.siptis.model.entity.projectManagement.Defense;
 import backend.siptis.model.entity.projectManagement.Project;
@@ -31,7 +30,7 @@ public class ProjectTribunalServiceImpl implements ProjectTribunalService {
 
     @Override
     public ServiceAnswer getAllProjectsNotReviewedByTribunalId(Long id) {
-        if(siptisUserRepository.findById(id).isEmpty()) {
+        if (siptisUserRepository.findById(id).isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data(null).build();
         }
 
@@ -42,7 +41,7 @@ public class ProjectTribunalServiceImpl implements ProjectTribunalService {
 
     @Override
     public ServiceAnswer getAllProjectsReviewedNotAcceptedByTribunalId(Long id) {
-        if(siptisUserRepository.findById(id).isEmpty()) {
+        if (siptisUserRepository.findById(id).isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data(null).build();
         }
 
@@ -53,7 +52,7 @@ public class ProjectTribunalServiceImpl implements ProjectTribunalService {
 
     @Override
     public ServiceAnswer getAllProjectsAcceptedWithoutDefensePointsByTribunalId(Long id) {
-        if(siptisUserRepository.findById(id).isEmpty()) {
+        if (siptisUserRepository.findById(id).isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data(null).build();
         }
 
@@ -64,7 +63,7 @@ public class ProjectTribunalServiceImpl implements ProjectTribunalService {
 
     @Override
     public ServiceAnswer getAllProjectsDefendedByTribunalId(Long id) {
-        if(siptisUserRepository.findById(id).isEmpty()) {
+        if (siptisUserRepository.findById(id).isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data(null).build();
         }
 
@@ -75,18 +74,18 @@ public class ProjectTribunalServiceImpl implements ProjectTribunalService {
 
     @Override
     public ServiceAnswer acceptProject(Long idTribunal, Long idProject) {
-        if(siptisUserRepository.findById(idTribunal).isEmpty()){
+        if (siptisUserRepository.findById(idTribunal).isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.USER_ID_DOES_NOT_EXIST).data(null).build();
         }
-        if(projectRepository.findById(idProject).isEmpty()){
+        if (projectRepository.findById(idProject).isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data(null).build();
         }
         ProjectTribunal query = projectTribunalRepository.findByTribunalIdAndProjectId(idTribunal, idProject);
-        if(query == null){
+        if (query == null) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_REVIEWER_DOES_NOT_MATCH_WITH_PROJECT).data(null).build();
         }
 
-        if(Boolean.TRUE.equals(query.getAccepted())){
+        if (Boolean.TRUE.equals(query.getAccepted())) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_HAS_ALREADY_BEEN_ACCEPTED).data(null).build();
         }
 
@@ -97,24 +96,24 @@ public class ProjectTribunalServiceImpl implements ProjectTribunalService {
 
     @Override
     public ServiceAnswer removeAcceptProject(Long idTribunal, Long idProject) {
-        if(siptisUserRepository.findById(idTribunal).isEmpty()){
+        if (siptisUserRepository.findById(idTribunal).isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.USER_ID_DOES_NOT_EXIST).data(null).build();
         }
-        if(projectRepository.findById(idProject).isEmpty()){
+        if (projectRepository.findById(idProject).isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data(null).build();
         }
         ProjectTribunal query = projectTribunalRepository.findByTribunalIdAndProjectId(idTribunal, idProject);
-        if(query == null){
+        if (query == null) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_REVIEWER_DOES_NOT_MATCH_WITH_PROJECT).data(null).build();
         }
 
-        if(Boolean.FALSE.equals(query.getAccepted())){
+        if (Boolean.FALSE.equals(query.getAccepted())) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_IS_ALREADY_NOT_ACCEPTED).data(null).build();
         }
 
         Project project = query.getProject();
 
-        if(!project.getPhase().equals(Phase.TRIBUNALS_PHASE.toString())){
+        if (!project.getPhase().equals(Phase.TRIBUNALS_PHASE.toString())) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_IS_ON_ANOTHER_PHASE).data(null).build();
         }
 
@@ -127,19 +126,19 @@ public class ProjectTribunalServiceImpl implements ProjectTribunalService {
     public ServiceAnswer reviewADefense(ReviewADefenseDTO reviewADefenseDTO) {
         Long idProject = reviewADefenseDTO.getProject();
         Optional<Project> projectOptional = projectRepository.findById(idProject);
-        if(projectOptional.isEmpty()){
+        if (projectOptional.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data(null).build();
         }
         Long idTribunal = reviewADefenseDTO.getTribunal();
-        if(siptisUserRepository.findById(idTribunal).isEmpty()){
+        if (siptisUserRepository.findById(idTribunal).isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.USER_ID_DOES_NOT_EXIST).data(null).build();
         }
         ProjectTribunal query = projectTribunalRepository.findByTribunalIdAndProjectId(idTribunal, idProject);
-        if(query == null){
+        if (query == null) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_TRIBUNAL_DOES_NOT_MATCH_WITH_PROJECT).data(null).build();
         }
         Double points = reviewADefenseDTO.getPoints();
-        if(points < 0 || points > 100){
+        if (points < 0 || points > 100) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.SCORE_IS_NOT_VALID).data(null).build();
         }
         query.setDefensePoints(points);
@@ -148,25 +147,25 @@ public class ProjectTribunalServiceImpl implements ProjectTribunalService {
         Defense defense = project.getDefense();
 
         Date now = new Date();
-        long diffMillis = now.getTime() - defense.getDate().getTime() ;
+        long diffMillis = now.getTime() - defense.getDate().getTime();
         long diffHours = TimeUnit.MINUTES.convert(diffMillis, TimeUnit.MILLISECONDS);
-        if(diffHours < 0){
+        if (diffHours < 0) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.DEFENSE_HAS_NOT_STARTED).data(null).build();
         }
 
-        if(diffHours > 180){
+        if (diffHours > 180) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.DEFENSE_HAS_FINISHED).data(null).build();
         }
 
         Double newProjectDefensePoint = 0.0;
         Integer count = 0;
-        for (ProjectTribunal aux:project.getTribunals()) {
-            if(aux.getDefensePoints() != null) {
+        for (ProjectTribunal aux : project.getTribunals()) {
+            if (aux.getDefensePoints() != null) {
                 newProjectDefensePoint += aux.getDefensePoints();
                 count++;
             }
         }
-        if(count > 2){
+        if (count > 2) {
             project.setPhase(Phase.POST_DEFENSE_PHASE.toString());
         }
         newProjectDefensePoint = newProjectDefensePoint / count;
@@ -179,7 +178,7 @@ public class ProjectTribunalServiceImpl implements ProjectTribunalService {
         Project project = query.getProject();
         boolean allTribunalsHaveAccepted = project.getTribunals().stream().allMatch(ProjectTribunal::getAccepted);
 
-        if(allTribunalsHaveAccepted){
+        if (allTribunalsHaveAccepted) {
             project.setPhase(Phase.DEFENSE_PHASE.toString());
             projectRepository.save(project);
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("THE PROJECT HAS CHANGED TO THE PHASE OF DEFENSE").build();
@@ -187,8 +186,8 @@ public class ProjectTribunalServiceImpl implements ProjectTribunalService {
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("THE PROJECT HAS NOT CHANGED TO THE PHASE OF DEFENSE").build();
     }
 
-    private ServiceAnswer getProjects(List<ProjectTribunal> listaProyectos){
-        if(listaProyectos.isEmpty()){
+    private ServiceAnswer getProjects(List<ProjectTribunal> listaProyectos) {
+        if (listaProyectos.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.WITHOUT_PROJECTS).data(listaProyectos).build();
         }
 
