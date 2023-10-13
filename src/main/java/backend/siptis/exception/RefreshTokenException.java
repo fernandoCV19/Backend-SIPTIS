@@ -9,6 +9,6 @@ public class RefreshTokenException extends RuntimeException{
     private static final long serialVersionUID = 1L;
 
     public RefreshTokenException(String message) {
-        super("Ocurrio un error: " + message);
+        super("Ocurrio un error con el refresh token: " + message);
     }
 }

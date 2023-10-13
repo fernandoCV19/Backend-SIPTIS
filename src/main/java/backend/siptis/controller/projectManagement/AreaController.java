@@ -5,6 +5,7 @@ import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.generalInformation.userArea.CreateAreaDTO;
 import backend.siptis.service.projectManagement.AreaService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,7 @@ public class AreaController {
 
     @PostMapping("/createArea")
     public ResponseEntity<?> createArea(
-            @RequestBody CreateAreaDTO dto) {
+            @Valid @RequestBody CreateAreaDTO dto) {
         ServiceAnswer answerService = areaService.createArea(dto);
         return createResponseEntity(answerService);
     }
@@ -45,7 +46,7 @@ public class AreaController {
         ServiceMessage messageService = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
-        if(messageService == ServiceMessage.OK || messageService == ServiceMessage.USER_AREA_DELETED){
+        if(messageService == ServiceMessage.OK || messageService == ServiceMessage.AREA_DELETED){
             httpStatus = HttpStatus.OK;
         }
 

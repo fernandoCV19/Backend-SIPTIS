@@ -9,4 +9,5 @@ public class ResponseSemesterInfoDTO {
     private Long id;
     private String endDate;
     private String startDate;
+    private String period;
 }

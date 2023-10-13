@@ -43,7 +43,7 @@ public class StadisticsController {
         return crearResponseEntityRegistrar(answerService);
     }
 
-    @GetMapping("/studentsByYear")
+    @GetMapping("/ ")
     public ResponseEntity<?> getStudentsByYear(){
 
         ServiceAnswer answerService = stadisticsService.getStudentsByYear();

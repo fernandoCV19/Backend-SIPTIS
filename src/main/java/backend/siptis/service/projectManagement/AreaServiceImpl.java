@@ -15,7 +15,6 @@ public class AreaServiceImpl implements AreaService {
 
     private final AreaRepository areaRepository;
 
-
     @Override
     public ServiceAnswer getAllAreas() {
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
@@ -25,44 +24,32 @@ public class AreaServiceImpl implements AreaService {
     @Override
     public ServiceAnswer createArea(CreateAreaDTO dto) {
         ServiceAnswer answer = validateCreateArea(dto.getName());
-        if (answer != null){
+        if (answer != null)
             return answer;
-        }
 
         Area area = new Area();
         area.setName(dto.getName());
         areaRepository.save(area);
-        return ServiceAnswer.builder()
-                .serviceMessage(ServiceMessage.OK)
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
                 .data("El area fue creada exitosamente.").build();
     }
 
     private ServiceAnswer validateCreateArea(String name){
-        if(name == null || name.length()<2){
-            return ServiceAnswer.builder()
-                    .serviceMessage(ServiceMessage.ERROR)
-                    .data("Ingrese un nombre valido.").build();
-        }
-
-        if(areaRepository.existsAreaByName(name)){
-            return ServiceAnswer.builder()
-                    .serviceMessage(ServiceMessage.ERROR)
+        if(areaRepository.existsAreaByName(name))
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR)
                     .data("El area ya se encuentra registrada.").build();
-        }
         return null;
     }
 
     private ServiceAnswer validateDeleteArea(Long id){
 
         if(!areaRepository.existsAreaById(id)){
-            return ServiceAnswer.builder()
-                    .serviceMessage(ServiceMessage.ERROR)
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR)
                     .data("No pudimos encontrar el area solicitada.").build();
         }
         Area area = areaRepository.findById(id.intValue()).get();
         if(area.getProjects().size() > 0){
-            return ServiceAnswer.builder()
-                    .serviceMessage(ServiceMessage.ERROR)
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR)
                     .data("No se puede eliminar el area, existen proyectos asignados.").build();
         }
         return null;
