@@ -69,7 +69,6 @@ public class SiptisUserServiceImpl implements SiptisUserService{
 
     @Override
     public ServiceAnswer logIn(LogInDTO logInDTO){
-
         if(!existsUserByEmail(logInDTO.getEmail())){
             String errorMessage = "Credenciales incorrectas.";
             return createResponse(ServiceMessage.ERROR_BAD_CREDENTIALS,errorMessage);
@@ -235,6 +234,12 @@ public class SiptisUserServiceImpl implements SiptisUserService{
     }
 
     @Override
+    public ServiceAnswer getUserList(String search,String role, Pageable pageable){
+        return createResponse(ServiceMessage.OK,
+                siptisUserRepository.searchUserList(search, role, pageable));
+    }
+
+    @Override
     public ServiceAnswer getStudentList(String search,Pageable pageable){
         int pageNumber = pageable.getPageNumber();
         int pageSize = pageable.getPageSize();
@@ -246,22 +251,20 @@ public class SiptisUserServiceImpl implements SiptisUserService{
 
     @Override
     public ServiceAnswer getTeacherList(String search,Pageable pageable){
-        int pageNumber = pageable.getPageNumber();
-        int pageSize = pageable.getPageSize();
-        int offset = (pageNumber - 1) * pageSize;
         return createResponse(ServiceMessage.OK,
                 siptisUserRepository.searchUserList(search, "TEACHER", pageable));
-        //siptisUserRepository.searchUser(search));
+    }
+
+    @Override
+    public ServiceAnswer getTg2TeacherList(String search,Pageable pageable){
+        return createResponse(ServiceMessage.OK,
+                siptisUserRepository.searchUserList(search, "TEACHER", pageable));
     }
 
     @Override
     public ServiceAnswer getSpecialUserList(String search,Pageable pageable){
-        int pageNumber = pageable.getPageNumber();
-        int pageSize = pageable.getPageSize();
-        int offset = (pageNumber - 1) * pageSize;
         return createResponse(ServiceMessage.OK,
                 siptisUserRepository.searchUserList(search, "SPECIAL_USER", pageable));
-        //siptisUserRepository.searchUser(search));
     }
 
     @Override

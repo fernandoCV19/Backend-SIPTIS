@@ -25,7 +25,6 @@ public class AreaController {
         return createResponseEntity(answerService);
     }
 
-
     @PostMapping("/createArea")
     public ResponseEntity<?> createArea(
             @Valid @RequestBody CreateAreaDTO dto) {

@@ -108,27 +108,29 @@ public class SiptisUserController {
 
     @GetMapping("/list/students")
     public ResponseEntity<?> getStudentList(String search, Pageable pageable) {
-        /*ServiceAnswer answerService =
-                refreshTokenService.getAllToken();*/
         ServiceAnswer answerService =
-                siptisUserService.getStudentList(search, pageable);
-
+                siptisUserService.getUserList(search, "STUDENT", pageable);
         return createResponseEntity(answerService);
     }
 
     @GetMapping("/list/teachers")
     public ResponseEntity<?> getTeacherList(String search, Pageable pageable) {
         ServiceAnswer answerService =
-                siptisUserService.getTeacherList(search, pageable);
+                siptisUserService.getUserList(search, "TEACHER", pageable);
+        return createResponseEntity(answerService);
+    }
 
+    @GetMapping("/list/tg2teachers")
+    public ResponseEntity<?> getTg2TeacherList(String search, Pageable pageable) {
+        ServiceAnswer answerService =
+                siptisUserService.getUserList(search, "TG2_TEACHER", pageable);
         return createResponseEntity(answerService);
     }
 
     @GetMapping("/list/special_users")
     public ResponseEntity<?> getSpecialUserList(String search, Pageable pageable) {
         ServiceAnswer answerService =
-                siptisUserService.getSpecialUserList(search, pageable);
-
+                siptisUserService.getUserList(search, "SPECIAL_USER", pageable);
         return createResponseEntity(answerService);
     }
 
@@ -141,10 +143,9 @@ public class SiptisUserController {
     }
 
     @GetMapping("/list/admins")
-    public ResponseEntity<?> getAdminList(Pageable pageable) {
+    public ResponseEntity<?> getAdminList(String search, Pageable pageable) {
         ServiceAnswer answerService =
-                siptisUserService.getAdminList(pageable);
-
+                siptisUserService.getUserList(search, "ADMIN", pageable);
         return createResponseEntity(answerService);
     }
 
