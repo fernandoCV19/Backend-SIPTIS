@@ -159,7 +159,7 @@ public class EmailServiceImpl implements EmailService {
         message.setRecipients(MimeMessage.RecipientType.TO, arrayTO);
         message.setSubject("Notificacion de SIPTIS");
 
-        String htmlTemplate = readFile("record.html");
+        String htmlTemplate = readFile("htmlEmailMessages/record.html");
 
         htmlTemplate = htmlTemplate.replace("#nombre", activityName);
         htmlTemplate = htmlTemplate.replace("#date", activityDate.toString());
@@ -178,7 +178,7 @@ public class EmailServiceImpl implements EmailService {
         message.setRecipients(MimeMessage.RecipientType.TO, email);
         message.setSubject("Notificacion de SIPTIS");
 
-        String htmlTemplate = readFile("notification.html");
+        String htmlTemplate = readFile("htmlEmailMessages/notification.html");
 
 
         htmlTemplate = htmlTemplate.replace("#message", messageNotification);
