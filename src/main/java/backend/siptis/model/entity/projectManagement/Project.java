@@ -36,6 +36,9 @@ public class Project {
     @Column(name = "project_path")
     private String projectPath;
 
+    @Column(name = "period")
+    private String period;
+
     private String phase;
 
     @OneToOne(mappedBy = "project", cascade = CascadeType.ALL, optional = true)

@@ -24,6 +24,10 @@ public class NewProjectDTO {
     @NotNull(message = "No puede crear el proyecto sin estudiantes asignados.")
     @NotEmpty(message = "No puede crear el proyecto sin estudiantes asignados.")
     private ArrayList<Long> studentsId;
+    @NotNull(message = "No puede crear el proyecto sin tutores asignados.")
     @NotEmpty(message = "No puede crear el proyecto sin tutores asignados.")
     private ArrayList<Long> tutorsId;
+    @NotNull(message = "No puede crear el proyecto sin docente de la materia asignados.")
+    @NotEmpty(message = "No puede crear el proyecto sin docente de la materia asignados.")
+    private ArrayList<Long> teachersId;
 }

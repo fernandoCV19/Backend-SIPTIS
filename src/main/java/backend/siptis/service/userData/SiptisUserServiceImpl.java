@@ -14,11 +14,15 @@ import backend.siptis.model.entity.userData.UserInformation;
 import backend.siptis.model.pjo.dto.*;
 import backend.siptis.model.pjo.dto.authentication.TokenDTO;
 import backend.siptis.model.pjo.dto.notifications.LogInDTO;
+import backend.siptis.model.pjo.dto.userDataDTO.*;
+import backend.siptis.model.pjo.dto.userDataDTO.RegisterStudentDTO;
+import backend.siptis.model.pjo.dto.userDataDTO.RegisterUserDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.*;
 import backend.siptis.model.pjo.vo.userData.TribunalInfoToAssignSection;
 import backend.siptis.model.repository.projectManagement.ProjectRepository;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -73,17 +77,14 @@ public class SiptisUserServiceImpl implements SiptisUserService{
             String errorMessage = "Credenciales incorrectas.";
             return createResponse(ServiceMessage.ERROR_BAD_CREDENTIALS,errorMessage);
         }
-
         try{
             Authentication auth = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            logInDTO.getEmail(),logInDTO.getPassword())
+                    new UsernamePasswordAuthenticationToken(logInDTO.getEmail(),logInDTO.getPassword())
             );
 
             if (auth.isAuthenticated()){
                 UserInformationService.UserDetailImp userDetails= (UserInformationService.UserDetailImp) auth.getPrincipal();
                 TokenDTO tokenDTO = createTokenDTO(userDetails);
-
                 return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(tokenDTO).build();
 
             } else {
@@ -94,6 +95,79 @@ public class SiptisUserServiceImpl implements SiptisUserService{
             return createResponse(ServiceMessage.ERROR_BAD_CREDENTIALS,"Credenciales incorrectas.");
         }
     }
+
+    @Override
+    public ServiceAnswer registerAdmin(RegisterAdminDTO dto) {
+        ServiceAnswer answer = registerUser(dto.getEmail(), dto.getPassword());
+        SiptisUser user;
+        if(answer.getServiceMessage() == ServiceMessage.OK){
+            user = (SiptisUser) answer.getData();
+        }else{return  answer;}
+
+        answer = roleService.getRoleByName("ADMIN");
+        if(answer.getServiceMessage() == ServiceMessage.OK){
+            Role role = (Role) answer.getData();
+            user.addRol(role);
+        }else{return  answer;}
+
+        siptisUserRepository.save(user);
+        return createResponse(ServiceMessage.OK, "El administrador fue registrado exitosamente");
+    }
+
+
+    @Override
+    public ServiceAnswer registerStudent(RegisterStudentDTO dto) {
+        ServiceAnswer answer = registerUser(dto.getEmail(), dto.getCi());
+        SiptisUser user;
+        if(answer.getServiceMessage() == ServiceMessage.OK){
+            user = (SiptisUser) answer.getData();
+        }else{return  answer;}
+
+        answer = userInformationService.registerUserInformation(dto);
+        if(answer.getServiceMessage() == ServiceMessage.OK){
+            UserInformation information = (UserInformation) answer.getData();
+            user.setUserInformation(information);
+            information.setSiptisUser(user);
+        }else{return  answer;}
+
+        answer = roleService.getRoleByName("STUDENT");
+        if(answer.getServiceMessage() == ServiceMessage.OK){
+            Role role = (Role) answer.getData();
+            user.addRol(role);
+        }else{return  answer;}
+        answer = userCareerService.getCareerByName(dto.getCareer());
+        if(answer.getServiceMessage() == ServiceMessage.OK){
+            UserCareer career = (UserCareer) answer.getData();
+            user.addCareer(career);
+        }else{
+            return  answer;
+        }
+        siptisUserRepository.save(user);
+        return createResponse(ServiceMessage.OK, "El estudiante fue registrado exitosamente");
+
+    }
+
+    @Override
+    public ServiceAnswer registerUser(RegisterUserDTO dto) {
+        ServiceAnswer answer = registerUser(dto.getEmail(), dto.getCi());
+        SiptisUser user;
+        if(answer.getServiceMessage() == ServiceMessage.OK){
+            user = (SiptisUser) answer.getData();
+        }else{return  answer;}
+
+        answer = userInformationService.registerUserInformation(dto);
+        if(answer.getServiceMessage() == ServiceMessage.OK){
+            UserInformation information = (UserInformation) answer.getData();
+            user.setUserInformation(information);
+            information.setSiptisUser(user);
+        }else{return  answer;}
+
+        user = (SiptisUser) answer.getData();
+        siptisUserRepository.save(user);
+        return createResponse(ServiceMessage.OK, "El usuario fue registrado exitosamente");
+
+    }
+
 
     @Override
     public ServiceAnswer getAllUsers() {
@@ -107,184 +181,17 @@ public class SiptisUserServiceImpl implements SiptisUserService{
     public ServiceAnswer getUserById(Long id) {
         SiptisUser user = siptisUserRepository.findById(id).get();
         System.out.println(user.getEmail());
-        return createResponse
-                (ServiceMessage.OK, user.getEmail());
-
+        return createResponse(ServiceMessage.OK, user.getEmail());
     }
-
     @Override
     public ServiceAnswer getUserByEmail(String email) {
         SiptisUser user = siptisUserRepository.findOneByEmail(email).get();
-        System.out.println(user.getEmail());
-        return createResponse
-                (ServiceMessage.OK, user.getEmail());
-
-    }
-
-    @Override
-    public ServiceAnswer registerAdmin(AdminRegisterDTO dto) {
-
-        ServiceAnswer answer = registerUser(dto.getEmail(), dto.getPassword());
-        SiptisUser user;
-        if(answer.getServiceMessage() == ServiceMessage.OK){
-            user = (SiptisUser) answer.getData();
-        }else{
-            return  answer;
-        }
-
-        answer = roleService.getRoleByName("ADMIN");
-        if(answer.getServiceMessage() == ServiceMessage.OK){
-            Role role = (Role) answer.getData();
-            user.addRol(role);
-        }else{
-            return  answer;
-        }
-
-        siptisUserRepository.save(user);
-        return createResponse
-                (ServiceMessage.OK, "El administrador fue registrado exitosamente");
-
-    }
-
-    @Override
-    public ServiceAnswer registerTeacher(RegisterUserDTO dto) {
-
-        ServiceAnswer answer = registerRoleAndInformation(dto, "TEACHER");
-        SiptisUser user;
-        if(answer.getServiceMessage() == ServiceMessage.OK){
-            user = (SiptisUser) answer.getData();
-        }else{
-            return  answer;
-        }
-
-        siptisUserRepository.save(user);
-        return createResponse
-                (ServiceMessage.OK, "El docente fue registrado exitosamente");
-    }
-
-
-    @Override
-    public ServiceAnswer registerStudent(RegisterStudentDTO dto) {
-
-
-        ServiceAnswer answer = registerRoleAndInformation(dto, "STUDENT");
-        SiptisUser user;
-
-        if(answer.getServiceMessage() == ServiceMessage.OK){
-            user = (SiptisUser) answer.getData();
-        }else{
-            return  answer;
-        }
-
-        answer = userCareerService.getCareerByName(dto.getCareer());
-        if(answer.getServiceMessage() == ServiceMessage.OK){
-            UserCareer career = (UserCareer) answer.getData();
-            user.addCareer(career);
-        }else{
-            return  answer;
-        }
-        siptisUserRepository.save(user);
-        return createResponse
-                (ServiceMessage.OK, "El estudiante fue registrado exitosamente");
-
-    }
-
-    @Override
-    public ServiceAnswer registerSpecialUser(RegisterSpecialUserDTO dto) {
-        ServiceAnswer answer = registerRoleAndInformation(dto, "SPECIAL_USER");
-        SiptisUser user;
-
-        if(answer.getServiceMessage() == ServiceMessage.OK){
-            user = (SiptisUser) answer.getData();
-        }else{
-            return  answer;
-        }
-
-        siptisUserRepository.save(user);
-        return createResponse
-                (ServiceMessage.OK, "El usuario fue registrado exitosamente");
-    }
-
-    @Override
-    public ServiceAnswer updateToken(String refreshToken) {
-        RefreshToken token = refreshTokenService.findByToken(refreshToken);
-        if(token == null){
-            return createResponse(ServiceMessage.ERROR,"El token no existe");
-        }
-        token = refreshTokenService.verifyExpirationDate(token);
-        if(token == null){
-            return createResponse(ServiceMessage.ERROR,"El token ya expiro");
-        }
-
-        SiptisUser user = token.getSiptisUser();
-        //Long id = refreshTokenService.getTokenUser(refreshToken);
-        //SiptisUser user = siptisUserRepository.findOneById(id).get();
-        String updatedToken = JWTokenUtils.createToken(user);
-        RefreshToken newRefreshToken = refreshTokenService.createRefreshToken(user);
-        TokenDTO tokenDTO = new TokenDTO();
-        tokenDTO.setToken(updatedToken);
-        tokenDTO.setRefreshToken(newRefreshToken.getToken());
-
-        return createResponse(ServiceMessage.OK, tokenDTO);
+        return createResponse(ServiceMessage.OK, user.getEmail());
     }
     @Override
     public Long getIdFromToken(String token){
         token = token.replace("Bearer ","");
         return JWTokenUtils.getId(token);
-    }
-
-    @Override
-    public ServiceAnswer getUserList(String search,String role, Pageable pageable){
-        return createResponse(ServiceMessage.OK,
-                siptisUserRepository.searchUserList(search, role, pageable));
-    }
-
-    @Override
-    public ServiceAnswer getStudentList(String search,Pageable pageable){
-        int pageNumber = pageable.getPageNumber();
-        int pageSize = pageable.getPageSize();
-        int offset = (pageNumber - 1) * pageSize;
-        return createResponse(ServiceMessage.OK,
-                siptisUserRepository.searchUserList(search, "STUDENT", pageable));
-                //siptisUserRepository.searchUser(search));
-    }
-
-    @Override
-    public ServiceAnswer getTeacherList(String search,Pageable pageable){
-        return createResponse(ServiceMessage.OK,
-                siptisUserRepository.searchUserList(search, "TEACHER", pageable));
-    }
-
-    @Override
-    public ServiceAnswer getTg2TeacherList(String search,Pageable pageable){
-        return createResponse(ServiceMessage.OK,
-                siptisUserRepository.searchUserList(search, "TEACHER", pageable));
-    }
-
-    @Override
-    public ServiceAnswer getSpecialUserList(String search,Pageable pageable){
-        return createResponse(ServiceMessage.OK,
-                siptisUserRepository.searchUserList(search, "SPECIAL_USER", pageable));
-    }
-
-    @Override
-    public ServiceAnswer getAdminList(Pageable pageable){
-        int pageNumber = pageable.getPageNumber();
-        int pageSize = pageable.getPageSize();
-        int offset = (pageNumber - 1) * pageSize;
-        return createResponse(ServiceMessage.OK,
-                siptisUserRepository.searchAdminList( "ADMIN", pageable));
-        //siptisUserRepository.searchUser(search));
-    }
-
-    @Override
-    public ServiceAnswer getPotentialTutorsList(String search, Pageable pageable) {
-        int pageNumber = pageable.getPageNumber();
-        int pageSize = pageable.getPageSize();
-        int offset = (pageNumber - 1) * pageSize;
-        return createResponse(ServiceMessage.OK,
-                siptisUserRepository.searchPotentialTutorsList(search, "SPECIAL_USER", "TEACHER", pageable));
-        //siptisUserRepository.searchUser(search));
     }
 
     @Override
@@ -328,7 +235,7 @@ public class SiptisUserServiceImpl implements SiptisUserService{
         }
         if(user.getTutorOf().size() > 0){
             return createResponse(ServiceMessage.ERROR_CANNOT_DELETE_USER,
-                    "El usuario no puede ser eliminado, es tutol de proyectos activo.");
+                    "El usuario no puede ser eliminado, es tutor de proyectos activo.");
         }
 
         if(user.getTribunalOf().size() > 0){
@@ -339,39 +246,100 @@ public class SiptisUserServiceImpl implements SiptisUserService{
         return null;
     }
 
+
     @Override
     public ServiceAnswer getUserPersonalInformation(Long id) {
         if(!existsUserById(id)){
-            return createResponse(ServiceMessage.NOT_FOUND,
-                    "El usuario solicitado no se encuentra en el sistema.");
+            return createResponse(ServiceMessage.NOT_FOUND,"El usuario solicitado no se encuentra en el sistema.");
         }
         SiptisUser user = findUserById(id);
+        UserInformation information = user.getUserInformation();
+        if(information == null){
+            return createResponse(ServiceMessage.NOT_FOUND,"No se puede acceder a la información del usuario.");
+        }
+        UserInformationDTO dto = new UserInformationDTO();
+        dto.setEmail(user.getEmail());
+        dto.setNames(information.getNames());
+        dto.setLastnames(information.getLastnames());
+        dto.setCi(information.getCi());
+        dto.setCelNumber(information.getCelNumber());
+        dto.setBirthDate(information.getBirthDate());
 
-        return userInformationService.getUserPersonalInformation(user);
+        return createResponse(ServiceMessage.OK, dto);
     }
 
     @Override
-    public ServiceAnswer getTeacherAreasById(Long id) {
+    public ServiceAnswer getStudentCareerById(Long id) {
         if(!existsUserById(id)){
-            return createResponse(ServiceMessage.NOT_FOUND,
-                    "El usuario solicitado no se encuentra en el sistema.");
+            String errorMessage = "El usuario al que intenta acceder no se encuentra registrado en el sistema";
+            return createResponse(ServiceMessage.ERROR,errorMessage);
+        }
+        SiptisUser user = findUserById(id);
+        Set<UserCareer> career = user.getCareer();
+        return  createResponse(ServiceMessage.OK, career);
+    }
+
+    @Override
+    public ServiceAnswer getUserAreasById(Long id) {
+        if(!existsUserById(id)){
+            return createResponse(ServiceMessage.NOT_FOUND,"El usuario solicitado no se encuentra en el sistema.");
         }
         SiptisUser user = siptisUserRepository.findById(id).get();
         Set<UserArea> areas = user.getAreas();
         if(areas == null){
-            return createResponse(ServiceMessage.NOT_FOUND,
-                    "No se pudo obtener las areas del usuario solicitado.");
+            return createResponse(ServiceMessage.NOT_FOUND,"No se pudo obtener las areas del usuario solicitado.");
         }
         return createResponse(ServiceMessage.OK, areas);
     }
 
     @Override
-    public ServiceAnswer getTeacherNotSelectedAreasById(Long id) {
+    public ServiceAnswer getUserNotSelectedAreasById(Long id) {
+        if(!existsUserById(id)){
+            return createResponse(ServiceMessage.NOT_FOUND,"El usuario solicitado no se encuentra en el sistema.");
+        }
+        return createResponse(ServiceMessage.OK, siptisUserRepository.getNotSelectedAreas(id));
+    }
+
+    @Override
+    public ServiceAnswer updateToken(String refreshToken) {
+        RefreshToken token = refreshTokenService.findByToken(refreshToken);
+        if(token == null){
+            return createResponse(ServiceMessage.ERROR,"El token no existe");
+        }
+        token = refreshTokenService.verifyExpirationDate(token);
+        if(token == null){
+            return createResponse(ServiceMessage.ERROR,"El token ya expiro");
+        }
+
+        SiptisUser user = token.getSiptisUser();
+        //Long id = refreshTokenService.getTokenUser(refreshToken);
+        //SiptisUser user = siptisUserRepository.findOneById(id).get();
+        String updatedToken = JWTokenUtils.createToken(user);
+        RefreshToken newRefreshToken = refreshTokenService.createRefreshToken(user);
+        TokenDTO tokenDTO = new TokenDTO();
+        tokenDTO.setToken(updatedToken);
+        tokenDTO.setRefreshToken(newRefreshToken.getToken());
+
+        return createResponse(ServiceMessage.OK, tokenDTO);
+    }
+
+    @Override
+    public ServiceAnswer getUserList(String search,String role, Pageable pageable){
+        return createResponse(ServiceMessage.OK, siptisUserRepository.searchUserList(search, role, pageable));
+    }
+
+    @Override
+    public ServiceAnswer getRoles(Long id) {
         if(!existsUserById(id)){
             return createResponse(ServiceMessage.NOT_FOUND,
                     "El usuario solicitado no se encuentra en el sistema.");
         }
-        return createResponse(ServiceMessage.OK, siptisUserRepository.getNotSelectedAreas(id));
+        SiptisUser user = siptisUserRepository.findById(id).get();
+        Set<Role> roles = user.getRoles();
+        if(roles == null){
+            return createResponse(ServiceMessage.OK, new Role[0]);
+        }
+        return createResponse(ServiceMessage.OK, roles);
     }
 
     @Override
@@ -395,20 +363,9 @@ public class SiptisUserServiceImpl implements SiptisUserService{
         return createResponse(ServiceMessage.OK, "Se registraron las areas correctamente.");
     }
 
-    @Override
-    public ServiceAnswer getStudentCareerById(Long id) {
-        if(!existsUserById(id)){
-            String errorMessage = "El usuario al que intenta acceder no se encuentra registrado en el sistema";
-            return createResponse(ServiceMessage.ERROR,errorMessage);
-        }
-        SiptisUser user = findUserById(id);
-        Set<UserCareer> career = user.getCareer();
-        return  createResponse(ServiceMessage.OK, career);
-
-    }
 
     @Override
-    public ServiceAnswer userEditPersonalInformation(Long id, UserEditPersonalInformationDTO dto){
+    public ServiceAnswer userEditPersonalInformation(Long id, UserEditInformationDTO dto){
         if(!existsUserById(id))
             return createResponse(ServiceMessage.ID_DOES_NOT_EXIST, "No pudimos encontrar al usuario");
 
@@ -419,9 +376,8 @@ public class SiptisUserServiceImpl implements SiptisUserService{
             if(existsUserByEmail(dto.getEmail()))
                 return createResponse(ServiceMessage.ERROR, "El correo electronico ya se encuentra ocupado.");
 
-
         UserInformation userInformation = user.getUserInformation();
-        answer = userInformationService.userEditLimitedInformation(userInformation, dto);
+        answer = userInformationService.userEditInformation(userInformation, dto);
         if(!answer.getServiceMessage().equals(ServiceMessage.OK)) {
             return answer;
         }
@@ -433,7 +389,7 @@ public class SiptisUserServiceImpl implements SiptisUserService{
 
     @Override
     public ServiceAnswer adminEditUserPersonalInformation(Long id, UniversityUserPersonalInformationDTO dto) {
-        if(!existsUserById(id))
+        /*if(!existsUserById(id))
             return createResponse(ServiceMessage.ID_DOES_NOT_EXIST, "No pudimos encontrar al usuario");
 
         ServiceAnswer answer;
@@ -452,12 +408,13 @@ public class SiptisUserServiceImpl implements SiptisUserService{
         user.setEmail(dto.getEmail());
         user.setUserInformation((UserInformation) answer.getData());
         siptisUserRepository.save(user);
-        return createResponse(ServiceMessage.OK, "Su cuenta fue modificada exitosamente.");
+        return createResponse(ServiceMessage.OK, "Su cuenta fue modificada exitosamente.");*/
+        return null;
     }
 
     @Override
     public ServiceAnswer adminEditSpecialUserPersonalInformation(Long id, GeneralUserPersonalInformationDTO dto) {
-        if(!existsUserById(id))
+      /*  if(!existsUserById(id))
             return createResponse(ServiceMessage.ID_DOES_NOT_EXIST, "No pudimos encontrar al usuario");
 
         ServiceAnswer answer;
@@ -476,77 +433,18 @@ public class SiptisUserServiceImpl implements SiptisUserService{
         user.setEmail(dto.getEmail());
         user.setUserInformation((UserInformation) answer.getData());
         siptisUserRepository.save(user);
-        return createResponse(ServiceMessage.OK, "Su cuenta fue modificada exitosamente.");
+        return createResponse(ServiceMessage.OK, "Su cuenta fue modificada exitosamente.");*/
+        return null;
     }
 
 
 
     private ServiceAnswer registerUser(String email, String password) {
-
         if(existsUserByEmail(email))
             return createResponse(ServiceMessage.ERROR_REGISTER_ACCOUNT_EMAIL, "El correo electronico ya se encuentra ocupado.");
-
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String userPassword = encoder.encode(password);
         return createResponse(ServiceMessage.OK, new SiptisUser(email, userPassword));
-    }
-
-    private ServiceAnswer registerRoleAndInformation(RegisterUserDTO dto, String career){
-        ServiceAnswer answer = registerUser(dto.getEmail(), dto.getPassword());
-        SiptisUser user;
-
-        if(answer.getServiceMessage() == ServiceMessage.OK){
-            user = (SiptisUser) answer.getData();
-        }else{
-            return  answer;
-        }
-
-        answer = userInformationService.registerUserInformation(dto, user);
-        if(answer.getServiceMessage() == ServiceMessage.OK){
-            UserInformation info = (UserInformation) answer.getData();
-            user.setUserInformation(info);
-        }else{
-            return  answer;
-        }
-
-        answer = roleService.getRoleByName(career);
-        if(answer.getServiceMessage() == ServiceMessage.OK){
-            Role role = (Role) answer.getData();
-            user.addRol(role);
-        }else{
-            return  answer;
-        }
-
-        return createResponse(ServiceMessage.OK, user);
-    }
-
-    private ServiceAnswer registerRoleAndInformation(RegisterSpecialUserDTO dto, String career){
-        ServiceAnswer answer = registerUser(dto.getEmail(), dto.getPassword());
-        SiptisUser user;
-
-        if(answer.getServiceMessage() == ServiceMessage.OK){
-            user = (SiptisUser) answer.getData();
-        }else{
-            return  answer;
-        }
-
-        answer = userInformationService.registerSpecialUserInformation(dto, user);
-        if(answer.getServiceMessage() == ServiceMessage.OK){
-            UserInformation info = (UserInformation) answer.getData();
-            user.setUserInformation(info);
-        }else{
-            return  answer;
-        }
-
-        answer = roleService.getRoleByName(career);
-        if(answer.getServiceMessage() == ServiceMessage.OK){
-            Role role = (Role) answer.getData();
-            user.addRol(role);
-        }else{
-            return  answer;
-        }
-
-        return createResponse(ServiceMessage.OK, user);
     }
 
     private ServiceAnswer createResponse(ServiceMessage serviceMessage,Object data){
@@ -655,35 +553,6 @@ public class SiptisUserServiceImpl implements SiptisUserService{
     }
 
 
-
-
-
-    @Override
-    public ServiceAnswer userEditPersonalInformation() {
-        return null;
-    }
-
-    @Override
-    public ServiceAnswer adminEditUserPersonalInformation() {
-        return null;
-    }
-
-    @Override
-    public ServiceAnswer getPersonalActivities(Long id, Pageable pageable) {
-        LocalDateTime now = LocalDateTime.now();
-        Date actual = new Date(now.getYear()-1900, now.getMonthValue()-1, now.getDayOfMonth()-1);
-
-        Page<Activity> activities = usuarioCommonRepository.findAllPersonalActivities(id,actual, pageable);
-
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(activities).build();
-    }
-
-    private UserGeneralInformationDTO convertToDTO(SiptisUser user) {
-        UserGeneralInformationDTO userDTO = new UserGeneralInformationDTO();
-        userDTO.setId(user.getId());
-        userDTO.setEmail(user.getEmail());
-        return userDTO;
-    }
 */
 }
 

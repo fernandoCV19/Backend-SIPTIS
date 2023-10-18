@@ -74,7 +74,7 @@ public class WebSecurityConfig {
                         "/modality/**",
 
                         "/userArea/**",
-                        "/area/**",
+                        "/area/**", "/subarea/**",
                         "/semester/**",
                         "/supervisor/**",
 

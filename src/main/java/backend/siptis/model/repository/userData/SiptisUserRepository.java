@@ -66,6 +66,8 @@ public interface SiptisUserRepository extends JpaRepository<SiptisUser, Long> {
             " ORDER BY ui.lastnames ASC" , nativeQuery = true)
     Page<UserListItemDTO> searchUserList(String search_name, String roleName, Pageable pageable);
 
+
+
     @Query(value ="SELECT su.id, ui.names, ui.lastnames, su.email, ui.codsis, role.name " +
             " FROM siptis_user su, user_information ui,  siptis_user_role sur, role role" +
             " WHERE su.id = ui.user_id AND sur.siptis_user_id = su.id " +

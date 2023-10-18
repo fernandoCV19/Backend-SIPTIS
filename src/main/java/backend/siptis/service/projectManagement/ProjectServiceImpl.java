@@ -5,6 +5,7 @@ import backend.siptis.commons.Phase;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectStudent;
+import backend.siptis.model.entity.editorsAndReviewers.ProjectTeacher;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectTribunal;
 import backend.siptis.model.entity.projectManagement.*;
 import backend.siptis.model.entity.userData.Schedule;
@@ -25,6 +26,7 @@ import backend.siptis.model.pjo.vo.projectManagement.ProjectToReviewSectionVO;
 import backend.siptis.model.repository.projectManagement.PresentationRepository;
 import backend.siptis.model.repository.projectManagement.ProjectRepository;
 import backend.siptis.model.repository.projectManagement.ReviewRepository;
+import backend.siptis.model.repository.semester.SemesterInformationRepository;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -51,12 +53,19 @@ public class ProjectServiceImpl implements ProjectService {
     private final ProjectTribunalRepository projectTribunalRepository;
     private final PlaceToDefenseRepository placeToDefenseRepository;
     private final DefenseRepository defenseRepository;
+    private final SemesterInformationRepository semesterInformationRepository;
+
 
     @Override
     public ServiceAnswer createProject(NewProjectDTO dto) {
+        if(!semesterInformationRepository.existsSemesterInformationByInProgressIsTrue()){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR)
+                    .data("No existe un semestre en curso.").build();
+        }
         if(projectRepository.existsByName(dto.getName()))
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR)
                     .data("El nombre ya se encuentra registrado").build();
+
         if(!modalityRepository.existsById(dto.getModalityId()))
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR)
                     .data("No se pudo encontrar la modalidad solicitada.").build();
@@ -68,7 +77,6 @@ public class ProjectServiceImpl implements ProjectService {
             if(!siptisUserRepository.existsById(studentId))
                 return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR)
                         .data("No se pudo encontrar al estudiante solicitado.").build();
-
             ProjectStudent projectStudent = new ProjectStudent();
             projectStudent.setStudent(siptisUserRepository.findById(studentId).get());
             projectStudent.setProject(newProject);
@@ -80,22 +88,36 @@ public class ProjectServiceImpl implements ProjectService {
             if(!siptisUserRepository.existsById(tutorId))
                 return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR)
                         .data("No se pudo encontrar al usuario solicitado.").build();
-
             ProjectTutor projectTutor = new ProjectTutor();
             projectTutor.setTutor(siptisUserRepository.findById(tutorId).get());
             projectTutor.setProject(newProject);
             tutors.add(projectTutor);
         }
 
+        ArrayList<ProjectTeacher> teachers = new ArrayList<>();
+        for (Long teacherId: dto.getTeachersId()) {
+            if(!siptisUserRepository.existsById(teacherId))
+                return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR)
+                        .data("No se pudo encontrar al usuario solicitado.").build();
+            ProjectTeacher projectTeacher = new ProjectTeacher();
+            projectTeacher.setTeacher(siptisUserRepository.findById(teacherId).get());
+            projectTeacher.setProject(newProject);
+            teachers.add(projectTeacher);
+        }
+
         newProject.setName(dto.getName());
         newProject.setModality(modalityRepository.findModalityById(dto.getModalityId()));
         newProject.setStudents(students);
         newProject.setTutors(tutors);
+        newProject.setPeriod(semesterInformationRepository.getCurrentPeriod());
 
         projectRepository.save(newProject);
 
         for (ProjectStudent projectStudent: students)
             projectStudentRepository.save(projectStudent);
+
+        for (ProjectTutor projectTutor: tutors)
+            projectTutorRepository.save(projectTutor);
 
         for (ProjectTutor projectTutor: tutors)
             projectTutorRepository.save(projectTutor);

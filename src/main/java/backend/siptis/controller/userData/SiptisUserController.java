@@ -3,10 +3,13 @@ package backend.siptis.controller.userData;
 import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.model.pjo.dto.AdminRegisterDTO;
 import backend.siptis.model.pjo.dto.UserEditPersonalInformationDTO;
 import backend.siptis.model.pjo.dto.UserSelectedAreasDTO;
 import backend.siptis.model.pjo.dto.authentication.RefreshTokenDTO;
+import backend.siptis.model.pjo.dto.userDataDTO.RegisterAdminDTO;
+import backend.siptis.model.pjo.dto.userDataDTO.RegisterUserDTO;
+import backend.siptis.model.pjo.dto.userDataDTO.RegisterStudentDTO;
+import backend.siptis.model.pjo.dto.userDataDTO.UserEditInformationDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.*;
 import backend.siptis.service.userData.RefreshTokenService;
 import backend.siptis.service.userData.SiptisUserService;
@@ -35,43 +38,113 @@ public class SiptisUserController {
         return createResponseEntity(answerService);
     }
 
-
-    @PostMapping("/register/teacher")
-    // @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<?> registerTeacher(
-            @Valid @RequestBody RegisterUserDTO dto) {
-
-        ServiceAnswer student = siptisUserService.registerTeacher(dto);
-        return createResponseEntity(student);
-    }
-
     @PostMapping("/register/admin")
     // @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<?> registerAdmin(
-            @RequestBody AdminRegisterDTO dto) {
-
-        ServiceAnswer student = siptisUserService.registerAdmin(dto);
-        return createResponseEntity(student);
-
+    public ResponseEntity<?> registerAdmin(@Valid @RequestBody RegisterAdminDTO dto) {
+        ServiceAnswer admin = siptisUserService.registerAdmin(dto);
+        return createResponseEntity(admin);
     }
 
     @PostMapping("/register/student")
     // @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<?> registerStudent(
-            @Valid @RequestBody RegisterStudentDTO dto) {
-
+    public ResponseEntity<?> registerStudent(@Valid @RequestBody RegisterStudentDTO dto) {
         ServiceAnswer student = siptisUserService.registerStudent(dto);
         return createResponseEntity(student);
     }
 
-    @PostMapping("/register/special_user")
+    @PostMapping("/register/other")
     // @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<?> registerSpecialUser(
-            @RequestBody RegisterSpecialUserDTO dto) {
-
-        ServiceAnswer student = siptisUserService.registerSpecialUser(dto);
-        return createResponseEntity(student);
+    public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterUserDTO dto ) {
+        ServiceAnswer user = siptisUserService.registerUser(dto);
+        return createResponseEntity(user);
     }
+
+    @GetMapping("/personalInformation/{userId}")
+    public ResponseEntity<?> getInfoById(@PathVariable int userId) {
+
+        Long id = Long.valueOf(userId);
+        ServiceAnswer answerService = siptisUserService.getUserPersonalInformation(id);
+
+        return createResponseEntity(answerService);
+    }
+
+    @GetMapping("/personalInformation")
+    public ResponseEntity<?> getPersonalInfo(@RequestHeader(name = "Authorization") String token) {
+
+        Long id = siptisUserService.getIdFromToken(token);
+        ServiceAnswer answerService = siptisUserService.getUserPersonalInformation(id);
+        return createResponseEntity(answerService);
+    }
+
+    @GetMapping("/userCareer")
+    @PreAuthorize("hasAuthority('STUDENT')")
+    public ResponseEntity<?> getCareer(@RequestHeader(name = "Authorization") String token) {
+        Long id = siptisUserService.getIdFromToken(token);
+        ServiceAnswer answerService =
+                siptisUserService.getStudentCareerById(id);
+        return createResponseEntity(answerService);
+    }
+
+    @GetMapping("/userAreas")
+    //@PreAuthorize("hasAuthority('TEACHER')")
+    public ResponseEntity<?> getAreas(@RequestHeader(name = "Authorization") String token) {
+
+        Long id = siptisUserService.getIdFromToken(token);
+        ServiceAnswer answerService = siptisUserService.getUserAreasById(id);
+
+        return createResponseEntity(answerService);
+    }
+
+    @GetMapping("/userAreas/{userId}")
+    //@PreAuthorize("hasAuthority('TEACHER')")
+    public ResponseEntity<?> getAreasById(@PathVariable int userId) {
+        Long id = Long.valueOf(userId);
+        ServiceAnswer answerService = siptisUserService.getUserAreasById(id);
+        return createResponseEntity(answerService);
+    }
+
+    @GetMapping("/userNotSelectedAreas")
+    public ResponseEntity<?> getNotSelectedAreas(@RequestHeader(name = "Authorization") String token) {
+        Long id = siptisUserService.getIdFromToken(token);
+        ServiceAnswer answerService = siptisUserService.getUserNotSelectedAreasById(id);
+        return createResponseEntity(answerService);
+    }
+
+    @GetMapping("/userNotSelectedAreas/{userId}")
+    public ResponseEntity<?> getNotSelectedAreas(@PathVariable int userId) {
+        Long id = Long.valueOf(userId);
+        ServiceAnswer answerService = siptisUserService.getUserNotSelectedAreasById(id);
+        return createResponseEntity(answerService);
+    }
+
+
+    @GetMapping("/roles")
+    public ResponseEntity<?> getRoles(@RequestHeader(name = "Authorization") String token) {
+        Long id = siptisUserService.getIdFromToken(token);
+        ServiceAnswer answerService = siptisUserService.getRoles(id);
+        return createResponseEntity(answerService);
+    }
+
+    @GetMapping("/roles/{userId}")
+    public ResponseEntity<?> getRolesById(@PathVariable int userId) {
+        Long id = Long.valueOf(userId);
+        ServiceAnswer answerService = siptisUserService.getRoles(id);
+        return createResponseEntity(answerService);
+    }
+
+
+    @DeleteMapping("/delete/{userId}")
+    ResponseEntity<?> deleteUser(@PathVariable int userId) {
+        Long id = Long.valueOf(userId);
+        ServiceAnswer answer = siptisUserService.deleteUser(id);
+        return createResponseEntity(answer);
+    }
+
+
+
+
+
+
 
     @PostMapping("/refreshtoken")
     public ResponseEntity<?> refreshtoken(@RequestBody RefreshTokenDTO request) {
@@ -120,25 +193,10 @@ public class SiptisUserController {
         return createResponseEntity(answerService);
     }
 
-    @GetMapping("/list/tg2teachers")
-    public ResponseEntity<?> getTg2TeacherList(String search, Pageable pageable) {
-        ServiceAnswer answerService =
-                siptisUserService.getUserList(search, "TG2_TEACHER", pageable);
-        return createResponseEntity(answerService);
-    }
-
-    @GetMapping("/list/special_users")
-    public ResponseEntity<?> getSpecialUserList(String search, Pageable pageable) {
-        ServiceAnswer answerService =
-                siptisUserService.getUserList(search, "SPECIAL_USER", pageable);
-        return createResponseEntity(answerService);
-    }
-
     @GetMapping("/list/potentialTutors")
     public ResponseEntity<?> getPotentialTutors(String search, Pageable pageable) {
         ServiceAnswer answerService =
-                siptisUserService.getPotentialTutorsList(search, pageable);
-
+                siptisUserService.getUserList(search, "TUTOR", pageable);
         return createResponseEntity(answerService);
     }
 
@@ -149,60 +207,10 @@ public class SiptisUserController {
         return createResponseEntity(answerService);
     }
 
-    @GetMapping("/personalInformation/{userId}")
-    public ResponseEntity<?> getInfoById(@PathVariable int userId) {
-
-        Long id = Long.valueOf(userId);
-        ServiceAnswer answerService =
-                siptisUserService.getUserPersonalInformation(id);
-
-        return createResponseEntity(answerService);
-    }
-
-    @GetMapping("/personalInformation")
-    public ResponseEntity<?> getPersonalInfo(@RequestHeader(name = "Authorization") String token) {
-
-        Long id = siptisUserService.getIdFromToken(token);
-        ServiceAnswer answerService =
-                siptisUserService.getUserPersonalInformation(id);
-        return createResponseEntity(answerService);
-    }
-
-    @GetMapping("/userAreas")
-    //@PreAuthorize("hasAuthority('TEACHER')")
-    public ResponseEntity<?> getAreas(@RequestHeader(name = "Authorization") String token) {
-
-        Long id = siptisUserService.getIdFromToken(token);
-        ServiceAnswer answerService = siptisUserService.getTeacherAreasById(id);
-
-        return createResponseEntity(answerService);
-    }
-
-    @GetMapping("/userAreas/{userId}")
-    //@PreAuthorize("hasAuthority('TEACHER')")
-    public ResponseEntity<?> getAreasById(@PathVariable int userId) {
-
-        Long id = Long.valueOf(userId);
-        ServiceAnswer answerService = siptisUserService.getTeacherAreasById(id);
-
-        return createResponseEntity(answerService);
-    }
-
-    @GetMapping("/userNotSelectedAreas")
-    public ResponseEntity<?> getNotSelectedAreas(
-            @RequestHeader(name = "Authorization") String token) {
-
-        Long id = siptisUserService.getIdFromToken(token);
-        ServiceAnswer answerService =
-                siptisUserService.getTeacherNotSelectedAreasById(id);
-
-        return createResponseEntity(answerService);
-    }
-
     @PutMapping("/editInformation")
     public ResponseEntity<?> editInformation(
             @RequestHeader(name = "Authorization") String token,
-            @Valid @RequestBody UserEditPersonalInformationDTO dto) {
+            @Valid @RequestBody UserEditInformationDTO dto) {
 
         Long id = siptisUserService.getIdFromToken(token);
         ServiceAnswer answer = siptisUserService.userEditPersonalInformation(id, dto);
@@ -229,17 +237,6 @@ public class SiptisUserController {
         return createResponseEntity(answer);
     }
 
-
-    @PutMapping("/testInfo")
-    public ResponseEntity<?> testInfo(
-            @RequestHeader(name = "Authorization") String token,
-            @Valid @RequestBody ValidationUserPersonalInformationDTO dto) {
-
-        Long id = siptisUserService.getIdFromToken(token);
-        ServiceAnswer answer = siptisUserService.getUserById(id);
-        return createResponseEntity(answer);
-    }
-
     @PutMapping("/updateAreas")
     public ResponseEntity<?> updateAreas(
             @RequestHeader(name = "Authorization") String token,
@@ -250,16 +247,6 @@ public class SiptisUserController {
         return createResponseEntity(answer);
     }
 
-    @GetMapping("/userCareer")
-    @PreAuthorize("hasAuthority('STUDENT')")
-    public ResponseEntity<?> getCareer(@RequestHeader(name = "Authorization") String token) {
-
-        Long id = siptisUserService.getIdFromToken(token);
-        ServiceAnswer answerService =
-                siptisUserService.getStudentCareerById(id);
-        return createResponseEntity(answerService);
-    }
-
     @GetMapping("/userCareer/{userId}")
     public ResponseEntity<?> getCareer(@PathVariable int userId) {
 
@@ -267,13 +254,6 @@ public class SiptisUserController {
         ServiceAnswer answerService =
                 siptisUserService.getStudentCareerById(id);
         return createResponseEntity(answerService);
-    }
-
-    @DeleteMapping("/delete/{userId}")
-    ResponseEntity<?> deleteUser(@PathVariable int userId) {
-        Long id = Long.valueOf(userId);
-        ServiceAnswer answer = siptisUserService.deleteUser(id);
-        return createResponseEntity(answer);
     }
 
     @GetMapping("/getTribunals")

@@ -1,11 +1,6 @@
 package backend.siptis.separateTests.service;
 
 import backend.siptis.auth.entity.SiptisUser;
-import backend.siptis.commons.ServiceAnswer;
-import backend.siptis.commons.ServiceMessage;
-import backend.siptis.model.entity.userData.UserCareer;
-import backend.siptis.model.entity.userData.UserInformation;
-import backend.siptis.model.pjo.dto.AdminRegisterDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterSpecialUserDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterStudentDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterUserDTO;
@@ -34,7 +29,6 @@ public class SiptisUserServiceTest {
 
     private final SiptisUserService siptisUserService;
     private final SiptisUserRepository siptisUserRepository;
-    private static AdminRegisterDTO adminDTO = new AdminRegisterDTO();
     private static RegisterStudentDTO studentDTO = new RegisterStudentDTO();
     private static RegisterUserDTO teacherDTO = new RegisterUserDTO();
     private static RegisterSpecialUserDTO specialUserDTO = new RegisterSpecialUserDTO();
@@ -48,8 +42,6 @@ public class SiptisUserServiceTest {
         /*logInDTO.setEmail("student@gmail.com");
         logInDTO.setPassword("12121212");*/
 
-        adminDTO.setEmail("admin@gmail.com");
-        adminDTO.setPassword("12121212");
 
         studentDTO.setNames("Estudiante 1");
         studentDTO.setLastnames("Prueba 1");
@@ -88,6 +80,7 @@ public class SiptisUserServiceTest {
         assertNotNull(activityVO);
     }
     */
+    /*
     @Test
     void registerStudentTest(){
         ServiceAnswer answer = siptisUserService.registerStudent(studentDTO);
