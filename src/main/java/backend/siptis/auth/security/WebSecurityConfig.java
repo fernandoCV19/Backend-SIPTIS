@@ -52,6 +52,8 @@ public class WebSecurityConfig {
                         "/user/project/**",
                         "/user/project/*",
 
+                        "/role/**",
+
                         "/document/**",
 
                         "/tribunal/**", "/teacher/**", "/tutor/**",

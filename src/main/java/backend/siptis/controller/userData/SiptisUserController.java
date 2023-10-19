@@ -3,13 +3,11 @@ package backend.siptis.controller.userData;
 import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.model.pjo.dto.UserEditPersonalInformationDTO;
 import backend.siptis.model.pjo.dto.UserSelectedAreasDTO;
 import backend.siptis.model.pjo.dto.authentication.RefreshTokenDTO;
-import backend.siptis.model.pjo.dto.userDataDTO.RegisterAdminDTO;
-import backend.siptis.model.pjo.dto.userDataDTO.RegisterUserDTO;
+import backend.siptis.model.pjo.dto.userDataDTO.*;
 import backend.siptis.model.pjo.dto.userDataDTO.RegisterStudentDTO;
-import backend.siptis.model.pjo.dto.userDataDTO.UserEditInformationDTO;
+import backend.siptis.model.pjo.dto.userDataDTO.RegisterUserDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.*;
 import backend.siptis.service.userData.RefreshTokenService;
 import backend.siptis.service.userData.SiptisUserService;
@@ -132,6 +130,40 @@ public class SiptisUserController {
         return createResponseEntity(answerService);
     }
 
+    @PutMapping("/updateRoles")
+    public ResponseEntity<?> updateRoles(@RequestHeader(name = "Authorization") String token, @Valid @RequestBody RolesListDTO dto) {
+        Long id = siptisUserService.getIdFromToken(token);
+        ServiceAnswer answerService = siptisUserService.updateRoles(id, dto);
+        return createResponseEntity(answerService);
+    }
+
+    @PutMapping("/updateRoles/{userId}")
+    public ResponseEntity<?> updateRoles(@PathVariable int userId, @Valid @RequestBody RolesListDTO dto) {
+        Long id = Long.valueOf(userId);
+        ServiceAnswer answerService = siptisUserService.updateRoles(id, dto);
+        return createResponseEntity(answerService);
+    }
+
+    @GetMapping("/list/students")
+    public ResponseEntity<?> getStudentList(String search, Pageable pageable) {
+        ServiceAnswer answerService =
+                siptisUserService.getUserList(search, "STUDENT", pageable);
+        return createResponseEntity(answerService);
+    }
+
+    @GetMapping("/list/teachers")
+    public ResponseEntity<?> getTeacherList(String search, Pageable pageable) {
+        ServiceAnswer answerService =
+                siptisUserService.getUserList(search, "TEACHER", pageable);
+        return createResponseEntity(answerService);
+    }
+
+    @GetMapping("/list/generalUsers")
+    public ResponseEntity<?> getNormalUserList(String search, Pageable pageable) {
+        ServiceAnswer answerService =
+                siptisUserService.getNormalUserList(search, pageable);
+        return createResponseEntity(answerService);
+    }
 
     @DeleteMapping("/delete/{userId}")
     ResponseEntity<?> deleteUser(@PathVariable int userId) {
@@ -179,19 +211,7 @@ public class SiptisUserController {
 
 
 
-    @GetMapping("/list/students")
-    public ResponseEntity<?> getStudentList(String search, Pageable pageable) {
-        ServiceAnswer answerService =
-                siptisUserService.getUserList(search, "STUDENT", pageable);
-        return createResponseEntity(answerService);
-    }
 
-    @GetMapping("/list/teachers")
-    public ResponseEntity<?> getTeacherList(String search, Pageable pageable) {
-        ServiceAnswer answerService =
-                siptisUserService.getUserList(search, "TEACHER", pageable);
-        return createResponseEntity(answerService);
-    }
 
     @GetMapping("/list/potentialTutors")
     public ResponseEntity<?> getPotentialTutors(String search, Pageable pageable) {

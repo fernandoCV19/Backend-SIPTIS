@@ -50,6 +50,7 @@ public class ProjectServiceImpl implements ProjectService {
     private final PresentationRepository presentationRepository;
     private final ReviewRepository reviewRepository;
     private final SiptisUserRepository siptisUserRepository;
+    private final AreaRepository areaRepository;
     private final ProjectTribunalRepository projectTribunalRepository;
     private final PlaceToDefenseRepository placeToDefenseRepository;
     private final DefenseRepository defenseRepository;
@@ -105,10 +106,21 @@ public class ProjectServiceImpl implements ProjectService {
             teachers.add(projectTeacher);
         }
 
+        Set<Area> areas = new HashSet<>();
+        for (Long areaId: dto.getAreasId()) {
+            if(!areaRepository.existsAreaById(areaId))
+                return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR)
+                        .data("No se pudo encontrar el area solicitado.").build();
+            Area area = areaRepository.findById(areaId).get();
+            areas.add(area);
+        }
+
+
         newProject.setName(dto.getName());
         newProject.setModality(modalityRepository.findModalityById(dto.getModalityId()));
         newProject.setStudents(students);
         newProject.setTutors(tutors);
+        newProject.setAreas(areas);
         newProject.setPeriod(semesterInformationRepository.getCurrentPeriod());
 
         projectRepository.save(newProject);

@@ -4,10 +4,9 @@ import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.model.pjo.dto.UserSelectedAreasDTO;
 import backend.siptis.model.pjo.dto.notifications.LogInDTO;
-import backend.siptis.model.pjo.dto.userDataDTO.RegisterAdminDTO;
+import backend.siptis.model.pjo.dto.userDataDTO.*;
 import backend.siptis.model.pjo.dto.userDataDTO.RegisterStudentDTO;
 import backend.siptis.model.pjo.dto.userDataDTO.RegisterUserDTO;
-import backend.siptis.model.pjo.dto.userDataDTO.UserEditInformationDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.*;
 import org.springframework.data.domain.Pageable;
 
@@ -31,9 +30,11 @@ public interface SiptisUserService {
     ServiceAnswer getUserNotSelectedAreasById(Long id);
 
     ServiceAnswer getUserList(String search,String role, Pageable pageable);
+    ServiceAnswer getNormalUserList(String search, Pageable pageable);
 
     ServiceAnswer getRoles(Long id);
 
+    ServiceAnswer updateRoles(Long id, RolesListDTO dto);
 
     ServiceAnswer getAllUsers();
 

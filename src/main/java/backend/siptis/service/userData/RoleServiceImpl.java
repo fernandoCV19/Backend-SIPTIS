@@ -2,7 +2,7 @@ package backend.siptis.service.userData;
 
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.model.repository.general.RoleRepository;
+import backend.siptis.model.repository.userData.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +11,11 @@ import org.springframework.stereotype.Service;
 public class RoleServiceImpl implements RoleService{
 
     private final RoleRepository roleRepository;
+    @Override
+    public ServiceAnswer getAllowedRoles() {
+        return createResponse(ServiceMessage.OK,roleRepository.getAllowedRoles());
+    }
+
     @Override
     public ServiceAnswer getRoleByName(String name) {
 

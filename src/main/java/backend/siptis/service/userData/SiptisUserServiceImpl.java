@@ -20,9 +20,9 @@ import backend.siptis.model.pjo.dto.userDataDTO.RegisterUserDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.*;
 import backend.siptis.model.pjo.vo.userData.TribunalInfoToAssignSection;
 import backend.siptis.model.repository.projectManagement.ProjectRepository;
+import backend.siptis.model.repository.userData.RoleRepository;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -43,6 +43,7 @@ public class SiptisUserServiceImpl implements SiptisUserService{
     private final AuthenticationManager authenticationManager;
     private final RefreshTokenService refreshTokenService;
     private final RoleService roleService;
+    private final RoleRepository roleRepository;
     private final UserCareerService userCareerService;
     private final UserInformationService userInformationService;
     private final UserAreaService userAreaService;
@@ -162,7 +163,6 @@ public class SiptisUserServiceImpl implements SiptisUserService{
             information.setSiptisUser(user);
         }else{return  answer;}
 
-        user = (SiptisUser) answer.getData();
         siptisUserRepository.save(user);
         return createResponse(ServiceMessage.OK, "El usuario fue registrado exitosamente");
 
@@ -329,6 +329,11 @@ public class SiptisUserServiceImpl implements SiptisUserService{
     }
 
     @Override
+    public ServiceAnswer getNormalUserList(String search, Pageable pageable) {
+        return createResponse(ServiceMessage.OK, siptisUserRepository.searchNormalUserList(search, pageable));
+    }
+
+    @Override
     public ServiceAnswer getRoles(Long id) {
         if(!existsUserById(id)){
             return createResponse(ServiceMessage.NOT_FOUND,
@@ -340,6 +345,38 @@ public class SiptisUserServiceImpl implements SiptisUserService{
             return createResponse(ServiceMessage.OK, new Role[0]);
         }
         return createResponse(ServiceMessage.OK, roles);
+    }
+
+    @Override
+    public ServiceAnswer updateRoles(Long id, RolesListDTO dto) {
+        if(!existsUserById(id)){
+            return createResponse(ServiceMessage.NOT_FOUND,
+                    "El usuario solicitado no se encuentra en el sistema.");
+        }
+        SiptisUser user = siptisUserRepository.findById(id).get();
+        Set<Role> userRoles = user.getRoles();
+        for(Role role : userRoles){
+            if(role.getName().equals("STUDENT") || role.getName().equals("ADMIN")){
+                return createResponse(ServiceMessage.ERROR,
+                        "No puede modificar los roles de este usuario.");
+            }
+        }
+        Set<Role> roles = new HashSet<>() ;
+        for(Long roleId : dto.getRoles()){
+            if(!roleRepository.existsRoleById(roleId)){
+                return createResponse(ServiceMessage.NOT_FOUND,
+                        "El rol que desea seleccionar no existe.");
+            }
+            Role role = roleRepository.findRoleById(roleId);
+            if(role.getName().equals("STUDENT") || role.getName().equals("ADMIN")){
+                return createResponse(ServiceMessage.ERROR,
+                        "No puede asignar este rol.");
+            }
+            roles.add(role);
+        }
+        user.setRoles(roles);
+        siptisUserRepository.save(user);
+        return createResponse(ServiceMessage.OK, "Los roles fueron asignados correctamente");
     }
 
     @Override
@@ -463,7 +500,7 @@ public class SiptisUserServiceImpl implements SiptisUserService{
 
     @Override
     public SiptisUser findByTokenPassword(String tokenPassword) {
-        return null;
+        return siptisUserRepository.findByTokenPassword(tokenPassword).get();
     }
 
 
