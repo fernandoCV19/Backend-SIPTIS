@@ -13,16 +13,16 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Long> {
-    @Query("SELECT sup.supervisor.id AS idUser FROM ProjectSupervisor sup WHERE sup.project.id = :projectID"
+    @Query("SELECT sup.supervisor.id AS idUser FROM ProjectSupervisor sup WHERE sup.project.id = :projectId"
             + " UNION " +
-            "SELECT tea.teacher.id AS idUser FROM ProjectTeacher tea WHERE tea.project.id = :projectID"
+            "SELECT tea.teacher.id AS idUser FROM ProjectTeacher tea WHERE tea.project.id = :projectId"
             + " UNION " +
-            "SELECT tri.tribunal.id AS idUser FROM ProjectTribunal tri WHERE tri.project.id = :projectID"
+            "SELECT tri.tribunal.id AS idUser FROM ProjectTribunal tri WHERE tri.project.id = :projectId"
             + " UNION " +
-            "SELECT tut.tutor.id AS idUser FROM ProjectTutor tut WHERE tut.project.id = :idProject" )
-    List<Long> getIdsListFromReviewers(Long idProject);
+            "SELECT tut.tutor.id AS idUser FROM ProjectTutor tut WHERE tut.project.id = :projectId" )
+    List<Long> getIdsListFromReviewers(Long projectId);
 
-    List<Project> findByPhaseAndTribunalsTribunalId(String phase, Long userId);
+    List<Project> findByPhase(String phase);
 
     @Query("SELECT p FROM Project p WHERE p.defense IS NOT NULL")
     Page <Project> findAllWithDefense(Pageable pageable);
@@ -76,6 +76,8 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
             " WHERE project.modality_id = modality.id " +
             " AND LOWER( project.name ) LIKE LOWER( CONCAT( '%', :search, '%'))  ", nativeQuery = true )
     Page <ProjectInfoDTO> searchProject(String search, Pageable pageable );
+
+    List<Project> findByTribunals_Tribunal_IdAndPhase(Long tribunal, String phase);
 
 
 }

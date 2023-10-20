@@ -30,6 +30,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -345,42 +346,25 @@ public class ProjectServiceImpl implements ProjectService {
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(data).build();
     }
 
-    /*
-        @Override
-        public ServiceAnswer addDefense(DefenseDTO defenseDTO) {
-            Optional<Project> query = projectRepository.findById(defenseDTO.getIdProject());
-            if(query.isEmpty()){
-                return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data(null).build();
-            }
-            Project project = query.get();
-            List<Defense> reservations = defenseRepository.findByplaceToDefenseId(defenseDTO.getIdProject());
-            for(Defense defense: reservations){
-                long diffMillis = defenseDTO.getDate().getTime() - defense.getDate().getTime() ;
-                long diffHours = TimeUnit.HOURS.convert(diffMillis, TimeUnit.MILLISECONDS);
-                if(Math.abs(diffHours) <= 1){
-                    return ServiceAnswer.builder().serviceMessage(ServiceMessage.THERE_IS_ANOTHER_RESERVATION_TOO_CLOSE).data(defense.getDate()).build();
-                }
-            }
-            if(project.getDefense() != null){
-                return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_HAS_ALREADY_A_DEFENSE_DATE).data(null).build();
-            }
-            Optional<PlaceToDefense> place = placeToDefenseRepository.findById(defenseDTO.getIdPlace());
-            if(place.isEmpty()){
-                return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_PLACE_DOES_NOT_EXIST).data(null).build();
-            }
-            Defense newDefense =  new Defense(place.get(), project, defenseDTO.getDate());
-            defenseRepository.save(newDefense);
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("Defense created").build();
-        }
-    */
     @Override
     public ServiceAnswer getProjectsToDefenseOrDefended(Long userId) {
         Optional<SiptisUser> userOptional = siptisUserRepository.findById(userId);
         if(userOptional.isEmpty()){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.USER_ID_DOES_NOT_EXIST).data(null).build();
         }
-        List<Project> projectsToDefend = projectRepository.findByPhaseAndTribunalsTribunalId(Phase.DEFENSE_PHASE.toString(), userId);
-        List<Project> projectsDefended = projectRepository.findByPhaseAndTribunalsTribunalId(Phase.POST_DEFENSE_PHASE.toString(), userId);
+
+        List<Project> projectsToDefend = projectTribunalRepository
+                .findByTribunal_IdAndProject_PhaseAndDefensePointsNull(userId, Phase.DEFENSE_PHASE.toString())
+                .stream()
+                .map(ProjectTribunal::getProject)
+                .toList();
+
+        List<Project> projectsDefended = projectTribunalRepository
+                .findByTribunal_IdAndProject_PhaseAndDefensePointsNotNull(userId, Phase.DEFENSE_PHASE.toString())
+                .stream()
+                .map(ProjectTribunal::getProject)
+                .toList();
+
         InfoToDefensesSectionVO data = new InfoToDefensesSectionVO(projectsToDefend, projectsDefended);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(data).build();
     }
@@ -420,13 +404,8 @@ public class ProjectServiceImpl implements ProjectService {
 
     private Integer getDaysDifference(Date compare){
         Date now = new Date();
-
-        // Diferencia en milisegundos
         long diffMillis = now.getTime() - compare.getTime() ;
-
-        // Diferencia en días
         long diffDias = TimeUnit.DAYS.convert(diffMillis, TimeUnit.MILLISECONDS);
-
         return (int) diffDias;
     }
 }

@@ -35,7 +35,7 @@ public class ProjectCompleteInfoVO {
         projectPath = project.getProjectPath();
         phase = project.getPhase();
         defense = project.getDefense() != null ? new DefenseVO(project.getDefense()) : null;
-        modality = project.getModality().toString();
+        modality = project.getModality().getName();
         subAreas = project.getSubAreas() != null ? project.getSubAreas().stream().map(SubArea::getName).toList() : null;
         areas = project.getAreas() != null ? project.getAreas().stream().map(Area::getName).toList() : null;
         score = project.getTotalDefensePoints();

@@ -3,7 +3,6 @@ package backend.siptis.service.editorsAndReviewers;
 import backend.siptis.commons.Phase;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.commons.ServiceAnswer;
-import backend.siptis.model.entity.editorsAndReviewers.ProjectTeacher;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectTribunal;
 import backend.siptis.model.entity.projectManagement.Defense;
 import backend.siptis.model.entity.projectManagement.Project;
@@ -15,12 +14,9 @@ import backend.siptis.model.repository.userData.SiptisUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -83,7 +79,7 @@ public class ProjectTribunalServiceImpl implements ProjectTribunalService {
         if(projectRepository.findById(idProject).isEmpty()){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data(null).build();
         }
-        ProjectTribunal query = projectTribunalRepository.findByTribunalIdAndProjectId(idTribunal, idProject);
+        ProjectTribunal query = projectTribunalRepository.findByProject_IdAndTribunal_Id(idProject, idTribunal);
         if(query == null){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_REVIEWER_DOES_NOT_MATCH_WITH_PROJECT).data(null).build();
         }
@@ -105,7 +101,7 @@ public class ProjectTribunalServiceImpl implements ProjectTribunalService {
         if(projectRepository.findById(idProject).isEmpty()){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data(null).build();
         }
-        ProjectTribunal query = projectTribunalRepository.findByTribunalIdAndProjectId(idTribunal, idProject);
+        ProjectTribunal query = projectTribunalRepository.findByProject_IdAndTribunal_Id(idProject, idTribunal);
         if(query == null){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_REVIEWER_DOES_NOT_MATCH_WITH_PROJECT).data(null).build();
         }
@@ -127,16 +123,16 @@ public class ProjectTribunalServiceImpl implements ProjectTribunalService {
 
     @Override
     public ServiceAnswer reviewADefense(ReviewADefenseDTO reviewADefenseDTO) {
-        Long idProject = reviewADefenseDTO.getProject();
-        Optional<Project> projectOptional = projectRepository.findById(idProject);
+        Long projectID = reviewADefenseDTO.getProject();
+        Optional<Project> projectOptional = projectRepository.findById(projectID);
         if(projectOptional.isEmpty()){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data(null).build();
         }
-        Long idTribunal = reviewADefenseDTO.getTribunal();
-        if(siptisUserRepository.findById(idTribunal).isEmpty()){
+        Long tribunalId = reviewADefenseDTO.getTribunal();
+        if(siptisUserRepository.findById(tribunalId).isEmpty()){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.USER_ID_DOES_NOT_EXIST).data(null).build();
         }
-        ProjectTribunal query = projectTribunalRepository.findByTribunalIdAndProjectId(idTribunal, idProject);
+        ProjectTribunal query = projectTribunalRepository.findByProject_IdAndTribunal_Id(projectID, tribunalId);
         if(query == null){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_TRIBUNAL_DOES_NOT_MATCH_WITH_PROJECT).data(null).build();
         }
@@ -151,13 +147,8 @@ public class ProjectTribunalServiceImpl implements ProjectTribunalService {
 
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime defenseStart = defense.getDate().atTime(defense.getStartTime());
-        LocalDateTime defenseFinish = defense.getDate().atTime(defense.getEndTime());
         if(now.isBefore(defenseStart)){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.DEFENSE_HAS_NOT_STARTED).data(null).build();
-        }
-
-        if(now.isAfter(defenseFinish)){
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.DEFENSE_HAS_FINISHED).data(null).build();
         }
 
         Double newProjectDefensePoint = 0.0;

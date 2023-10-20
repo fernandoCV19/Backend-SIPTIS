@@ -1,6 +1,7 @@
 package backend.siptis.model.entity.projectManagement;
 
 import backend.siptis.auth.entity.SiptisUser;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -28,6 +29,7 @@ public class Defense {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
+    @JsonBackReference
     private Project project;
     private LocalDate date;
     private LocalTime startTime;

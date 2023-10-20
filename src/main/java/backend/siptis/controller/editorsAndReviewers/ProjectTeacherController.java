@@ -47,7 +47,7 @@ public class ProjectTeacherController {
     }
 
     @GetMapping("/removeAccepted/{idProject}/{idReviewer}")
-    public ResponseEntity<?> removeacceptedFromAProject(@PathVariable("idProject") Long idProject, @PathVariable("idReviewer") Long idReviewer){
+    public ResponseEntity<?> removeAcceptedFromAProject(@PathVariable("idProject") Long idProject, @PathVariable("idReviewer") Long idReviewer){
         ServiceAnswer serviceAnswer = projectTeacherService.removeAcceptProject(idReviewer, idProject);
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         if(serviceAnswer.getServiceMessage().equals(ServiceMessage.OK)){

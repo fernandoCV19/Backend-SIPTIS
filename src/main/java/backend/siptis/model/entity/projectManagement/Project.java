@@ -40,9 +40,10 @@ public class Project {
 
     @OneToOne(mappedBy = "project", cascade = CascadeType.ALL, optional = true)
     @JoinColumn(name = "defense_id")
+    @JsonManagedReference
     private Defense defense;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "modality_id", nullable = false)
     @JsonManagedReference
     private Modality modality;
@@ -67,7 +68,7 @@ public class Project {
     @JsonManagedReference
     private Collection<Presentation> presentations;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "state_id", nullable = true)
     @JsonBackReference
     private State state;

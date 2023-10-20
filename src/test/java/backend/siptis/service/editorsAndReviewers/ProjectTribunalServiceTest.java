@@ -386,7 +386,7 @@ class ProjectTribunalServiceTest {
     @Test
     void acceptProjectWithAProjectThatAcceptedParameterCanChangeWillChangeThatParameter() {
         ServiceAnswer query = projectTribunalService.acceptProject(50L, 51L);
-        ProjectTribunal res = projectTribunalRepository.findByTribunalIdAndProjectId(50L, 51L);
+        ProjectTribunal res = projectTribunalRepository.findByProjectId(51L);
         assertTrue(res.getAccepted());
     }
 
@@ -475,7 +475,7 @@ class ProjectTribunalServiceTest {
     @Test
     void removeAcceptProjectWithAProjectThatAcceptedParameterCanChangeWillChangeThatParameter() {
         ServiceAnswer query = projectTribunalService.removeAcceptProject(51L, 51L);
-        ProjectTribunal res = projectTribunalRepository.findByTribunalIdAndProjectId(51L, 51L);
+        ProjectTribunal res = projectTribunalRepository.findByProjectId(51L);
         assertFalse(res.getAccepted());
     }
     //////////////////////////
