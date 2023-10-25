@@ -6,6 +6,9 @@ import backend.siptis.model.repository.userData.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Service
 @RequiredArgsConstructor
 public class RoleServiceImpl implements RoleService{
@@ -27,6 +30,20 @@ public class RoleServiceImpl implements RoleService{
         return createResponse(ServiceMessage.OK, roleRepository.findRoleByName(name));
     }
 
+    @Override
+    public Set<String> assignableRoles() {
+        return new HashSet<>(Set.of("TEACHER", "TUTOR", "TRIBUNAL", "REVIEWER"));
+    }
+
+    @Override
+    public Set<String> notAssignableRoles() {
+        return new HashSet<>(Set.of("STUDENT", "ADMIN"));
+    }
+
+    @Override
+    public Set<String> directorRoles() {
+        return new HashSet<>(Set.of("INF_DIRECTOR", "SIS_DIRECTOR"));
+    }
 
     private ServiceAnswer createResponse(ServiceMessage serviceMessage, Object data){
         return ServiceAnswer.builder().serviceMessage(

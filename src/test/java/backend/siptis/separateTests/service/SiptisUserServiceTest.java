@@ -1,9 +1,5 @@
 package backend.siptis.separateTests.service;
 
-import backend.siptis.auth.entity.SiptisUser;
-import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterSpecialUserDTO;
-import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterStudentDTO;
-import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterUserDTO;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
 import backend.siptis.service.userData.SiptisUserService;
 import jakarta.transaction.Transactional;
@@ -27,22 +23,11 @@ import static org.junit.jupiter.api.Assertions.*;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class SiptisUserServiceTest {
 
-    private final SiptisUserService siptisUserService;
-    private final SiptisUserRepository siptisUserRepository;
-    private static RegisterStudentDTO studentDTO = new RegisterStudentDTO();
-    private static RegisterUserDTO teacherDTO = new RegisterUserDTO();
-    private static RegisterSpecialUserDTO specialUserDTO = new RegisterSpecialUserDTO();
-    // private static LogInDTO logInDTO = new LogInDTO();
 
     @Autowired
     public SiptisUserServiceTest(SiptisUserService siptisUserService, SiptisUserRepository siptisUserRepository){
-        this.siptisUserService = siptisUserService;
-        this.siptisUserRepository = siptisUserRepository;
 
-        /*logInDTO.setEmail("student@gmail.com");
-        logInDTO.setPassword("12121212");*/
-
-
+/*
         studentDTO.setNames("Estudiante 1");
         studentDTO.setLastnames("Prueba 1");
         studentDTO.setEmail("student@gmail.com");
@@ -61,16 +46,7 @@ public class SiptisUserServiceTest {
         // teacherDTO.setBirthDate(new SimpleDateFormat("2022-10-31"));
         teacherDTO.setCi("2333234");
         teacherDTO.setCodSIS("20070031");
-
-
-        specialUserDTO.setNames("SpecialUser 1");
-        specialUserDTO.setLastnames("Prueba 1");
-        specialUserDTO.setEmail("specialUser@gmail.com");
-        specialUserDTO.setPassword("12121212");
-        specialUserDTO.setCelNumber("777666777");
-        // specialUserDTO.setBirthDate(new SimpleDateFormat("2022-10-31"));
-        specialUserDTO.setCi("55699963");
-
+*/
     }
 
 /*

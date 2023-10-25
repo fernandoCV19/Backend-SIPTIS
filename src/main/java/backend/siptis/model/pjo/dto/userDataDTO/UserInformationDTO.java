@@ -15,5 +15,6 @@ public class UserInformationDTO {
     private String celNumber;
     private String ci;
     private Date birthDate;
+    private String birthDateString;
     private String codSIS;
 }

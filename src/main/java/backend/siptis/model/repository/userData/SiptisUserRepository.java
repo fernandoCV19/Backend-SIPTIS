@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +28,10 @@ public interface SiptisUserRepository extends JpaRepository<SiptisUser, Long> {
     Optional<SiptisUser> findByTokenPassword(String tokenPassword);
 
     boolean existsByEmail(String email);
+
+    boolean existsByRolesName(String roleName);
+
+    Optional<SiptisUser> findOneByRolesName(String roleName);
 
     boolean existsById(Long id);
 
@@ -48,14 +53,6 @@ public interface SiptisUserRepository extends JpaRepository<SiptisUser, Long> {
             "WHERE ps.student.id = :id AND ps.project.id = p.id")
     Optional <Project> findProjectById(Long id);
 
-    @Query(value = "SELECT ua.id, ua.name " +
-            "FROM user_area ua " +
-            "WHERE ua.id NOT IN (" +
-            "    SELECT ua2.id " +
-            "    FROM user_area ua2, siptis_user_area sua " +
-            "    WHERE ua2.id = sua.area_id AND sua.siptisuser_id = :id" +
-            ")", nativeQuery = true)
-    List <UserAreaDTO> getNotSelectedAreas (Long id);
 
     @Query(value ="SELECT su.id, ui.names, ui.lastnames, su.email, ui.codsis, role.name " +
             " FROM siptis_user su, user_information ui,  siptis_user_role sur, role role" +
@@ -70,22 +67,10 @@ public interface SiptisUserRepository extends JpaRepository<SiptisUser, Long> {
     @Query(value ="SELECT DISTINCT su.id, ui.names, ui.lastnames, su.email" +
             " FROM user_information ui" +
             " LEFT JOIN  siptis_user su ON su.id = ui.user_id" +
-            " LEFT JOIN siptis_user_role sur ON sur.siptis_user_id = su.id" +
+            " LEFT JOIN siptis_user_role sur ON sur.siptis_user_id = su.id " +
             " LEFT JOIN role role ON sur.role_id = role.id " +
-            " WHERE role.name NOT LIKE 'STUDENT' AND role.name NOT LIKE 'ADMIN' " +
-            " AND ( LOWER( ui.names ) LIKE LOWER( CONCAT( '%', :search_name, '%')) " +
-            " OR LOWER( ui.lastnames ) LIKE LOWER( CONCAT( '%', :search_name, '%') ))" , nativeQuery = true)
+            " WHERE (role.name IS NULL OR role.name NOT IN ('ADMIN', 'STUDENT'))" , nativeQuery = true)
     Page<UserListItemDTO> searchNormalUserList(String search_name, Pageable pageable);
-
-
-    @Query(value ="SELECT su.id, ui.names, ui.lastnames, su.email, ui.codsis, role.name " +
-            " FROM siptis_user su, user_information ui,  siptis_user_role sur, role role" +
-            " WHERE su.id = ui.user_id AND sur.siptis_user_id = su.id " +
-            " AND sur.role_id = role.id AND ( role.name LIKE :roleName1 OR role.name LIKE :roleName2)" +
-            " AND ( LOWER( ui.names ) LIKE LOWER( CONCAT( '%', :search_name, '%')) " +
-            " OR LOWER( ui.lastnames ) LIKE LOWER( CONCAT( '%', :search_name, '%') ))" +
-            " ORDER BY ui.lastnames ASC" , nativeQuery = true)
-    Page<UserListItemDTO> searchPotentialTutorsList(String search_name, String roleName1, String roleName2, Pageable pageable);
 
 
     @Query(value ="SELECT su.id, role.name " +
@@ -93,9 +78,5 @@ public interface SiptisUserRepository extends JpaRepository<SiptisUser, Long> {
             " WHERE sur.siptis_user_id = su.id " +
             " AND sur.role_id = role.id AND role.name LIKE :roleName" , nativeQuery = true)
     Page<Object> searchAdminList(String roleName, Pageable pageable);
-
-
-
-
 
 }

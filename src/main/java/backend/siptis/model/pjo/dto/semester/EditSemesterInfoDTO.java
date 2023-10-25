@@ -1,6 +1,5 @@
 package backend.siptis.model.pjo.dto.semester;
 
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;

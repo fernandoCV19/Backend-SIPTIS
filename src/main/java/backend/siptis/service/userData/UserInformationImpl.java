@@ -1,23 +1,17 @@
 package backend.siptis.service.userData;
 
-import backend.siptis.auth.entity.SiptisUser;
+
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.userData.UserInformation;
-import backend.siptis.model.pjo.dto.*;
-import backend.siptis.model.pjo.dto.notifications.PersonalInformationDTO;
 import backend.siptis.model.pjo.dto.userDataDTO.AdminEditUserInformationDTO;
 import backend.siptis.model.pjo.dto.userDataDTO.RegisterStudentDTO;
 import backend.siptis.model.pjo.dto.userDataDTO.RegisterUserDTO;
 import backend.siptis.model.pjo.dto.userDataDTO.UserEditInformationDTO;
-import backend.siptis.model.pjo.dto.usersInformationDTO.GeneralUserPersonalInformationDTO;
-import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterSpecialUserDTO;
-import backend.siptis.model.pjo.dto.usersInformationDTO.UniversityUserPersonalInformationDTO;
 import backend.siptis.model.repository.userData.UserInformationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class UserInformationImpl implements UserInformationService{

@@ -27,7 +27,6 @@ public interface SiptisUserService {
     ServiceAnswer getUserPersonalInformation(Long id);
     ServiceAnswer getStudentCareerById(Long id);
     ServiceAnswer getUserAreasById(Long id);
-    ServiceAnswer getUserNotSelectedAreasById(Long id);
 
     ServiceAnswer getUserList(String search,String role, Pageable pageable);
     ServiceAnswer getNormalUserList(String search, Pageable pageable);
@@ -51,6 +50,11 @@ public interface SiptisUserService {
 
     ServiceAnswer existsTokenPassword(String tokenPassword);
     SiptisUser findByTokenPassword(String tokenPassword);
+
+    ServiceAnswer registerUserAsCareerDirector(Long id, String directorRole);
+    ServiceAnswer getDirectorPersonalInformation(String directorRole);
+    ServiceAnswer removeDirectorRole(String directorRole);
+    boolean existCareerDirector(String directorRole);
 
 
     Long getProjectById(Long id);

@@ -50,7 +50,7 @@ public class SiptisUserController {
         return createResponseEntity(student);
     }
 
-    @PostMapping("/register/other")
+    @PostMapping("/register/general")
     // @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterUserDTO dto ) {
         ServiceAnswer user = siptisUserService.registerUser(dto);
@@ -101,20 +101,6 @@ public class SiptisUserController {
         return createResponseEntity(answerService);
     }
 
-    @GetMapping("/userNotSelectedAreas")
-    public ResponseEntity<?> getNotSelectedAreas(@RequestHeader(name = "Authorization") String token) {
-        Long id = siptisUserService.getIdFromToken(token);
-        ServiceAnswer answerService = siptisUserService.getUserNotSelectedAreasById(id);
-        return createResponseEntity(answerService);
-    }
-
-    @GetMapping("/userNotSelectedAreas/{userId}")
-    public ResponseEntity<?> getNotSelectedAreas(@PathVariable int userId) {
-        Long id = Long.valueOf(userId);
-        ServiceAnswer answerService = siptisUserService.getUserNotSelectedAreasById(id);
-        return createResponseEntity(answerService);
-    }
-
 
     @GetMapping("/roles")
     public ResponseEntity<?> getRoles(@RequestHeader(name = "Authorization") String token) {
@@ -155,6 +141,13 @@ public class SiptisUserController {
     public ResponseEntity<?> getTeacherList(String search, Pageable pageable) {
         ServiceAnswer answerService =
                 siptisUserService.getUserList(search, "TEACHER", pageable);
+        return createResponseEntity(answerService);
+    }
+
+    @GetMapping("/list/tribunals")
+    public ResponseEntity<?> getTribunalsList(String search, Pageable pageable) {
+        ServiceAnswer answerService =
+                siptisUserService.getUserList(search, "TRIBUNAL", pageable);
         return createResponseEntity(answerService);
     }
 
@@ -209,10 +202,6 @@ public class SiptisUserController {
         return createResponseEntity(answer);
     }
 
-
-
-
-
     @GetMapping("/list/potentialTutors")
     public ResponseEntity<?> getPotentialTutors(String search, Pageable pageable) {
         ServiceAnswer answerService =
@@ -259,13 +248,19 @@ public class SiptisUserController {
 
     @PutMapping("/updateAreas")
     public ResponseEntity<?> updateAreas(
-            @RequestHeader(name = "Authorization") String token,
-            @RequestBody UserSelectedAreasDTO dto) {
-
+            @RequestHeader(name = "Authorization") String token, @RequestBody UserSelectedAreasDTO dto) {
         Long id = siptisUserService.getIdFromToken(token);
         ServiceAnswer answer = siptisUserService.updateAreas(id, dto);
         return createResponseEntity(answer);
     }
+
+    @PutMapping("/updateAreas/{userId}")
+    public ResponseEntity<?> updateAreas(@PathVariable int userId, @RequestBody UserSelectedAreasDTO dto) {
+        Long id = Long.valueOf(userId);
+        ServiceAnswer answer = siptisUserService.updateAreas(id, dto);
+        return createResponseEntity(answer);
+    }
+
 
     @GetMapping("/userCareer/{userId}")
     public ResponseEntity<?> getCareer(@PathVariable int userId) {
@@ -279,6 +274,25 @@ public class SiptisUserController {
     @GetMapping("/getTribunals")
     ResponseEntity<?> getPossibleTribunals() {
         ServiceAnswer answer = siptisUserService.getPossibleTribunals();
+        return createResponseEntity(answer);
+    }
+
+    @PostMapping("/register/director/informatica/{userId}")
+    ResponseEntity<?> registerCareerDirector(@PathVariable int userId) {
+        Long id = Long.valueOf(userId);
+        ServiceAnswer answer = siptisUserService.registerUserAsCareerDirector(id, "INF_DIRECTOR");
+        return createResponseEntity(answer);
+    }
+
+    @GetMapping("/directorInformation/informatica")
+    ResponseEntity<?> getDirectorInfo() {
+        ServiceAnswer answer = siptisUserService.getDirectorPersonalInformation("INF_DIRECTOR");
+        return createResponseEntity(answer);
+    }
+
+    @DeleteMapping("/removeDirector/informatica")
+    ResponseEntity<?> removeDirector() {
+        ServiceAnswer answer = siptisUserService.removeDirectorRole("INF_DIRECTOR");
         return createResponseEntity(answer);
     }
 

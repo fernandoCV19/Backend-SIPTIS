@@ -31,6 +31,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.List;
@@ -262,6 +263,7 @@ public class SiptisUserServiceImpl implements SiptisUserService{
         dto.setNames(information.getNames());
         dto.setLastnames(information.getLastnames());
         dto.setCi(information.getCi());
+        dto.setCodSIS(information.getCodSIS());
         dto.setCelNumber(information.getCelNumber());
         dto.setBirthDate(information.getBirthDate());
 
@@ -290,14 +292,6 @@ public class SiptisUserServiceImpl implements SiptisUserService{
             return createResponse(ServiceMessage.NOT_FOUND,"No se pudo obtener las areas del usuario solicitado.");
         }
         return createResponse(ServiceMessage.OK, areas);
-    }
-
-    @Override
-    public ServiceAnswer getUserNotSelectedAreasById(Long id) {
-        if(!existsUserById(id)){
-            return createResponse(ServiceMessage.NOT_FOUND,"El usuario solicitado no se encuentra en el sistema.");
-        }
-        return createResponse(ServiceMessage.OK, siptisUserRepository.getNotSelectedAreas(id));
     }
 
     @Override
@@ -330,6 +324,9 @@ public class SiptisUserServiceImpl implements SiptisUserService{
 
     @Override
     public ServiceAnswer getNormalUserList(String search, Pageable pageable) {
+        ArrayList roles = new ArrayList<String>();
+        roles.add("TEACHER");
+
         return createResponse(ServiceMessage.OK, siptisUserRepository.searchNormalUserList(search, pageable));
     }
 
@@ -341,9 +338,18 @@ public class SiptisUserServiceImpl implements SiptisUserService{
         }
         SiptisUser user = siptisUserRepository.findById(id).get();
         Set<Role> roles = user.getRoles();
+
+        Set<String> directorRoles = roleService.directorRoles();
+
         if(roles == null){
             return createResponse(ServiceMessage.OK, new Role[0]);
         }
+
+        for (String roleName: directorRoles) {
+            Role role = roleRepository.findRoleByName(roleName);
+            roles.remove(role);
+        }
+
         return createResponse(ServiceMessage.OK, roles);
     }
 
@@ -354,27 +360,37 @@ public class SiptisUserServiceImpl implements SiptisUserService{
                     "El usuario solicitado no se encuentra en el sistema.");
         }
         SiptisUser user = siptisUserRepository.findById(id).get();
+        Set<Role> newRoles = new HashSet<>() ;
+
         Set<Role> userRoles = user.getRoles();
+        Set<String> notAssignableRoles = roleService.notAssignableRoles();
+        Set<String> directorRoles = roleService.directorRoles();
+
         for(Role role : userRoles){
-            if(role.getName().equals("STUDENT") || role.getName().equals("ADMIN")){
+            if(notAssignableRoles.contains(role.getName())){
                 return createResponse(ServiceMessage.ERROR,
                         "No puede modificar los roles de este usuario.");
             }
+            if(directorRoles.contains(role.getName())){
+                newRoles.add(role);
+            }
         }
-        Set<Role> roles = new HashSet<>() ;
+
         for(Long roleId : dto.getRoles()){
             if(!roleRepository.existsRoleById(roleId)){
                 return createResponse(ServiceMessage.NOT_FOUND,
                         "El rol que desea seleccionar no existe.");
             }
             Role role = roleRepository.findRoleById(roleId);
-            if(role.getName().equals("STUDENT") || role.getName().equals("ADMIN")){
+            if(notAssignableRoles.contains(role.getName())){
                 return createResponse(ServiceMessage.ERROR,
                         "No puede asignar este rol.");
             }
-            roles.add(role);
+            newRoles.add(role);
         }
-        user.setRoles(roles);
+
+
+        user.setRoles(newRoles);
         siptisUserRepository.save(user);
         return createResponse(ServiceMessage.OK, "Los roles fueron asignados correctamente");
     }
@@ -503,6 +519,65 @@ public class SiptisUserServiceImpl implements SiptisUserService{
         return siptisUserRepository.findByTokenPassword(tokenPassword).get();
     }
 
+    @Override
+    public ServiceAnswer registerUserAsCareerDirector(Long id, String directorRole) {
+        if(!roleRepository.existsRoleByName(directorRole))
+            return createResponse(ServiceMessage.ERROR, "El rol que desea asignar no existe.");
+        if(existCareerDirector(directorRole))
+            return createResponse(ServiceMessage.ERROR, "Ya existe un director de carrera en curso.");
+        if(!existsUserById(id))
+            return createResponse(ServiceMessage.ERROR, "No se pudo encontrar al usuario solicitado.");
+        SiptisUser user = siptisUserRepository.findById(id).get();
+        Set<Role> roles = user.getRoles();
+        for(Role role : roles){
+            if(role.getName().equals("STUDENT") || role.getName().equals("ADMIN")){
+                return createResponse(ServiceMessage.ERROR,"el usuario no esta habilitado para el cargo.");
+            }
+        }
+        user.addRol(roleRepository.findRoleByName(directorRole));
+        siptisUserRepository.save(user);
+
+        return createResponse(ServiceMessage.OK, "El cargo director fue asignado exitosamente.");
+    }
+
+    @Override
+    public ServiceAnswer getDirectorPersonalInformation(String directorRole) {
+        if(!existCareerDirector(directorRole))
+            return createResponse(ServiceMessage.ERROR, "No existe un director de carrera en curso.");
+        SiptisUser user = siptisUserRepository.findOneByRolesName(directorRole).get();
+        UserInformation information = user.getUserInformation();
+        UserInformationDTO dto = new UserInformationDTO();
+        dto.setEmail(user.getEmail());
+        dto.setNames(information.getNames());
+        dto.setLastnames(information.getLastnames());
+        dto.setCi(information.getCi());
+        dto.setCodSIS(information.getCodSIS());
+        dto.setCelNumber(information.getCelNumber());
+        dto.setBirthDate(information.getBirthDate());
+        String texto = information.getBirthDate().toString();
+        dto.setBirthDateString(information.getBirthDate().toString());
+
+        return createResponse(ServiceMessage.OK, dto);
+    }
+
+    @Override
+    public ServiceAnswer removeDirectorRole(String directorRole) {
+        if(!existCareerDirector(directorRole))
+            return createResponse(ServiceMessage.ERROR, "No existe un director de carrera en curso.");
+        SiptisUser user = siptisUserRepository.findOneByRolesName(directorRole).get();
+        Set<Role> roles = user.getRoles();
+        Role role = roleRepository.findRoleByName(directorRole);
+        roles.remove(role);
+        user.setRoles(roles);
+        siptisUserRepository.save(user);
+        return createResponse(ServiceMessage.OK, "El cambio fue realizado correctamente.");
+    }
+
+    @Override
+    public boolean existCareerDirector(String directorRole) {
+        return siptisUserRepository.existsByRolesName(directorRole);
+    }
+
 
     @Override
     public Long getProjectById(Long id) {
@@ -522,74 +597,5 @@ public class SiptisUserServiceImpl implements SiptisUserService{
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(activities).build();
     }
 
-    /*
-    private final SiptisUserRepository siptisUserRepository;
-    private final RoleService roleService;
-    private final UserCareerService userCareerService;
-    private final UserInformationService userInformationService;
-    private final RefreshTokenService refreshTokenService;
-
-
-    @Override
-    public ServiceAnswer obtenerProyectosSupervisorParaMenuPrincipalPorIdUsuario(Integer id) {
-        return null;
-    }
-
-    @Override
-    public ServiceAnswer obtenerProyectosSupervisorParaMenuPrincipalPorIdUsuario(Long id) {
-        Optional<SiptisUser> usuarioOptional = siptisUserRepository.findById(id);
-        if (usuarioOptional.isEmpty()) {
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
-        }
-
-        return null;
-    }
-
-    @Override
-    public ServiceAnswer existsById(int id) {
-        Long longId = Long.valueOf(id);
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
-                .data(siptisUserRepository.existsById(longId)).build();
-    }
-
-    private boolean existsUserById(long id) {
-        return siptisUserRepository.existsById(id);
-    }
-
-    private SiptisUser findUserByEmail(String email) {
-        return siptisUserRepository.findByEmail(email).get();
-    }
-    private SiptisUser findUserById(long id) {
-        return siptisUserRepository.findById(id).get();
-    }
-
-    @Override
-    public ServiceAnswer existsByEmail(String email) {
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
-                .data(existsByEmail(email)).build();
-    }
-
-    @Override
-    public ServiceAnswer findByEmail(String email) {
-
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
-                .data(findUserByEmail(email)).build();
-    }
-
-
-    @Override
-    public ServiceAnswer findById(long id) {
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
-                .data(findUserById(id)).build();
-    }
-
-
-    @Override
-    public SiptisUser save(SiptisUser siptisUser) {
-        return siptisUserRepository.save(siptisUser);
-    }
-
-
-*/
 }
 
