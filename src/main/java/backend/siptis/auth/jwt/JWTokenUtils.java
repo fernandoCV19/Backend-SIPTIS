@@ -13,7 +13,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 
-import java.security.Key;
 import java.util.Date;
 
 @Component
@@ -37,10 +36,10 @@ public class JWTokenUtils {
     private void setExpireTime2(long time){   EXPIRE_TIME_DURATION_2  = time;  }*/
 
     public static String createToken(UserInformationService.UserDetailImp userDI){
-        Date fechaExpiracion =new Date(System.currentTimeMillis() + EXPIRE_TIME_DURATION);
+        Date expirationDate =new Date(System.currentTimeMillis() + EXPIRE_TIME_DURATION);
 
         return Jwts.builder().setSubject(userDI.getUsername())
-                .setExpiration(fechaExpiracion)
+                .setExpiration(expirationDate)
                 .claim("id", userDI.getId())
                 .claim("projects", userDI.getProjects())
                 .claim("roles", userDI.getRoles())
@@ -103,13 +102,6 @@ public class JWTokenUtils {
                     .setSigningKey(ACCESS_TOKEN_SECRET.getBytes())
                     .build().parseClaimsJws(authToken).getBody();
             return true;
-        } catch (MalformedJwtException e) {
-            logger.error("Invalid JWT token: {}", e.getMessage());
-        } catch (ExpiredJwtException e) {
-            logger.error("JWT token is expired: {}", e.getMessage());
-            // throw new ExpiredTokenException();
-        } catch (UnsupportedJwtException e) {
-            logger.error("JWT token is unsupported: {}", e.getMessage());
         } catch (IllegalArgumentException e) {
             logger.error("JWT claims string is empty: {}", e.getMessage());
         }
@@ -117,6 +109,18 @@ public class JWTokenUtils {
         return false;
     }
 
+    public static boolean isTokenExpired(String token) {
+        final Date expiration = getExpirationDateFromToken(token);
+        return expiration.before(new Date());
+    }
+
+    public static Date getExpirationDateFromToken(String token) {
+        final Claims claims = Jwts.parserBuilder()
+                .setSigningKey(ACCESS_TOKEN_SECRET.getBytes())
+                .build().parseClaimsJws(token).getBody();
+
+        return claims.getExpiration();
+    }
     public static UsernamePasswordAuthenticationToken getAuthentication(String token){
         try {
             Claims claims = Jwts.parserBuilder()

@@ -108,7 +108,6 @@ public class WebSecurityConfig {
     }
 
 
-
     public static void main(String[] args) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String password = passwordEncoder.encode("mavl");

@@ -131,6 +131,7 @@ public class SiptisUserController {
     }
 
     @GetMapping("/list/students")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> getStudentList(String search, Pageable pageable) {
         ServiceAnswer answerService =
                 siptisUserService.getUserList(search, "STUDENT", pageable);
@@ -277,24 +278,37 @@ public class SiptisUserController {
         return createResponseEntity(answer);
     }
 
-    @PostMapping("/register/director/informatica/{userId}")
-    ResponseEntity<?> registerCareerDirector(@PathVariable int userId) {
+    @PostMapping("/register/director/{career}/{userId}")
+    ResponseEntity<?> registerCareerDirector(@PathVariable String career, @PathVariable int userId) {
         Long id = Long.valueOf(userId);
-        ServiceAnswer answer = siptisUserService.registerUserAsCareerDirector(id, "INF_DIRECTOR");
+        String directorRole = "SIS_DIRECTOR";
+        if(career.equals("informatica")){
+            directorRole =  "INF_DIRECTOR";
+        }
+        ServiceAnswer answer = siptisUserService.registerUserAsCareerDirector(id, directorRole);
         return createResponseEntity(answer);
     }
 
-    @GetMapping("/directorInformation/informatica")
-    ResponseEntity<?> getDirectorInfo() {
-        ServiceAnswer answer = siptisUserService.getDirectorPersonalInformation("INF_DIRECTOR");
+    @GetMapping("/directorInformation/{career}")
+    ResponseEntity<?> getDirectorInfo(@PathVariable String career) {
+        String directorRole = "SIS_DIRECTOR";
+        if(career.equals("informatica")){
+            directorRole =  "INF_DIRECTOR";
+        }
+        ServiceAnswer answer = siptisUserService.getDirectorPersonalInformation(directorRole);
         return createResponseEntity(answer);
     }
 
-    @DeleteMapping("/removeDirector/informatica")
-    ResponseEntity<?> removeDirector() {
-        ServiceAnswer answer = siptisUserService.removeDirectorRole("INF_DIRECTOR");
+    @DeleteMapping("/removeDirector/{career}")
+    ResponseEntity<?> removeDirector(@PathVariable String career) {
+        String directorRole = "SIS_DIRECTOR";
+        if(career.equals("informatica")){
+            directorRole =  "INF_DIRECTOR";
+        }
+        ServiceAnswer answer = siptisUserService.removeDirectorRole(directorRole);
         return createResponseEntity(answer);
     }
+
 
     private ResponseEntity<?> createResponseEntity(ServiceAnswer serviceAnswer) {
         Object data = serviceAnswer.getData();
