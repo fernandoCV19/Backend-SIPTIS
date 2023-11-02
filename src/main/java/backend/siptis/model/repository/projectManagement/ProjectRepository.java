@@ -2,6 +2,7 @@ package backend.siptis.model.repository.projectManagement;
 
 import java.util.List;
 
+import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.model.entity.projectManagement.Project;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -63,7 +64,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
             "project.perfil_path AS perfil, modality.name AS modality," +
             " modality.id AS modalityId  " +
             " FROM project project, modality modality " +
-            " WHERE project.modality_id = modality.id ", nativeQuery = true )
+            " WHERE project.modality_id = modality.id ORDER BY project.name ASC", nativeQuery = true )
     List<ProjectInfoDTO> getProjectsList();
 
 
@@ -77,5 +78,26 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
             " AND LOWER( project.name ) LIKE LOWER( CONCAT( '%', :search, '%'))  ", nativeQuery = true )
     Page <ProjectInfoDTO> searchProject(String search, Pageable pageable );
 
+
+    @Query(value ="SELECT modality.name AS modalityName, COUNT(projectId) AS cant FROM " +
+            "( SELECT project.id AS projectId, project.modality_id AS modalityId " +
+            " FROM project project, siptis_user_career siptis_user_career," +
+            " project_student project_student " +
+            " WHERE project.id = project_student.project_id AND " +
+            " project_student.user_id =  siptis_user_career.siptisuser_id " +
+            "AND siptis_user_career.career_id = :idCareer GROUP BY (project.id) " +
+            " ) result" +
+            " RIGHT JOIN modality modality ON result.modalityId = modality.id " +
+
+            " GROUP BY (modalityName) " , nativeQuery = true)
+    List<Object> getNumberOfProyectsByModalityAndCareer(long idCareer);
+
+
+    @Query(value ="SELECT project.period, COUNT(project.period) AS cant " +
+            " FROM project project, project_student ps, siptis_user su, siptis_user_career suc " +
+            " WHERE project.id = ps.project_id AND ps.user_id = su.id " +
+            " AND suc.siptisuser_id = su.id AND suc.career_id = :idCareer "+
+            " GROUP BY (project.period) " , nativeQuery = true)
+    List<Object> getNumberProjectsByPeriodAndCareer(Long idCareer);
 
 }

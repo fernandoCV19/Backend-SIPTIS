@@ -14,7 +14,7 @@ import java.io.ByteArrayOutputStream;
 @RestController
 @RequestMapping("/cloud")
 @CrossOrigin
-public class CloudController {
+public class    CloudController {
 
     @Autowired
     private FileManagerService fileDownloaderService;

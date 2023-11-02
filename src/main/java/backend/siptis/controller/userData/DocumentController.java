@@ -4,6 +4,7 @@ import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.document.DocumentaryRecordDto;
+import backend.siptis.model.pjo.dto.document.LetterGenerationRequestDTO;
 import backend.siptis.model.pjo.dto.document.ReportDocumentDTO;
 import backend.siptis.service.document.DocumentGeneratorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
+
+import java.io.*;
 
 @RestController
 @RequestMapping("/document")
@@ -43,16 +45,25 @@ public class DocumentController {
         return createResponseEntity(documentGeneratorService.generateSolvency(userId));
     }
 
-    @GetMapping("/create-trbunal-request/{id}")
-    ResponseEntity<?> createTribunalRequest(@PathVariable("id") long id) throws IOException {
-        return createResponseEntity(documentGeneratorService.tribunalRequest(id));
+    @PostMapping("/create-tribunal-approval")
+    ResponseEntity<?> createTribunalApproval(@RequestBody LetterGenerationRequestDTO dto) throws IOException {
+        return createResponseEntity(documentGeneratorService.generateTribunalApproval(dto));
     }
 
-    @GetMapping("/create-trbunal-approval/{id}")
-    ResponseEntity<?> createTribunalApproval(@PathVariable("id") long id) throws IOException {
-        return createResponseEntity(documentGeneratorService.generateTribunalApproval(id));
+    @PostMapping("/create-teacher-approval-letter")
+    ResponseEntity<?> createTeacherTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) throws IOException {
+        return createResponseEntity(documentGeneratorService.teacherTribunalRequest(dto));
     }
 
+    @PostMapping("/create-tutor-approval-letter")
+    ResponseEntity<?> createTutorTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) throws IOException {
+        return createResponseEntity(documentGeneratorService.tutorTribunalRequest(dto));
+    }
+
+    @PostMapping("/create-student-tribunal-request")
+    ResponseEntity<?> createStudentTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) throws IOException {
+        return createResponseEntity(documentGeneratorService.studentTribunalRequest(dto));
+    }
 
 
     @PostMapping("/create-documentary-record")
@@ -67,6 +78,9 @@ public class DocumentController {
 
         if(mensajeServicio == ServiceMessage.NOT_FOUND || mensajeServicio == ServiceMessage.ERROR)
             httpStatus = HttpStatus.NOT_FOUND;
+
+        if(mensajeServicio == ServiceMessage.CANNOT_GENERATE_LETTER || mensajeServicio == ServiceMessage.ERROR)
+            httpStatus = HttpStatus.BAD_REQUEST;
 
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(data).message(mensajeServicio.toString()).build();
         return new ResponseEntity<>(controllerAnswer, httpStatus);

@@ -12,6 +12,7 @@ import backend.siptis.model.entity.userData.Schedule;
 import backend.siptis.model.pjo.dto.projectManagement.AssignTribunalsDTO;
 import backend.siptis.model.pjo.dto.projectManagement.DefenseDTO;
 import backend.siptis.model.pjo.dto.projectManagement.NewProjectDTO;
+import backend.siptis.model.pjo.dto.projectManagement.ProjectInformationDTO;
 import backend.siptis.model.pjo.vo.projectManagement.*;
 import backend.siptis.model.repository.editorsAndReviewers.ModalityRepository;
 import backend.siptis.model.repository.editorsAndReviewers.ProjectStudentRepository;
@@ -51,6 +52,7 @@ public class ProjectServiceImpl implements ProjectService {
     private final ReviewRepository reviewRepository;
     private final SiptisUserRepository siptisUserRepository;
     private final AreaRepository areaRepository;
+    private final SubAreaRepository subAreaRepository;
     private final ProjectTribunalRepository projectTribunalRepository;
     private final PlaceToDefenseRepository placeToDefenseRepository;
     private final DefenseRepository defenseRepository;
@@ -60,15 +62,15 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ServiceAnswer createProject(NewProjectDTO dto) {
         if(!semesterInformationRepository.existsSemesterInformationByInProgressIsTrue()){
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR)
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_CURRENT_SEMESTER)
                     .data("No existe un semestre en curso.").build();
         }
         if(projectRepository.existsByName(dto.getName()))
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR)
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_NAME_ALREADY_EXIST)
                     .data("El nombre ya se encuentra registrado").build();
 
         if(!modalityRepository.existsById(dto.getModalityId()))
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR)
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.MODALITY_DOES_NOT_EXIST)
                     .data("No se pudo encontrar la modalidad solicitada.").build();
 
         Project newProject = new Project();
@@ -76,7 +78,7 @@ public class ProjectServiceImpl implements ProjectService {
 
         for (Long studentId: dto.getStudentsId()) {
             if(!siptisUserRepository.existsById(studentId))
-                return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR)
+                return ServiceAnswer.builder().serviceMessage(ServiceMessage.USER_ID_DOES_NOT_EXIST)
                         .data("No se pudo encontrar al estudiante solicitado.").build();
             ProjectStudent projectStudent = new ProjectStudent();
             projectStudent.setStudent(siptisUserRepository.findById(studentId).get());
@@ -115,12 +117,22 @@ public class ProjectServiceImpl implements ProjectService {
             areas.add(area);
         }
 
+        Set<SubArea> subAreas = new HashSet<>();
+        for (Long subAreaId: dto.getSubAreasId()) {
+            if(!subAreaRepository.existsSubAreaById(subAreaId))
+                return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR)
+                        .data("No se pudo encontrar el area solicitado.").build();
+            SubArea subArea = subAreaRepository.findById(subAreaId).get();
+            subAreas.add(subArea);
+        }
 
         newProject.setName(dto.getName());
         newProject.setModality(modalityRepository.findModalityById(dto.getModalityId()));
         newProject.setStudents(students);
         newProject.setTutors(tutors);
         newProject.setAreas(areas);
+        newProject.setSubAreas(subAreas);
+        newProject.setTeachers(teachers);
         newProject.setPeriod(semesterInformationRepository.getCurrentPeriod());
 
         projectRepository.save(newProject);
@@ -143,6 +155,35 @@ public class ProjectServiceImpl implements ProjectService {
         List<Project> proyectos = projectRepository.findAll();
         if (proyectos.isEmpty()) return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_PROJECTS).data(proyectos).build();
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(proyectos).build();
+    }
+
+    @Override
+    public ServiceAnswer getProjectInfo(Long id) {
+        if(!projectRepository.existsById(id))
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data("El proyecto solicitado no existe.").build();
+
+        Project project = projectRepository.findById(id).get();
+        ProjectInformationDTO dto = new ProjectInformationDTO();
+        dto.setProjectName(project.getName());
+        dto.setPeriod(project.getPeriod());
+        Modality modality = project.getModality();
+        if(modality != null){
+            dto.setModality(modality.getName());
+        }
+        State state = project.getState();
+        if(state != null){
+            dto.setState(state.getName());
+        }
+        dto.setPhase(project.getPhase());
+        dto.setStudents(project.getProjectStudents());
+        dto.setTutors(project.getProjectTutors());
+        dto.setTeachers(project.getProjectTeachers());
+        dto.setTribunals(project.getProjectTribunals());
+        dto.setSupervisors(project.getProjectSupervisors());
+        dto.setAreas(project.getAreasNames());
+        dto.setSubareas(project.getSubAreasNames());
+
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(dto).build();
     }
 
     @Override
@@ -424,6 +465,16 @@ public class ProjectServiceImpl implements ProjectService {
         List<ProjectCompleteInfoVO> withoutDefense = projects.stream().filter(project ->  project.getDefense() == null && project.getPhase().equals(Phase.DEFENSE_PHASE.toString())).map(ProjectCompleteInfoVO::new).toList();
         ProjectsWithoutAndWithTribunalsVO data = new ProjectsWithoutAndWithTribunalsVO(withDefense, withoutDefense);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(data).build();
+    }
+
+    @Override
+    public ServiceAnswer getNumberOfProyectsByModalityAndCareer(Long id) {
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(projectRepository.getNumberOfProyectsByModalityAndCareer(id)).build();
+    }
+
+    @Override
+    public ServiceAnswer getNumberProjectsByPeriodAndCareer(Long careerId) {
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(projectRepository.getNumberProjectsByPeriodAndCareer(careerId)).build();
     }
 
     private UserDefenseScheduleVO createDefenseInfo(SiptisUser student) {

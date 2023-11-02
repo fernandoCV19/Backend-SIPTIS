@@ -33,4 +33,7 @@ public class NewProjectDTO {
     @NotNull(message = "No puede crear el proyecto sin areas asignadas.")
     @NotEmpty(message = "No puede crear el proyecto sin areas asignadas.")
     private ArrayList<Long> areasId;
+    @NotNull(message = "No puede crear el proyecto sin subareas asignadas.")
+    @NotEmpty(message = "No puede crear el proyecto sin subareas asignadas.")
+    private ArrayList<Long> subAreasId;
 }

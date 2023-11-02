@@ -1,10 +1,8 @@
 package backend.siptis.separateTests.service;
 
-import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.pjo.dto.projectManagement.NewProjectDTO;
-import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterStudentDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterUserDTO;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
 import backend.siptis.service.projectManagement.ProjectService;
@@ -33,7 +31,6 @@ public class ProjectServiceTest {
     private final ProjectService projectService;
     private final SiptisUserService siptisUserService;
     private final SiptisUserRepository siptisUserRepository;
-    private static RegisterStudentDTO studentDTO = new RegisterStudentDTO();
     private static RegisterUserDTO teacherDTO = new RegisterUserDTO();
     private static NewProjectDTO newProjectDTO = new NewProjectDTO();
     private Long studentId;
@@ -45,7 +42,7 @@ public class ProjectServiceTest {
         this.projectService = projectService;
         this.siptisUserService = siptisUserService;
         this.siptisUserRepository = siptisUserRepository;
-
+/*
         studentDTO.setNames("Estudiante 1");
         studentDTO.setLastnames("Prueba 1");
         studentDTO.setEmail("student@gmail.com");
@@ -55,7 +52,7 @@ public class ProjectServiceTest {
         studentDTO.setCi("123123123");
         studentDTO.setCodSIS("201900188");
         studentDTO.setCareer("INFORMATICA");
-
+*/
         teacherDTO.setNames("Docente 1");
         teacherDTO.setLastnames("Prueba 1");
         teacherDTO.setEmail("teacher@gmail.com");

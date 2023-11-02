@@ -1,9 +1,12 @@
 package backend.siptis.separateTests.model.repository;
 
 
+import backend.siptis.auth.entity.SiptisUser;
+import backend.siptis.model.pjo.dto.userDataDTO.RegisterAdminDTO;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
 import backend.siptis.service.userData.SiptisUserService;
 import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -26,13 +29,16 @@ public class SiptisUserRepositoryTest {
 
     private final SiptisUserRepository siptisUserRepository;
     private final SiptisUserService siptisUserService;
+    private static RegisterAdminDTO adminDto = new RegisterAdminDTO();
 
     @Autowired
     SiptisUserRepositoryTest(SiptisUserRepository siptisUserRepository, SiptisUserService service) {
         this.siptisUserRepository = siptisUserRepository;
         this.siptisUserService = service;
+        adminDto.setEmail("admin@gmail.com");
+        adminDto.setPassword("12121212");
     }
-/*
+
     @Test
     void getEmptyAllUserList() {
         List<SiptisUser> answer = siptisUserRepository.findAll();
@@ -114,7 +120,5 @@ public class SiptisUserRepositoryTest {
         assertEquals(list.size(), 1);
     }
 
-
-*/
 
 }

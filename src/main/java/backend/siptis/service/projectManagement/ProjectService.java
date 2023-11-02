@@ -12,6 +12,8 @@ public interface ProjectService {
 
     ServiceAnswer getProjects();
 
+    ServiceAnswer getProjectInfo(Long id);
+
     ServiceAnswer getProjectsList(String search, Pageable pageable);
 
     ServiceAnswer getPaginatedCompletedProjects(int pageNumber, int pageSize);
@@ -45,4 +47,8 @@ public interface ProjectService {
     ServiceAnswer getProjectsWithoutAndWithTribunals();
 
     ServiceAnswer getProjectsWithoutAndWithDefensePlace();
+
+    ServiceAnswer getNumberOfProyectsByModalityAndCareer(Long id);
+
+    ServiceAnswer getNumberProjectsByPeriodAndCareer(Long careerId);
 }

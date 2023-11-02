@@ -2,12 +2,15 @@ package backend.siptis.auth.jwt;
 
 import backend.siptis.auth.entity.Role;
 import backend.siptis.auth.entity.SiptisUser;
+import backend.siptis.exception.UserNotFoundException;
+import backend.siptis.model.repository.userData.SiptisUserRepository;
 import backend.siptis.service.userData.UserInformationService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -18,22 +21,23 @@ import java.util.Date;
 @Component
 public class JWTokenUtils {
 
-    //private static final long EXPIRE_TIME_DURATION = 12 *60 * 60 * 1000 ; // hora.
-    //private static final long EXPIRE_TIME_DURATION_2 = 12 * 60 * 60 * 1000; // hora.
     private static final long REFRESH_TOKEN_EXPIRE_TIME_DURATION = 60 * 60 * 1000; //1 horas
     private static final Logger logger = LoggerFactory.getLogger(JWTokenUtils.class);
     private static long EXPIRE_TIME_DURATION;
-    //private static long EXPIRE_TIME_DURATION_2;
     private static String ACCESS_TOKEN_SECRET;
+
+    private static SiptisUserRepository siptisUserRepository;
+
+    public JWTokenUtils(SiptisUserRepository siptisUserRepository) {
+        this.siptisUserRepository = siptisUserRepository;
+    }
 
     @Value("${security.jwt.token.secret-key}")
     private void setAccessToken(String key){    ACCESS_TOKEN_SECRET = key;  }
 
     @Value("${security.jwt.token.expire-length}")
     private void setExpireTime(String time){   EXPIRE_TIME_DURATION  = Long.parseLong( time);  }
-/*
-    @Value("${cloud.aws.credentials.expire-length}")
-    private void setExpireTime2(long time){   EXPIRE_TIME_DURATION_2  = time;  }*/
+
 
     public static String createToken(UserInformationService.UserDetailImp userDI){
         Date expirationDate =new Date(System.currentTimeMillis() + EXPIRE_TIME_DURATION);
@@ -60,12 +64,17 @@ public class JWTokenUtils {
                 .compact();
     }
 
-    public static UserDetails getUserDetails(String token){
+    public static UserDetails getUserDetails(String token) {
         SiptisUser siptisUserDetails =new SiptisUser();
         Claims claims = getClaims(token);
         //String subject =claims.getSubject();
         String subject = (String) claims.get(Claims.SUBJECT);
         String roles = (String) claims.get("roles");
+
+        Integer id = (Integer) claims.get("id");
+        if(!siptisUserRepository.existsById(id.longValue())){
+            throw new UserNotFoundException("USER NOT FOUND");
+        }
 
         roles = roles.replace("[", "").replace("]", "");
         String[] roleNames = roles.split(",");
@@ -73,9 +82,7 @@ public class JWTokenUtils {
         for (String aRoleName : roleNames) {
 
             aRoleName = aRoleName.trim();
-            System.out.println("rol actual: "+ aRoleName);
             siptisUserDetails.addRol(new Role(aRoleName));
-
             siptisUserDetails.setEmail(subject);
         }
 
@@ -105,38 +112,20 @@ public class JWTokenUtils {
         } catch (IllegalArgumentException e) {
             logger.error("JWT claims string is empty: {}", e.getMessage());
         }
-
         return false;
     }
 
-    public static boolean isTokenExpired(String token) {
-        final Date expiration = getExpirationDateFromToken(token);
-        return expiration.before(new Date());
-    }
+    public static UsernamePasswordAuthenticationToken getAuthentication(String token) {
 
-    public static Date getExpirationDateFromToken(String token) {
-        final Claims claims = Jwts.parserBuilder()
-                .setSigningKey(ACCESS_TOKEN_SECRET.getBytes())
-                .build().parseClaimsJws(token).getBody();
-
-        return claims.getExpiration();
-    }
-    public static UsernamePasswordAuthenticationToken getAuthentication(String token){
-        try {
             Claims claims = Jwts.parserBuilder()
                     .setSigningKey(ACCESS_TOKEN_SECRET.getBytes())
                     .build().parseClaimsJws(token).getBody();
 
             UserDetails userDetails = getUserDetails(token);
 
-            //String correo =claims.getSubject();
-
             return new UsernamePasswordAuthenticationToken(
                     userDetails, null,userDetails.getAuthorities()
             );
-        }catch (Exception e){
-            return null;
-        }
     }
 
 

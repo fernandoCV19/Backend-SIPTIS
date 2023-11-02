@@ -35,7 +35,7 @@ public class SiptisUser implements UserDetails {
 
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {
-            CascadeType.PERSIST,
+            //CascadeType.PERSIST,
             CascadeType.MERGE
     })
     @JoinTable(
@@ -56,7 +56,7 @@ public class SiptisUser implements UserDetails {
     private Set<UserArea> areas;
 
     @ManyToMany(fetch = FetchType.LAZY,cascade = {
-            CascadeType.PERSIST,
+            //CascadeType.PERSIST,
             CascadeType.MERGE
     })
     @JoinTable(name = "siptisUser_career",
@@ -149,6 +149,10 @@ public class SiptisUser implements UserDetails {
             ids.add(project.getProject().getId());
         }
         return ids;
+    }
+
+    public String getFullName(){
+        return userInformation.getNames() + " " +userInformation.getLastnames();
     }
 
     @Override

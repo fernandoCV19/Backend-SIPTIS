@@ -7,7 +7,6 @@ import backend.siptis.model.pjo.dto.notifications.LogInDTO;
 import backend.siptis.model.pjo.dto.userDataDTO.*;
 import backend.siptis.model.pjo.dto.userDataDTO.RegisterStudentDTO;
 import backend.siptis.model.pjo.dto.userDataDTO.RegisterUserDTO;
-import backend.siptis.model.pjo.dto.usersInformationDTO.*;
 import org.springframework.data.domain.Pageable;
 
 public interface SiptisUserService {
@@ -43,8 +42,8 @@ public interface SiptisUserService {
 
     ServiceAnswer userEditPersonalInformation(Long id, UserEditInformationDTO dto);
 
-    ServiceAnswer adminEditUserPersonalInformation(Long id, UniversityUserPersonalInformationDTO dto);
-    ServiceAnswer adminEditSpecialUserPersonalInformation(Long id, GeneralUserPersonalInformationDTO dto);
+    ServiceAnswer adminEditUserInformation(Long id, AdminEditUserInformationDTO dto);
+    ServiceAnswer adminEditStudentInformation(Long id, AdminEditStudentInformationDTO dto);
 
     ServiceAnswer updateAreas(Long id, UserSelectedAreasDTO dto);
 
@@ -56,6 +55,10 @@ public interface SiptisUserService {
     ServiceAnswer removeDirectorRole(String directorRole);
     boolean existCareerDirector(String directorRole);
 
+    String getCareerDirectorName(String career);
+
+    ServiceAnswer getNumberStudentsCareer(Long careerId);
+    ServiceAnswer getNumberOfStudentsByYearAndCareer(Long careerId);
 
     Long getProjectById(Long id);
 

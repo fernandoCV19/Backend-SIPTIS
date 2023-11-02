@@ -117,9 +117,9 @@ public class CloudManagementServiceImpl implements CloudManagementService {
         return key;
     }
     @Override
-    public String uploadLetterToCloud(String filename){
+    public String uploadLetterToCloud(String filename, String projectName){
         File document = new File(filename);
-        String key = putObject(document, "Cartas/");
+        String key = putObject(document, "Cartas/"+projectName+"/");
         boolean bandera = document.delete();
         return key;
     }

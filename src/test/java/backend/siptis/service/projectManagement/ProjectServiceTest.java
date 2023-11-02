@@ -3,17 +3,24 @@ package backend.siptis.service.projectManagement;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.projectManagement.AssignTribunalsDTO;
+import backend.siptis.model.pjo.dto.projectManagement.NewProjectDTO;
 import backend.siptis.model.pjo.vo.projectManagement.*;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.awt.print.PageFormat;
+import java.awt.print.Pageable;
+import java.awt.print.Printable;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,14 +33,66 @@ import static org.junit.jupiter.api.Assertions.*;
 class ProjectServiceTest {
 
     private final ProjectService projectService;
-    private final JdbcTemplate jdbcTemplate;
+    private final NewProjectDTO newProjectDTO;
 
+/*
     @Autowired
     public ProjectServiceTest(ProjectService projectService, JdbcTemplate jdbcTemplate) {
         this.projectService = projectService;
         this.jdbcTemplate = jdbcTemplate;
     }
+*/
 
+    @Autowired
+    public ProjectServiceTest(ProjectService projectService) {
+        this.projectService = projectService;
+        newProjectDTO = new NewProjectDTO();
+        createNewProjectDTO(newProjectDTO);
+    }
+
+    private void createNewProjectDTO(NewProjectDTO dto){
+        ArrayList<Long> students = new ArrayList<>();
+        students.add(2L);
+        students.add(153L);
+        ArrayList<Long> tutors = new ArrayList<>();
+        students.add(152L);
+        ArrayList<Long> teachers = new ArrayList<>();
+        students.add(152L);
+        ArrayList<Long> areas = new ArrayList<>();
+        areas.add(1L);
+        ArrayList<Long> subAreas = new ArrayList<>();
+        subAreas.add(1L);
+  /*      ArrayList students = (ArrayList) Arrays.asList(2L, 153L);
+        ArrayList tutors = (ArrayList) Arrays.asList(152L);
+        ArrayList teachers = (ArrayList) Arrays.asList(152L);
+        ArrayList areas = (ArrayList) Arrays.asList(1L);
+        ArrayList subAreas = (ArrayList) Arrays.asList(1L);*/
+
+        dto.setName("PROJECT FOR TEST");
+        dto.setModalityId(1L);
+        dto.setStudentsId(students);
+        dto.setTutorsId(tutors);
+        dto.setTeachersId(teachers);
+        dto.setAreasId(areas);
+        dto.setSubAreasId(subAreas);
+
+    }
+
+    @Test
+    void getInformationOfNotExistingProject(){
+        ServiceAnswer answer = projectService.getProjectInfo(123456L);
+        assertEquals(ServiceMessage.ID_DOES_NOT_EXIST, answer.getServiceMessage());
+    }
+
+    @Test
+    void createProjectFailedNotCurrentSemester(){
+        ServiceAnswer answer = projectService.createProject(newProjectDTO);
+        assertEquals(ServiceMessage.NO_CURRENT_SEMESTER, answer.getServiceMessage());
+    }
+
+
+
+    /*
     @Test
     void getProjectInfoToReviewWithProjectIdThatDoesNotExistReturnProjectIdDoesNoExist() {
         ServiceAnswer query = projectService.getProjectInfoToReview(0L, 30L);
@@ -194,6 +253,7 @@ class ProjectServiceTest {
         ServiceAnswer query = projectService.getProjectInfoToAssignTribunals(0L);
         assertNull(query.getData());
     }
+
     @Test
     void getProjectInfoToAssignTribunalsWithCorrectProjectIdReturnOk() {
         ServiceAnswer query = projectService.getProjectInfoToAssignTribunals(1L);
@@ -318,4 +378,7 @@ class ProjectServiceTest {
         HashMap<String, List<String[]>> res = infoToCreateADefenseVO.getTribunals().get(0).getSchedules();
         assertTrue(res.containsKey("Lunes") && res.containsKey("Martes") && res.containsKey("Miercoles") && res.containsKey("Jueves") && res.containsKey("Viernes") && res.size() == 5);
     }
+
+
+ */
 }

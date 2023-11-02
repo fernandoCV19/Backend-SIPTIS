@@ -30,8 +30,6 @@ public class WebSecurityConfig {
     private UserDetailsService userDetailsService;
     private JWTAuthorizationFilter jwtAuthorizationFilter;
 
-
-
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager manager)
             throws Exception {

@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class CustomExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<?> handleAccessDeniedException(AccessDeniedException ex) {
-        // Customize the response for AccessDeniedException
-
         ObjectMapper mapper = new ObjectMapper();
         ResponseDTO dto = new ResponseDTO();
         dto.setData("No tiene los permisos necesarios para acceder a este recurso.");
@@ -24,7 +22,6 @@ public class CustomExceptionHandler {
 
     @ExceptionHandler(CustomAccessDeniedException.class)
     public ResponseEntity<String> handleCustomAccessDeniedException(CustomAccessDeniedException ex) {
-        // Customize the response for your custom exception
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.FORBIDDEN);
     }
 }

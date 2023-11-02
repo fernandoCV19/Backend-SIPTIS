@@ -23,17 +23,6 @@ import java.util.Map;
 @ControllerAdvice
 public class ValidationHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(value = ExpiredJwtException.class)
-    public ResponseEntity<Object> handleExpiredJwtException(
-            ExpiredJwtException ex, WebRequest request) {
-        System.out.println(1232132);
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("message", "El token ya expiro, intente de nuevo");
-
-        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
-    }
-
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {

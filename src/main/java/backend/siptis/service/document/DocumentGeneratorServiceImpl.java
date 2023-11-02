@@ -7,13 +7,16 @@ import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectStudent;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectTeacher;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectTribunal;
+import backend.siptis.model.entity.editorsAndReviewers.ProjectTutor;
 import backend.siptis.model.entity.projectManagement.Phase;
 import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.entity.userData.Document;
 import backend.siptis.model.entity.userData.UserCareer;
 import backend.siptis.model.entity.userData.UserInformation;
+import backend.siptis.model.pjo.dto.document.LetterGenerationRequestDTO;
 import backend.siptis.model.pjo.dto.document.ReportDocumentDTO;
 import backend.siptis.model.pjo.dto.document.DocumentaryRecordDto;
+import backend.siptis.model.repository.editorsAndReviewers.*;
 import backend.siptis.model.repository.projectManagement.PhaseRepository;
 import backend.siptis.model.repository.projectManagement.ProjectRepository;
 import backend.siptis.model.repository.userData.DocumentRepository;
@@ -24,6 +27,7 @@ import backend.siptis.service.document.generationTools.DocumentaryRecordTool;
 import backend.siptis.service.document.generationTools.LetterTool;
 import backend.siptis.service.document.generationTools.ReportTool;
 import backend.siptis.service.document.generationTools.SolvencyTool;
+import backend.siptis.service.userData.SiptisUserService;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfStamper;
 import com.lowagie.text.pdf.PdfWriter;
@@ -44,21 +48,26 @@ import java.util.*;
 public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
     @Autowired
     private CloudManagementService nube;
-
     @Autowired
     private SiptisUserRepository siptisUserRepository;
-
+    @Autowired
+    private SiptisUserService siptisUserService;
     @Autowired
     private UserInformationRepository userInformationRepository;
-
     @Autowired
     private ProjectRepository projectRepository;
-
     @Autowired
     private DocumentRepository documentRepository;
-
     @Autowired
-    private PhaseRepository phaseRepository;
+    private ProjectTribunalRepository projectTribunalRepository;
+    @Autowired
+    private ProjectTeacherRepository projectTeacherRepository;
+    @Autowired
+    private ProjectTutorRepository projectTutorRepository;
+    @Autowired
+    private ProjectSupervisorRepository projectSupervisorRepository;
+    @Autowired
+    private ProjectStudentRepository projectStudentRepository;
 
     @Override
     public ServiceAnswer getAllDocumentsFromUser (long idUser){
@@ -124,7 +133,6 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
     @Override
     public ServiceAnswer generateSolvency(long idUser){
         Optional<SiptisUser> oUser = siptisUserRepository.findOneById(idUser);
-
         if (oUser.isEmpty()){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
         }
@@ -219,76 +227,91 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
         return tempFilePath;
     }
 
+
+
     @Override
-    public ServiceAnswer tribunalRequest(long id) throws IOException {
+    public ServiceAnswer teacherTribunalRequest(LetterGenerationRequestDTO dto) throws IOException {
         LetterTool letterTool = new LetterTool();
 
-        if(!projectRepository.existsById(id))
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
-        Project project = projectRepository.findById(52L).get();
+        if(!projectRepository.existsById(dto.getProjectId()))
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data("No se pudo encontrar el proyecto.").build();
+        Project project = projectRepository.findById(dto.getProjectId()).get();
         String projectName = project.getName();
         Collection<ProjectStudent> students = project.getStudents();
-        // Collection<ProjectTutor> tutors = project.getTutors();
-        Collection<ProjectTeacher> teachers = project.getTeachers();
-        UserInformation teacher = teachers.iterator().next().getTeacher().getUserInformation();
-        String teacherName = teacher.getLastnames() + " " + teacher.getNames();
+        ProjectTeacher teacher = projectTeacherRepository.findByTeacherIdAndProjectId(dto.getUserId(), dto.getProjectId());
 
-        ArrayList<String> response = new ArrayList<>();
+        if(teacher == null)
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data("No se pudo encontrar el usuario.").build();
+        if(!teacher.getAccepted())
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_APPROVED).data(null).build();
+
+        SiptisUser user = teacher.getTeacher();
+        String teacherName = user.getFullName();
+    
         String key = "";
 
         for (ProjectStudent projectStudent: students) {
-            UserInformation student = projectStudent.getStudent().getUserInformation();
-            String studentName = student.getLastnames() + " " + student.getNames();
+            String studentName = projectStudent.getStudent().getFullName();
             Set<UserCareer> career = projectStudent.getStudent().getCareer();
             String careerName = career.iterator().next().getName();
 
-            String filename = letterTool.generateTribunalRequest(
-                    studentName, "Calancha Navia Boris Marcelo", careerName, projectName, teacherName);
-            response.add(filename);
+            String directorName = siptisUserService.getCareerDirectorName(careerName);
+            if(directorName == null)
+                ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_CURRENT_DIRECTOR).data(null).build();
 
-            key = nube.uploadLetterToCloud(filename);
+            String filename = letterTool.generateTribunalRequest(studentName, directorName, careerName, projectName, teacherName);
 
+            key = nube.uploadLetterToCloud(filename, projectName);
             backend.siptis.model.entity.userData.Document document = new backend.siptis.model.entity.userData.Document();
             document.setPath(key);
             document.setType(DocumentType.LETTER.toString());
-            document.setDescription("Solicitud de tribunales");
+            document.setDescription("Carta de Conformidad y solicitud de asignacion de tribunales, emitida por el docente de Taller de Grado 2 encargado del proyecto.");
             document.setSiptisUser(projectStudent.getStudent());
             documentRepository.save(document);
-
         }
 
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
     }
 
     @Override
-    public ServiceAnswer generateTribunalApproval(Long id) throws IOException {
+    public ServiceAnswer tutorTribunalRequest(LetterGenerationRequestDTO dto) throws IOException {
         LetterTool letterTool = new LetterTool();
 
-        if(!projectRepository.existsById(id))
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
-        Project project = projectRepository.findById(52L).get();
-        String projectName = project.getName();
-        Collection<ProjectStudent> students = project.getStudents();
-        Collection<ProjectTribunal> tribunals = project.getTribunals();
-        // Collection<ProjectTutor> tutors = project.getTutors();
-        ProjectStudent projectStudent = students.iterator().next();
-        UserInformation student = projectStudent.getStudent().getUserInformation();
-        String studentName = student.getLastnames() + " " + student.getNames();
-        Set<UserCareer> career = projectStudent.getStudent().getCareer();
-        String careerName = career.iterator().next().getName();
+        if(!projectRepository.existsById(dto.getProjectId()))
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data("No se pudo encontrar el proyecto.").build();
 
-        ArrayList<String> response = new ArrayList<>();
+        Project project = projectRepository.findById(dto.getProjectId()).get();
+        String projectName = project.getName();
+
+        ProjectTutor tutor = projectTutorRepository.findByTutorIdAndProjectId(dto.getUserId(), dto.getProjectId());
+
+        if(tutor == null)
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data("No se pudo encontrar el usuario.").build();
+
+        if(!tutor.getAccepted())
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.CANNOT_GENERATE_LETTER).data("El tutor no aprobo el proyecto.").build();
+
+        SiptisUser user = tutor.getTutor();
+        String tutorName = user.getFullName();
+        Collection<ProjectStudent> students = project.getStudents();
+
         String key = "";
 
-        for (ProjectTribunal tribunal: tribunals) {
+        for (ProjectStudent projectStudent: students) {
+            UserInformation student = projectStudent.getStudent().getUserInformation();
+            String studentName = student.getNames()+" "+student.getLastnames();
 
-            UserInformation tribunalInfo = tribunal.getTribunal().getUserInformation();
-            String tribunalName = tribunalInfo.getLastnames() + " " + tribunalInfo.getNames();
-            String filename = letterTool.generateTribunalApproval(
-                    studentName, "Calancha Navia Boris Marcelo", careerName, projectName, tribunalName);
-            response.add(filename);
+            Set<UserCareer> career = projectStudent.getStudent().getCareer();
+            String careerName = career.iterator().next().getName();
 
-            key = nube.uploadLetterToCloud(filename);
+            String directorName = siptisUserService.getCareerDirectorName(careerName);
+            if(directorName == null)
+                ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data("No existe un director en cargo.").build();
+
+            String filename = letterTool.generateTutorTribunalRequest(
+                    tutorName,studentName, directorName, careerName, projectName, student.getCi());
+
+            key = nube.uploadLetterToCloud(filename, projectName);
 
             backend.siptis.model.entity.userData.Document document = new backend.siptis.model.entity.userData.Document();
             document.setPath(key);
@@ -296,7 +319,98 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
             document.setDescription("Solicitud de tribunales");
             document.setSiptisUser(projectStudent.getStudent());
             documentRepository.save(document);
+        }
 
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
+    }
+
+    @Override
+    public ServiceAnswer supervisorTribunalRequest(LetterGenerationRequestDTO dto) throws IOException {
+        return null;
+    }
+
+    @Override
+    public ServiceAnswer studentTribunalRequest(LetterGenerationRequestDTO dto) throws IOException {
+        LetterTool letterTool = new LetterTool();
+
+        if(!projectRepository.existsById(dto.getProjectId()))
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data("No se pudo encontrar el proyecto.").build();
+        Project project = projectRepository.findById(dto.getProjectId()).get();
+        String projectName = project.getName();
+
+        ProjectStudent projectStudent = projectStudentRepository.findByStudentIdAndProjectId(dto.getUserId(), dto.getProjectId());
+
+        if(projectStudent == null)
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data("No se pudo encontrar el usuario.").build();
+
+
+        UserInformation student = projectStudent.getStudent().getUserInformation();
+        String studentName = student.getNames()+" "+student.getLastnames();
+        String studentCi = student.getCi();
+
+        String key = "";
+
+        Set<UserCareer> career = projectStudent.getStudent().getCareer();
+        String careerName = career.iterator().next().getName();
+
+        String directorName = siptisUserService.getCareerDirectorName(careerName);
+        if(directorName == null)
+            ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data("No existe un director en cargo.").build();
+
+        String filename = letterTool.generateStudentTribunalRequest(studentName, directorName, careerName, projectName, studentCi);
+        key = nube.uploadLetterToCloud(filename, projectName);
+
+        backend.siptis.model.entity.userData.Document document = new backend.siptis.model.entity.userData.Document();
+        document.setPath(key);
+        document.setType(DocumentType.LETTER.toString());
+        document.setDescription("Solicitud de tribunales");
+        document.setSiptisUser(projectStudent.getStudent());
+        documentRepository.save(document);
+
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
+    }
+
+    @Override
+    public ServiceAnswer generateTribunalApproval(LetterGenerationRequestDTO dto) throws IOException {
+        LetterTool letterTool = new LetterTool();
+        if(!projectRepository.existsById(dto.getProjectId()))
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data("No se pudo encontrar el proyecto.").build();
+
+        Project project = projectRepository.findById(dto.getProjectId()).get();
+        String projectName = project.getName();
+        Collection<ProjectStudent> students = project.getStudents();
+
+        String key = "";
+
+        ProjectTribunal tribunal = projectTribunalRepository.findByTribunalIdAndProjectId(dto.getUserId(), dto.getProjectId());
+
+        if(tribunal == null)
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data("No se pudo encontrar el usuario.").build();
+
+        if(!tribunal.getAccepted())
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.CANNOT_GENERATE_LETTER).data("El tribunal no aprobo el proyecto.").build();
+
+        SiptisUser user = tribunal.getTribunal();
+        String tribunalName = user.getFullName();
+
+        for(ProjectStudent projectStudent: students) {
+            Set<UserCareer> career = projectStudent.getStudent().getCareer();
+            String careerName = career.iterator().next().getName();
+
+            String directorName = siptisUserService.getCareerDirectorName(careerName);
+            if (directorName == null)
+                ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data("No existe un director en cargo.").build();
+
+            String studentName = projectStudent.getStudent().getFullName();
+            String filename = letterTool.generateTribunalApproval(
+                    studentName, directorName, careerName, projectName, tribunalName);
+            key = nube.uploadLetterToCloud(filename, projectName);
+            backend.siptis.model.entity.userData.Document document = new backend.siptis.model.entity.userData.Document();
+            document.setPath(key);
+            document.setType(DocumentType.LETTER.toString());
+            document.setDescription("Carta de aprobación de Tribunal encargado del proyecto.");
+            document.setSiptisUser(projectStudent.getStudent());
+            documentRepository.save(document);
         }
 
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();

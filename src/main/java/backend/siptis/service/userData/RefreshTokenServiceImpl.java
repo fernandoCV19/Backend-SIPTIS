@@ -4,7 +4,6 @@ import backend.siptis.auth.entity.RefreshToken;
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.exception.RefreshTokenException;
 import backend.siptis.model.repository.userData.RefreshTokenRepository;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
 import jakarta.transaction.Transactional;
@@ -66,10 +65,8 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     public RefreshToken verifyExpirationDate(RefreshToken refreshToken) {
         if (refreshToken.getExpireDate().compareTo(Instant.now()) < 0) {
             refreshTokenRepository.delete(refreshToken);
-            //throw new RefreshTokenException("El Refresh Token expiró");
             return null;
         }
-
         return refreshToken;
     }
 
@@ -86,9 +83,6 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     @Transactional
     @Override
     public int deleteToken(Long userId) {
-
-        return refreshTokenRepository
-                .deleteBySiptisUser(siptisUserRepository.findById(userId).get());
-
+        return refreshTokenRepository.deleteBySiptisUser(siptisUserRepository.findById(userId).get());
     }
 }

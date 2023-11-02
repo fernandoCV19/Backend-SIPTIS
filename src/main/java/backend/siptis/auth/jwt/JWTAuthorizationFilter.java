@@ -1,5 +1,6 @@
 package backend.siptis.auth.jwt;
 
+import backend.siptis.exception.UserNotFoundException;
 import backend.siptis.model.pjo.dto.ResponseDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -10,7 +11,6 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -27,23 +27,21 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain)
             throws ServletException, IOException {
+
         String bearerToken =request.getHeader("Authorization");
-
-
         try{
             if(bearerToken != null && bearerToken.startsWith("Bearer ")){
                 String token =bearerToken.replace("Bearer ", "");
-
                 if(JWTokenUtils.validateJwtToken(token)){
                     UsernamePasswordAuthenticationToken
                             usernamePAT = JWTokenUtils.getAuthentication(token);
                     SecurityContextHolder.getContext().setAuthentication(usernamePAT);
                 }else{
                 }
-
             }
             filterChain.doFilter(request, response);
         }catch(ExpiredJwtException ex){
+            System.out.println("EXPIRED JWT ");
             ObjectMapper mapper = new ObjectMapper();
             ResponseDTO dto = new ResponseDTO();
             dto.setData("");
@@ -52,6 +50,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             response.setStatus(401);
             response.getWriter().write(mapper.writeValueAsString(dto));
         }catch(MalformedJwtException ex){
+            System.out.println("MALFORMED JWT");
             ObjectMapper mapper = new ObjectMapper();
             ResponseDTO dto = new ResponseDTO();
             dto.setData("");
@@ -60,6 +59,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             response.setStatus(401);
             response.getWriter().write(mapper.writeValueAsString(dto));
         }catch(UnsupportedJwtException ex){
+            System.out.println("UNSUPPORTED EXCEPTION");
             ObjectMapper mapper = new ObjectMapper();
             ResponseDTO dto = new ResponseDTO();
             dto.setData("");
@@ -68,6 +68,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             response.setStatus(401);
             response.getWriter().write(mapper.writeValueAsString(dto));
         }catch(IllegalArgumentException ex){
+            System.out.println("ILLEGAL_ARGUMENT_JWT");
             ObjectMapper mapper = new ObjectMapper();
             ResponseDTO dto = new ResponseDTO();
             dto.setData("");
@@ -76,10 +77,20 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             response.setStatus(401);
             response.getWriter().write(mapper.writeValueAsString(dto));
         }catch(SignatureException ex){
+            System.out.println("SIGNATURE EXCEPTION");
             ObjectMapper mapper = new ObjectMapper();
             ResponseDTO dto = new ResponseDTO();
             dto.setData("");
             dto.setMessage("SIGNATURE_EXCEPTION_JWT");
+            response.setContentType("application/json;charset=UTF-8");
+            response.setStatus(401);
+            response.getWriter().write(mapper.writeValueAsString(dto));
+        }catch(UserNotFoundException ex){
+            System.out.println("USER_NOT_FOUND");
+            ObjectMapper mapper = new ObjectMapper();
+            ResponseDTO dto = new ResponseDTO();
+            dto.setData("");
+            dto.setMessage("USER_NOT_FOUND");
             response.setContentType("application/json;charset=UTF-8");
             response.setStatus(401);
             response.getWriter().write(mapper.writeValueAsString(dto));

@@ -1,13 +1,18 @@
 package backend.siptis.model.entity.projectManagement;
 
+import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.model.entity.editorsAndReviewers.*;
 import backend.siptis.model.entity.notifications.Activity;
+import backend.siptis.model.pjo.dto.userDataDTO.UserListDTO;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+import org.apache.catalina.User;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -101,4 +106,92 @@ public class Project {
 
     @Column(name = "total_defense_points")
     private Double totalDefensePoints;
+
+
+    public List<UserListDTO> getProjectStudents(){
+        ArrayList<UserListDTO> studentsNames = new ArrayList<>();
+        SiptisUser user;
+        UserListDTO userListDTO;
+        for (ProjectStudent student: students) {
+            user = student.getStudent();
+            userListDTO = new UserListDTO();
+            userListDTO.setId(user.getId());
+            userListDTO.setName(user.getFullName());
+            studentsNames.add(userListDTO);
+        }
+        return studentsNames;
+    }
+
+    public List<UserListDTO> getProjectTutors(){
+        ArrayList<UserListDTO> tutorsNames = new ArrayList<>();
+        SiptisUser user;
+        UserListDTO userListDTO;
+        for (ProjectTutor tutor: tutors) {
+            user = tutor.getTutor();
+            userListDTO = new UserListDTO();
+            userListDTO.setId(user.getId());
+            userListDTO.setName(user.getFullName());
+            tutorsNames.add(userListDTO);
+        }
+        return tutorsNames;
+    }
+
+    public List<UserListDTO> getProjectTeachers(){
+        ArrayList<UserListDTO> teachersNames = new ArrayList<>();
+        SiptisUser user;
+        UserListDTO userListDTO;
+        for (ProjectTeacher teacher: teachers) {
+            user = teacher.getTeacher();
+            userListDTO = new UserListDTO();
+            userListDTO.setId(user.getId());
+            userListDTO.setName(user.getFullName());
+            teachersNames.add(userListDTO);
+        }
+        return teachersNames;
+    }
+
+    public List<UserListDTO> getProjectSupervisors(){
+        ArrayList<UserListDTO> supervisorsNames = new ArrayList<>();
+        SiptisUser user;
+        UserListDTO userListDTO;
+        for (ProjectSupervisor supervisor: supervisors) {
+            user = supervisor.getSupervisor();
+            userListDTO = new UserListDTO();
+            userListDTO.setId(user.getId());
+            userListDTO.setName(user.getFullName());
+            supervisorsNames.add(userListDTO);
+        }
+        return supervisorsNames;
+    }
+
+    public List<UserListDTO> getProjectTribunals(){
+        ArrayList<UserListDTO> tutorsNames = new ArrayList<>();
+        SiptisUser user;
+        UserListDTO userListDTO;
+        for (ProjectTribunal tribunal: tribunals) {
+            user = tribunal.getTribunal();
+            userListDTO = new UserListDTO();
+            userListDTO.setId(user.getId());
+            userListDTO.setName(user.getFullName());
+            tutorsNames.add(userListDTO);
+        }
+        return tutorsNames;
+    }
+
+    public List<String> getAreasNames(){
+        ArrayList<String> areasNames = new ArrayList<>();
+        for (Area area: areas) {
+            areasNames.add(area.getName());
+        }
+        return areasNames;
+    }
+
+    public List<String> getSubAreasNames(){
+        ArrayList<String> subAreasNames = new ArrayList<>();
+        for (SubArea subArea: subAreas) {
+            subAreasNames.add(subArea.getName());
+        }
+        return subAreasNames;
+    }
+
 }

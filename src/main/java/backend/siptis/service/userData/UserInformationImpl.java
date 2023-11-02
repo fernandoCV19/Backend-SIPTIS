@@ -4,10 +4,7 @@ package backend.siptis.service.userData;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.userData.UserInformation;
-import backend.siptis.model.pjo.dto.userDataDTO.AdminEditUserInformationDTO;
-import backend.siptis.model.pjo.dto.userDataDTO.RegisterStudentDTO;
-import backend.siptis.model.pjo.dto.userDataDTO.RegisterUserDTO;
-import backend.siptis.model.pjo.dto.userDataDTO.UserEditInformationDTO;
+import backend.siptis.model.pjo.dto.userDataDTO.*;
 import backend.siptis.model.repository.userData.UserInformationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -86,7 +83,7 @@ public class UserInformationImpl implements UserInformationService{
     public ServiceAnswer adminEditUserInformation(UserInformation userInformation, AdminEditUserInformationDTO dto) {
         if(!userInformation.getCi().equals(dto.getCi()))
             if(existUserByCi(dto.getCi()))
-                return createAnswer(ServiceMessage.ERROR_REGISTER_ACCOUNT_CI, "el documento de identidad ya se encuentra registrado");
+                return createAnswer(ServiceMessage.CI_ALREADY_EXIST, "el documento de identidad ya se encuentra registrado");
 
         userInformation.setLastnames(dto.getLastnames());
         userInformation.setNames(dto.getNames());
@@ -95,54 +92,17 @@ public class UserInformationImpl implements UserInformationService{
         userInformation.setBirthDate(dto.getBirthDate());
         return createAnswer(ServiceMessage.OK, userInformation);
     }
-/*
+
+
     @Override
-    public ServiceAnswer adminEditUserFullInformation(UserInformation userInformation, UniversityUserPersonalInformationDTO dto) {
-
-        if(!userInformation.getCi().equals(dto.getCi()))
-            if(existUserByCi(dto.getCi()))
-                return createAnswer(ServiceMessage.ERROR_REGISTER_ACCOUNT_CI, "el documento de identidad ya se encuentra registrado");
-
+    public ServiceAnswer adminEditStudentInformation(UserInformation userInformation, AdminEditStudentInformationDTO dto) {
         if(!userInformation.getCodSIS().equals(dto.getCodSIS()))
             if(existUserByCodSIS(dto.getCodSIS()))
-                return createAnswer(ServiceMessage.ERROR_REGISTER_ACCOUNT_CODSIS, "el codigo SIS ya se encuentra registrado");
-
-        userInformation.setLastnames(dto.getLastnames());
-        userInformation.setNames(dto.getNames());
+                return createAnswer(ServiceMessage.CI_ALREADY_EXIST, "el documento de identidad ya se encuentra registrado");
         userInformation.setCodSIS(dto.getCodSIS());
-        userInformation.setCi(dto.getCi());
-        userInformation.setCelNumber(dto.getCelNumber());
-        userInformation.setBirthDate(dto.getBirthDate());
-        return createAnswer(ServiceMessage.OK, userInformation);
-    }
-
-    @Override
-    public ServiceAnswer adminEditUserFullInformation(UserInformation userInformation, GeneralUserPersonalInformationDTO dto) {
-
-        if(!userInformation.getCi().equals(dto.getCi()))
-            if(existUserByCi(dto.getCi()))
-                return createAnswer(ServiceMessage.ERROR_REGISTER_ACCOUNT_CI, "el documento de identidad ya se encuentra registrado");
-
-        userInformation.setLastnames(dto.getLastnames());
-        userInformation.setNames(dto.getNames());
-        userInformation.setCi(dto.getCi());
-        userInformation.setCelNumber(dto.getCelNumber());
-        userInformation.setBirthDate(dto.getBirthDate());
-        return createAnswer(ServiceMessage.OK, userInformation);
-    }
-
-    @Override
-    public ServiceAnswer searchUserByNameAndRole(String name, Long role_id) {
-        List<UserListItemDTO> users =
-                userInformationRepository.searchUserByNameAndRole(name, role_id);
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
-                .data(users).build();
+        return adminEditUserInformation(userInformation, dto);
 
     }
-
-*/
-
-
 
 
     private ServiceAnswer createAnswer(ServiceMessage message, Object data){
