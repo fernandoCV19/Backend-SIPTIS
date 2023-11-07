@@ -32,10 +32,8 @@ public class SiptisUser implements UserDetails {
     private String tokenPassword;
 
 
-
-
     @ManyToMany(fetch = FetchType.LAZY, cascade = {
-            //CascadeType.PERSIST,
+            CascadeType.PERSIST,
             CascadeType.MERGE
     })
     @JoinTable(
@@ -56,7 +54,7 @@ public class SiptisUser implements UserDetails {
     private Set<UserArea> areas;
 
     @ManyToMany(fetch = FetchType.LAZY,cascade = {
-            //CascadeType.PERSIST,
+            CascadeType.PERSIST,
             CascadeType.MERGE
     })
     @JoinTable(name = "siptisUser_career",
@@ -65,8 +63,6 @@ public class SiptisUser implements UserDetails {
     @JsonManagedReference
     private Set<UserCareer> career = new HashSet<>();
 
-    /*@OneToOne(mappedBy = "siptisUser")
-    private UserCareer career;*/
 
     @OneToOne(mappedBy = "siptisUser", cascade = CascadeType.ALL, optional = true)
     private UserInformation userInformation;
@@ -128,7 +124,6 @@ public class SiptisUser implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        System.out.println("roles:" + roles.toString());
         for(Role role : roles){
             authorities.add(new SimpleGrantedAuthority(role.getName()));
         }

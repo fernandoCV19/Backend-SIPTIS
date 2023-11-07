@@ -62,24 +62,20 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ServiceAnswer createProject(NewProjectDTO dto) {
         if(!semesterInformationRepository.existsSemesterInformationByInProgressIsTrue()){
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_CURRENT_SEMESTER)
-                    .data("No existe un semestre en curso.").build();
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_CURRENT_SEMESTER).build();
         }
         if(projectRepository.existsByName(dto.getName()))
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_NAME_ALREADY_EXIST)
-                    .data("El nombre ya se encuentra registrado").build();
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_NAME_ALREADY_EXIST).build();
 
         if(!modalityRepository.existsById(dto.getModalityId()))
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.MODALITY_DOES_NOT_EXIST)
-                    .data("No se pudo encontrar la modalidad solicitada.").build();
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.MODALITY_DOES_NOT_EXIST).build();
 
         Project newProject = new Project();
         ArrayList<ProjectStudent> students = new ArrayList<>();
 
         for (Long studentId: dto.getStudentsId()) {
             if(!siptisUserRepository.existsById(studentId))
-                return ServiceAnswer.builder().serviceMessage(ServiceMessage.USER_ID_DOES_NOT_EXIST)
-                        .data("No se pudo encontrar al estudiante solicitado.").build();
+                return ServiceAnswer.builder().serviceMessage(ServiceMessage.USER_ID_DOES_NOT_EXIST).build();
             ProjectStudent projectStudent = new ProjectStudent();
             projectStudent.setStudent(siptisUserRepository.findById(studentId).get());
             projectStudent.setProject(newProject);
@@ -89,8 +85,7 @@ public class ProjectServiceImpl implements ProjectService {
         ArrayList<ProjectTutor> tutors = new ArrayList<>();
         for (Long tutorId: dto.getTutorsId()) {
             if(!siptisUserRepository.existsById(tutorId))
-                return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR)
-                        .data("No se pudo encontrar al usuario solicitado.").build();
+                return ServiceAnswer.builder().serviceMessage(ServiceMessage.USER_ID_DOES_NOT_EXIST).build();
             ProjectTutor projectTutor = new ProjectTutor();
             projectTutor.setTutor(siptisUserRepository.findById(tutorId).get());
             projectTutor.setProject(newProject);
@@ -100,8 +95,7 @@ public class ProjectServiceImpl implements ProjectService {
         ArrayList<ProjectTeacher> teachers = new ArrayList<>();
         for (Long teacherId: dto.getTeachersId()) {
             if(!siptisUserRepository.existsById(teacherId))
-                return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR)
-                        .data("No se pudo encontrar al usuario solicitado.").build();
+                return ServiceAnswer.builder().serviceMessage(ServiceMessage.USER_ID_DOES_NOT_EXIST).build();
             ProjectTeacher projectTeacher = new ProjectTeacher();
             projectTeacher.setTeacher(siptisUserRepository.findById(teacherId).get());
             projectTeacher.setProject(newProject);
@@ -111,8 +105,7 @@ public class ProjectServiceImpl implements ProjectService {
         Set<Area> areas = new HashSet<>();
         for (Long areaId: dto.getAreasId()) {
             if(!areaRepository.existsAreaById(areaId))
-                return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR)
-                        .data("No se pudo encontrar el area solicitado.").build();
+                return ServiceAnswer.builder().serviceMessage(ServiceMessage.AREA_NOT_FOUND).build();
             Area area = areaRepository.findById(areaId).get();
             areas.add(area);
         }
@@ -120,8 +113,7 @@ public class ProjectServiceImpl implements ProjectService {
         Set<SubArea> subAreas = new HashSet<>();
         for (Long subAreaId: dto.getSubAreasId()) {
             if(!subAreaRepository.existsSubAreaById(subAreaId))
-                return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR)
-                        .data("No se pudo encontrar el area solicitado.").build();
+                return ServiceAnswer.builder().serviceMessage(ServiceMessage.SUB_AREA_NOT_FOUND).build();
             SubArea subArea = subAreaRepository.findById(subAreaId).get();
             subAreas.add(subArea);
         }
@@ -132,6 +124,8 @@ public class ProjectServiceImpl implements ProjectService {
         newProject.setTutors(tutors);
         newProject.setAreas(areas);
         newProject.setSubAreas(subAreas);
+        newProject.setPhase("REVIEWERS_PHASE");
+        newProject.setTotalDefensePoints(0.0);
         newProject.setTeachers(teachers);
         newProject.setPeriod(semesterInformationRepository.getCurrentPeriod());
 
@@ -146,8 +140,7 @@ public class ProjectServiceImpl implements ProjectService {
         for (ProjectTutor projectTutor: tutors)
             projectTutorRepository.save(projectTutor);
 
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
-                    .data("El proyecto fue registrado correctamente.").build();
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.SUCCESSFUL_PROJECT_REGISTER).data(newProject).build();
     }
 
     @Override
@@ -160,7 +153,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ServiceAnswer getProjectInfo(Long id) {
         if(!projectRepository.existsById(id))
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data("El proyecto solicitado no existe.").build();
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).build();
 
         Project project = projectRepository.findById(id).get();
         ProjectInformationDTO dto = new ProjectInformationDTO();
@@ -188,9 +181,6 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ServiceAnswer getProjectsList(String search, Pageable pageable) {
-        int pageNumber = pageable.getPageNumber();
-        int pageSize = pageable.getPageSize();
-        int offset = (pageNumber - 1) * pageSize;
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
                 .data( projectRepository.searchProject(search, pageable))
                 .build();
@@ -467,14 +457,30 @@ public class ProjectServiceImpl implements ProjectService {
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(data).build();
     }
 
+
     @Override
-    public ServiceAnswer getNumberOfProyectsByModalityAndCareer(Long id) {
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(projectRepository.getNumberOfProyectsByModalityAndCareer(id)).build();
+    public ServiceAnswer getNumberOfProjectsByModalityAndCareer(Long id) {
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(projectRepository.getNumberOfProjectsByModalityAndCareer(id)).build();
+    }
+
+    @Override
+    public ServiceAnswer getNumberOfProjectsByAreaAndCareer(Long id) {
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(projectRepository.getNumberOfProjectsByAreasAndCareer(id)).build();
+    }
+
+    @Override
+    public ServiceAnswer getNumberOfProjectsBySubAreaAndCareer(Long id) {
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(projectRepository.getNumberOfProjectsBySubAreasAndCareer(id)).build();
     }
 
     @Override
     public ServiceAnswer getNumberProjectsByPeriodAndCareer(Long careerId) {
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(projectRepository.getNumberProjectsByPeriodAndCareer(careerId)).build();
+    }
+
+    @Override
+    public ServiceAnswer getNumberProjectsByCareer(Long careerId) {
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(projectRepository.getProjectsByCareer(careerId)).build();
     }
 
     private UserDefenseScheduleVO createDefenseInfo(SiptisUser student) {

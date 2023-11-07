@@ -48,7 +48,13 @@ public interface ProjectService {
 
     ServiceAnswer getProjectsWithoutAndWithDefensePlace();
 
-    ServiceAnswer getNumberOfProyectsByModalityAndCareer(Long id);
+    ServiceAnswer getNumberOfProjectsByModalityAndCareer(Long id);
+
+    ServiceAnswer getNumberOfProjectsByAreaAndCareer(Long id);
+
+    ServiceAnswer getNumberOfProjectsBySubAreaAndCareer(Long id);
 
     ServiceAnswer getNumberProjectsByPeriodAndCareer(Long careerId);
+
+    ServiceAnswer getNumberProjectsByCareer(Long careerId);
 }

@@ -3,7 +3,7 @@ package backend.siptis.controller.userData;
 import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.model.pjo.dto.UserSelectedAreasDTO;
+import backend.siptis.model.pjo.dto.userDataDTO.UserSelectedAreasDTO;
 import backend.siptis.model.pjo.dto.authentication.RefreshTokenDTO;
 import backend.siptis.model.pjo.dto.userDataDTO.*;
 import backend.siptis.model.pjo.dto.userDataDTO.RegisterStudentDTO;
@@ -33,13 +33,13 @@ public class SiptisUserController {
     private final RefreshTokenService refreshTokenService;
 
     private final Set<ServiceMessage> okResponse = new HashSet<>(
-            List.of(ServiceMessage.OK, ServiceMessage.SUCCESSFUL_USER_REGISTER));
+            List.of(ServiceMessage.OK, ServiceMessage.SUCCESSFUL_REGISTER, ServiceMessage.USER_DELETED));
     private final Set<ServiceMessage> badRequestResponse = new HashSet<>(
-            List.of(ServiceMessage.ERROR_REGISTER_ACCOUNT,ServiceMessage.ERROR_REGISTER_ACCOUNT_EMAIL,
-                    ServiceMessage.ERROR_REGISTER_ACCOUNT_CI, ServiceMessage.ERROR_REGISTER_ACCOUNT_CODSIS,
+            List.of(ServiceMessage.ERROR_REGISTER_ACCOUNT,ServiceMessage.EMAIL_ALREADY_EXIST,
+                    ServiceMessage.CI_ALREADY_EXIST, ServiceMessage.COD_SIS_ALREADY_EXIST,
                     ServiceMessage.ERROR_VALIDATION, ServiceMessage.EMAIL_ALREADY_EXIST,
                     ServiceMessage.COD_SIS_ALREADY_EXIST, ServiceMessage.CI_ALREADY_EXIST,
-                    ServiceMessage.ERROR_LOG_IN, ServiceMessage.ERROR_BAD_CREDENTIALS));
+                    ServiceMessage.ERROR_LOG_IN, ServiceMessage.ERROR_BAD_CREDENTIALS, ServiceMessage.EXPIRED_REFRESH_TOKEN));
 
 
     @PostMapping("/login")
@@ -116,7 +116,7 @@ public class SiptisUserController {
     @GetMapping("/roles")
     public ResponseEntity<?> getRoles(@RequestHeader(name = "Authorization") String token) {
         Long id = siptisUserService.getIdFromToken(token);
-        ServiceAnswer answerService = siptisUserService.getRoles(id);
+        ServiceAnswer answerService = siptisUserService.getRolesById(id);
         return createResponseEntity(answerService);
     }
 
@@ -124,7 +124,7 @@ public class SiptisUserController {
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> getRolesById(@PathVariable int userId) {
         Long id = Long.valueOf(userId);
-        ServiceAnswer answerService = siptisUserService.getRoles(id);
+        ServiceAnswer answerService = siptisUserService.getRolesById(id);
         return createResponseEntity(answerService);
     }
 
@@ -140,6 +140,14 @@ public class SiptisUserController {
     public ResponseEntity<?> updateRoles(@PathVariable int userId, @Valid @RequestBody RolesListDTO dto) {
         Long id = Long.valueOf(userId);
         ServiceAnswer answerService = siptisUserService.updateRoles(id, dto);
+        return createResponseEntity(answerService);
+    }
+
+    @GetMapping("/list/admins")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<?> getAdminList(String search, Pageable pageable) {
+        ServiceAnswer answerService =
+                siptisUserService.getAdminUserList(search, pageable);
         return createResponseEntity(answerService);
     }
 
@@ -205,14 +213,6 @@ public class SiptisUserController {
     public ResponseEntity<?> getPotentialSupervisors(String search, Pageable pageable) {
         ServiceAnswer answerService =
                 siptisUserService.getUserList(search, "SUPERVISOR", pageable);
-        return createResponseEntity(answerService);
-    }
-
-    @GetMapping("/list/admins")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<?> getAdminList(String search, Pageable pageable) {
-        ServiceAnswer answerService =
-                siptisUserService.getUserList(search, "ADMIN", pageable);
         return createResponseEntity(answerService);
     }
 

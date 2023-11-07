@@ -2,17 +2,15 @@ package backend.siptis.model.repository.userData;
 
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.model.entity.projectManagement.Project;
-import backend.siptis.model.pjo.dto.UserAreaDTO;
-import backend.siptis.model.pjo.dto.UserListItemDTO;
+import backend.siptis.model.pjo.dto.userDataDTO.UserListItemDTO;
 import backend.siptis.model.entity.notifications.Activity;
+import backend.siptis.model.pjo.dto.stadisticsDTO.StudentsByCareerDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -79,37 +77,28 @@ public interface SiptisUserRepository extends JpaRepository<SiptisUser, Long> {
     Page<UserListItemDTO> searchNormalUserList(String search_name, Pageable pageable);
 
 
-    @Query(value ="SELECT su.id, role.name " +
+    @Query(value ="SELECT su.id, su.email " +
             " FROM siptis_user su, siptis_user_role sur, role role" +
             " WHERE sur.siptis_user_id = su.id " +
-            " AND sur.role_id = role.id AND role.name LIKE :roleName" , nativeQuery = true)
-    Page<Object> searchAdminList(String roleName, Pageable pageable);
+            " AND sur.role_id = role.id AND role.name = 'ADMIN'" +
+            " AND su.email LIKE LOWER( CONCAT( '%', :userEmail ,'%')) " , nativeQuery = true)
+    Page<UserListItemDTO> searchAdminList(String userEmail, Pageable pageable);
 
-    @Query(value ="SELECT uc.name AS careerName, COUNT(suc.siptisuser_id) AS cant " +
-            " FROM siptis_user_career suc, user_career uc " +
-            " WHERE suc.career_id = uc.id AND uc.id = :id" +
-            " GROUP BY (careerName) " , nativeQuery = true)
-    List<Object> getNumberOfStudentsInCareer(Long id);
+    @Query(value ="SELECT "+
+            "COUNT(DISTINCT CASE WHEN uc.id = :id THEN su.id END) AS careerStudents, " +
+            "COUNT(DISTINCT CASE WHEN uc.id <> :id THEN su.id END) AS otherStudents  " +
+            " FROM siptis_user su " +
+            " LEFT JOIN " +
+            " siptis_user_career suc ON suc.siptisuser_id = su.id" +
+            " LEFT JOIN " +
+            " user_career uc ON uc.id = suc.career_id " , nativeQuery = true)
+    List<StudentsByCareerDTO> getNumberOfStudentsInCareer(Long id);
 
     @Query(value ="SELECT SUBSTRING (info.codsis, 1, 4) AS userYear, COUNT(siptis_user.id) AS cant " +
             " FROM siptis_user siptis_user, siptis_user_career suc, " +
             " user_information info "+
             " WHERE info.user_id = siptis_user.id AND siptis_user.id =  suc.siptisuser_id" +
             " AND suc.career_id = :careerId "+
-            " GROUP BY (userYear) " , nativeQuery = true)
+            " GROUP BY (userYear) ORDER BY userYear ASC " , nativeQuery = true)
     List<Object> getNumberOfStudentsByYearAndCareer(Long careerId);
-
-
-    /***
-     * @Query(value ="SELECT SUBSTRING (info.codsis, 1, 4) AS userYear, COUNT(siptis_user.id) AS cant " +
-     *             " FROM siptis_user siptis_user, siptis_user_role user_role," +
-     *             " user_information info, siptis_user_career user_career, " +
-     *             " user_career career " +
-     *             " WHERE siptis_user.id = user_role.siptis_user_id AND " +
-     *             " user_role.role_id = 2" +
-     *             " AND siptis_user.id = user_career.siptisuser_id" +
-     *             " AND user_career.career_id = career.id " +
-     *             " AND career.id LIKE :careerId  AND info.user_id = siptis_user.id" +
-     *             " GROUP BY (userYear) " , nativeQuery = true)
-     */
 }

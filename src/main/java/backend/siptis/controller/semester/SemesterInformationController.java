@@ -5,7 +5,6 @@ import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.semester.EditSemesterInfoDTO;
 import backend.siptis.model.pjo.dto.semester.SemesterInformationDTO;
-import backend.siptis.model.repository.semester.SemesterInformationRepository;
 import backend.siptis.service.semester.SemesterInformationService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -14,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -27,7 +25,7 @@ public class SemesterInformationController {
 
     private final Set<ServiceMessage> okResponse = new HashSet<>(
             List.of(ServiceMessage.OK, ServiceMessage.SEMESTER_STARTED, ServiceMessage.SEMESTER_INFORMATION,
-                    ServiceMessage.SEMESTER_ENDED, ServiceMessage.SEMESTER_DATE_EDITED));
+                    ServiceMessage.SEMESTER_ENDED, ServiceMessage.SEMESTER_INFO_EDITED));
     private final Set<ServiceMessage> badRequestResponse = new HashSet<>(
             List.of(ServiceMessage.NO_CURRENT_SEMESTER, ServiceMessage.ERROR,
                     ServiceMessage.SEMESTER_ALREADY_EXIST));

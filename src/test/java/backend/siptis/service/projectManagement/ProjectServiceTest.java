@@ -2,26 +2,17 @@ package backend.siptis.service.projectManagement;
 
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.model.pjo.dto.projectManagement.AssignTribunalsDTO;
 import backend.siptis.model.pjo.dto.projectManagement.NewProjectDTO;
-import backend.siptis.model.pjo.vo.projectManagement.*;
+import backend.siptis.service.semester.SemesterInformationService;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.awt.print.PageFormat;
-import java.awt.print.Pageable;
-import java.awt.print.Printable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,61 +24,66 @@ import static org.junit.jupiter.api.Assertions.*;
 class ProjectServiceTest {
 
     private final ProjectService projectService;
-    private final NewProjectDTO newProjectDTO;
 
-/*
-    @Autowired
-    public ProjectServiceTest(ProjectService projectService, JdbcTemplate jdbcTemplate) {
-        this.projectService = projectService;
-        this.jdbcTemplate = jdbcTemplate;
-    }
-*/
+    private final NewProjectDTO newProjectDTO = new NewProjectDTO();
+
 
     @Autowired
     public ProjectServiceTest(ProjectService projectService) {
         this.projectService = projectService;
-        newProjectDTO = new NewProjectDTO();
-        createNewProjectDTO(newProjectDTO);
     }
 
-    private void createNewProjectDTO(NewProjectDTO dto){
-        ArrayList<Long> students = new ArrayList<>();
-        students.add(2L);
-        students.add(153L);
-        ArrayList<Long> tutors = new ArrayList<>();
-        students.add(152L);
-        ArrayList<Long> teachers = new ArrayList<>();
-        students.add(152L);
-        ArrayList<Long> areas = new ArrayList<>();
-        areas.add(1L);
-        ArrayList<Long> subAreas = new ArrayList<>();
-        subAreas.add(1L);
-  /*      ArrayList students = (ArrayList) Arrays.asList(2L, 153L);
-        ArrayList tutors = (ArrayList) Arrays.asList(152L);
-        ArrayList teachers = (ArrayList) Arrays.asList(152L);
-        ArrayList areas = (ArrayList) Arrays.asList(1L);
-        ArrayList subAreas = (ArrayList) Arrays.asList(1L);*/
+    private ServiceAnswer createNewProjectDTO(){
+        List<Long> students = List.of(1l);
+        List<Long> tutors = List.of(3l);
+        List<Long> teachers = List.of(7l);
+        List<Long> areas = List.of(1l);
+        List<Long> subAreas = List.of(1l);
+        newProjectDTO.setName("PROJECT FOR TEST");
+        newProjectDTO.setModalityId(1L);
+        newProjectDTO.setStudentsId(students);
+        newProjectDTO.setTutorsId(tutors);
+        newProjectDTO.setTeachersId(teachers);
+        newProjectDTO.setAreasId(areas);
+        newProjectDTO.setSubAreasId(subAreas);
+        return projectService.createProject(newProjectDTO);
+    }
 
-        dto.setName("PROJECT FOR TEST");
-        dto.setModalityId(1L);
-        dto.setStudentsId(students);
-        dto.setTutorsId(tutors);
-        dto.setTeachersId(teachers);
-        dto.setAreasId(areas);
-        dto.setSubAreasId(subAreas);
 
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    @Sql(scripts = {"/custom_imports/projectTest.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    void createProjectSuccessTest(){
+        ServiceAnswer answer =  createNewProjectDTO();
+        assertEquals(ServiceMessage.SUCCESSFUL_PROJECT_REGISTER, answer.getServiceMessage());
     }
 
     @Test
-    void getInformationOfNotExistingProject(){
-        ServiceAnswer answer = projectService.getProjectInfo(123456L);
-        assertEquals(ServiceMessage.ID_DOES_NOT_EXIST, answer.getServiceMessage());
-    }
-
-    @Test
-    void createProjectFailedNotCurrentSemester(){
-        ServiceAnswer answer = projectService.createProject(newProjectDTO);
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    @Sql(scripts = {"/custom_imports/projectTest.sql", "/custom_imports/delete_semester.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    void createProjectFailNoSemesterTest(){
+        ServiceAnswer answer =  createNewProjectDTO();
         assertEquals(ServiceMessage.NO_CURRENT_SEMESTER, answer.getServiceMessage());
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    @Sql(scripts = {"/custom_imports/projectTest.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    void createProjectFailNameAlreadyExistTest(){
+        createNewProjectDTO();
+        ServiceAnswer answer =  createNewProjectDTO();
+        assertEquals(ServiceMessage.PROJECT_NAME_ALREADY_EXIST, answer.getServiceMessage());
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    @Sql(scripts = {"/custom_imports/projectTest.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    void createProjectFailModalityDoesNotExistTest(){
+        createNewProjectDTO();
+        newProjectDTO.setName("new name");
+        newProjectDTO.setModalityId(123L);
+        ServiceAnswer answer =  projectService.createProject(newProjectDTO);
+        assertEquals(ServiceMessage.MODALITY_DOES_NOT_EXIST, answer.getServiceMessage());
     }
 
 

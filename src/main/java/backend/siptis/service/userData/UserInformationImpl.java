@@ -42,9 +42,9 @@ public class UserInformationImpl implements UserInformationService{
     @Override
     public ServiceAnswer registerUserInformation(RegisterStudentDTO dto) {
         if(existUserByCi(dto.getCi()))
-            return createAnswer(ServiceMessage.ERROR_REGISTER_ACCOUNT_CI, "el documento de identidad ya se encuentra registrado");
+            return createAnswer(ServiceMessage.CI_ALREADY_EXIST, null);
         if(existUserByCodSIS(dto.getCodSIS()))
-            return createAnswer(ServiceMessage.ERROR_REGISTER_ACCOUNT_CODSIS, "el codigo SIS ya se encuentra registrado");
+            return createAnswer(ServiceMessage.COD_SIS_ALREADY_EXIST, null);
 
         UserInformation userInformation = new UserInformation();
         userInformation.setNames(dto.getNames());
@@ -60,7 +60,7 @@ public class UserInformationImpl implements UserInformationService{
     @Override
     public ServiceAnswer registerUserInformation(RegisterUserDTO dto) {
         if(existUserByCi(dto.getCi()))
-            return createAnswer(ServiceMessage.ERROR_REGISTER_ACCOUNT_CI, "el documento de identidad ya se encuentra registrado");
+            return createAnswer(ServiceMessage.CI_ALREADY_EXIST, null);
 
         UserInformation userInformation = new UserInformation();
         userInformation.setNames(dto.getNames());
@@ -98,7 +98,7 @@ public class UserInformationImpl implements UserInformationService{
     public ServiceAnswer adminEditStudentInformation(UserInformation userInformation, AdminEditStudentInformationDTO dto) {
         if(!userInformation.getCodSIS().equals(dto.getCodSIS()))
             if(existUserByCodSIS(dto.getCodSIS()))
-                return createAnswer(ServiceMessage.CI_ALREADY_EXIST, "el documento de identidad ya se encuentra registrado");
+                return createAnswer(ServiceMessage.COD_SIS_ALREADY_EXIST, "el documento de identidad ya se encuentra registrado");
         userInformation.setCodSIS(dto.getCodSIS());
         return adminEditUserInformation(userInformation, dto);
 

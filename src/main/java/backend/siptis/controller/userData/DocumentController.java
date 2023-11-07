@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -30,6 +31,11 @@ public class DocumentController {
         return createResponseEntity(documentGeneratorService.getAllDocumentsFromUser(userId));
     }
 
+    @GetMapping("/project/{id}")
+    ResponseEntity<?> getDocumentsFromProject(@PathVariable("id") long userId){
+        return createResponseEntity(documentGeneratorService.getAllDocumentsFromProject(userId));
+    }
+
     @DeleteMapping("/{id}")
     ResponseEntity<?> deleteDocument(@PathVariable("id") long documentId){
         return createResponseEntity(documentGeneratorService.deleteDocument(documentId));
@@ -46,21 +52,31 @@ public class DocumentController {
     }
 
     @PostMapping("/create-tribunal-approval")
+    @PreAuthorize("hasAuthority('ADMIN')")
     ResponseEntity<?> createTribunalApproval(@RequestBody LetterGenerationRequestDTO dto) throws IOException {
         return createResponseEntity(documentGeneratorService.generateTribunalApproval(dto));
     }
 
     @PostMapping("/create-teacher-approval-letter")
+    @PreAuthorize("hasAuthority('ADMIN')")
     ResponseEntity<?> createTeacherTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) throws IOException {
         return createResponseEntity(documentGeneratorService.teacherTribunalRequest(dto));
     }
 
     @PostMapping("/create-tutor-approval-letter")
+    @PreAuthorize("hasAuthority('ADMIN')")
     ResponseEntity<?> createTutorTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) throws IOException {
         return createResponseEntity(documentGeneratorService.tutorTribunalRequest(dto));
     }
 
+    @PostMapping("/create-supervisor-approval-letter")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    ResponseEntity<?> createSupervisorTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) throws IOException {
+        return createResponseEntity(documentGeneratorService.supervisorTribunalRequest(dto));
+    }
+
     @PostMapping("/create-student-tribunal-request")
+    @PreAuthorize("hasAuthority('ADMIN')")
     ResponseEntity<?> createStudentTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) throws IOException {
         return createResponseEntity(documentGeneratorService.studentTribunalRequest(dto));
     }

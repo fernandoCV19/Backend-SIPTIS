@@ -1,9 +1,4 @@
-package backend.siptis.model.pjo.dto;
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-
+package backend.siptis.model.pjo.dto.userDataDTO;
 
 public interface UserListItemDTO {
 

@@ -10,7 +10,12 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/subarea")
@@ -19,6 +24,10 @@ import org.springframework.web.bind.annotation.*;
 public class SubAreaController {
 
     private final SubAreaService subAreaService;
+    private final Set<ServiceMessage> okResponse = new HashSet<>(
+            List.of(ServiceMessage.OK, ServiceMessage.SUB_AREA_DELETED, ServiceMessage.SUB_AREA_CREATED));
+    private final Set<ServiceMessage> notFoundResponse = new HashSet<>(
+            List.of(ServiceMessage.SUB_AREA_NOT_FOUND));
 
     @GetMapping("/getSubAreas")
     public ResponseEntity<?> getAllSubAreas() {
@@ -27,6 +36,7 @@ public class SubAreaController {
     }
 
     @PostMapping("/createSubArea")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> createSubArea(
             @Valid @RequestBody CreateAreaDTO dto) {
         ServiceAnswer answerService = subAreaService.createSubArea(dto);
@@ -34,6 +44,7 @@ public class SubAreaController {
     }
 
     @DeleteMapping("/deleteSubArea/{userId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> deleteArea(
             @PathVariable int userId) {
         Long id = Long.valueOf(userId);
@@ -47,11 +58,9 @@ public class SubAreaController {
         ServiceMessage messageService = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
-        if(messageService == ServiceMessage.OK || messageService == ServiceMessage.AREA_DELETED){
+        if(okResponse.contains(messageService)){
             httpStatus = HttpStatus.OK;
-        }
-
-        if(messageService == ServiceMessage.NOT_FOUND )
+        }else if(notFoundResponse.contains(messageService))
             httpStatus = HttpStatus.NOT_FOUND;
 
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(data).message(messageService.toString()).build();

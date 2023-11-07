@@ -1,7 +1,7 @@
 --Area
-INSERT INTO area(id, name) VALUES (1, 'Area Proyecto 1')
-INSERT INTO area(id, name) VALUES (2, 'Area Proyecto 2')
-INSERT INTO area(id, name) VALUES (3, 'Area Proyecto 3')
+-- INSERT INTO area(id, name) VALUES (1, 'Area Proyecto 1')
+-- INSERT INTO area(id, name) VALUES (2, 'Area Proyecto 2')
+-- INSERT INTO area(id, name) VALUES (3, 'Area Proyecto 3')
 
 --modality
 INSERT INTO modality(id, name) VALUES (1, 'TESIS');
@@ -20,14 +20,14 @@ INSERT INTO role(id, name) VALUES (7, 'INF_DIRECTOR');
 INSERT INTO role(id, name) VALUES (8, 'SIS_DIRECTOR');
 
 --subarea
-INSERT INTO sub_area(id, name) VALUES (1, 'sub area 1');
-INSERT INTO sub_area(id, name) VALUES (2, 'sub area 2');
+-- INSERT INTO sub_area(id, name) VALUES (1, 'sub area 1');
+-- INSERT INTO sub_area(id, name) VALUES (2, 'sub area 2');
 
 --user area
-INSERT INTO user_area(id, name) VALUES (1, 'area usuario 1');
-INSERT INTO user_area(id, name) VALUES (2, 'area usuario 2');
-INSERT INTO user_area(id, name) VALUES (3, 'area usuario 3');
-INSERT INTO user_area(id, name) VALUES (4, 'area usuario 4');
+-- INSERT INTO user_area(id, name) VALUES (1, 'area usuario 1');
+-- INSERT INTO user_area(id, name) VALUES (2, 'area usuario 2');
+-- INSERT INTO user_area(id, name) VALUES (3, 'area usuario 3');
+-- INSERT INTO user_area(id, name) VALUES (4, 'area usuario 4');
 
 
 --carreras

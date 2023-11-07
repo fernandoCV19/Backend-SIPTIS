@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -23,17 +24,17 @@ public class NewProjectDTO {
 
     @NotNull(message = "No puede crear el proyecto sin estudiantes asignados.")
     @NotEmpty(message = "No puede crear el proyecto sin estudiantes asignados.")
-    private ArrayList<Long> studentsId;
+    private List<Long> studentsId;
     @NotNull(message = "No puede crear el proyecto sin tutores asignados.")
     @NotEmpty(message = "No puede crear el proyecto sin tutores asignados.")
-    private ArrayList<Long> tutorsId;
+    private List<Long> tutorsId;
     @NotNull(message = "No puede crear el proyecto sin docente de la materia asignados.")
     @NotEmpty(message = "No puede crear el proyecto sin docente de la materia asignados.")
-    private ArrayList<Long> teachersId;
+    private List<Long> teachersId;
     @NotNull(message = "No puede crear el proyecto sin areas asignadas.")
     @NotEmpty(message = "No puede crear el proyecto sin areas asignadas.")
-    private ArrayList<Long> areasId;
+    private List<Long> areasId;
     @NotNull(message = "No puede crear el proyecto sin subareas asignadas.")
     @NotEmpty(message = "No puede crear el proyecto sin subareas asignadas.")
-    private ArrayList<Long> subAreasId;
+    private List<Long> subAreasId;
 }

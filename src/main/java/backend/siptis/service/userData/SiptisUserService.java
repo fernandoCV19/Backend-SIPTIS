@@ -2,7 +2,7 @@ package backend.siptis.service.userData;
 
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ServiceAnswer;
-import backend.siptis.model.pjo.dto.UserSelectedAreasDTO;
+import backend.siptis.model.pjo.dto.userDataDTO.UserSelectedAreasDTO;
 import backend.siptis.model.pjo.dto.notifications.LogInDTO;
 import backend.siptis.model.pjo.dto.userDataDTO.*;
 import backend.siptis.model.pjo.dto.userDataDTO.RegisterStudentDTO;
@@ -20,8 +20,6 @@ public interface SiptisUserService {
 
     ServiceAnswer deleteUser(Long id);
 
-    ServiceAnswer getUserById(Long id);
-    ServiceAnswer getUserByEmail(String email);
     Long getIdFromToken(String token);
     ServiceAnswer getUserPersonalInformation(Long id);
     ServiceAnswer getStudentCareerById(Long id);
@@ -29,8 +27,9 @@ public interface SiptisUserService {
 
     ServiceAnswer getUserList(String search,String role, Pageable pageable);
     ServiceAnswer getNormalUserList(String search, Pageable pageable);
+    ServiceAnswer getAdminUserList(String search, Pageable pageable);
 
-    ServiceAnswer getRoles(Long id);
+    ServiceAnswer getRolesById(Long id);
 
     ServiceAnswer updateRoles(Long id, RolesListDTO dto);
 

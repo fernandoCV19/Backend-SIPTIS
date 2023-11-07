@@ -16,7 +16,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         ObjectMapper mapper = new ObjectMapper();
         ResponseDTO dto = new ResponseDTO();
-        dto.setData("Acceso denegado.");
+        dto.setData("Access Denied.");
         dto.setMessage("FORBIDDEN");
         response.setContentType("application/json;charset=UTF-8");
         response.setStatus(403);

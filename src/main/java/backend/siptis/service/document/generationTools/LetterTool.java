@@ -4,6 +4,8 @@ package backend.siptis.service.document.generationTools;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.*;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
 
 public class LetterTool {
@@ -17,15 +19,18 @@ public class LetterTool {
     public String generateTribunalRequest (String student, String directorName, String career, String projectName, String teacherName){
         String fileName = projectName +"_"+ student + "_CartaConformidadDocente.pdf";
         fileName = fileName.replaceAll(" ","");
-        Document document = createWithHeader(directorName, career, "REF: Informe de Proyecto Final concluido y solicitud de asignación de tribunales\n");
+        Document document = new Document(PageSize.LETTER, 85, 85, 70, 70);
         try{
-            PdfWriter.getInstance(document, new FileOutputStream(fileName));
+            File file = new File(fileName);
+             OutputStream outFile = new FileOutputStream(file);
+            PdfWriter.getInstance(document, outFile);
             document.open();
+            createWithHeader(document, directorName, career, "REF: Informe de Proyecto Final concluido y solicitud de asignación de tribunales\n");
 
             Paragraph bodyHeader = new Paragraph();;
             bodyHeader.add (new Phrase("Estimado Director de Carrera:\n",FontFactory.getFont(FontFactory.HELVETICA,10)));
             bodyHeader.setSpacingBefore(40);
-            document.add(bodyHeader);
+            // document.add(bodyHeader);
 
             Paragraph bodyContent = new Paragraph();
             bodyContent.setAlignment(Element.ALIGN_JUSTIFIED);
@@ -50,16 +55,19 @@ public class LetterTool {
         }catch (Exception e){
         }
         document.close();
+
         return fileName;
     }
 
     public String generateStudentTribunalRequest (String student, String directorName, String career, String projectName, String studentCi){
         String fileName = projectName +"_"+ student + "_SolicitudTribunalEstudiante.pdf";
         fileName = fileName.replaceAll(" ","");
-        Document document = createWithHeader(directorName, career, "REF: Informe de Proyecto Final concluido y solicitud de asignación de tribunales\n");
+        Document document = new Document(PageSize.LETTER, 85, 85, 70, 70);
         try{
             PdfWriter.getInstance(document, new FileOutputStream(fileName));
             document.open();
+            createWithHeader(document, directorName, career, "REF: Informe de Proyecto Final concluido y solicitud de asignación de tribunales\n");
+
             Paragraph bodyHeader = new Paragraph();
             bodyHeader.add (new Phrase("Estimado Director de Carrera:\n",FontFactory.getFont(FontFactory.HELVETICA,10)));
             bodyHeader.setSpacingBefore(40);
@@ -99,10 +107,12 @@ public class LetterTool {
     public String generateTutorTribunalRequest (String tutor, String student, String directorName, String career, String projectName, String studentCi){
         String fileName = projectName +"_"+ student +"_"+ tutor + "_CartaConformidadTutor.pdf";
         fileName = fileName.replaceAll(" ","");
-        Document document = createWithHeader(directorName, career, "REF: Informe de Proyecto Final concluido y solicitud de asignación de tribunales\n");
+        Document document = new Document(PageSize.LETTER, 85, 85, 70, 70);
         try{
             PdfWriter.getInstance(document, new FileOutputStream(fileName));
             document.open();
+            createWithHeader(document, directorName, career, "REF: Informe de Proyecto Final concluido y solicitud de asignación de tribunales\n");
+
             Paragraph bodyHeader = new Paragraph();
             bodyHeader.add (new Phrase("Estimado Director de Carrera:\n",FontFactory.getFont(FontFactory.HELVETICA,10)));
             bodyHeader.setSpacingBefore(40);
@@ -139,10 +149,12 @@ public class LetterTool {
     public String generateSupervisorTribunalRequest (String tutor, String student, String directorName, String career, String projectName, String studentCi){
         String fileName = projectName +"_"+ student +"_"+ tutor + "_CartaConformidadTutor.pdf";
         fileName = fileName.replaceAll(" ","");
-        Document document = createWithHeader(directorName, career, "REF: Informe de Proyecto Final concluido y solicitud de asignación de tribunales\n");
+        Document document = new Document(PageSize.LETTER, 85, 85, 70, 70);
         try{
             PdfWriter.getInstance(document, new FileOutputStream(fileName));
             document.open();
+            createWithHeader(document, directorName, career, "REF: Informe de Proyecto Final concluido y solicitud de asignación de tribunales\n");
+
             Paragraph bodyHeader = new Paragraph();
             bodyHeader.add (new Phrase("Estimado Director de Carrera:\n",FontFactory.getFont(FontFactory.HELVETICA,10)));
             bodyHeader.setSpacingBefore(40);
@@ -179,9 +191,11 @@ public class LetterTool {
     public  String generateTribunalApproval(String student, String directorName, String career, String projectName, String tribunalName){
         String fileName = projectName +"_"+ student +"_"+ tribunalName + "_CartaConformidadTribunal.pdf";
         fileName = fileName.replaceAll(" ","");
-        Document document = createWithHeader(directorName, career, "REF: Proyecto final concluido\n");
+        Document document = new Document(PageSize.LETTER, 85, 85, 70, 70);
         try{
             PdfWriter.getInstance(document, new FileOutputStream(fileName));
+            document.open();
+            createWithHeader(document, directorName, career, "REF: Proyecto final concluido\n");
 
             Paragraph bodyHeader = new Paragraph();
             bodyHeader.add (new Phrase("Estimado Director de Carrera:\n",FontFactory.getFont(FontFactory.HELVETICA,10)));
@@ -216,8 +230,7 @@ public class LetterTool {
         return fileName;
     }
 
-    private Document createWithHeader(String directorName, String career, String docTitle){
-        Document document = new Document(PageSize.LETTER, 85, 85, 70, 70);
+    private void createWithHeader(Document document, String directorName, String career, String docTitle){
         LocalDate today = LocalDate.now();
         Paragraph locationDate = new Paragraph();
         locationDate.setAlignment(Element.ALIGN_RIGHT);
@@ -242,7 +255,6 @@ public class LetterTool {
         title.add (new Phrase(docTitle,FontFactory.getFont(FontFactory.HELVETICA,11, Font.BOLD | Font.UNDERLINE)));
         title.setSpacingBefore(50);
         document.add(title);
-        return document;
     }
 
     private String getMonthName(int month){

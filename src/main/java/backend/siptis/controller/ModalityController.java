@@ -1,4 +1,4 @@
-package backend.siptis.controller.projectManagement;
+package backend.siptis.controller;
 
 import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;

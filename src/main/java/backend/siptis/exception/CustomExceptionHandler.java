@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class CustomExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<?> handleAccessDeniedException(AccessDeniedException ex) {
-        ObjectMapper mapper = new ObjectMapper();
         ResponseDTO dto = new ResponseDTO();
-        dto.setData("No tiene los permisos necesarios para acceder a este recurso.");
         dto.setMessage("UNAUTHORIZED");
         return new ResponseEntity<>(dto, HttpStatus.UNAUTHORIZED);
     }

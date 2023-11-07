@@ -15,7 +15,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-
 import java.io.IOException;
 
 @Component
@@ -41,7 +40,6 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             }
             filterChain.doFilter(request, response);
         }catch(ExpiredJwtException ex){
-            System.out.println("EXPIRED JWT ");
             ObjectMapper mapper = new ObjectMapper();
             ResponseDTO dto = new ResponseDTO();
             dto.setData("");
@@ -50,7 +48,6 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             response.setStatus(401);
             response.getWriter().write(mapper.writeValueAsString(dto));
         }catch(MalformedJwtException ex){
-            System.out.println("MALFORMED JWT");
             ObjectMapper mapper = new ObjectMapper();
             ResponseDTO dto = new ResponseDTO();
             dto.setData("");
@@ -59,7 +56,6 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             response.setStatus(401);
             response.getWriter().write(mapper.writeValueAsString(dto));
         }catch(UnsupportedJwtException ex){
-            System.out.println("UNSUPPORTED EXCEPTION");
             ObjectMapper mapper = new ObjectMapper();
             ResponseDTO dto = new ResponseDTO();
             dto.setData("");
@@ -68,7 +64,6 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             response.setStatus(401);
             response.getWriter().write(mapper.writeValueAsString(dto));
         }catch(IllegalArgumentException ex){
-            System.out.println("ILLEGAL_ARGUMENT_JWT");
             ObjectMapper mapper = new ObjectMapper();
             ResponseDTO dto = new ResponseDTO();
             dto.setData("");
@@ -77,7 +72,6 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             response.setStatus(401);
             response.getWriter().write(mapper.writeValueAsString(dto));
         }catch(SignatureException ex){
-            System.out.println("SIGNATURE EXCEPTION");
             ObjectMapper mapper = new ObjectMapper();
             ResponseDTO dto = new ResponseDTO();
             dto.setData("");
@@ -86,7 +80,6 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             response.setStatus(401);
             response.getWriter().write(mapper.writeValueAsString(dto));
         }catch(UserNotFoundException ex){
-            System.out.println("USER_NOT_FOUND");
             ObjectMapper mapper = new ObjectMapper();
             ResponseDTO dto = new ResponseDTO();
             dto.setData("");

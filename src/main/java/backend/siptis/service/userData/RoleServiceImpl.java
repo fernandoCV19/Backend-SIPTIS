@@ -25,8 +25,6 @@ public class RoleServiceImpl implements RoleService{
         if(!roleRepository.existsRoleByName(name)){
             return createResponse(ServiceMessage.ERROR, "No se pudo encotrar el rol.");
         }
-
-
         return createResponse(ServiceMessage.OK, roleRepository.findRoleByName(name));
     }
 

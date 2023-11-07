@@ -26,14 +26,6 @@ public interface UserInformationService {
     ServiceAnswer adminEditUserInformation(UserInformation userInformation, AdminEditUserInformationDTO dto);
     ServiceAnswer adminEditStudentInformation(UserInformation userInformation, AdminEditStudentInformationDTO dto);
 
-    /*
-    ServiceAnswer adminEditUserFullInformation(UserInformation userInformation, GeneralUserPersonalInformationDTO dto);
-    ServiceAnswer adminEditUserFullInformation(UserInformation userInformation, UniversityUserPersonalInformationDTO dto);
-
-
-    ServiceAnswer searchUserByNameAndRole(String name, Long role_id);
-
-*/
 
     @AllArgsConstructor
     class UserDetailImp implements UserDetails {
@@ -92,7 +84,6 @@ public interface UserInformationService {
                 rolesResponse.add(rol.getName());
             }
              return siptisUser.getRoles().toString();
-            //return rolesResponse;
         }
 
 

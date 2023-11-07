@@ -25,9 +25,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             authCredentials = new ObjectMapper().readValue(
                     request.getReader(), Credentials.class
             );
-        } catch (Exception e){
-            //System.out.println("excepcion: "+ e.getMessage());
-        }
+        } catch (Exception e){ }
 
         try {
             UsernamePasswordAuthenticationToken PAToken =
@@ -38,7 +36,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             return getAuthenticationManager().authenticate(PAToken);
         }catch (
     AuthenticationException e){
-            System.out.println("Error de autenticacion: "+e.getMessage());
             return null;
         }
     }
@@ -51,10 +48,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             FilterChain filterChain,
             Authentication authentication
     ) throws IOException {
-        System.out.println("ENTRA AL SUCCESS ");
         UserInformationService.UserDetailImp userDetails= (UserInformationService.UserDetailImp) authentication.getPrincipal();
         String token = JWTokenUtils.createToken(userDetails);
-        System.out.println("token: "+token);
         response.addHeader("Authorization", "Bearer "+ token);
         response.getWriter().flush();
     }

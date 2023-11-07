@@ -3,13 +3,10 @@ package backend.siptis.controller.userData.GeneralInformation;
 import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.model.pjo.dto.UserSelectedAreasDTO;
 import backend.siptis.service.projectManagement.AreaService;
 import backend.siptis.service.userData.UserAreaService;
 import backend.siptis.service.userData.UserCareerService;
-import backend.siptis.service.userData.GeneralInformation.GeneralInformationService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,8 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 public class GeneralInformationController {
 
-    @Autowired
-    private final GeneralInformationService generalInformationService;
+
 
     private final UserCareerService userCareerService;
     private final UserAreaService userAreaService;
@@ -47,27 +43,7 @@ public class GeneralInformationController {
         return createResponse(answerService);
     }
 
-    @GetMapping("/getAllPotentialTribunals")
-    public ResponseEntity<?> getAllPotentialTribunals(){
-        ServiceAnswer answerService = generalInformationService.getAllPotentialTribunals();
-        return createResponse(answerService);
-    }
 
-    @PostMapping("/getPotentialTribunalsByAreas")
-    public ResponseEntity<?> getPotentialTribunalsByAreas(
-            @RequestBody UserSelectedAreasDTO areas
-    ){
-        ServiceAnswer answerService = generalInformationService.getPotentialTribunalsByAreas(areas);
-        return createResponse(answerService);
-    }
-
-    @PostMapping("/getProjectsByAreas")
-    public ResponseEntity<?> getProjectsByAreas(
-            @RequestBody UserSelectedAreasDTO areas
-    ){
-        ServiceAnswer answerService = generalInformationService.getProjectsByAreas(areas);
-        return createResponse(answerService);
-    }
     private ResponseEntity<?> createResponse(ServiceAnswer serviceAnswer){
         Object data = serviceAnswer.getData();
         ServiceMessage messageService = serviceAnswer.getServiceMessage();

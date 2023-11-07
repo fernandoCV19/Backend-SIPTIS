@@ -249,7 +249,31 @@ public class ProjectController {
 
     @GetMapping("/modalityAndCareer/{careerId}")
     public ResponseEntity<?> getNumberOfProyectsByModalityAndCareer(@PathVariable Long careerId){
-        ServiceAnswer serviceAnswer = projectService.getNumberOfProyectsByModalityAndCareer(careerId);
+        ServiceAnswer serviceAnswer = projectService.getNumberOfProjectsByModalityAndCareer(careerId);
+        HttpStatus httpStatus = HttpStatus.OK;
+        ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
+        return new ResponseEntity<>(controllerAnswer, httpStatus);
+    }
+
+    @GetMapping("/areaAndCareer/{careerId}")
+    public ResponseEntity<?> getNumberOfProyectsByAreaAndCareer(@PathVariable Long careerId){
+        ServiceAnswer serviceAnswer = projectService.getNumberOfProjectsByAreaAndCareer(careerId);
+        HttpStatus httpStatus = HttpStatus.OK;
+        ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
+        return new ResponseEntity<>(controllerAnswer, httpStatus);
+    }
+
+    @GetMapping("/subareaAndCareer/{careerId}")
+    public ResponseEntity<?> getNumberOfProyectsBySubAreaAndCareer(@PathVariable Long careerId){
+        ServiceAnswer serviceAnswer = projectService.getNumberOfProjectsBySubAreaAndCareer(careerId);
+        HttpStatus httpStatus = HttpStatus.OK;
+        ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
+        return new ResponseEntity<>(controllerAnswer, httpStatus);
+    }
+
+    @GetMapping("/projectsByCareer/{careerId}")
+    public ResponseEntity<?> getNumberProjectsByCareer(@PathVariable Long careerId){
+        ServiceAnswer serviceAnswer = projectService.getNumberProjectsByCareer(careerId);
         HttpStatus httpStatus = HttpStatus.OK;
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
         return new ResponseEntity<>(controllerAnswer, httpStatus);

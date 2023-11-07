@@ -23,6 +23,20 @@ public class CorsConfig {
                         .allowedMethods("*")
                         .exposedHeaders("*");
 
+                registry.addMapping("/email/askemail/*")
+                        .allowedOrigins(localUI)
+                        .allowedMethods("*");
+
+                registry.addMapping("/email/changePassword")
+                        .allowedOrigins(localUI)
+                        .allowedMethods("*");
+
+/*
+                registry.addMapping("/login")
+                        .allowedOrigins(localUI)
+                        .allowedMethods("*")
+                        .exposedHeaders("*");
+
                 registry.addMapping("/semester/*")
                         .allowedOrigins(localUI)
                         .allowedMethods("*")
@@ -86,7 +100,7 @@ public class CorsConfig {
                         .allowedOrigins(localUI)
                         .allowedMethods("*");
 
-
+*/
             }
         };
     }

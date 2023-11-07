@@ -8,7 +8,12 @@ import backend.siptis.service.userData.UserAreaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/userArea")
@@ -17,9 +22,13 @@ import org.springframework.web.bind.annotation.*;
 public class UserAreaController {
 
     private final UserAreaService userAreaService;
+    private final Set<ServiceMessage> okResponse = new HashSet<>(
+            List.of(ServiceMessage.OK, ServiceMessage.AREA_DELETED, ServiceMessage.AREA_CREATED));
+    private final Set<ServiceMessage> notFoundResponse = new HashSet<>(
+            List.of(ServiceMessage.AREA_NOT_FOUND));
 
 
-        @GetMapping("/getAreas")
+    @GetMapping("/getAreas")
     public ResponseEntity<?> getAllAreas() {
         ServiceAnswer answerService = userAreaService.getAllUserAreas();
         return createResponseEntity(answerService);
@@ -27,15 +36,15 @@ public class UserAreaController {
 
 
     @PostMapping("/createArea")
-    public ResponseEntity<?> createArea(
-            @RequestBody CreateAreaDTO dto) {
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<?> createArea(@RequestBody CreateAreaDTO dto) {
         ServiceAnswer answerService = userAreaService.createUserArea(dto);
         return createResponseEntity(answerService);
     }
 
     @DeleteMapping("/deleteArea/{userId}")
-    public ResponseEntity<?> deleteArea(
-            @PathVariable int userId) {
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<?> deleteArea(@PathVariable int userId) {
         Long id = Long.valueOf(userId);
         ServiceAnswer answerService = userAreaService.deleteUserArea(id);
         return createResponseEntity(answerService);
@@ -46,12 +55,11 @@ public class UserAreaController {
         ServiceMessage messageService = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
-        if(messageService == ServiceMessage.OK || messageService == ServiceMessage.USER_AREA_DELETED){
+        if(okResponse.contains(messageService)){
             httpStatus = HttpStatus.OK;
-        }
-
-        if(messageService == ServiceMessage.NOT_FOUND )
+        }else if (notFoundResponse.contains(messageService)){
             httpStatus = HttpStatus.NOT_FOUND;
+        }
 
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(data).message(messageService.toString()).build();
         return new ResponseEntity<>(controllerAnswer, httpStatus);

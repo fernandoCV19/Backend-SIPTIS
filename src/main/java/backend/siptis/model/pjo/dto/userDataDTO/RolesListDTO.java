@@ -5,10 +5,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
 public class RolesListDTO {
     @NotNull(message = "La lista de roles no puede ser nula.")
-    ArrayList<Long> roles;
+    List<Long> roles;
 }

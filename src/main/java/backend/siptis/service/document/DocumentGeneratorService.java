@@ -11,6 +11,8 @@ import java.io.IOException;
 public interface DocumentGeneratorService {
     ServiceAnswer getAllDocumentsFromUser (long idUser);
 
+    ServiceAnswer getAllDocumentsFromProject (long idProject);
+
     ServiceAnswer deleteDocument (long idDocument);
 
     ServiceAnswer generateReport (ReportDocumentDTO reportDocumentDTO);

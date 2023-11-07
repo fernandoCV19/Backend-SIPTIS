@@ -10,7 +10,6 @@ import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -21,7 +20,6 @@ import java.util.Date;
 @Component
 public class JWTokenUtils {
 
-    private static final long REFRESH_TOKEN_EXPIRE_TIME_DURATION = 60 * 60 * 1000; //1 horas
     private static final Logger logger = LoggerFactory.getLogger(JWTokenUtils.class);
     private static long EXPIRE_TIME_DURATION;
     private static String ACCESS_TOKEN_SECRET;
@@ -67,7 +65,6 @@ public class JWTokenUtils {
     public static UserDetails getUserDetails(String token) {
         SiptisUser siptisUserDetails =new SiptisUser();
         Claims claims = getClaims(token);
-        //String subject =claims.getSubject();
         String subject = (String) claims.get(Claims.SUBJECT);
         String roles = (String) claims.get("roles");
 
@@ -78,14 +75,11 @@ public class JWTokenUtils {
 
         roles = roles.replace("[", "").replace("]", "");
         String[] roleNames = roles.split(",");
-
         for (String aRoleName : roleNames) {
-
             aRoleName = aRoleName.trim();
             siptisUserDetails.addRol(new Role(aRoleName));
             siptisUserDetails.setEmail(subject);
         }
-
         return siptisUserDetails;
     }
 
@@ -97,7 +91,6 @@ public class JWTokenUtils {
 
     public static Long getId(String token){
         Claims claims = getClaims(token);
-
         Integer jwtId = (Integer) claims.get("id");
         Long id = Long.valueOf(jwtId);
         return id;
@@ -120,12 +113,9 @@ public class JWTokenUtils {
             Claims claims = Jwts.parserBuilder()
                     .setSigningKey(ACCESS_TOKEN_SECRET.getBytes())
                     .build().parseClaimsJws(token).getBody();
-
             UserDetails userDetails = getUserDetails(token);
-
             return new UsernamePasswordAuthenticationToken(
-                    userDetails, null,userDetails.getAuthorities()
-            );
+                    userDetails, null,userDetails.getAuthorities());
     }
 
 

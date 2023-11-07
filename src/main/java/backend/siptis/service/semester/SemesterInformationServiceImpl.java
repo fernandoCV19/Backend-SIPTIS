@@ -10,7 +10,8 @@ import backend.siptis.model.repository.semester.SemesterInformationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.Period;
 
 @Service
 @RequiredArgsConstructor
@@ -19,9 +20,13 @@ public class SemesterInformationServiceImpl implements SemesterInformationServic
     private final SemesterInformationRepository repository;
     @Override
     public ServiceAnswer startSemester(SemesterInformationDTO dto) {
+        LocalDate endDate = dto.getEndDate();
+        LocalDate startDate = dto.getStartDate();
+        if(Period.between(startDate, endDate).isNegative() || Period.between(startDate, endDate).isZero()){
+            return createResponse(ServiceMessage.ERROR_SEMESTER_DATES, null);
+        }
         if(repository.existsSemesterInformationByInProgressIsTrue())
-            return createResponse(ServiceMessage.SEMESTER_ALREADY_EXIST, "No puede crear un nuevo semestre. Existe uno en curso.");
-
+            return createResponse(ServiceMessage.SEMESTER_ALREADY_EXIST, null);
         SemesterInformation semester = new SemesterInformation();
         semester.setStartDate(dto.getStartDate());
         semester.setEndDate(dto.getEndDate());
@@ -29,25 +34,30 @@ public class SemesterInformationServiceImpl implements SemesterInformationServic
         semester.setInProgress(true);
 
         repository.save(semester);
-        return createResponse(ServiceMessage.SEMESTER_STARTED, "El semestre fue iniciado exitosamente");
+        return createResponse(ServiceMessage.SEMESTER_STARTED, semester);
     }
 
     @Override
     public ServiceAnswer editSemester(EditSemesterInfoDTO dto) {
+        LocalDate endDate = dto.getEndDate();
+        LocalDate startDate = dto.getStartDate();
+        if(Period.between(startDate, endDate).isNegative() || Period.between(startDate, endDate).isZero()){
+            return createResponse(ServiceMessage.ERROR_SEMESTER_DATES, null);
+        }
         if(!repository.existsSemesterInformationByInProgressIsTrue())
-            return createResponse(ServiceMessage.NO_CURRENT_SEMESTER, "No existe un semestre en curso.");
+            return createResponse(ServiceMessage.NO_CURRENT_SEMESTER, null);
         if(!repository.existsById(dto.getId()))
-            return createResponse(ServiceMessage.NO_CURRENT_SEMESTER, "No existe el semestre solicitado.");
+            return createResponse(ServiceMessage.ID_DOES_NOT_EXIST, null);
         SemesterInformation semesterInformation = repository.findActiveSemesterById(dto.getId()).get();
         if(semesterInformation == null)
-            return createResponse(ServiceMessage.NO_CURRENT_SEMESTER, "Lo sentimos, no puede modificar la información del semestre.");
+            return createResponse(ServiceMessage.NO_CURRENT_SEMESTER, null);
         semesterInformation.setStartDate(dto.getStartDate());
         semesterInformation.setEndDate(dto.getEndDate());
         semesterInformation.setPeriod(dto.getPeriod());
         semesterInformation.setInProgress(true);
 
         repository.save(semesterInformation);
-        return createResponse(ServiceMessage.SEMESTER_DATE_EDITED, "El semestre fue modificado exitosamente");
+        return createResponse(ServiceMessage.SEMESTER_INFO_EDITED, semesterInformation);
     }
 
     @Override
@@ -73,8 +83,7 @@ public class SemesterInformationServiceImpl implements SemesterInformationServic
     @Override
     public ServiceAnswer getCurrentPeriod() {
         if(!repository.existsSemesterInformationByInProgressIsTrue())
-            return createResponse(ServiceMessage.NO_CURRENT_SEMESTER, "No existe un semestre en curso.");
-
+            return createResponse(ServiceMessage.NO_CURRENT_SEMESTER, null);
         SemesterInformation semester = repository.findActiveSemester().get();
         return createResponse(ServiceMessage.SEMESTER_INFORMATION, semester.getPeriod());
 
@@ -83,12 +92,12 @@ public class SemesterInformationServiceImpl implements SemesterInformationServic
     @Override
     public ServiceAnswer closeSemester(Long id) {
         if(!repository.existsSemesterInformationById(id)){
-            return  createResponse(ServiceMessage.NO_CURRENT_SEMESTER, "No pudimos encontrar el semestre requerido.");
+            return  createResponse(ServiceMessage.NO_CURRENT_SEMESTER, null);
         }
         SemesterInformation semester = repository.findById(id).get();
         semester.setInProgress(false);
         repository.save(semester);
-        return createResponse(ServiceMessage.SEMESTER_ENDED, "El semestre fue cerrado correctamente.");
+        return createResponse(ServiceMessage.SEMESTER_ENDED, null);
     }
 
     private ServiceAnswer createResponse(ServiceMessage serviceMessage, Object data){

@@ -62,27 +62,12 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     }
 
     @Override
-    public RefreshToken verifyExpirationDate(RefreshToken refreshToken) {
+    public boolean verifyValidExpirationDate(RefreshToken refreshToken) {
         if (refreshToken.getExpireDate().compareTo(Instant.now()) < 0) {
             refreshTokenRepository.delete(refreshToken);
-            return null;
+            return false;
         }
-        return refreshToken;
+        return true;
     }
 
-    @Override
-    public ServiceAnswer getToken(Long id) {
-        RefreshToken token1 = refreshTokenRepository.findById(id).get();
-        System.out.println(token1.getToken());
-        return ServiceAnswer.builder()
-                .serviceMessage(ServiceMessage.OK)
-                .data(token1.getToken()).build();
-    }
-
-
-    @Transactional
-    @Override
-    public int deleteToken(Long userId) {
-        return refreshTokenRepository.deleteBySiptisUser(siptisUserRepository.findById(userId).get());
-    }
 }

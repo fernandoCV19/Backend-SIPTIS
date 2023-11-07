@@ -1,4 +1,4 @@
-package backend.siptis.model.pjo.dto;
+package backend.siptis.model.pjo.dto.userDataDTO;
 
 import backend.siptis.model.entity.userData.UserArea;
 import lombok.Getter;

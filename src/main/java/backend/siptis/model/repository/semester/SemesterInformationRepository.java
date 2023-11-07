@@ -10,9 +10,7 @@ import java.util.Optional;
 public interface SemesterInformationRepository extends JpaRepository<SemesterInformation, Long> {
 
 
-
     boolean existsSemesterInformationByInProgressIsTrue();
-
 
     @Query(value ="SELECT * " +
             "FROM semester_information si " +

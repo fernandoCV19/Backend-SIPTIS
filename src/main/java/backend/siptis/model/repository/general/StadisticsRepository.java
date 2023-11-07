@@ -1,9 +1,6 @@
 package backend.siptis.model.repository.general;
 
 import backend.siptis.auth.entity.SiptisUser;
-import backend.siptis.model.entity.userData.UserCareer;
-import backend.siptis.model.pjo.dto.UserListItemDTO;
-import backend.siptis.model.pjo.dto.stadisticsDTO.StudentsByCareerDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

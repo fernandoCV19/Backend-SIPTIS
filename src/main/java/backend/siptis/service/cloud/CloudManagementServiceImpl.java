@@ -105,7 +105,6 @@ public class CloudManagementServiceImpl implements CloudManagementService {
             summaries.forEach(s -> keys.add(s.getKey()));
             objects = s3Client.listNextBatchOfObjects(objects);
         }
-
         return keys;
     }
 
@@ -113,14 +112,13 @@ public class CloudManagementServiceImpl implements CloudManagementService {
     public String uploadDocumentToCloud(String filename){
         File document = new File(filename);
         String key = putObject(document, "Documentos/");
-        boolean bandera = document.delete();
         return key;
     }
     @Override
     public String uploadLetterToCloud(String filename, String projectName){
         File document = new File(filename);
-        String key = putObject(document, "Cartas/"+projectName+"/");
-        boolean bandera = document.delete();
+        String key = putObject(document, "Cartas/");
+        document.delete();
         return key;
     }
 }
