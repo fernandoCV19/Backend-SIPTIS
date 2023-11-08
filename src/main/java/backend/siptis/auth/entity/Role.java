@@ -27,10 +27,6 @@ public class Role {
         this.name = rolName;
     }
 
-    public Role(Integer id) {
-        super();
-        this.id = id;
-    }
 
     public String toString(){
         return name;

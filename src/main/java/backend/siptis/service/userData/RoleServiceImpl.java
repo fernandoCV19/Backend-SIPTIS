@@ -23,7 +23,7 @@ public class RoleServiceImpl implements RoleService{
     public ServiceAnswer getRoleByName(String name) {
 
         if(!roleRepository.existsRoleByName(name)){
-            return createResponse(ServiceMessage.ERROR, "No se pudo encotrar el rol.");
+            return createResponse(ServiceMessage.ERROR, null);
         }
         return createResponse(ServiceMessage.OK, roleRepository.findRoleByName(name));
     }

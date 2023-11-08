@@ -41,7 +41,6 @@ public class ProjectTeacherServiceImpl implements ProjectTeacherService {
         if(siptisUserRepository.findById(id).isEmpty()){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data(null).build();
         }
-
         List<ProjectTeacher> listaProyectos = projectTeacherRepository.findByTeacherIdAndAcceptedIsFalseAndReviewedIsFalse(id);
         return getProjects(listaProyectos);
     }

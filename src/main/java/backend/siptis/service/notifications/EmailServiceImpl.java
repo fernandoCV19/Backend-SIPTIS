@@ -107,22 +107,16 @@ public class EmailServiceImpl implements EmailService{
         boolean check = (boolean) siptisUserService.existsTokenPassword(dto.getTokenPassword()).getData();
         if(!check){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.INVALID_TOKEN)
-                    .data("El token para el cambio de contraseña no es valido").build();
+                    .data("INVALID TOKEN").build();
         }
         SiptisUser user = siptisUserService.findByTokenPassword(dto.getTokenPassword());
-        //System.out.println("REVISION");
-        System.out.println(user.getEmail());
-        System.out.println(dto.getTokenPassword());
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String password = encoder.encode(dto.getPassword());
-
         user.setPassword(password);
         user.setTokenPassword(null);
 
-        // return  siptisUserService.save(user);
-
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
-                .data("La contrasena se actualizó correctamente.").build();
+                .data("PASSWORD UPDATED").build();
     }
 
 
@@ -186,16 +180,15 @@ public class EmailServiceImpl implements EmailService{
     @Override
     public ServiceAnswer sendRecoverPasswordEmail(String email) throws MessagingException {
 
-        boolean checkUser = (boolean) siptisUserRepository.existsByEmail(email);
+        boolean checkUser = siptisUserRepository.existsByEmail(email);
         if(!checkUser){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.EMAIL_NOT_EXIST)
-                    .data("El correo electronico no se encuentra registrado en el sistema").build();
+                    .data(null).build();
         }
         MimeMessage message = mailSender.createMimeMessage();
         SiptisUser user =  siptisUserRepository.findOneByEmail(email).get();
 
         ChangePasswordDTO dto = createChangePasswordDTO(email);
-        //String url = "http://127.0.0.1:5173/changePassword/";
 
         try{
             message.setFrom(new InternetAddress(dto.getEmailFrom()));
@@ -228,19 +221,4 @@ public class EmailServiceImpl implements EmailService{
 
         return dto;
     }
-
-    /*
-
-    @Override
-    public ChangePasswordDTO createChangePasswordDTO(String email){
-        ChangePasswordDTO dto = new ChangePasswordDTO();
-        dto.setEmailFrom("siptis.umss@gmail.com");
-        dto.setEmailTo(email);
-        dto.setSubject("Respuesta solicitud recuperacion de contraseña SIPTIS");
-        UUID uuid = UUID.randomUUID();
-        dto.setTokenPassword(uuid.toString());
-
-        return dto;
-    }
-    */
 }

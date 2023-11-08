@@ -9,12 +9,12 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class EditSemesterInfoDTO {
-    @NotNull(message = "Tiene que ingresar el id del semestre en curso.")
+    @NotNull(message = "ID_CANNOT_BE_NULL")
     private Long id;
-    @NotNull(message = "Tiene que elegir una fecha de incio.")
+    @NotNull(message = "START_DATE_CANNOT_BE_NULL")
     private LocalDate startDate;
-    @NotNull(message = "Tiene que elegir una fecha de cierre.")
+    @NotNull(message = "END_DATE_CANNOT_BE_NULL")
     private LocalDate endDate;
-    @NotNull(message = "Tiene que elegir un periodo.")
+    @NotNull(message = "PERIOD_CANNOT_BE_NULL")
     private String period;
 }

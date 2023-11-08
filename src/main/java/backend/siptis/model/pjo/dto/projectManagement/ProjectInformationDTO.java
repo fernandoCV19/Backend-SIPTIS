@@ -15,7 +15,6 @@ public class ProjectInformationDTO {
     private String phase;
     private String state;
     private String defensePoints;
-
     private List<UserListDTO> students;
     private List<UserListDTO> tutors;
     private List<UserListDTO> teachers;

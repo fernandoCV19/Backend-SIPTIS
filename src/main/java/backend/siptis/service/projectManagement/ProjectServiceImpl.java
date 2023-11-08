@@ -4,9 +4,7 @@ import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.Phase;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.model.entity.editorsAndReviewers.ProjectStudent;
-import backend.siptis.model.entity.editorsAndReviewers.ProjectTeacher;
-import backend.siptis.model.entity.editorsAndReviewers.ProjectTribunal;
+import backend.siptis.model.entity.editorsAndReviewers.*;
 import backend.siptis.model.entity.projectManagement.*;
 import backend.siptis.model.entity.userData.Schedule;
 import backend.siptis.model.pjo.dto.projectManagement.AssignTribunalsDTO;
@@ -14,12 +12,8 @@ import backend.siptis.model.pjo.dto.projectManagement.DefenseDTO;
 import backend.siptis.model.pjo.dto.projectManagement.NewProjectDTO;
 import backend.siptis.model.pjo.dto.projectManagement.ProjectInformationDTO;
 import backend.siptis.model.pjo.vo.projectManagement.*;
-import backend.siptis.model.repository.editorsAndReviewers.ModalityRepository;
-import backend.siptis.model.repository.editorsAndReviewers.ProjectStudentRepository;
-import backend.siptis.model.repository.editorsAndReviewers.ProjectTribunalRepository;
-import backend.siptis.model.repository.editorsAndReviewers.ProjectTutorRepository;
+import backend.siptis.model.repository.editorsAndReviewers.*;
 import backend.siptis.model.repository.projectManagement.*;
-import backend.siptis.model.entity.editorsAndReviewers.ProjectTutor;
 import backend.siptis.model.entity.projectManagement.Presentation;
 import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.entity.projectManagement.Review;
@@ -47,6 +41,8 @@ public class ProjectServiceImpl implements ProjectService {
     private final ProjectRepository projectRepository;
     private final ProjectStudentRepository projectStudentRepository;
     private final ProjectTutorRepository projectTutorRepository;
+    private final ProjectSupervisorRepository projectSupervisorRepository;
+    private final ProjectTeacherRepository projectTeacherRepository;
     private final ModalityRepository modalityRepository;
     private final PresentationRepository presentationRepository;
     private final ReviewRepository reviewRepository;
@@ -92,6 +88,24 @@ public class ProjectServiceImpl implements ProjectService {
             tutors.add(projectTutor);
         }
 
+        ArrayList<ProjectSupervisor> supervisors = new ArrayList<>();
+        String modalityName = modalityRepository.findModalityById(dto.getModalityId()).getName();
+
+        if(dto.getSupervisorsId() != null &&
+                (modalityName.equals(backend.siptis.commons.Modality.TRABAJO_DIRIGIDO.toString())
+                        || modalityName.equals(backend.siptis.commons.Modality.ADSCRIPCION.toString()) )){
+            for (Long supervisorId: dto.getSupervisorsId()) {
+                if(!siptisUserRepository.existsById(supervisorId))
+                    return ServiceAnswer.builder().serviceMessage(ServiceMessage.USER_ID_DOES_NOT_EXIST).build();
+                ProjectSupervisor projectSupervisor = new ProjectSupervisor();
+                projectSupervisor.setSupervisor(siptisUserRepository.findById(supervisorId).get());
+                projectSupervisor.setProject(newProject);
+                supervisors.add(projectSupervisor);
+            }
+        }else{
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).build();
+        }
+
         ArrayList<ProjectTeacher> teachers = new ArrayList<>();
         for (Long teacherId: dto.getTeachersId()) {
             if(!siptisUserRepository.existsById(teacherId))
@@ -122,6 +136,7 @@ public class ProjectServiceImpl implements ProjectService {
         newProject.setModality(modalityRepository.findModalityById(dto.getModalityId()));
         newProject.setStudents(students);
         newProject.setTutors(tutors);
+        newProject.setSupervisors(supervisors);
         newProject.setAreas(areas);
         newProject.setSubAreas(subAreas);
         newProject.setPhase("REVIEWERS_PHASE");
@@ -137,8 +152,11 @@ public class ProjectServiceImpl implements ProjectService {
         for (ProjectTutor projectTutor: tutors)
             projectTutorRepository.save(projectTutor);
 
-        for (ProjectTutor projectTutor: tutors)
-            projectTutorRepository.save(projectTutor);
+        for (ProjectSupervisor projectSupervisor: supervisors)
+            projectSupervisorRepository.save(projectSupervisor);
+
+        for (ProjectTeacher projectTeacher: teachers)
+            projectTeacherRepository.save(projectTeacher);
 
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.SUCCESSFUL_PROJECT_REGISTER).data(newProject).build();
     }

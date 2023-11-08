@@ -10,10 +10,10 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class SemesterInformationDTO {
-    @NotEmpty(message = "Tiene que elegir una fecha de incio.")
+    @NotEmpty(message = "START_DATE_CANNOT_BE_NULL")
     private LocalDate startDate;
-    @NotEmpty(message = "Tiene que elegir una fecha de cierre.")
+    @NotEmpty(message = "END_DATE_CANNOT_BE_NULL")
     private LocalDate endDate;
-    @NotEmpty(message = "Tiene que elegir un periodo.")
+    @NotEmpty(message = "PERIOD_CANNOT_BE_NULL")
     private String period;
 }

@@ -8,8 +8,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AdminEditStudentInformationDTO extends AdminEditUserInformationDTO {
-    @NotEmpty(message = "El código SIS no puede ser vacio.")
-    @Size(min = 2, message = "El código SIS tiene que ser mayor a 1 digito")
-    @Size(max = 50, message = "El código SIS tiene que ser menor a 10 digitos")
+    @NotEmpty(message = "CODSIS_CANNOT_BE_NULL")
+    @Size(min = 2, message = "INVALID_CODSIS_LENGTH")
+    @Size(max = 50, message = "INVALID_CODSIS_LENGTH")
     private String codSIS;
 }

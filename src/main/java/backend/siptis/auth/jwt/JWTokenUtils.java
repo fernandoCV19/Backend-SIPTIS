@@ -7,8 +7,6 @@ import backend.siptis.model.repository.userData.SiptisUserRepository;
 import backend.siptis.service.userData.UserInformationService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,7 +18,6 @@ import java.util.Date;
 @Component
 public class JWTokenUtils {
 
-    private static final Logger logger = LoggerFactory.getLogger(JWTokenUtils.class);
     private static long EXPIRE_TIME_DURATION;
     private static String ACCESS_TOKEN_SECRET;
 
@@ -103,13 +100,11 @@ public class JWTokenUtils {
                     .build().parseClaimsJws(authToken).getBody();
             return true;
         } catch (IllegalArgumentException e) {
-            logger.error("JWT claims string is empty: {}", e.getMessage());
         }
         return false;
     }
 
     public static UsernamePasswordAuthenticationToken getAuthentication(String token) {
-
             Claims claims = Jwts.parserBuilder()
                     .setSigningKey(ACCESS_TOKEN_SECRET.getBytes())
                     .build().parseClaimsJws(token).getBody();

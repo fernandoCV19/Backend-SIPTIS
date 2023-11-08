@@ -32,10 +32,8 @@ public class EmailController {
 
     @GetMapping("/askemail/{email}")
     public ResponseEntity<?> sendEmailTest(@PathVariable String email) throws MessagingException, IOException {
-
         ServiceAnswer answer = emailServiceImpl.sendRecoverPasswordEmail(email);
 
-        //return "mensaje enviado con exito";
         return crearResponseEntityRegistrar(answer);
     }
 
@@ -43,7 +41,6 @@ public class EmailController {
     public ResponseEntity<?> changePassword(@RequestBody TokenPasswordDTO dto){
         ServiceAnswer answer = emailServiceImpl.changePassword(dto);
         return crearResponseEntityRegistrar(answer);
-        //return "hola";
     }
 
     private ResponseEntity<?> crearResponseEntityRegistrar(ServiceAnswer serviceAnswer){

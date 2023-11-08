@@ -45,10 +45,8 @@ public class SubAreaController {
 
     @DeleteMapping("/deleteSubArea/{userId}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<?> deleteArea(
-            @PathVariable int userId) {
+    public ResponseEntity<?> deleteArea(@PathVariable int userId) {
         Long id = Long.valueOf(userId);
-        System.out.println(id);
         ServiceAnswer answerService = subAreaService.deleteSubArea(id);
         return createResponseEntity(answerService);
     }

@@ -83,7 +83,7 @@ public class UserInformationImpl implements UserInformationService{
     public ServiceAnswer adminEditUserInformation(UserInformation userInformation, AdminEditUserInformationDTO dto) {
         if(!userInformation.getCi().equals(dto.getCi()))
             if(existUserByCi(dto.getCi()))
-                return createAnswer(ServiceMessage.CI_ALREADY_EXIST, "el documento de identidad ya se encuentra registrado");
+                return createAnswer(ServiceMessage.CI_ALREADY_EXIST, null);
 
         userInformation.setLastnames(dto.getLastnames());
         userInformation.setNames(dto.getNames());
@@ -98,7 +98,7 @@ public class UserInformationImpl implements UserInformationService{
     public ServiceAnswer adminEditStudentInformation(UserInformation userInformation, AdminEditStudentInformationDTO dto) {
         if(!userInformation.getCodSIS().equals(dto.getCodSIS()))
             if(existUserByCodSIS(dto.getCodSIS()))
-                return createAnswer(ServiceMessage.COD_SIS_ALREADY_EXIST, "el documento de identidad ya se encuentra registrado");
+                return createAnswer(ServiceMessage.COD_SIS_ALREADY_EXIST, null);
         userInformation.setCodSIS(dto.getCodSIS());
         return adminEditUserInformation(userInformation, dto);
 

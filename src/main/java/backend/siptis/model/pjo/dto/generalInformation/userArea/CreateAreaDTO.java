@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CreateAreaDTO {
-    @NotEmpty(message = "Los nombres no pueden ser vacios.")
-    @Size(min = 2, message = "El nombre del area tiene que ser mayor a 1 caracter")
+    @NotEmpty(message = "NAME_CANNOT_BE_NULL")
+    @Size(min = 2, message = "INVALID_NAME_LENGTH")
     private String name;
 }

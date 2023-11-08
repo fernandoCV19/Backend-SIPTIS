@@ -11,16 +11,16 @@ import java.util.Date;
 @Getter
 @Setter
 public class UserEditInformationDTO {
-    @NotEmpty(message = "El correo no puede ser vacio.")
-    @Size(min = 2, message = "El correo tiene que ser mayor a 2 caracteres.")
-    @Size(max = 50, message = "El correo tiene que ser menor a 30 caracteres.")
-    @Pattern(regexp=".+@.+\\..+", message="El correo tiene que cumplir con el formato adecuado.")
+    @NotEmpty(message = "EMAIL_CANNOT_BE_NULL")
+    @Size(min = 2, message = "INVALID_EMAIL_LENGTH")
+    @Size(max = 50, message = "INVALID_EMAIL_LENGTH")
+    @Pattern(regexp=".+@.+\\..+", message="EMAIL_INVALID_FORMAT")
     private String email;
-    @NotEmpty(message = "El número personal no puede ser vacio.")
-    @Size(min = 2, message = "El número personal tiene que ser mayor a 5 digitos")
-    @Size(max = 50, message = "El número tiene que ser menor a 10 digitos")
+    @NotEmpty(message = "CEL_NUMBER_CANNOT_BE_NULL")
+    @Size(min = 2, message = "INVALID_CEL_NUMBER_LENGTH")
+    @Size(max = 50, message = "INVALID_CEL_NUMBER_LENGTH")
     private String celNumber;
-    @NotNull(message = "La fecha de nacimiento no puede ser vacia.")
+    @NotNull(message = "BIRTH_DATE_CANNOT_BE_NULL")
     private Date birthDate;
 }
 

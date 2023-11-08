@@ -33,7 +33,7 @@ public class UserCareerServiceImpl implements UserCareerService{
     @Override
     public ServiceAnswer getCareerByName(String name) {
         if(!userCareerRepository.existsByName(name)){
-            return createResponse(ServiceMessage.ERROR, "No se pudo encontrar la carrera solicitada");
+            return createResponse(ServiceMessage.ERROR, null);
         }
         return createResponse(ServiceMessage.OK, userCareerRepository.findUserCareerByName(name));
     }

@@ -9,12 +9,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RegisterAdminDTO {
-    @NotEmpty(message = "El correo no puede ser vacio.")
-    @Size(min = 2, message = "El correo tiene que ser mayor a 2 caracteres.")
-    @Size(max = 50, message = "El correo tiene que ser menor a 30 caracteres.")
-    @Pattern(regexp=".+@.+\\..+", message="El correo tiene que cumplir con el formato adecuado.")
+    @NotEmpty(message = "EMAIL_CANNOT_BE_NULL")
+    @Size(min = 2, message = "INVALID_EMAIL_LENGTH")
+    @Size(max = 50, message = "INVALID_EMAIL_LENGTH")
+    @Pattern(regexp=".+@.+\\..+", message="EMAIL_INVALID_FORMAT")
     private String email;
-    @NotEmpty(message = "La contraseña no puede ser vacio.")
-    @Size(min = 6, message = "La contraseña no puede ser menor a 6 caracteres.")
+    @NotEmpty(message = "PASSWORD_CANNOT_BE_NULL")
+    @Size(min = 6, message = "INVALID_PASSWORD_LENGTH")
     private String password;
 }

@@ -30,7 +30,6 @@ import java.util.Set;
 public class SiptisUserController {
 
     private final SiptisUserService siptisUserService;
-    private final RefreshTokenService refreshTokenService;
 
     private final Set<ServiceMessage> okResponse = new HashSet<>(
             List.of(ServiceMessage.OK, ServiceMessage.SUCCESSFUL_REGISTER, ServiceMessage.USER_DELETED));
@@ -43,7 +42,7 @@ public class SiptisUserController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LogInDTO logInDTO) {
+    public ResponseEntity<?> login(@Valid @RequestBody LogInDTO logInDTO) {
         ServiceAnswer answerService = siptisUserService.logIn(logInDTO);
         return createResponseEntity(answerService);
     }

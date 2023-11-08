@@ -15,7 +15,6 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
 
-
                 String localUI = "http://localhost:5173";
 
                 registry.addMapping("/login")
@@ -30,77 +29,6 @@ public class CorsConfig {
                 registry.addMapping("/email/changePassword")
                         .allowedOrigins(localUI)
                         .allowedMethods("*");
-
-/*
-                registry.addMapping("/login")
-                        .allowedOrigins(localUI)
-                        .allowedMethods("*")
-                        .exposedHeaders("*");
-
-                registry.addMapping("/semester/*")
-                        .allowedOrigins(localUI)
-                        .allowedMethods("*")
-                        .exposedHeaders("*");
-
-                registry.addMapping("/user/login")
-                        .allowedOrigins(localUI)
-                        .allowedMethods("*")
-                        .exposedHeaders("*");
-
-
-                registry.addMapping("/user/register/admin")
-                        .allowedOrigins(localUI)
-                        .allowedMethods("*")
-                        .exposedHeaders("*");
-
-                registry.addMapping("/user/register/student")
-                        .allowedOrigins(localUI)
-                        .allowedMethods("*")
-                        .exposedHeaders("*");
-
-                registry.addMapping("/user/test")
-
-                        .allowedMethods("*")
-                        .exposedHeaders("*");
-
-                registry.addMapping("/todos")
-                        .allowedOrigins(localUI)
-                        .allowedMethods("*")
-                        .exposedHeaders("*");
-
-                registry.addMapping("/user/todos")
-                        .allowedOrigins(localUI)
-                        .allowedMethods("*");
-
-                registry.addMapping("/user/information/*")
-                        .allowedOrigins(localUI)
-                        .allowedMethods("*");
-
-                registry.addMapping("/user/personal-activities/*")
-                        .allowedOrigins(localUI)
-                        .allowedMethods("*");
-
-                registry.addMapping("/user/information")
-                        .allowedOrigins(localUI)
-                        .allowedMethods("*");
-
-                registry.addMapping("/user/editUser/*")
-                        .allowedOrigins(localUI)
-                        .allowedMethods("*");
-
-                registry.addMapping("/user/updateAreas/*")
-                        .allowedOrigins(localUI)
-                        .allowedMethods("*");
-
-                registry.addMapping("/email/askemail/*")
-                        .allowedOrigins(localUI)
-                        .allowedMethods("*");
-
-                registry.addMapping("/email/changePassword")
-                        .allowedOrigins(localUI)
-                        .allowedMethods("*");
-
-*/
             }
         };
     }

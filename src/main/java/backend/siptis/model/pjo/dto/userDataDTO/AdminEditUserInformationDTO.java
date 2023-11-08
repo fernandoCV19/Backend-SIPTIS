@@ -13,27 +13,27 @@ import java.util.Date;
 @Getter
 @Setter
 public class AdminEditUserInformationDTO {
-    @NotEmpty(message = "Los nombres no pueden ser vacios.")
-    @Size(min = 2, message = "Los nombres tienen que ser mayor a 1 caracter.")
-    @Size(max = 50, message = "Los nombres tienen que ser menor a 50 caracteres.")
+    @NotEmpty(message = "NAMES_CANNOT_BE_NULL")
+    @Size(min = 2, message = "NAMES_INVALID_LENGTH")
+    @Size(max = 50, message = "NAMES_INVALID_LENGTH")
     private String names;
-    @NotEmpty(message = "Los apellidos no pueden ser vacios.")
-    @Size(min = 2, message = "Los apellidos tienen que ser mayor a 1 caracter.")
-    @Size(max = 50, message = "Los apellidos tienen que ser menor a 50 caracteres.")
+    @NotEmpty(message = "LASTNAMES_CANNOT_BE_NULL")
+    @Size(min = 2, message = "LASTNAMES_INVALID_LENGTH")
+    @Size(max = 50, message = "LASTNAMES_INVALID_LENGTH")
     private String lastnames;
-    @NotEmpty(message = "El correo no puede ser vacio.")
-    @Size(min = 2, message = "El correo tiene que ser mayor a 2 caracteres.")
-    @Size(max = 50, message = "El correo tiene que ser menor a 30 caracteres.")
-    @Pattern(regexp=".+@.+\\..+", message="El correo tiene que cumplir con el formato adecuado.")
+    @NotEmpty(message = "EMAIL_CANNOT_BE_NULL")
+    @Size(min = 2, message = "EMAIL_INVALID_LENGTH")
+    @Size(max = 50, message = "EMAIL_INVALID_LENGTH")
+    @Pattern(regexp=".+@.+\\..+", message="EMAIL_INVALID_FORMAT")
     private String email;
-    @NotEmpty(message = "El número personal no puede ser vacio.")
-    @Size(min = 2, message = "El número personal tiene que ser mayor a 5 digitos")
-    @Size(max = 50, message = "El número tiene que ser menor a 10 digitos")
+    @NotEmpty(message = "CEL_NUMBER_CANNOT_BE_NULL")
+    @Size(min = 6, message = "CEL_NUMBER_INVALID_LENGTH")
+    @Size(max = 10, message = "CEL_NUMBER_INVALID_LENGTH")
     private String celNumber;
-    @NotEmpty(message = "El documento de identidad no puede ser vacio.")
-    @Size(min = 5, message = "El documento de identidad tiene que ser mayor a 5  digitos")
-    @Size(max = 50, message = "El documento de identidad tiene que ser menor a 10 digitos")
+    @NotEmpty(message = "CI_CANNOT_BE_NULL")
+    @Size(min = 5, message = "CI_INVALID_LENGTH")
+    @Size(max = 50, message = "CI_INVALID_LENGTH")
     private String ci;
-    @NotNull(message = "La fecha de nacimiento no puede ser vacia.")
+    @NotNull(message = "BIRTH_DATE_CANNOT_BE_NULL")
     private Date birthDate;
 }
