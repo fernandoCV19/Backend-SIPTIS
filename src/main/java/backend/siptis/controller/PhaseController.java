@@ -1,26 +1,24 @@
-package backend.siptis.controller;
+package backend.siptis.controller.projectManagement;
 
 import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.service.projectManagement.PhaseService;
+import backend.siptis.service.userData.SiptisUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("/phase")
+@CrossOrigin
 public class PhaseController {
-
     private final PhaseService phaseService;
+    private final SiptisUserService userService;
 
-    @GetMapping()
+    @GetMapping("")
     public ResponseEntity<?> findAll() {
-
         return new ResponseEntity<>(ControllerAnswer.builder()
                 .data(phaseService.findAllPhases())
                 .message("Phase found").build(), null, 200);
@@ -29,9 +27,28 @@ public class PhaseController {
     @GetMapping("/{idPhase}")
     public ResponseEntity<?> findById(@PathVariable int idPhase) {
         Long id = Long.valueOf(idPhase);
+
         return new ResponseEntity<>(ControllerAnswer.builder()
-                .data(phaseService.findPhaseById(id))
+                .data(phaseService.findPhaseByUserId(id))
                 .message("Phase found").build(), null, 200);
+    }
+
+    @GetMapping("/modality/{idModality}")
+    public ResponseEntity<?> findByModalityId(@PathVariable int idModality) {
+        Long id = Long.valueOf(idModality);
+
+        return new ResponseEntity<>(ControllerAnswer.builder()
+                .data(phaseService.findPhaseByModalityId(id))
+                .message("Phase found").build(), null, 200);
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<?> getPhasesByUserId(@RequestHeader(name = "Authorization") String token) {
+        Long idL = userService.getIdFromToken(token);
+        return new ResponseEntity<>(ControllerAnswer.builder()
+                .data(createResponse(phaseService.getPhasesByUserId(idL)))
+                .message("Phase found").build(), null, 200);
+
     }
 
     private ResponseEntity<?> createResponse(ServiceAnswer serviceAnswer) {
@@ -51,5 +68,4 @@ public class PhaseController {
                             .data(null)
                             .message("SERVER ERROR").build(), null, 500);
     }
-
 }

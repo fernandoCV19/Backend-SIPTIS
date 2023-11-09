@@ -1,5 +1,6 @@
 package backend.siptis.model.pjo.dto;
 
+import backend.siptis.commons.PhaseName;
 import lombok.Getter;
 import lombok.Setter;
 
