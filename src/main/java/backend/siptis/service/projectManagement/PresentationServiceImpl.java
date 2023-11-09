@@ -15,8 +15,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -65,6 +68,39 @@ public class PresentationServiceImpl implements PresentationService {
         projectRepository.saveAndFlush(proyecto);
         presentationRepository.saveAndFlush(presentation);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.PRESENTACION_REVISADA).data(presentation).build();
+    }
+
+    @Override
+    public ServiceAnswer getReviewsFromAPresentation(Long idPresentation) {
+        Optional<Presentation> optionalPresentation = presentationRepository.findById(idPresentation);
+        if (optionalPresentation.isEmpty()) {
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
+        }
+        Presentation presentation = optionalPresentation.get();
+
+        List<Map<String, Object>> reviews = presentation
+                .getReviews()
+                .stream()
+                .map(review->{
+                    Map<String, Object> jsonMap = new HashMap<>();
+                    jsonMap.put("id", review.getId());
+                    jsonMap.put("date", review.getDate());
+                    jsonMap.put("documentPath", review.getDocumentPath());
+                    jsonMap.put("commentary", review.getCommentary());
+                    Map<String, Object> reviewerInfo = new HashMap<>();
+                    reviewerInfo.put("id", review.getSiptisUser().getId());
+                    reviewerInfo.put("names", review.getSiptisUser().getUserInformation().getNames());
+                    reviewerInfo.put("lastNames", review.getSiptisUser().getUserInformation().getLastnames());
+
+                    jsonMap.put("reviewer", reviewerInfo);
+                    return jsonMap;
+                })
+                .collect(Collectors.toList());
+
+        if (reviews.isEmpty()) {
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_REVIEWS).data(null).build();
+        }
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(reviews).build();
     }
 
     @Override

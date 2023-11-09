@@ -5,53 +5,61 @@ import backend.siptis.commons.PhaseName;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.service.projectManagement.PresentationService;
+import backend.siptis.service.userData.SiptisUserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+
 @RestController
 @RequestMapping("/presentation")
+@RequiredArgsConstructor
 @CrossOrigin
 public class PresentationController {
 
-    @Autowired
-    private PresentationService presentationService;
-
-    @GetMapping("/test")
-    String prueba() {
-        return "Hola";
-    }
+    private final PresentationService presentationService;
+    private final SiptisUserService userAuthService;
 
     @PostMapping("/create")
-    ResponseEntity<?> create(@RequestParam Long idProyecto, @RequestParam PhaseName fase) {
-        ServiceAnswer respuestaServicio = presentationService.createPresentation(idProyecto, fase);
-        return crearResponseEntityConPresentacion(respuestaServicio);
+    ResponseEntity<?> create(@RequestHeader(name = "Authorization") String token, @RequestParam PhaseName phase) {
+        ArrayList<?> projects = userAuthService.getProjectsFromToken(token);
+        int projectId = (int) projects.get(0);
+        ServiceAnswer serviceAnswer = presentationService.createPresentation((long)projectId, phase);
+        return createResponseEntity(serviceAnswer);
     }
 
     @PostMapping("/grade")
-    ResponseEntity<?> grade(@RequestParam Long idPresentacion) {
-        ServiceAnswer respuestaServicio = presentationService.gradePresentation(idPresentacion);
-        return crearResponseEntityConPresentacion(respuestaServicio);
+    ResponseEntity<?> grade(@RequestParam Long presentationId) {
+        ServiceAnswer serviceAnswer = presentationService.gradePresentation(presentationId);
+        return createResponseEntity(serviceAnswer);
     }
 
-    @DeleteMapping("/{id}")
-    ResponseEntity<?> deletePresentation(@PathVariable("id") Long idPresentacion) {
-        ServiceAnswer respuestaServicio = presentationService.delete(idPresentacion);
-        return crearResponseEntityConPresentacion(respuestaServicio);
+    @GetMapping("/reviews/{presentationId}")
+    ResponseEntity<?> getReviewsFromPresentation(@PathVariable("presentationId") Long presentationId) {
+        ServiceAnswer serviceAnswer = presentationService.getReviewsFromAPresentation(presentationId);
+        return createResponseEntity(serviceAnswer);
+    }
+
+    @DeleteMapping("/{presentationId}")
+    ResponseEntity<?> deletePresentation(@PathVariable("presentationId") Long presentationId) {
+        ServiceAnswer serviceAnswer = presentationService.delete(presentationId);
+        return createResponseEntity(serviceAnswer);
     }
 
     @PostMapping("/attach-file")
-    ResponseEntity<?> attachFile(@RequestParam Long idPresentacion, @RequestParam MultipartFile file, @RequestParam String path) {
-        ServiceAnswer respuestaServicio = presentationService.attachFile(idPresentacion, file, path);
-        return crearResponseEntityConPresentacion(respuestaServicio);
+    ResponseEntity<?> attachFile(@RequestParam Long presentationId, @RequestParam MultipartFile file, @RequestParam String path) {
+        ServiceAnswer serviceAnswer = presentationService.attachFile(presentationId, file, path);
+        return createResponseEntity(serviceAnswer);
     }
 
     @DeleteMapping("/remove-file")
-    ResponseEntity<?> removeFile(@RequestParam Long idPresentacion, @RequestParam String path) {
-        ServiceAnswer respuestaServicio = presentationService.removeFile(idPresentacion, path);
-        return crearResponseEntityConPresentacion(respuestaServicio);
+    ResponseEntity<?> removeFile(@RequestParam Long presentationId, @RequestParam String path) {
+        ServiceAnswer serviceAnswer = presentationService.removeFile(presentationId, path);
+        return createResponseEntity(serviceAnswer);
     }
 
     @GetMapping("/getLastReviews/{id}")
@@ -65,16 +73,16 @@ public class PresentationController {
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
 
-    private ResponseEntity<?> crearResponseEntityConPresentacion(ServiceAnswer respuestaServicio) {
-        Object data = respuestaServicio.getData();
-        ServiceMessage mensajeServicio = respuestaServicio.getServiceMessage();
+    private ResponseEntity<?> createResponseEntity(ServiceAnswer serviceAnswer) {
+        Object data = serviceAnswer.getData();
+        ServiceMessage serviceMessage = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.OK;
 
 
-        if (mensajeServicio == ServiceMessage.NOT_FOUND || mensajeServicio == ServiceMessage.ERROR)
+        if (serviceMessage == ServiceMessage.NOT_FOUND || serviceMessage == ServiceMessage.ERROR)
             httpStatus = HttpStatus.NOT_FOUND;
 
-        ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(data).message(mensajeServicio.toString()).build();
+        ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(data).message(serviceMessage.toString()).build();
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
 

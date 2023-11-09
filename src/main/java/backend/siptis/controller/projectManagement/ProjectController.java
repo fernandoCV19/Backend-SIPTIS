@@ -5,20 +5,24 @@ import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.projectManagement.NewProjectDTO;
 import backend.siptis.service.projectManagement.ProjectService;
+import backend.siptis.service.userData.SiptisUserService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+
 @RestController
 @RequestMapping("/project")
+@RequiredArgsConstructor
 @CrossOrigin
 public class ProjectController {
-    @Autowired
-    public ProjectService projectService;
 
+    public final ProjectService projectService;
+    private final SiptisUserService userAuthService;
 
     @PostMapping("/newProject")
     public ResponseEntity<?> createProject(@Valid @RequestBody NewProjectDTO dto) {
@@ -44,8 +48,16 @@ public class ProjectController {
     }
 
     @GetMapping("/presentations/{id}")
-    public ResponseEntity<?> getPresentaciones(@PathVariable("id") Long idProyecto) {
-        ServiceAnswer serviceAnswer = projectService.getPresentations(idProyecto);
+    public ResponseEntity<?> getPresentationsById(@PathVariable("id") Long projectId) {
+        ServiceAnswer serviceAnswer = projectService.getPresentations(projectId);
+        return createResponseEntity(serviceAnswer);
+    }
+
+    @GetMapping("/presentations")
+    public ResponseEntity<?> getPresentations(@RequestHeader(name = "Authorization") String token) {
+        ArrayList<?> projects = userAuthService.getProjectsFromToken(token);
+        int projectId = (int) projects.get(0);
+        ServiceAnswer serviceAnswer = projectService.getPresentations((long)projectId);
         return createResponseEntity(serviceAnswer);
     }
 

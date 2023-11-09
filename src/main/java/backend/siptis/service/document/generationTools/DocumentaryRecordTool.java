@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DocumentaryRecordTool {
-    private final Path location;
+    private Path location;
 
     public DocumentaryRecordTool(Path location) {
         this.location = location;
@@ -44,9 +44,6 @@ public class DocumentaryRecordTool {
             Paragraph element = new Paragraph(new Phrase(0, "X", font));
             //24.3 cm = 678f
             float degreeLocation = 142;
-            if (!documentaryRecordDto.isDegree()) {
-                degreeLocation = 444;
-            }
             element.setIndentationLeft(degreeLocation);
             cr.addElement(element);
 
@@ -81,13 +78,8 @@ public class DocumentaryRecordTool {
             element.setIndentationLeft(70);
             cr.addElement(element);
 
-            element = new Paragraph(new Phrase(0, documentaryRecordDto.getMention(), font));
-            element.setSpacingBefore(13);
-            element.setIndentationLeft(70);
-            cr.addElement(element);
-
             element = new Paragraph(new Phrase(0, autoIndentNames(lastNames, names), font));
-            element.setSpacingBefore(25);
+            element.setSpacingBefore(38);
             element.setIndentationLeft(84);
             cr.addElement(element);
 
