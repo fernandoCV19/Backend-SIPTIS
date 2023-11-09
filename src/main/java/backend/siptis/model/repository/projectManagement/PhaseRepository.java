@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface PhaseRepository extends JpaRepository<Phase, Long> {
 
-    @Query(value="SELECT * FROM Phase p WHERE p.modality_id = :modalityId ORDER BY p.number_phase", nativeQuery = true)
-    List<Phase> findAllByModalityId(@Param("modalityId")Long idModality);
+    @Query(value = "SELECT * FROM Phase p WHERE p.modality_id = :modalityId ORDER BY p.number_phase", nativeQuery = true)
+    List<Phase> findAllByModalityId(@Param("modalityId") Long idModality);
 }

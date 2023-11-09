@@ -31,7 +31,7 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-        public ServiceAnswer findById(long id) {
+    public ServiceAnswer findById(long id) {
         Optional<Activity> activityOptional = activityRepository.findById(id);
 
         if (!activityOptional.isEmpty()) {
@@ -124,9 +124,10 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public Page<ActivityVO> findByProjectId(Long id, Pageable pageable){
+    public Page<ActivityVO> findByProjectId(Long id, Pageable pageable) {
         return activityRepository.findByProjectId(id, pageable);
     }
+
     @Override
     public ActivityVO entityToVO(Activity activity) {
         ActivityVO activityVO = new ActivityVO();
