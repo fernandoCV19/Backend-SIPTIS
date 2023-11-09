@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -21,9 +22,11 @@ public class SemesterInformation {
     private Long id;
 
     @Column (name = "start_date")
-    private Date startDate;
+    private LocalDate startDate;
     @Column (name = "end_date")
-    private Date endDate;
+    private LocalDate endDate;
+    @Column (name = "period")
+    private String period;
     @Column (name = "in_progress")
     private boolean inProgress;
 

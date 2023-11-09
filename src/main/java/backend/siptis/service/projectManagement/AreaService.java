@@ -12,7 +12,4 @@ public interface AreaService {
 
     ServiceAnswer deleteArea(Long id);
 
-    UserArea getAreaById(int id);
-
-    boolean AreaExistById(int id);
 }

@@ -1,13 +1,19 @@
 package backend.siptis.model.pjo.dto.semester;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Getter
 @Setter
 public class SemesterInformationDTO {
-    private Date startDate;
-    private Date endDate;
+    @NotEmpty(message = "START_DATE_CANNOT_BE_NULL")
+    private LocalDate startDate;
+    @NotEmpty(message = "END_DATE_CANNOT_BE_NULL")
+    private LocalDate endDate;
+    @NotEmpty(message = "PERIOD_CANNOT_BE_NULL")
+    private String period;
 }

@@ -25,7 +25,12 @@ public class ProjectController {
     @PostMapping("/newProject")
     public ResponseEntity<?> createProject(@Valid @RequestBody NewProjectDTO dto){
         ServiceAnswer serviceAnswer = projectService.createProject(dto);
-        return createResponseEntity(serviceAnswer);
+
+        HttpStatus httpStatus = HttpStatus.OK;
+        if(serviceAnswer.getServiceMessage() != ServiceMessage.OK)
+            httpStatus = HttpStatus.BAD_REQUEST;
+        ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
+        return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
 
     @GetMapping("/projectList")
@@ -34,6 +39,11 @@ public class ProjectController {
         return createResponseEntity(serviceAnswer);
     }
 
+    @GetMapping("/information/{id}")
+    public ResponseEntity<?> getProjectInformation(@PathVariable("id") Long idProject){
+        ServiceAnswer answer = projectService.getProjectInfo(idProject);
+        return createResponseEntity(answer);
+    }
 
 
     @GetMapping("/presentations/{id}")
@@ -222,6 +232,46 @@ public class ProjectController {
         if(serviceAnswer.getServiceMessage() != ServiceMessage.OK){
             httpStatus = HttpStatus.BAD_REQUEST;
         }
+        ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
+        return new ResponseEntity<>(controllerAnswer, httpStatus);
+    }
+
+    @GetMapping("/modalityAndCareer/{careerId}")
+    public ResponseEntity<?> getNumberOfProyectsByModalityAndCareer(@PathVariable Long careerId){
+        ServiceAnswer serviceAnswer = projectService.getNumberOfProjectsByModalityAndCareer(careerId);
+        HttpStatus httpStatus = HttpStatus.OK;
+        ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
+        return new ResponseEntity<>(controllerAnswer, httpStatus);
+    }
+
+    @GetMapping("/areaAndCareer/{careerId}")
+    public ResponseEntity<?> getNumberOfProyectsByAreaAndCareer(@PathVariable Long careerId){
+        ServiceAnswer serviceAnswer = projectService.getNumberOfProjectsByAreaAndCareer(careerId);
+        HttpStatus httpStatus = HttpStatus.OK;
+        ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
+        return new ResponseEntity<>(controllerAnswer, httpStatus);
+    }
+
+    @GetMapping("/subareaAndCareer/{careerId}")
+    public ResponseEntity<?> getNumberOfProyectsBySubAreaAndCareer(@PathVariable Long careerId){
+        ServiceAnswer serviceAnswer = projectService.getNumberOfProjectsBySubAreaAndCareer(careerId);
+        HttpStatus httpStatus = HttpStatus.OK;
+        ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
+        return new ResponseEntity<>(controllerAnswer, httpStatus);
+    }
+
+    @GetMapping("/projectsByCareer/{careerId}")
+    public ResponseEntity<?> getNumberProjectsByCareer(@PathVariable Long careerId){
+        ServiceAnswer serviceAnswer = projectService.getNumberProjectsByCareer(careerId);
+        HttpStatus httpStatus = HttpStatus.OK;
+        ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
+        return new ResponseEntity<>(controllerAnswer, httpStatus);
+    }
+
+    @GetMapping("/periodAndCareer/{careerId}")
+    public ResponseEntity<?> getNumberProjectsByPeriodAndCareer(@PathVariable Long careerId){
+        ServiceAnswer serviceAnswer = projectService.getNumberProjectsByPeriodAndCareer(careerId);
+        HttpStatus httpStatus = HttpStatus.OK;
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }

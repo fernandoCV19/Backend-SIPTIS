@@ -20,8 +20,6 @@ public class RefreshToken {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    /*@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "siptis_user_id", referencedColumnName = "id")*/
     @OneToOne
     @JoinColumn(name = "siptis_user_id", referencedColumnName = "id")
     private SiptisUser siptisUser;

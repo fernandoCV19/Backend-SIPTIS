@@ -1,11 +1,12 @@
 package backend.siptis.service.userData;
 
+import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ServiceAnswer;
-import backend.siptis.model.pjo.dto.AdminRegisterDTO;
-import backend.siptis.model.pjo.dto.UserEditPersonalInformationDTO;
-import backend.siptis.model.pjo.dto.UserSelectedAreasDTO;
+import backend.siptis.model.pjo.dto.userDataDTO.UserSelectedAreasDTO;
 import backend.siptis.model.pjo.dto.notifications.LogInDTO;
-import backend.siptis.model.pjo.dto.usersInformationDTO.*;
+import backend.siptis.model.pjo.dto.userDataDTO.*;
+import backend.siptis.model.pjo.dto.userDataDTO.RegisterStudentDTO;
+import backend.siptis.model.pjo.dto.userDataDTO.RegisterUserDTO;
 import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
@@ -14,40 +15,55 @@ import java.util.Optional;
 public interface SiptisUserService {
 
     ServiceAnswer logIn(LogInDTO logInDTO);
-    ServiceAnswer getAllUsers();
 
-    ServiceAnswer getUserById(Long id);
-    ServiceAnswer getUserByEmail(String email);
 
-    ServiceAnswer registerTeacher(RegisterUserDTO dto);
-    ServiceAnswer registerAdmin(AdminRegisterDTO dto);
+    ServiceAnswer registerAdmin(RegisterAdminDTO dto);
     ServiceAnswer registerStudent(RegisterStudentDTO dto);
-    ServiceAnswer registerSpecialUser(RegisterSpecialUserDTO dto);
-
-    ServiceAnswer getStudentList(String search,Pageable pageable);
-    ServiceAnswer getTeacherList(String search,Pageable pageable);
-    ServiceAnswer getSpecialUserList(String search,Pageable pageable);
-    ServiceAnswer getAdminList(Pageable pageable);
-    ServiceAnswer getPotentialTutorsList(String search,Pageable pageable);
+    ServiceAnswer registerUser(RegisterUserDTO dto);
 
     ServiceAnswer deleteUser(Long id);
+
+    Long getIdFromToken(String token);
     ServiceAnswer getUserPersonalInformation(Long id);
+    ServiceAnswer getStudentCareerById(Long id);
+    ServiceAnswer getUserAreasById(Long id);
+
+    ServiceAnswer getUserList(String search,String role, Pageable pageable);
+    ServiceAnswer getNormalUserList(String search, Pageable pageable);
+    ServiceAnswer getAdminUserList(String search, Pageable pageable);
+
+    ServiceAnswer getRolesById(Long id);
+
+    ServiceAnswer updateRoles(Long id, RolesListDTO dto);
+
+    ServiceAnswer getAllUsers();
 
     ServiceAnswer updateToken(String refreshToken);
-    Long getIdFromToken(String token);
 
     ServiceAnswer getPossibleTribunals();
 
     ArrayList<?> getProjectsFromToken(String token);
     ServiceAnswer getTeacherAreasById(Long id);
     ServiceAnswer getTeacherNotSelectedAreasById(Long id);
+    ServiceAnswer userEditPersonalInformation(Long id, UserEditInformationDTO dto);
 
-    ServiceAnswer userEditPersonalInformation(Long id, UserEditPersonalInformationDTO dto);
-
-    ServiceAnswer adminEditUserPersonalInformation(Long id, UniversityUserPersonalInformationDTO dto);
-    ServiceAnswer adminEditSpecialUserPersonalInformation(Long id, GeneralUserPersonalInformationDTO dto);
+    ServiceAnswer adminEditUserInformation(Long id, AdminEditUserInformationDTO dto);
+    ServiceAnswer adminEditStudentInformation(Long id, AdminEditStudentInformationDTO dto);
 
     ServiceAnswer updateAreas(Long id, UserSelectedAreasDTO dto);
+
+    ServiceAnswer existsTokenPassword(String tokenPassword);
+    SiptisUser findByTokenPassword(String tokenPassword);
+
+    ServiceAnswer registerUserAsCareerDirector(Long id, String directorRole);
+    ServiceAnswer getDirectorPersonalInformation(String directorRole);
+    ServiceAnswer removeDirectorRole(String directorRole);
+    boolean existCareerDirector(String directorRole);
+
+    String getCareerDirectorName(String career);
+
+    ServiceAnswer getNumberStudentsCareer(Long careerId);
+    ServiceAnswer getNumberOfStudentsByYearAndCareer(Long careerId);
 
     ServiceAnswer getStudentCareerById(Long id);
 

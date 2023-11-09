@@ -1,18 +1,35 @@
---Roles
-
-INSERT INTO role(id, name) VALUES (1, 'STUDENT');
-INSERT INTO role(id, name) VALUES (2, 'ADMIN');
-INSERT INTO role(id, name) VALUES (3, 'TEACHER');
-INSERT INTO role(id, name) VALUES (4, 'SPECIAL_USER');
-INSERT INTO role(id, name) VALUES (5, 'INF_DIRECTOR');
-INSERT INTO role(id, name) VALUES (6, 'SIS_DIRECTOR');
-
---carreras
-
-INSERT INTO user_career(id, name) VALUES (1, 'INFORMATICA');
-INSERT INTO user_career(id, name) VALUES (2, 'SISTEMAS');
+--Area
+-- INSERT INTO area(id, name) VALUES (1, 'Area Proyecto 1')
+-- INSERT INTO area(id, name) VALUES (2, 'Area Proyecto 2')
+-- INSERT INTO area(id, name) VALUES (3, 'Area Proyecto 3')
 
 --modality
+INSERT INTO modality(id, name) VALUES (1, 'TESIS');
+INSERT INTO modality(id, name) VALUES (2, 'PROYECTO DE GRADO');
+INSERT INTO modality(id, name) VALUES (3, 'ADSCRIPCION');
+INSERT INTO modality(id, name) VALUES (4, 'TRABAJO DIRIGIDO');
 
-INSERT INTO modality(id, name) VALUES (1, 'MODALITY_1');
-INSERT INTO modality(id, name) VALUES (2, 'MODALITY_2');
+--Roles
+INSERT INTO role(id, name) VALUES (1, 'ADMIN');
+INSERT INTO role(id, name) VALUES (2, 'STUDENT');
+INSERT INTO role(id, name) VALUES (3, 'TEACHER');
+INSERT INTO role(id, name) VALUES (4, 'TUTOR');
+INSERT INTO role(id, name) VALUES (5, 'TRIBUNAL');
+INSERT INTO role(id, name) VALUES (6, 'REVIEWER');
+INSERT INTO role(id, name) VALUES (7, 'INF_DIRECTOR');
+INSERT INTO role(id, name) VALUES (8, 'SIS_DIRECTOR');
+
+--subarea
+-- INSERT INTO sub_area(id, name) VALUES (1, 'sub area 1');
+-- INSERT INTO sub_area(id, name) VALUES (2, 'sub area 2');
+
+--user area
+-- INSERT INTO user_area(id, name) VALUES (1, 'area usuario 1');
+-- INSERT INTO user_area(id, name) VALUES (2, 'area usuario 2');
+-- INSERT INTO user_area(id, name) VALUES (3, 'area usuario 3');
+-- INSERT INTO user_area(id, name) VALUES (4, 'area usuario 4');
+
+
+--carreras
+INSERT INTO user_career(id, name) VALUES (1, 'INFORMATICA');
+INSERT INTO user_career(id, name) VALUES (2, 'SISTEMAS');

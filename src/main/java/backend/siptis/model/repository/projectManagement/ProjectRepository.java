@@ -3,9 +3,10 @@ package backend.siptis.model.repository.projectManagement;
 import java.util.List;
 
 import backend.siptis.model.entity.projectManagement.Project;
+import backend.siptis.model.pjo.dto.stadisticsDTO.ProjectByCareerDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import backend.siptis.model.pjo.dto.ProjectInfoDTO;
+import backend.siptis.model.pjo.dto.projectManagement.ProjectInfoDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -63,7 +64,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
             "project.perfil_path AS perfil, modality.name AS modality," +
             " modality.id AS modalityId  " +
             " FROM project project, modality modality " +
-            " WHERE project.modality_id = modality.id ", nativeQuery = true )
+            " WHERE project.modality_id = modality.id ORDER BY project.name ASC", nativeQuery = true )
     List<ProjectInfoDTO> getProjectsList();
 
 
@@ -79,5 +80,61 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     List<Project> findByTribunals_Tribunal_IdAndPhase(Long tribunal, String phase);
 
+
+    @Query(value ="SELECT modality.name AS modality, COUNT(projectId) AS number_projects FROM " +
+            "( SELECT project.id AS projectId, project.modality_id AS modalityId " +
+            " FROM project project, siptis_user_career siptis_user_career," +
+            " project_student project_student " +
+            " WHERE project.id = project_student.project_id AND " +
+            " project_student.user_id =  siptis_user_career.siptisuser_id " +
+            "AND siptis_user_career.career_id = :idCareer GROUP BY (project.id) " +
+            " ) result" +
+            " RIGHT JOIN modality modality ON result.modalityId = modality.id " +
+            " GROUP BY (modality.name) " , nativeQuery = true)
+    List<Object> getNumberOfProjectsByModalityAndCareer(long idCareer);
+
+    @Query(value ="SELECT area.name AS area, COUNT(projectId) AS number_projects FROM " +
+            "( SELECT project.id AS projectId " +
+            " FROM project project, siptis_user_career siptis_user_career," +
+            " project_student project_student " +
+            " WHERE project.id = project_student.project_id AND " +
+            " project_student.user_id =  siptis_user_career.siptisuser_id " +
+            "AND siptis_user_career.career_id = :idCareer GROUP BY (project.id) " +
+            " ) result" +
+            " RIGHT JOIN project_area pa ON pa.project_id = result.projectId " +
+            " RIGHT JOIN area area ON area.id = pa.area_id" +
+            " GROUP BY (area.name) ORDER BY area.name ASC " , nativeQuery = true)
+    List<Object> getNumberOfProjectsByAreasAndCareer(long idCareer);
+
+    @Query(value ="SELECT sub_area.name AS sub_area, COUNT(projectId) AS number_projects FROM " +
+            "( SELECT project.id AS projectId " +
+            " FROM project project, siptis_user_career siptis_user_career," +
+            " project_student project_student " +
+            " WHERE project.id = project_student.project_id AND " +
+            " project_student.user_id =  siptis_user_career.siptisuser_id " +
+            "AND siptis_user_career.career_id = :idCareer GROUP BY (project.id) " +
+            " ) result" +
+            " RIGHT JOIN project_area pa ON pa.project_id = result.projectId " +
+            " RIGHT JOIN sub_area sub_area ON sub_area.id = pa.area_id" +
+            " GROUP BY (sub_area.name) ORDER BY sub_area.name ASC " , nativeQuery = true)
+    List<Object> getNumberOfProjectsBySubAreasAndCareer(long idCareer);
+
+    @Query(value ="SELECT "+
+            "COUNT(DISTINCT CASE WHEN uc.id = :idCareer THEN p.id END) AS careerProjects, " +
+            "COUNT(DISTINCT CASE WHEN uc.id <> :idCareer THEN p.id END) AS otherCareerProjects  " +
+            " FROM project p " +
+            " LEFT JOIN project_student ps ON ps.project_id = p.id " +
+            " LEFT JOIN siptis_user su ON ps.user_id = su.id " +
+            " LEFT JOIN siptis_user_career suc ON suc.siptisuser_id = su.id" +
+            " LEFT JOIN " +
+            " user_career uc ON uc.id = suc.career_id " , nativeQuery = true)
+    List<ProjectByCareerDTO> getProjectsByCareer(long idCareer);
+
+    @Query(value ="SELECT SUBSTRING(project.period, 3, 6) AS projectYear, COUNT(project.id) AS cant " +
+            " FROM project project, project_student ps, siptis_user su, siptis_user_career suc " +
+            " WHERE project.id = ps.project_id AND ps.user_id = su.id " +
+            " AND suc.siptisuser_id = su.id AND suc.career_id = :idCareer "+
+            " GROUP BY (projectYear) " , nativeQuery = true)
+    List<Object> getNumberProjectsByPeriodAndCareer(Long idCareer);
 
 }

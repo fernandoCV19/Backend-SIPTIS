@@ -32,8 +32,6 @@ public class SiptisUser implements UserDetails {
     private String tokenPassword;
 
 
-
-
     @ManyToMany(fetch = FetchType.LAZY, cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE
@@ -65,8 +63,6 @@ public class SiptisUser implements UserDetails {
     @JsonManagedReference
     private Set<UserCareer> career = new HashSet<>();
 
-    /*@OneToOne(mappedBy = "siptisUser")
-    private UserCareer career;*/
 
     @OneToOne(mappedBy = "siptisUser", cascade = CascadeType.ALL, optional = true)
     private UserInformation userInformation;
@@ -128,7 +124,6 @@ public class SiptisUser implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        System.out.println("roles:" + roles.toString());
         for(Role role : roles){
             authorities.add(new SimpleGrantedAuthority(role.getName()));
         }
@@ -149,6 +144,10 @@ public class SiptisUser implements UserDetails {
             ids.add(project.getProject().getId());
         }
         return ids;
+    }
+
+    public String getFullName(){
+        return userInformation.getNames() + " " +userInformation.getLastnames();
     }
 
     @Override

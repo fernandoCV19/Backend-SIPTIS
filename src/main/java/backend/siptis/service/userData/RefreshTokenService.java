@@ -12,15 +12,6 @@ public interface RefreshTokenService {
 
     RefreshToken createRefreshToken(SiptisUser user);
 
-    RefreshToken verifyExpirationDate(RefreshToken refreshToken);
+    boolean verifyValidExpirationDate(RefreshToken refreshToken);
 
-    ServiceAnswer getAllToken();
-
-    ServiceAnswer getToken(Long id);
-    ServiceAnswer getToken(String token);
-
-    Long getTokenUser(String token);
-
-
-    int deleteToken(Long userId);
 }

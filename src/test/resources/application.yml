@@ -1,9 +1,9 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/siptis2
+    url: jdbc:h2:mem:testdb
     username: postgres
-    password: serrano123
-    driver-class-name: org.postgresql.Driver
+    password: 123
+    driver-class-name: org.h2.Driver
   servlet:
     multipart:
     enabled: true
@@ -19,6 +19,14 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ANT_PATH_MATCHER
+
+
+security:
+  jwt:
+    token:
+      secret-key: $2a$12$JTfIoPcl28jeEFio3aHBa.rcqtBUgvykiKYgKxvikVzzxVAt82CEu
+      expire-length: 3600000
+
 
 cloud:
   aws:

@@ -4,6 +4,7 @@ import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.document.DocumentaryRecordDto;
+import backend.siptis.model.pjo.dto.document.LetterGenerationRequestDTO;
 import backend.siptis.model.pjo.dto.document.ReportDocumentDTO;
 import backend.siptis.service.document.DocumentGeneratorServiceImpl;
 import backend.siptis.service.userData.RefreshTokenService;
@@ -12,9 +13,11 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
+
+import java.io.*;
 
 @RestController
 @RequestMapping("/document")
@@ -30,6 +33,12 @@ public class DocumentController {
         Long userId = userAuthService.getIdFromToken(token);
         return createResponseEntity(documentGeneratorService.getAllDocumentsFromUser(userId));
     }
+
+    @GetMapping("/project/{id}")
+    ResponseEntity<?> getDocumentsFromProject(@PathVariable("id") long userId){
+        return createResponseEntity(documentGeneratorService.getAllDocumentsFromProject(userId));
+    }
+
     @DeleteMapping("/{id}")
     ResponseEntity<?> deleteDocument(@PathVariable("id") long documentId){
         return createResponseEntity(documentGeneratorService.deleteDocument(documentId));
@@ -43,16 +52,40 @@ public class DocumentController {
         return createResponseEntity(documentGeneratorService.generateReport(reportDocumentDTO));
     }
 
-    @GetMapping("/create-trbunal-request/{id}")
-    ResponseEntity<?> createTribunalRequest(@PathVariable("id") long id) throws IOException {
-        return createResponseEntity(documentGeneratorService.tribunalRequest(id));
+    @GetMapping("/create-solvency/{id}")
+    ResponseEntity<?> createSolvency(@PathVariable("id") long userId){
+        return createResponseEntity(documentGeneratorService.generateSolvency(userId));
     }
 
-    @GetMapping("/create-trbunal-approval/{id}")
-    ResponseEntity<?> createTribunalApproval(@PathVariable("id") long id) throws IOException {
-        return createResponseEntity(documentGeneratorService.generateTribunalApproval(id));
+    @PostMapping("/create-tribunal-approval")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    ResponseEntity<?> createTribunalApproval(@RequestBody LetterGenerationRequestDTO dto) throws IOException {
+        return createResponseEntity(documentGeneratorService.generateTribunalApproval(dto));
     }
 
+    @PostMapping("/create-teacher-approval-letter")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    ResponseEntity<?> createTeacherTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) throws IOException {
+        return createResponseEntity(documentGeneratorService.teacherTribunalRequest(dto));
+    }
+
+    @PostMapping("/create-tutor-approval-letter")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    ResponseEntity<?> createTutorTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) throws IOException {
+        return createResponseEntity(documentGeneratorService.tutorTribunalRequest(dto));
+    }
+
+    @PostMapping("/create-supervisor-approval-letter")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    ResponseEntity<?> createSupervisorTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) throws IOException {
+        return createResponseEntity(documentGeneratorService.supervisorTribunalRequest(dto));
+    }
+
+    @PostMapping("/create-student-tribunal-request")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    ResponseEntity<?> createStudentTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) throws IOException {
+        return createResponseEntity(documentGeneratorService.studentTribunalRequest(dto));
+    }
 
 
     @GetMapping("/create-solvency")
@@ -73,6 +106,9 @@ public class DocumentController {
 
         if(mensajeServicio == ServiceMessage.NOT_FOUND || mensajeServicio == ServiceMessage.ERROR)
             httpStatus = HttpStatus.NOT_FOUND;
+
+        if(mensajeServicio == ServiceMessage.CANNOT_GENERATE_LETTER || mensajeServicio == ServiceMessage.ERROR)
+            httpStatus = HttpStatus.BAD_REQUEST;
 
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(data).message(mensajeServicio.toString()).build();
         return new ResponseEntity<>(controllerAnswer, httpStatus);

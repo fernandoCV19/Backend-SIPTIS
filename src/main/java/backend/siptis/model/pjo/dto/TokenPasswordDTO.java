@@ -1,5 +1,6 @@
 package backend.siptis.model.pjo.dto;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -7,8 +8,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TokenPasswordDTO {
-    @NonNull
+    @NotEmpty(message = "PASSWORD_CANNOT_BE_NULL")
     private String password;
-    @NonNull
+    @NotEmpty(message = "REPEAT_PASSWORD_CANNOT_BE_NULL")
     private String tokenPassword;
 }

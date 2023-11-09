@@ -1,20 +1,14 @@
 package backend.siptis.service.userData;
 
-import backend.siptis.auth.entity.SiptisUser;
+
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.userData.UserInformation;
-import backend.siptis.model.pjo.dto.*;
-import backend.siptis.model.pjo.dto.notifications.PersonalInformationDTO;
-import backend.siptis.model.pjo.dto.usersInformationDTO.GeneralUserPersonalInformationDTO;
-import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterSpecialUserDTO;
-import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterUserDTO;
-import backend.siptis.model.pjo.dto.usersInformationDTO.UniversityUserPersonalInformationDTO;
+import backend.siptis.model.pjo.dto.userDataDTO.*;
 import backend.siptis.model.repository.userData.UserInformationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class UserInformationImpl implements UserInformationService{
@@ -45,124 +39,69 @@ public class UserInformationImpl implements UserInformationService{
                 .data(findUserInformationById(id)).build();
     }
 
+    @Override
+    public ServiceAnswer registerUserInformation(RegisterStudentDTO dto) {
+        if(existUserByCi(dto.getCi()))
+            return createAnswer(ServiceMessage.CI_ALREADY_EXIST, null);
+        if(existUserByCodSIS(dto.getCodSIS()))
+            return createAnswer(ServiceMessage.COD_SIS_ALREADY_EXIST, null);
+
+        UserInformation userInformation = new UserInformation();
+        userInformation.setNames(dto.getNames());
+        userInformation.setLastnames(dto.getLastnames());
+        userInformation.setCi(dto.getCi());
+        userInformation.setCelNumber(dto.getCelNumber());
+        userInformation.setBirthDate(dto.getBirthDate());
+        userInformation.setCodSIS(dto.getCodSIS());
+
+        return createAnswer(ServiceMessage.OK, userInformation);
+    }
 
     @Override
-    public ServiceAnswer userEditLimitedInformation(UserInformation userInformation, UserEditPersonalInformationDTO dto) {
-        //validaciones
-        ServiceAnswer answer;
+    public ServiceAnswer registerUserInformation(RegisterUserDTO dto) {
+        if(existUserByCi(dto.getCi()))
+            return createAnswer(ServiceMessage.CI_ALREADY_EXIST, null);
+
+        UserInformation userInformation = new UserInformation();
+        userInformation.setNames(dto.getNames());
+        userInformation.setLastnames(dto.getLastnames());
+        userInformation.setCi(dto.getCi());
         userInformation.setCelNumber(dto.getCelNumber());
         userInformation.setBirthDate(dto.getBirthDate());
 
         return createAnswer(ServiceMessage.OK, userInformation);
-
     }
 
     @Override
-    public ServiceAnswer adminEditUserFullInformation(UserInformation userInformation, UniversityUserPersonalInformationDTO dto) {
+    public ServiceAnswer userEditInformation(UserInformation userInformation, UserEditInformationDTO dto) {
+        userInformation.setCelNumber(dto.getCelNumber());
+        userInformation.setBirthDate(dto.getBirthDate());
+        return createAnswer(ServiceMessage.OK, userInformation);
+    }
 
+    @Override
+    public ServiceAnswer adminEditUserInformation(UserInformation userInformation, AdminEditUserInformationDTO dto) {
         if(!userInformation.getCi().equals(dto.getCi()))
             if(existUserByCi(dto.getCi()))
-                return createAnswer(ServiceMessage.ERROR_REGISTER_ACCOUNT_CI, "el documento de identidad ya se encuentra registrado");
+                return createAnswer(ServiceMessage.CI_ALREADY_EXIST, null);
 
+        userInformation.setLastnames(dto.getLastnames());
+        userInformation.setNames(dto.getNames());
+        userInformation.setCi(dto.getCi());
+        userInformation.setCelNumber(dto.getCelNumber());
+        userInformation.setBirthDate(dto.getBirthDate());
+        return createAnswer(ServiceMessage.OK, userInformation);
+    }
+
+
+    @Override
+    public ServiceAnswer adminEditStudentInformation(UserInformation userInformation, AdminEditStudentInformationDTO dto) {
         if(!userInformation.getCodSIS().equals(dto.getCodSIS()))
             if(existUserByCodSIS(dto.getCodSIS()))
-                return createAnswer(ServiceMessage.ERROR_REGISTER_ACCOUNT_CODSIS, "el codigo SIS ya se encuentra registrado");
-
-        userInformation.setLastnames(dto.getLastnames());
-        userInformation.setNames(dto.getNames());
+                return createAnswer(ServiceMessage.COD_SIS_ALREADY_EXIST, null);
         userInformation.setCodSIS(dto.getCodSIS());
-        userInformation.setCi(dto.getCi());
-        userInformation.setCelNumber(dto.getCelNumber());
-        userInformation.setBirthDate(dto.getBirthDate());
-        return createAnswer(ServiceMessage.OK, userInformation);
-    }
+        return adminEditUserInformation(userInformation, dto);
 
-    @Override
-    public ServiceAnswer adminEditUserFullInformation(UserInformation userInformation, GeneralUserPersonalInformationDTO dto) {
-
-        if(!userInformation.getCi().equals(dto.getCi()))
-            if(existUserByCi(dto.getCi()))
-                return createAnswer(ServiceMessage.ERROR_REGISTER_ACCOUNT_CI, "el documento de identidad ya se encuentra registrado");
-
-        userInformation.setLastnames(dto.getLastnames());
-        userInformation.setNames(dto.getNames());
-        userInformation.setCi(dto.getCi());
-        userInformation.setCelNumber(dto.getCelNumber());
-        userInformation.setBirthDate(dto.getBirthDate());
-        return createAnswer(ServiceMessage.OK, userInformation);
-    }
-
-
-
-    @Override
-    public ServiceAnswer searchUserByNameAndRole(String name, Long role_id) {
-        List<UserListItemDTO> users =
-                userInformationRepository.searchUserByNameAndRole(name, role_id);
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
-                .data(users).build();
-
-    }
-
-    @Override
-    public ServiceAnswer getUserPersonalInformation(SiptisUser user) {
-
-        UserInformation information = user.getUserInformation();
-        if(information == null){
-            return ServiceAnswer.builder()
-                    .serviceMessage(ServiceMessage.ERROR).data("No se pudo encontrar la información del usuario solicitado.").build();
-
-        }
-        PersonalInformationDTO personalInfo = new PersonalInformationDTO();
-        personalInfo.setEmail(user.getEmail());
-
-        personalInfo.setNames(information.getNames());
-        personalInfo.setLastnames(information.getLastnames());
-        personalInfo.setCelNumber(information.getCelNumber());
-        personalInfo.setCi(information.getCi());
-        personalInfo.setBirthDate(information.getBirthDate());
-        personalInfo.setCodSIS(information.getCodSIS());
-
-        return ServiceAnswer.builder()
-                .serviceMessage(ServiceMessage.OK).data(personalInfo).build();
-
-    }
-
-    @Override
-    public ServiceAnswer registerUserInformation(RegisterUserDTO dto, SiptisUser user) {
-
-        if(existUserByCi(dto.getCi()))
-            return createAnswer(ServiceMessage.ERROR_REGISTER_ACCOUNT_CI, "el documento de identidad ya se encuentra registrado");
-        if(existUserByCodSIS(dto.getCodSIS()))
-            return createAnswer(ServiceMessage.ERROR_REGISTER_ACCOUNT_CODSIS, "el codigo SIS ya se encuentra registrado");
-
-        UserInformation userInformation = new UserInformation();
-        userInformation.setNames(dto.getNames());
-        userInformation.setLastnames(dto.getLastnames());
-        userInformation.setCi(dto.getCi());
-        userInformation.setCelNumber(dto.getCelNumber());
-        userInformation.setBirthDate(dto.getBirthDate());
-        userInformation.setCodSIS(dto.getCodSIS());
-        userInformation.setSiptisUser(user);
-
-        return createAnswer(ServiceMessage.OK, userInformation);
-    }
-
-
-    @Override
-    public ServiceAnswer registerSpecialUserInformation(RegisterSpecialUserDTO dto, SiptisUser user) {
-
-        if(userInformationRepository.existsByCi(dto.getCi()))
-            return createAnswer(ServiceMessage.ERROR_REGISTER_ACCOUNT_CI, "el documento de identidad ya se encuentra registrado");
-
-        UserInformation userInformation = new UserInformation();
-        userInformation.setNames(dto.getNames());
-        userInformation.setLastnames(dto.getLastnames());
-        userInformation.setCi(dto.getCi());
-        userInformation.setCelNumber(dto.getCelNumber());
-        userInformation.setBirthDate(dto.getBirthDate());
-        userInformation.setSiptisUser(user);
-
-        return createAnswer(ServiceMessage.OK, userInformation);
     }
 
 

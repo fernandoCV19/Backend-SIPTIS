@@ -4,11 +4,7 @@ import backend.siptis.auth.entity.Role;
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.model.entity.userData.UserInformation;
-import backend.siptis.model.pjo.dto.usersInformationDTO.GeneralUserPersonalInformationDTO;
-import backend.siptis.model.pjo.dto.UserEditPersonalInformationDTO;
-import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterSpecialUserDTO;
-import backend.siptis.model.pjo.dto.usersInformationDTO.RegisterUserDTO;
-import backend.siptis.model.pjo.dto.usersInformationDTO.UniversityUserPersonalInformationDTO;
+import backend.siptis.model.pjo.dto.userDataDTO.*;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,20 +19,13 @@ public interface UserInformationService {
 
     ServiceAnswer findById(Long id);
 
+    ServiceAnswer registerUserInformation(RegisterStudentDTO dto);
+    ServiceAnswer registerUserInformation(RegisterUserDTO dto);
 
-    ServiceAnswer userEditLimitedInformation(UserInformation userInformation, UserEditPersonalInformationDTO dto);
+    ServiceAnswer userEditInformation(UserInformation userInformation, UserEditInformationDTO dto);
+    ServiceAnswer adminEditUserInformation(UserInformation userInformation, AdminEditUserInformationDTO dto);
+    ServiceAnswer adminEditStudentInformation(UserInformation userInformation, AdminEditStudentInformationDTO dto);
 
-    ServiceAnswer adminEditUserFullInformation(UserInformation userInformation, GeneralUserPersonalInformationDTO dto);
-    ServiceAnswer adminEditUserFullInformation(UserInformation userInformation, UniversityUserPersonalInformationDTO dto);
-
-
-    ServiceAnswer searchUserByNameAndRole(String name, Long role_id);
-
-    ServiceAnswer getUserPersonalInformation(SiptisUser user);
-
-
-    ServiceAnswer registerUserInformation(RegisterUserDTO dto, SiptisUser user);
-    ServiceAnswer registerSpecialUserInformation(RegisterSpecialUserDTO dto, SiptisUser user);
 
     @AllArgsConstructor
     class UserDetailImp implements UserDetails {
@@ -95,7 +84,6 @@ public interface UserInformationService {
                 rolesResponse.add(rol.getName());
             }
              return siptisUser.getRoles().toString();
-            //return rolesResponse;
         }
 
 
