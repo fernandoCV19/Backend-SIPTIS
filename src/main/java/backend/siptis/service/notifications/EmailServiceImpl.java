@@ -9,10 +9,16 @@ import backend.siptis.model.pjo.dto.TokenPasswordDTO;
 import backend.siptis.model.pjo.vo.ActivityVO;
 import backend.siptis.model.pjo.vo.GeneralActivityVO;
 import backend.siptis.service.userData.SiptisUserService;
+import jakarta.activation.DataHandler;
+import jakarta.activation.DataSource;
+import jakarta.activation.FileDataSource;
 import jakarta.mail.Address;
+import jakarta.mail.BodyPart;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeBodyPart;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMultipart;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -72,7 +78,6 @@ public class EmailServiceImpl implements EmailService {
             }
         }
     }
-
     @Override
     @Scheduled(cron = "0 0 8 * * *")
     public void sendGeneralActivities() throws MessagingException, IOException {
@@ -172,18 +177,43 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public void sendSpecificEmail(String email, String messageNotification) throws MessagingException, IOException {
         MimeMessage message = mailSender.createMimeMessage();
-
         message.setFrom(new InternetAddress("siptis.umss@gmail.com"));
-
         message.setRecipients(MimeMessage.RecipientType.TO, email);
         message.setSubject("Notificacion de SIPTIS");
 
+
+        MimeMultipart multipart = new MimeMultipart("related");
+
+
+        BodyPart messageBodyPart = new MimeBodyPart();
+
         String htmlTemplate = readFile("htmlEmailMessages/notification.html");
 
+        messageBodyPart.setContent(htmlTemplate, "text/html");
 
-        htmlTemplate = htmlTemplate.replace("#message", messageNotification);
 
-        message.setContent(htmlTemplate, "text/html; charset=utf-8");
+        multipart.addBodyPart(messageBodyPart);
+
+
+        messageBodyPart = new MimeBodyPart();
+
+
+        DataSource fds = new FileDataSource("src/main/resources/htmlEmailMessages/img/logo.webp");
+
+
+        messageBodyPart.setDataHandler(new DataHandler(fds));
+
+
+        messageBodyPart.setHeader("Content-ID", "<image>");
+
+
+        multipart.addBodyPart(messageBodyPart);
+
+
+        message.setContent(multipart);
+
+
+
 
         mailSender.send(message);
     }

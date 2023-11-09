@@ -1,6 +1,6 @@
 package backend.siptis.service.editorsAndReviewers;
 
-import backend.siptis.commons.Phase;
+import backend.siptis.commons.PhaseName;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectTribunal;
@@ -113,7 +113,7 @@ public class ProjectTribunalServiceImpl implements ProjectTribunalService {
 
         Project project = query.getProject();
 
-        if (!project.getPhase().equals(Phase.TRIBUNALS_PHASE.toString())) {
+        if (!project.getPhase().equals(PhaseName.TRIBUNALS_PHASE.toString())) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_IS_ON_ANOTHER_PHASE).data(null).build();
         }
 
@@ -166,7 +166,7 @@ public class ProjectTribunalServiceImpl implements ProjectTribunalService {
             }
         }
         if (count > 2) {
-            project.setPhase(Phase.POST_DEFENSE_PHASE.toString());
+            project.setPhase(PhaseName.POST_DEFENSE_PHASE.toString());
         }
         newProjectDefensePoint = newProjectDefensePoint / count;
         project.setTotalDefensePoints(newProjectDefensePoint);
@@ -179,7 +179,7 @@ public class ProjectTribunalServiceImpl implements ProjectTribunalService {
         boolean allTribunalsHaveAccepted = project.getTribunals().stream().allMatch(ProjectTribunal::getAccepted);
 
         if (allTribunalsHaveAccepted) {
-            project.setPhase(Phase.DEFENSE_PHASE.toString());
+            project.setPhase(PhaseName.DEFENSE_PHASE.toString());
             projectRepository.save(project);
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("THE PROJECT HAS CHANGED TO THE PHASE OF DEFENSE").build();
         }

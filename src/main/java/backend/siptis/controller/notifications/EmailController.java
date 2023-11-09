@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/email")
 public class EmailController {
     private final EmailServiceImpl emailServiceImpl;
@@ -26,7 +27,7 @@ public class EmailController {
     @GetMapping("")
     public String sendNotification() throws MessagingException, IOException {
         System.out.print("hola");
-        //emailService.sendEmailFromTemplate("dilanantezana@gmail.com");
+        emailServiceImpl.sendSpecificEmail("dilanantezana@gmail.com", "hola como estas");
 
         return "ok";
     }

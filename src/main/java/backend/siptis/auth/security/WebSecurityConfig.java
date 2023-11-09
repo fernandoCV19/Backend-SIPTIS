@@ -79,7 +79,14 @@ public class WebSecurityConfig {
                         "/supervisor/**",
 
                         "/phase/**",
-                        "/phase/**")
+                        "/phase/**",
+                        "/swagger-ui/**",
+
+                        "/api/auth/**",
+                        "/v3/api-docs/**",
+                        "/configuration/**",
+                        "/swagger*/**",
+                        "/webjars/**")
                 .permitAll()
                 .anyRequest().authenticated()
                 //.and().exceptionHandling().authenticationEntryPoint(authenticationEntryPoint())

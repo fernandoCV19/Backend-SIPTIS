@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import backend.siptis.commons.PhaseName;
 
 import java.util.Collection;
 
@@ -28,6 +29,8 @@ public class Phase {
     private String descriptionPhaseShort;
     @Size(max = 5000)
     private String descriptionPhaseLong;
+
+    private int numberPhase;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "modality_id")

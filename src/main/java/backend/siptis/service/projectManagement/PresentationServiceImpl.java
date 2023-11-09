@@ -1,6 +1,6 @@
 package backend.siptis.service.projectManagement;
 
-import backend.siptis.commons.Phase;
+import backend.siptis.commons.PhaseName;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.projectManagement.Presentation;
@@ -28,7 +28,7 @@ public class PresentationServiceImpl implements PresentationService {
     private final ProjectRepository projectRepository;
 
     @Override
-    public ServiceAnswer createPresentation(Long idProyecto, Phase fase) {
+    public ServiceAnswer createPresentation(Long idProyecto, PhaseName fase) {
         Optional<Presentation> presentacionesNoEntregadas = presentationRepository.findByProjectIdAndReviewed(idProyecto, false);
         if (presentacionesNoEntregadas.isPresent()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PENDING_PRESENTATION).data(null).build();

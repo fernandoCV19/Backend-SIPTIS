@@ -12,7 +12,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: none
     show-sql: true
     properties:
       hibernate:
@@ -22,13 +22,15 @@ spring:
 
   mail:
     host: smtp.gmail.com
-    username: maury.vargasl@gmail.com
-    password: ujlfeavaprrvlmxs
-    properties.mail.smtp:
-      auth: true
-      ssl.enable: true
-      ssl.required: true
-      ssl.trust: smtp.gmail.com
+    port: 587
+    username: siptis.umss@gmail.com
+    password: ftryberzfpkddfvj
+    properties.mail:
+      smtp:
+        auth: true
+        ssl.trust: smtp.gmail.com
+        starttls.enable: true
+      debug: true
 
 
 

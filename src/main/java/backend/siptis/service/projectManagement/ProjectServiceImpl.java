@@ -1,7 +1,7 @@
 package backend.siptis.service.projectManagement;
 
 import backend.siptis.auth.entity.SiptisUser;
-import backend.siptis.commons.Phase;
+import backend.siptis.commons.PhaseName;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectStudent;
@@ -323,7 +323,7 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
         Project projectNotOptional = project.get();
-        projectNotOptional.setPhase(Phase.DEFENSE_PHASE.toString());
+        projectNotOptional.setPhase(PhaseName.DEFENSE_PHASE.toString());
 
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("Tribunals has been assigned to the project").build();
     }
@@ -378,8 +378,8 @@ public class ProjectServiceImpl implements ProjectService {
         if (userOptional.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.USER_ID_DOES_NOT_EXIST).data(null).build();
         }
-        List<Project> projectsToDefend = projectRepository.findByPhaseAndTribunalsTribunalId(Phase.DEFENSE_PHASE.toString(), userId);
-        List<Project> projectsDefended = projectRepository.findByPhaseAndTribunalsTribunalId(Phase.POST_DEFENSE_PHASE.toString(), userId);
+        List<Project> projectsToDefend = projectRepository.findByPhaseAndTribunalsTribunalId(PhaseName.DEFENSE_PHASE.toString(), userId);
+        List<Project> projectsDefended = projectRepository.findByPhaseAndTribunalsTribunalId(PhaseName.POST_DEFENSE_PHASE.toString(), userId);
         InfoToDefensesSectionVO data = new InfoToDefensesSectionVO(projectsToDefend, projectsDefended);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(data).build();
     }
@@ -396,8 +396,8 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ServiceAnswer getProjectsWithoutAndWithDefensePlace() {
         List<Project> projects = projectRepository.findAll();
-        List<ProjectCompleteInfoVO> withDefense = projects.stream().filter(project -> project.getDefense() != null && project.getPhase().equals(Phase.DEFENSE_PHASE.toString())).map(ProjectCompleteInfoVO::new).toList();
-        List<ProjectCompleteInfoVO> withoutDefense = projects.stream().filter(project -> project.getDefense() == null && project.getPhase().equals(Phase.DEFENSE_PHASE.toString())).map(ProjectCompleteInfoVO::new).toList();
+        List<ProjectCompleteInfoVO> withDefense = projects.stream().filter(project -> project.getDefense() != null && project.getPhase().equals(PhaseName.DEFENSE_PHASE.toString())).map(ProjectCompleteInfoVO::new).toList();
+        List<ProjectCompleteInfoVO> withoutDefense = projects.stream().filter(project -> project.getDefense() == null && project.getPhase().equals(PhaseName.DEFENSE_PHASE.toString())).map(ProjectCompleteInfoVO::new).toList();
         ProjectsWithoutAndWithTribunalsVO data = new ProjectsWithoutAndWithTribunalsVO(withDefense, withoutDefense);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(data).build();
     }

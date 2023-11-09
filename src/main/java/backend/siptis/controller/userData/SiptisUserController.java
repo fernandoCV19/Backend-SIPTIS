@@ -9,6 +9,8 @@ import backend.siptis.model.pjo.dto.UserSelectedAreasDTO;
 import backend.siptis.model.pjo.dto.authentication.RefreshTokenDTO;
 import backend.siptis.model.pjo.dto.notifications.LogInDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.*;
+import backend.siptis.model.repository.projectManagement.ProjectRepository;
+import backend.siptis.service.projectManagement.ProjectService;
 import backend.siptis.service.userData.RefreshTokenService;
 import backend.siptis.service.userData.SiptisUserService;
 import jakarta.validation.Valid;
@@ -26,6 +28,8 @@ public class SiptisUserController {
 
     private final SiptisUserService siptisUserService;
     private final RefreshTokenService refreshTokenService;
+    private final ProjectService projectService;
+
 
     @PostMapping("/login")
     public ResponseEntity<?> login(
@@ -312,6 +316,14 @@ public class SiptisUserController {
         Long idL = siptisUserService.getIdFromToken(token);
         ServiceAnswer answer = siptisUserService.getPersonalActivities(idL, pageable);
         return crearResponseEntityRegistrar(answer);
+    }
+
+    @GetMapping("/project")
+    public ResponseEntity<?> getProjectByUserId(@RequestHeader(name = "Authorization") String token) {
+        Long idL = siptisUserService.getIdFromToken(token);
+        Long projectID = siptisUserService.getProjectById(idL);
+        ServiceAnswer projectFound = projectService.getProjectById(projectID);
+        return crearResponseEntityRegistrar(projectFound);
     }
 
     private ResponseEntity<?> crearResponseEntityRegistrar(ServiceAnswer serviceAnswer) {

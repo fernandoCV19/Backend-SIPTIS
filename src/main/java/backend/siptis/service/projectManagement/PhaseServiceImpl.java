@@ -77,7 +77,6 @@ public class PhaseServiceImpl implements PhaseService {
 
     @Override
     public ServiceAnswer findPhaseByUserId(Long idPhase) {
-        ServiceAnswer serviceAnswer = new ServiceAnswer();
         Phase phase = phaseRepository.findById(idPhase).orElse(null);
         if (phase == null) {
             return ServiceAnswer.builder()

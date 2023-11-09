@@ -17,7 +17,9 @@ import backend.siptis.model.pjo.dto.UserSelectedAreasDTO;
 import backend.siptis.model.pjo.dto.authentication.TokenDTO;
 import backend.siptis.model.pjo.dto.notifications.LogInDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.*;
+import backend.siptis.model.pjo.vo.ActivityVO;
 import backend.siptis.model.pjo.vo.userData.TribunalInfoToAssignSection;
+import backend.siptis.model.repository.notifications.ActivityRepository;
 import backend.siptis.model.repository.projectManagement.ProjectRepository;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
 import lombok.RequiredArgsConstructor;
@@ -44,6 +46,7 @@ public class SiptisUserServiceImpl implements SiptisUserService {
     private final UserInformationService userInformationService;
     private final UserAreaService userAreaService;
     private final ProjectRepository projectRepository;
+    private final ActivityRepository activityRepository;
 
 
     @Override
@@ -571,10 +574,11 @@ public class SiptisUserServiceImpl implements SiptisUserService {
     public ServiceAnswer getPersonalActivities(Long id, Pageable pageable) {
         LocalDateTime now = LocalDateTime.now();
         Date actual = new Date(now.getYear() - 1900, now.getMonthValue() - 1, now.getDayOfMonth() - 1);
+        Long idProject = getProjectById(id);
+        Page<ActivityVO> activitiesFromUser = activityRepository.findByProjectId(idProject, pageable);
+        Page<Activity> activities = siptisUserRepository.findAllPersonalActivities(idProject, actual, pageable);
 
-        Page<Activity> activities = siptisUserRepository.findAllPersonalActivities(id, actual, pageable);
-
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(activities).build();
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(activitiesFromUser).build();
     }
 
     /*

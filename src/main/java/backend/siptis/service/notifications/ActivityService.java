@@ -26,4 +26,6 @@ public interface ActivityService {
     ActivityVO entityToVO(Activity activity);
 
     List<Activity> findByProjectId(Long id);
+
+    Page<ActivityVO> findByProjectId(Long id, Pageable pageable);
 }
