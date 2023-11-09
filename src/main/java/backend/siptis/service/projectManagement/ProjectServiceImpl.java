@@ -5,6 +5,9 @@ import backend.siptis.commons.PhaseName;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.editorsAndReviewers.*;
+import backend.siptis.model.entity.editorsAndReviewers.ProjectStudent;
+import backend.siptis.model.entity.editorsAndReviewers.ProjectTribunal;
+import backend.siptis.model.entity.editorsAndReviewers.ProjectTutor;
 import backend.siptis.model.entity.projectManagement.*;
 import backend.siptis.model.entity.userData.Schedule;
 import backend.siptis.model.pjo.dto.projectManagement.NewProjectDTO;
@@ -14,6 +17,7 @@ import backend.siptis.model.repository.editorsAndReviewers.*;
 import backend.siptis.model.repository.projectManagement.*;
 import backend.siptis.model.repository.semester.SemesterInformationRepository;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
+import backend.siptis.service.semester.SemesterInformationService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -45,6 +49,7 @@ public class ProjectServiceImpl implements ProjectService {
     private final DefenseRepository defenseRepository;
     private final SemesterInformationRepository semesterInformationRepository;
 
+    private final SemesterInformationService semesterInformationService;
 
     @Override
     public ServiceAnswer createProject(NewProjectDTO dto) {

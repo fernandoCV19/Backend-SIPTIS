@@ -5,6 +5,9 @@ import backend.siptis.commons.DocumentType;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.editorsAndReviewers.*;
+import backend.siptis.model.entity.editorsAndReviewers.ProjectStudent;
+import backend.siptis.model.entity.editorsAndReviewers.ProjectTeacher;
+import backend.siptis.model.entity.editorsAndReviewers.ProjectTribunal;
 import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.entity.userData.Document;
 import backend.siptis.model.entity.userData.UserCareer;
@@ -13,6 +16,8 @@ import backend.siptis.model.pjo.dto.document.DocumentaryRecordDto;
 import backend.siptis.model.pjo.dto.document.LetterGenerationRequestDTO;
 import backend.siptis.model.pjo.dto.document.ReportDocumentDTO;
 import backend.siptis.model.repository.editorsAndReviewers.*;
+import backend.siptis.model.pjo.dto.document.ReportDocumentDTO;
+import backend.siptis.model.repository.projectManagement.PhaseRepository;
 import backend.siptis.model.repository.projectManagement.ProjectRepository;
 import backend.siptis.model.repository.userData.DocumentRepository;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
@@ -108,9 +113,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
     }
 
     @Override
-    public ServiceAnswer generateReport(ReportDocumentDTO reportDocumentDTO) {
-        Long idProject = reportDocumentDTO.getProjectId();
-        Long userId = reportDocumentDTO.getUserId();
+    public ServiceAnswer generateReport(ReportDocumentDTO reportDocumentDTO, Long idUser, Long idProject) {
         Optional<Project> optionalProject = projectRepository.findById(idProject);
         if (optionalProject.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
@@ -121,8 +124,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
         String teacherCompleteName = userInformationRepository.getTeachersNames(idProject).get(0);
         //String tutorCompleteName = userInformationRepository.getTutorsNames(idProject).get(0);
         String title = project.getName();
-        int reportNumber = (project.getReportIndex() + 1);
-        Optional<SiptisUser> oUser = siptisUserRepository.findOneById(userId);
+        Optional<SiptisUser> oUser = siptisUserRepository.findOneById(idUser);
 
         if (oUser.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
@@ -130,6 +132,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
         SiptisUser user = oUser.get();
         String postulant = user.getUserInformation().getNames() + ' ' + user.getUserInformation().getLastnames();
         ReportTool reportTool = new ReportTool();
+        Integer reportNumber = reportDocumentDTO.getReportNumber();
         String filename = reportTool.generate(postulant, Integer.toString(reportNumber), title, tutors, teacherCompleteName, reportDocumentDTO.getDescription());
         String key = nube.uploadDocumentToCloud(filename);
 
@@ -140,7 +143,6 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
         document.setSiptisUser(user);
         documentRepository.save(document);
 
-        project.setReportIndex(reportNumber);
         projectRepository.save(project);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
     }
@@ -148,6 +150,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
     @Override
     public ServiceAnswer generateSolvency(long idUser) {
         Optional<SiptisUser> oUser = siptisUserRepository.findOneById(idUser);
+
         if (oUser.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
         }
@@ -184,9 +187,8 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
     }
 
     @Override
-    public ServiceAnswer generateDocumentaryRecord(DocumentaryRecordDto documentaryRecordDto) {
-        Long idProject = documentaryRecordDto.getProjectId();
-        Long userId = documentaryRecordDto.getUserId();
+    public ServiceAnswer generateDocumentaryRecord(DocumentaryRecordDto documentaryRecordDto, Long idUser, Long idProject) {
+
         Optional<Project> optionalProject = projectRepository.findById(idProject);
         if (optionalProject.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
@@ -196,7 +198,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
         List<String> tutors = userInformationRepository.getTutorsNames(idProject);
         String title = project.getName();
 
-        Optional<SiptisUser> oUser = siptisUserRepository.findOneById(userId);
+        Optional<SiptisUser> oUser = siptisUserRepository.findOneById(idUser);
 
         if (oUser.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
@@ -429,6 +431,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
 
         SiptisUser user = tribunal.getTribunal();
         String tribunalName = user.getFullName();
+        for (ProjectTribunal tribunal : tribunals) {
 
         for (ProjectStudent projectStudent : students) {
             Set<UserCareer> career = projectStudent.getStudent().getCareer();

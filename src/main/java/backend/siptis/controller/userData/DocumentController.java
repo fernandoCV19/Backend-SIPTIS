@@ -15,6 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/document")
@@ -24,6 +25,7 @@ public class DocumentController {
 
     private final DocumentGeneratorServiceImpl documentGeneratorService;
     private final SiptisUserService userAuthService;
+
 
     @GetMapping("/")
     ResponseEntity<?> getDocumentsFromUser(@RequestHeader(name = "Authorization") String token) {
@@ -45,12 +47,14 @@ public class DocumentController {
     @PostMapping("/create-report")
     ResponseEntity<?> createReport(@RequestHeader(name = "Authorization") String token, @RequestBody ReportDocumentDTO reportDocumentDTO) {
         Long userId = userAuthService.getIdFromToken(token);
-
-        return createResponseEntity(documentGeneratorService.generateReport(reportDocumentDTO));
+        ArrayList<?> projects = userAuthService.getProjectsFromToken(token);
+        int projectId = (int) projects.get(0);
+        return createResponseEntity(documentGeneratorService.generateReport(reportDocumentDTO, userId, (long) projectId));
     }
 
-    @GetMapping("/create-solvency/{id}")
-    ResponseEntity<?> createSolvency(@PathVariable("id") long userId) {
+    @GetMapping("/create-solvency")
+    ResponseEntity<?> createSolvency(@RequestHeader(name = "Authorization") String token) {
+        Long userId = userAuthService.getIdFromToken(token);
         return createResponseEntity(documentGeneratorService.generateSolvency(userId));
     }
 
@@ -66,6 +70,14 @@ public class DocumentController {
         return createResponseEntity(documentGeneratorService.teacherTribunalRequest(dto));
     }
 
+    @PostMapping("/create-documentary-record")
+    ResponseEntity<?> createDocumentaryRecord(@RequestHeader(name = "Authorization") String token, @RequestBody DocumentaryRecordDto documentaryRecordDto) {
+        Long userId = userAuthService.getIdFromToken(token);
+        ArrayList<?> projects = userAuthService.getProjectsFromToken(token);
+        int projectId = (int) projects.get(0);
+        return createResponseEntity(documentGeneratorService.generateDocumentaryRecord(documentaryRecordDto, userId, (long) projectId));
+    }
+
     @PostMapping("/create-tutor-approval-letter")
     @PreAuthorize("hasAuthority('ADMIN')")
     ResponseEntity<?> createTutorTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) throws IOException {
@@ -76,24 +88,6 @@ public class DocumentController {
     @PreAuthorize("hasAuthority('ADMIN')")
     ResponseEntity<?> createSupervisorTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) throws IOException {
         return createResponseEntity(documentGeneratorService.supervisorTribunalRequest(dto));
-    }
-
-    @PostMapping("/create-student-tribunal-request")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    ResponseEntity<?> createStudentTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) throws IOException {
-        return createResponseEntity(documentGeneratorService.studentTribunalRequest(dto));
-    }
-
-
-    @GetMapping("/create-solvency")
-    ResponseEntity<?> createSolvency(@RequestHeader(name = "Authorization") String token) {
-        Long userId = userAuthService.getIdFromToken(token);
-        return createResponseEntity(documentGeneratorService.generateSolvency(userId));
-    }
-
-    @PostMapping("/create-documentary-record")
-    ResponseEntity<?> createDocumentaryRecord(@RequestBody DocumentaryRecordDto documentaryRecordDto) {
-        return createResponseEntity(documentGeneratorService.generateDocumentaryRecord(documentaryRecordDto));
     }
 
     private ResponseEntity<?> createResponseEntity(ServiceAnswer serviceAnswer) {

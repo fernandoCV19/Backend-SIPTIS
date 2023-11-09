@@ -3,6 +3,8 @@ package backend.siptis.controller.projectManagement;
 import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
+import backend.siptis.model.pjo.dto.projectManagement.AssignTribunalsDTO;
+import backend.siptis.model.pjo.dto.projectManagement.DefenseDTO;
 import backend.siptis.model.pjo.dto.projectManagement.NewProjectDTO;
 import backend.siptis.service.projectManagement.ProjectService;
 import jakarta.validation.Valid;
@@ -42,7 +44,6 @@ public class ProjectController {
         ServiceAnswer answer = projectService.getProjectInfo(idProject);
         return createResponseEntity(answer);
     }
-
 
     @GetMapping("/presentations/{id}")
     public ResponseEntity<?> getPresentaciones(@PathVariable("id") Long idProyecto) {

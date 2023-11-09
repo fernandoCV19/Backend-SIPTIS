@@ -29,9 +29,6 @@ public class Project {
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
-    @Column(name = "report_index", columnDefinition = "integer default 0")
-    private Integer reportIndex = 0;
-
     private String name;
 
     @Column(name = "perfil_path")
@@ -43,10 +40,11 @@ public class Project {
     @Column(name = "project_path")
     private String projectPath;
 
+    @Column(name = "phase")
+    private String phase;
+
     @Column(name = "period")
     private String period;
-
-    private String phase;
 
     @OneToOne(mappedBy = "project", cascade = CascadeType.ALL, optional = true)
     @JoinColumn(name = "defense_id")
