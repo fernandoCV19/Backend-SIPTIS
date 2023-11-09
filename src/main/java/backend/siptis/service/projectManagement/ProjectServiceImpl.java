@@ -5,9 +5,6 @@ import backend.siptis.commons.PhaseName;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.editorsAndReviewers.*;
-import backend.siptis.model.entity.editorsAndReviewers.ProjectStudent;
-import backend.siptis.model.entity.editorsAndReviewers.ProjectTribunal;
-import backend.siptis.model.entity.editorsAndReviewers.ProjectTutor;
 import backend.siptis.model.entity.projectManagement.*;
 import backend.siptis.model.entity.userData.Schedule;
 import backend.siptis.model.pjo.dto.projectManagement.NewProjectDTO;
@@ -364,7 +361,10 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ServiceAnswer getProjectById(Long id) {
-        return null;
+        Optional<Project> optionalProject = projectRepository.findById(id);
+        if (optionalProject.isEmpty())
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(optionalProject.get()).build();
     }
 
     @Override

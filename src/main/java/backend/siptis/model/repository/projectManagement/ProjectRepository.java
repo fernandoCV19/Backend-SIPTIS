@@ -3,7 +3,6 @@ package backend.siptis.model.repository.projectManagement;
 import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.pjo.dto.projectManagement.ProjectInfoDTO;
 import backend.siptis.model.pjo.dto.stadisticsDTO.ProjectByCareerDTO;
-import backend.siptis.model.pjo.dto.ProjectInfoDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -65,7 +64,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
             "project.perfil_path AS perfil, modality.name AS modality," +
             " modality.id AS modalityId  " +
             " FROM project project, modality modality " +
-            " WHERE project.modality_id = modality.id ", nativeQuery = true )
+            " WHERE project.modality_id = modality.id ", nativeQuery = true)
     List<ProjectInfoDTO> getProjectsList();
 
 

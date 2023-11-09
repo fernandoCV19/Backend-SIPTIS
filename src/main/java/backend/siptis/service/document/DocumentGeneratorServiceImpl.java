@@ -5,9 +5,6 @@ import backend.siptis.commons.DocumentType;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.editorsAndReviewers.*;
-import backend.siptis.model.entity.editorsAndReviewers.ProjectStudent;
-import backend.siptis.model.entity.editorsAndReviewers.ProjectTeacher;
-import backend.siptis.model.entity.editorsAndReviewers.ProjectTribunal;
 import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.entity.userData.Document;
 import backend.siptis.model.entity.userData.UserCareer;
@@ -16,8 +13,6 @@ import backend.siptis.model.pjo.dto.document.DocumentaryRecordDto;
 import backend.siptis.model.pjo.dto.document.LetterGenerationRequestDTO;
 import backend.siptis.model.pjo.dto.document.ReportDocumentDTO;
 import backend.siptis.model.repository.editorsAndReviewers.*;
-import backend.siptis.model.pjo.dto.document.ReportDocumentDTO;
-import backend.siptis.model.repository.projectManagement.PhaseRepository;
 import backend.siptis.model.repository.projectManagement.ProjectRepository;
 import backend.siptis.model.repository.userData.DocumentRepository;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
@@ -29,7 +24,6 @@ import backend.siptis.service.document.generationTools.ReportTool;
 import backend.siptis.service.document.generationTools.SolvencyTool;
 import backend.siptis.service.userData.SiptisUserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
@@ -42,28 +36,17 @@ import java.util.stream.Stream;
 @Service
 @RequiredArgsConstructor
 public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
-    @Autowired
-    private CloudManagementService nube;
-    @Autowired
-    private SiptisUserRepository siptisUserRepository;
-    @Autowired
-    private SiptisUserService siptisUserService;
-    @Autowired
-    private UserInformationRepository userInformationRepository;
-    @Autowired
-    private ProjectRepository projectRepository;
-    @Autowired
-    private DocumentRepository documentRepository;
-    @Autowired
-    private ProjectTribunalRepository projectTribunalRepository;
-    @Autowired
-    private ProjectTeacherRepository projectTeacherRepository;
-    @Autowired
-    private ProjectTutorRepository projectTutorRepository;
-    @Autowired
-    private ProjectSupervisorRepository projectSupervisorRepository;
-    @Autowired
-    private ProjectStudentRepository projectStudentRepository;
+    private final CloudManagementService nube;
+    private final SiptisUserRepository siptisUserRepository;
+    private final SiptisUserService siptisUserService;
+    private final UserInformationRepository userInformationRepository;
+    private final ProjectRepository projectRepository;
+    private final DocumentRepository documentRepository;
+    private final ProjectTribunalRepository projectTribunalRepository;
+    private final ProjectTeacherRepository projectTeacherRepository;
+    private final ProjectTutorRepository projectTutorRepository;
+    private final ProjectSupervisorRepository projectSupervisorRepository;
+    private final ProjectStudentRepository projectStudentRepository;
 
     @Override
     public ServiceAnswer getAllDocumentsFromUser(long idUser) {
@@ -431,7 +414,6 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
 
         SiptisUser user = tribunal.getTribunal();
         String tribunalName = user.getFullName();
-        for (ProjectTribunal tribunal : tribunals) {
 
         for (ProjectStudent projectStudent : students) {
             Set<UserCareer> career = projectStudent.getStudent().getCareer();
@@ -453,13 +435,11 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
             }
             document.setPath(key);
             document.setType(DocumentType.LETTER.toString());
-            document.setDescription("Carta de aprobación de Tribunal encargado del proyecto.");
+            document.setDescription("Carta de aprobaciÃ³n de Tribunal encargado del proyecto.");
             document.setSiptisUser(projectStudent.getStudent());
             documentRepository.save(document);
         }
 
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
     }
-
-
 }

@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DocumentaryRecordTool {
-    private Path location;
+    private final Path location;
 
     public DocumentaryRecordTool(Path location) {
         this.location = location;
