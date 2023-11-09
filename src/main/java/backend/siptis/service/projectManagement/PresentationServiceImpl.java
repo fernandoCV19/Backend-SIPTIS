@@ -23,21 +23,21 @@ import java.util.Optional;
 @Transactional
 public class PresentationServiceImpl implements PresentationService {
 
-    private final CloudManagementService nube;
+    private final CloudManagementService cloudManagementService;
     private final PresentationRepository presentationRepository;
     private final ProjectRepository projectRepository;
 
     @Override
-    public ServiceAnswer createPresentation(Long idProyecto, PhaseName fase) {
-        Optional<Presentation> presentacionesNoEntregadas = presentationRepository.findByProjectIdAndReviewed(idProyecto, false);
-        if (presentacionesNoEntregadas.isPresent()) {
+    public ServiceAnswer createPresentation(Long projectId, PhaseName fase) {
+        Optional<Presentation> pendingPresentation = presentationRepository.findByProjectIdAndReviewed(projectId, false);
+        if (pendingPresentation.isPresent()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PENDING_PRESENTATION).data(null).build();
         }
-        Optional<Project> oproyectoGrado = projectRepository.findById(idProyecto);
-        if (oproyectoGrado.isEmpty()) {
+        Optional<Project> optionalProject = projectRepository.findById(projectId);
+        if (optionalProject.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
         }
-        Project project = oproyectoGrado.get();
+        Project project = optionalProject.get();
         Presentation presentation = new Presentation();
 
         presentation.setPhase(fase.toString());
@@ -68,17 +68,17 @@ public class PresentationServiceImpl implements PresentationService {
     }
 
     @Override
-    public ServiceAnswer attachFile(Long idPresentacion, MultipartFile file, String path) {
+    public ServiceAnswer attachFile(Long presentationId, MultipartFile file, String path) {
         path = correctFileContext(path);
         if (path.equals("Unknown")) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
         }
-        Optional<Presentation> opresentacion = presentationRepository.findById(idPresentacion);
-        if (opresentacion.isEmpty()) {
+        Optional<Presentation> optionalPresentation = presentationRepository.findById(presentationId);
+        if (optionalPresentation.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
         }
-        Presentation presentation = opresentacion.get();
-        String key = nube.putObject(file, path);
+        Presentation presentation = optionalPresentation.get();
+        String key = cloudManagementService.putObject(file, path);
         if (path.equals("Libro-Azul/")) {
             presentation.setBlueBookPath(key);
         }
@@ -91,16 +91,16 @@ public class PresentationServiceImpl implements PresentationService {
     }
 
     @Override
-    public ServiceAnswer removeFile(Long idPresentacion, String path) {
+    public ServiceAnswer removeFile(Long presentationId, String path) {
         path = correctFileContext(path);
         if (path.equals("Unknown")) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
         }
-        Optional<Presentation> opresentacion = presentationRepository.findById(idPresentacion);
-        if (opresentacion.isEmpty()) {
+        Optional<Presentation> optionalPresentation = presentationRepository.findById(presentationId);
+        if (optionalPresentation.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
         }
-        Presentation presentation = opresentacion.get();
+        Presentation presentation = optionalPresentation.get();
         String key = "";
         if (path.equals("Libro-Azul/")) {
             key = presentation.getBlueBookPath();
@@ -116,22 +116,22 @@ public class PresentationServiceImpl implements PresentationService {
             }
             presentation.setProjectPath(null);
         }
-        nube.deleteObject(key);
+        cloudManagementService.deleteObject(key);
         presentationRepository.saveAndFlush(presentation);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.CLOUD_OPERATION_COMPLETE).data(presentation).build();
     }
 
     @Override
-    public ServiceAnswer delete(Long idPresentacion) {
-        Optional<Presentation> presentacion = presentationRepository.findById(idPresentacion);
-        if (presentacion.isPresent()) {
-            String blue = presentacion.get().getBlueBookPath();
-            String project = presentacion.get().getProjectPath();
+    public ServiceAnswer delete(Long presentationId) {
+        Optional<Presentation> optionalPresentation = presentationRepository.findById(presentationId);
+        if (optionalPresentation.isPresent()) {
+            String blue = optionalPresentation.get().getBlueBookPath();
+            String project = optionalPresentation.get().getProjectPath();
             if (blue != null)
-                nube.deleteObject(blue);
+                cloudManagementService.deleteObject(blue);
             if (project != null)
-                nube.deleteObject(project);
-            presentationRepository.deleteById(idPresentacion);
+                cloudManagementService.deleteObject(project);
+            presentationRepository.deleteById(presentationId);
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PRESENTATION_DELETED).data(null).build();
         }
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
