@@ -2,6 +2,7 @@ package backend.siptis.service.editorsAndReviewers;
 
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.model.pjo.dto.editorsAndReviewers.ReviewADefenseDTO;
+import backend.siptis.model.pjo.dto.projectManagement.AssignTribunalsDTO;
 
 public interface ProjectTribunalService {
 
@@ -20,4 +21,6 @@ public interface ProjectTribunalService {
     ServiceAnswer reviewADefense(ReviewADefenseDTO reviewADefenseDTO);
 
     ServiceAnswer removeTribunals(Long projectId);
+
+    ServiceAnswer assignTribunals(AssignTribunalsDTO assignTribunalsDTO);
 }

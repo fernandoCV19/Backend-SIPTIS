@@ -172,19 +172,8 @@ public class ProjectController {
     }
 
     @GetMapping("/getInvolvedPeople/{projectId}")
-    public ResponseEntity<?> getShortInfo(@PathVariable("projectId") Long projectId){
+    public ResponseEntity<?> getInvolvedPeople(@PathVariable("projectId") Long projectId){
         ServiceAnswer serviceAnswer = projectService.getInvolvedPeople(projectId);
-        HttpStatus httpStatus = HttpStatus.OK;
-        if(serviceAnswer.getServiceMessage() != ServiceMessage.OK){
-            httpStatus = HttpStatus.BAD_REQUEST;
-        }
-        ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
-        return new ResponseEntity<>(controllerAnswer, httpStatus);
-    }
-
-    @PostMapping("/assignTribunals")
-    public ResponseEntity<?> assignTribunal(@RequestBody AssignTribunalsDTO assignTribunalsDTO){
-        ServiceAnswer serviceAnswer = projectService.assignTribunals(assignTribunalsDTO);
         HttpStatus httpStatus = HttpStatus.OK;
         if(serviceAnswer.getServiceMessage() != ServiceMessage.OK){
             httpStatus = HttpStatus.BAD_REQUEST;
@@ -203,8 +192,6 @@ public class ProjectController {
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
-
-
 
     @GetMapping("/defenses/{tribunalID}")
     public ResponseEntity<?> getProjectsToDefenseOrDefended(@PathVariable("tribunalID") Long tribunalID){

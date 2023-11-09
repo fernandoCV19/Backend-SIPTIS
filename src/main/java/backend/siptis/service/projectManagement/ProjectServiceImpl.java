@@ -7,8 +7,6 @@ import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectStudent;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectTribunal;
 import backend.siptis.model.entity.userData.Schedule;
-import backend.siptis.model.pjo.dto.projectManagement.AssignTribunalsDTO;
-import backend.siptis.model.pjo.dto.projectManagement.DefenseDTO;
 import backend.siptis.model.pjo.dto.projectManagement.NewProjectDTO;
 import backend.siptis.model.pjo.vo.projectManagement.*;
 import backend.siptis.model.repository.editorsAndReviewers.ModalityRepository;
@@ -30,7 +28,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -298,36 +295,6 @@ public class ProjectServiceImpl implements ProjectService {
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(new InvolvedPeopleVO(project)).build();
     }
 
-    @Override
-    public ServiceAnswer assignTribunals(AssignTribunalsDTO assignTribunalsDTO) {
-        List<Long> tribunalsIds = assignTribunalsDTO.getTribunalsIds();
-        Long projectId = assignTribunalsDTO.getProjectId();
-        List<SiptisUser> tribunals = new ArrayList<>();
-        for(Long id: tribunalsIds){
-            Optional<SiptisUser> user = siptisUserRepository.findById(id);
-            if(user.isEmpty()){
-                return ServiceAnswer.builder().serviceMessage(ServiceMessage.USER_ID_DOES_NOT_EXIST).data(id).build();
-            }
-            if(user.get().getRoles().stream().noneMatch(role -> role.getName().equals("TRIBUNAL"))){
-                return ServiceAnswer.builder().serviceMessage(ServiceMessage.USER_IS_NOT_A_TRIBUNAL).data(id).build();
-            }
-            tribunals.add(user.get());
-        }
-        Optional<Project> project = projectRepository.findById(projectId);
-        if(project.isEmpty()){
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data(null).build();
-        }
-
-        for(SiptisUser user: tribunals){
-            ProjectTribunal projectTribunal = new ProjectTribunal(user, project.get());
-            projectTribunalRepository.save(projectTribunal);
-        }
-
-        Project projectNotOptional = project.get();
-        projectNotOptional.setPhase(Phase.DEFENSE_PHASE.toString());
-
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("Tribunals has been assigned to the project").build();
-    }
 
     @Override
     public ServiceAnswer getSchedulesInfoToAssignADefense(Long projectId) {
@@ -372,8 +339,16 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ServiceAnswer getProjectsWithoutAndWithTribunals() {
         List<Project> projects = projectRepository.findAll();
-        List<ProjectCompleteInfoVO> withTribunals = projects.stream().filter(project -> !project.getTribunals().isEmpty()).map(ProjectCompleteInfoVO::new).toList();
-        List<ProjectCompleteInfoVO> withoutTribunals = projects.stream().filter(project -> project.getTribunals().isEmpty()).map(ProjectCompleteInfoVO::new).toList();
+
+        List<ProjectCompleteInfoVO> withTribunals = projects
+                .stream()
+                .filter(project -> !project.getTribunals().isEmpty() && project.getTotalDefensePoints() == null)
+                .map(ProjectCompleteInfoVO::new).toList();
+
+        List<ProjectCompleteInfoVO> withoutTribunals = projects
+                .stream().filter(project -> project.getPhase().equals(Phase.ASSIGN_TRIBUNALS_PHASE.toString()))
+                .map(ProjectCompleteInfoVO::new).toList();
+
         ProjectsWithoutAndWithTribunalsVO data = new ProjectsWithoutAndWithTribunalsVO(withTribunals, withoutTribunals);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(data).build();
     }
@@ -381,8 +356,16 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ServiceAnswer getProjectsWithoutAndWithDefensePlace() {
         List<Project> projects = projectRepository.findAll();
-        List<ProjectCompleteInfoVO> withDefense = projects.stream().filter(project ->  project.getDefense() != null && project.getPhase().equals(Phase.DEFENSE_PHASE.toString())).map(ProjectCompleteInfoVO::new).toList();
-        List<ProjectCompleteInfoVO> withoutDefense = projects.stream().filter(project ->  project.getDefense() == null && project.getPhase().equals(Phase.DEFENSE_PHASE.toString())).map(ProjectCompleteInfoVO::new).toList();
+        List<ProjectCompleteInfoVO> withDefense = projects
+                .stream()
+                .filter(project ->  project.getDefense() != null && project.getPhase().equals(Phase.DEFENSE_PHASE.toString()) && project.getTotalDefensePoints() == null)
+                .map(ProjectCompleteInfoVO::new)
+                .toList();
+        List<ProjectCompleteInfoVO> withoutDefense = projects
+                .stream()
+                .filter(project ->  project.getDefense() == null && project.getPhase().equals(Phase.DEFENSE_PHASE.toString()))
+                .map(ProjectCompleteInfoVO::new)
+                .toList();
         ProjectsWithoutAndWithoutDefensePlaceVO data = new ProjectsWithoutAndWithoutDefensePlaceVO(withDefense, withoutDefense);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(data).build();
     }

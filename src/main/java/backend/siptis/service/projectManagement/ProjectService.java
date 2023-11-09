@@ -36,8 +36,6 @@ public interface ProjectService {
 
     ServiceAnswer getInvolvedPeople(Long idProject);
 
-    ServiceAnswer assignTribunals(AssignTribunalsDTO assignTribunalsDTO);
-
     ServiceAnswer getSchedulesInfoToAssignADefense(Long projectId);
 
     ServiceAnswer getProjectsToDefenseOrDefended(Long userId);

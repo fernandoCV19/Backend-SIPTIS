@@ -20,7 +20,7 @@ public class DefenseController {
 
     @GetMapping("/defensesByMonth/{month}")
     public ResponseEntity<?> getPlaceReservationsByMonth(@PathVariable("month") Integer month){
-        ServiceAnswer serviceAnswer = defenseService.getPlaceReservationsAndDirectorByMonth(month);
+        ServiceAnswer serviceAnswer = defenseService.getDefenseByMonth(month);
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         if(serviceAnswer.getServiceMessage().equals(ServiceMessage.OK)){
             httpStatus = HttpStatus.OK;

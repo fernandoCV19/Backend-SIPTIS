@@ -112,7 +112,7 @@ public class ProjectTeacherServiceImpl implements ProjectTeacherService {
                 project.getTeachers().stream().allMatch(ProjectTeacher::getAccepted) && project.getTutors().stream().allMatch(ProjectTutor::getAccepted);
 
         if(allReviewersHaveAccepted){
-            project.setPhase(Phase.TRIBUNALS_PHASE.toString());
+            project.setPhase(Phase.ASSIGN_TRIBUNALS_PHASE.toString());
             projectRepository.save(project);
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("THE PROJECT HAS CHANGED TO THE PHASE OF TRIBUNALS").build();
         }

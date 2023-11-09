@@ -11,7 +11,9 @@ import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.entity.userData.UserArea;
 import backend.siptis.model.entity.userData.UserCareer;
 import backend.siptis.model.entity.userData.UserInformation;
-import backend.siptis.model.pjo.dto.*;
+import backend.siptis.model.pjo.dto.AdminRegisterDTO;
+import backend.siptis.model.pjo.dto.UserEditPersonalInformationDTO;
+import backend.siptis.model.pjo.dto.UserSelectedAreasDTO;
 import backend.siptis.model.pjo.dto.authentication.TokenDTO;
 import backend.siptis.model.pjo.dto.notifications.LogInDTO;
 import backend.siptis.model.pjo.dto.usersInformationDTO.*;
@@ -29,7 +31,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +44,6 @@ public class SiptisUserServiceImpl implements SiptisUserService {
     private final UserInformationService userInformationService;
     private final UserAreaService userAreaService;
     private final ProjectRepository projectRepository;
-
 
     @Override
     public ServiceAnswer getPossibleTribunals() {
@@ -575,111 +575,5 @@ public class SiptisUserServiceImpl implements SiptisUserService {
 
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(activities).build();
     }
-
-    /*
-    private final SiptisUserRepository siptisUserRepository;
-    private final RoleService roleService;
-    private final UserCareerService userCareerService;
-    private final UserInformationService userInformationService;
-    private final RefreshTokenService refreshTokenService;
-
-
-    @Override
-    public ServiceAnswer obtenerProyectosSupervisorParaMenuPrincipalPorIdUsuario(Integer id) {
-        return null;
-    }
-
-    @Override
-    public ServiceAnswer obtenerProyectosSupervisorParaMenuPrincipalPorIdUsuario(Long id) {
-        Optional<SiptisUser> usuarioOptional = siptisUserRepository.findById(id);
-        if (usuarioOptional.isEmpty()) {
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
-        }
-
-        return null;
-    }
-
-    @Override
-    public ServiceAnswer existsById(int id) {
-        Long longId = Long.valueOf(id);
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
-                .data(siptisUserRepository.existsById(longId)).build();
-    }
-
-    private boolean existsUserById(long id) {
-        return siptisUserRepository.existsById(id);
-    }
-
-    private SiptisUser findUserByEmail(String email) {
-        return siptisUserRepository.findByEmail(email).get();
-    }
-    private SiptisUser findUserById(long id) {
-        return siptisUserRepository.findById(id).get();
-    }
-
-    @Override
-    public ServiceAnswer existsByEmail(String email) {
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
-                .data(existsByEmail(email)).build();
-    }
-
-    @Override
-    public ServiceAnswer findByEmail(String email) {
-
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
-                .data(findUserByEmail(email)).build();
-    }
-
-    @Override
-    public ServiceAnswer existsTokenPassword(String tokenPassword) {
-
-        boolean response = siptisUserRepository.existsByTokenPassword(tokenPassword);
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
-                .data(response).build();
-    }
-
-    @Override
-    public ServiceAnswer findById(long id) {
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
-                .data(findUserById(id)).build();
-    }
-
-
-    @Override
-    public SiptisUser save(SiptisUser siptisUser) {
-        return siptisUserRepository.save(siptisUser);
-    }
-
-
-
-
-
-    @Override
-    public ServiceAnswer userEditPersonalInformation() {
-        return null;
-    }
-
-    @Override
-    public ServiceAnswer adminEditUserPersonalInformation() {
-        return null;
-    }
-
-    @Override
-    public ServiceAnswer getPersonalActivities(Long id, Pageable pageable) {
-        LocalDateTime now = LocalDateTime.now();
-        Date actual = new Date(now.getYear()-1900, now.getMonthValue()-1, now.getDayOfMonth()-1);
-
-        Page<Activity> activities = usuarioCommonRepository.findAllPersonalActivities(id,actual, pageable);
-
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(activities).build();
-    }
-
-    private UserGeneralInformationDTO convertToDTO(SiptisUser user) {
-        UserGeneralInformationDTO userDTO = new UserGeneralInformationDTO();
-        userDTO.setId(user.getId());
-        userDTO.setEmail(user.getEmail());
-        return userDTO;
-    }
-*/
 }
 

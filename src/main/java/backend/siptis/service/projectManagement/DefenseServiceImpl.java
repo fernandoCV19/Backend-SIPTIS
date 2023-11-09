@@ -32,7 +32,7 @@ public class DefenseServiceImpl implements DefenseService{
     private final ProjectRepository projectRepository;
 
     @Override
-    public ServiceAnswer getPlaceReservationsAndDirectorByMonth(Integer month) {
+    public ServiceAnswer getDefenseByMonth(Integer month) {
         if(month < 1 || month > 12){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.MONTH_NUMBER_NOT_VALID).data("Month must be a number between 1 and 12").build();
         }
@@ -81,9 +81,12 @@ public class DefenseServiceImpl implements DefenseService{
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_PLACE_DOES_NOT_EXIST).data("").build();
         }
         if(date.isBefore(now)){
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.INVALID_DATE).data("").build();
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.INVALID_DATE).data("The date must be after the current day").build();
         }
 
+        if(project.get().getDefense() != null){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.DEFENSE_ERROR).data("The project has a defense").build();
+        }
         List<Defense> defenses = defenseRepository.findAll()
                 .stream()
                 .filter(defense -> defense.getDate().getYear() == date.getYear() && defense.getDate().getMonth() == date.getMonth() && defense.getDate().getDayOfMonth() == date.getDayOfMonth())
@@ -115,6 +118,9 @@ public class DefenseServiceImpl implements DefenseService{
         Project project = optionalProject.get();
         if(project.getDefense() == null){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.DEFENSE_ERROR).data("Project does not have a defense").build();
+        }
+        if(project.getTotalDefensePoints() != null) {
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.DEFENSE_ERROR).data("Project has been defended").build();
         }
         defenseRepository.deleteADefense(project.getDefense().getId());
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("Defense has been deleted").build();

@@ -4,6 +4,7 @@ import backend.siptis.commons.ServiceMessage;
 import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.model.pjo.dto.editorsAndReviewers.ReviewADefenseDTO;
+import backend.siptis.model.pjo.dto.projectManagement.AssignTribunalsDTO;
 import backend.siptis.service.editorsAndReviewers.ProjectTribunalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -81,6 +82,17 @@ public class ProjectTribunalController {
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         if(serviceAnswer.getServiceMessage().equals(ServiceMessage.OK)){
             httpStatus = HttpStatus.OK;
+        }
+        ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
+        return new ResponseEntity<>(controllerAnswer, httpStatus);
+    }
+
+    @PostMapping("/assignTribunals")
+    public ResponseEntity<?> assignTribunal(@RequestBody AssignTribunalsDTO assignTribunalsDTO){
+        ServiceAnswer serviceAnswer = projectTribunalService.assignTribunals(assignTribunalsDTO);
+        HttpStatus httpStatus = HttpStatus.OK;
+        if(serviceAnswer.getServiceMessage() != ServiceMessage.OK){
+            httpStatus = HttpStatus.BAD_REQUEST;
         }
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
         return new ResponseEntity<>(controllerAnswer, httpStatus);
