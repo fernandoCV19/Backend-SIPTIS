@@ -22,4 +22,6 @@ public interface ProjectTribunalRepository extends JpaRepository<ProjectTribunal
     List<ProjectTribunal> findByTribunal_IdAndProject_PhaseAndDefensePointsNull(Long id, String phase);
 
     List<ProjectTribunal> findByTribunal_IdAndProject_PhaseAndDefensePointsNotNull(Long id, String phase);
+
+    ProjectTribunal findByProjectId(Long projectId);
 }

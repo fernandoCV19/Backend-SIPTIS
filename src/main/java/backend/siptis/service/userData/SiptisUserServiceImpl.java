@@ -12,16 +12,12 @@ import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.entity.userData.UserArea;
 import backend.siptis.model.entity.userData.UserCareer;
 import backend.siptis.model.entity.userData.UserInformation;
-import backend.siptis.model.pjo.dto.AdminRegisterDTO;
-import backend.siptis.model.pjo.dto.UserEditPersonalInformationDTO;
-import backend.siptis.model.pjo.dto.UserSelectedAreasDTO;
 import backend.siptis.model.pjo.dto.authentication.TokenDTO;
 import backend.siptis.model.pjo.dto.notifications.LogInDTO;
 import backend.siptis.model.pjo.dto.userDataDTO.*;
 import backend.siptis.model.pjo.dto.userDataDTO.RegisterStudentDTO;
 import backend.siptis.model.pjo.dto.userDataDTO.RegisterUserDTO;
 import backend.siptis.model.pjo.vo.userData.TribunalInfoToAssignSection;
-import backend.siptis.model.repository.projectManagement.ProjectRepository;
 import backend.siptis.model.repository.userData.RoleRepository;
 import backend.siptis.model.repository.userData.SiptisUserRepository;
 import lombok.RequiredArgsConstructor;
@@ -48,7 +44,6 @@ public class SiptisUserServiceImpl implements SiptisUserService{
     private final UserCareerService userCareerService;
     private final UserInformationService userInformationService;
     private final UserAreaService userAreaService;
-    private final ProjectRepository projectRepository;
 
     @Override
     public ServiceAnswer getPossibleTribunals() {
@@ -178,56 +173,6 @@ public class SiptisUserServiceImpl implements SiptisUserService{
     public ArrayList<?> getProjectsFromToken(String token){
         token = token.replace("Bearer ","");
         return JWTokenUtils.getProjects(token);
-    }
-
-    @Override
-    public ServiceAnswer getStudentList(String search,Pageable pageable){
-        int pageNumber = pageable.getPageNumber();
-        int pageSize = pageable.getPageSize();
-        int offset = (pageNumber - 1) * pageSize;
-        return createResponse(ServiceMessage.OK,
-                siptisUserRepository.searchUserList(search, "STUDENT", pageable));
-                //siptisUserRepository.searchUser(search));
-    }
-
-    @Override
-    public ServiceAnswer getTeacherList(String search,Pageable pageable){
-        int pageNumber = pageable.getPageNumber();
-        int pageSize = pageable.getPageSize();
-        int offset = (pageNumber - 1) * pageSize;
-        return createResponse(ServiceMessage.OK,
-                siptisUserRepository.searchUserList(search, "TEACHER", pageable));
-        //siptisUserRepository.searchUser(search));
-    }
-
-    @Override
-    public ServiceAnswer getSpecialUserList(String search,Pageable pageable){
-        int pageNumber = pageable.getPageNumber();
-        int pageSize = pageable.getPageSize();
-        int offset = (pageNumber - 1) * pageSize;
-        return createResponse(ServiceMessage.OK,
-                siptisUserRepository.searchUserList(search, "SPECIAL_USER", pageable));
-        //siptisUserRepository.searchUser(search));
-    }
-
-    @Override
-    public ServiceAnswer getAdminList(Pageable pageable){
-        int pageNumber = pageable.getPageNumber();
-        int pageSize = pageable.getPageSize();
-        int offset = (pageNumber - 1) * pageSize;
-        return createResponse(ServiceMessage.OK,
-                siptisUserRepository.searchAdminList( "ADMIN", pageable));
-        //siptisUserRepository.searchUser(search));
-    }
-
-    @Override
-    public ServiceAnswer getPotentialTutorsList(String search, Pageable pageable) {
-        int pageNumber = pageable.getPageNumber();
-        int pageSize = pageable.getPageSize();
-        int offset = (pageNumber - 1) * pageSize;
-        return createResponse(ServiceMessage.OK,
-                siptisUserRepository.searchPotentialTutorsList(search, "SPECIAL_USER", "TEACHER", pageable));
-        //siptisUserRepository.searchUser(search));
     }
 
     @Override

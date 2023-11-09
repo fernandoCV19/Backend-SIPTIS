@@ -423,7 +423,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
         String projectName = project.getName();
         Collection<ProjectStudent> students = project.getStudents();
         String key = "";
-        ProjectTribunal tribunal = projectTribunalRepository.findByTribunalIdAndProjectId(dto.getUserId(), dto.getProjectId());
+        ProjectTribunal tribunal = projectTribunalRepository. findByProject_IdAndTribunal_Id(dto.getUserId(), dto.getProjectId());
         if(tribunal == null)
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
         if(!tribunal.getAccepted())

@@ -20,6 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -615,8 +616,8 @@ class ProjectTribunalServiceTest {
 
     private Defense createDefense(Integer hours){
         Defense newDefense = defenseRepository.findById(200L).get();
-        Date newDate = new Date();
-        newDate.setHours(newDate.getHours() + hours);
+        LocalDate newDate = LocalDate.now();
+        //newDate.(newDate.getHours() + hours);
         newDefense.setDate(newDate);
         return newDefense;
     }

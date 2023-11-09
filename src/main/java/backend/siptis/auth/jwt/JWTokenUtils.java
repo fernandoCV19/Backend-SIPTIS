@@ -12,10 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-
-import java.security.Key;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 
 @Component
