@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -54,11 +55,32 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
             "JOIN p.areas a " +
             "JOIN p.subAreas s " +
             "WHERE p.defense IS NOT NULL " +
-            "AND CASE WHEN :name = NULL THEN 1=1 ELSE UPPER(p.name) LIKE CONCAT('%', UPPER(:name), '%') END  " +
-            "AND CASE WHEN :modality = NULL THEN 1=1 ELSE UPPER(m.name) LIKE CONCAT('%', UPPER(:modality), '%') END " +
-            "AND CASE WHEN :area = NULL THEN 1=1 ELSE UPPER(a.name) LIKE CONCAT('%', UPPER(:area), '%') END " +
-            "AND CASE WHEN :subarea = NULL THEN 1=1 ELSE UPPER(s.name) LIKE CONCAT('%', UPPER(:subarea), '%') END ")
-    Page<Project> findAllWithFilters(Pageable pageable, @Param("name") String name, @Param("modality") String modality, @Param("area") String area, @Param("subarea") String subarea);
+            "AND (:name IS NULL OR UPPER(p.name) LIKE CONCAT('%', UPPER(:name), '%'))  " +
+            "AND (:period IS NULL OR p.period = :period)" +
+            "AND (:modality IS NULL OR UPPER(m.name) LIKE CONCAT('%', UPPER(:modality), '%')) " +
+            "AND (:area IS NULL OR UPPER(a.name) LIKE CONCAT('%', UPPER(:area), '%')) " +
+            "AND (:subarea IS NULL OR UPPER(s.name) LIKE CONCAT('%', UPPER(:subarea), '%'))")
+    Page<Project> findAllWithFilters(Pageable pageable, @Param("name") String name, @Param("period") String period  ,@Param("modality") String modality, @Param("area") String area, @Param("subarea") String subarea);
+
+    @Query("""
+            select distinct p from Project p 
+            left join p.subAreas subAreas 
+            left join p.areas areas 
+            left join p.students students 
+            left join p.tutors tutors
+            where p.defense is not null 
+            and ((?1) is null or upper(p.name) like upper(?1)) 
+            and ((?2) is null or p.period = ?2)
+            and ((?3) is null or upper(p.modality.name) like upper(?3))
+            and ((?4) is null or upper(areas.name) like upper(?4)) 
+            and ((?5) is null or upper(subAreas.name) like upper(?5)) 
+            and ((?6) is null or upper(students.student.userInformation.names) like upper(?6)) 
+            and ((?7) is null or upper(students.student.userInformation.lastnames) like upper(?7))
+            and ((?8) is null or upper(tutors.tutor.userInformation.names) like upper(?8)) 
+            and ((?9) is null or upper(tutors.tutor.userInformation.lastnames) like upper(?9))""")
+    Page<Project> advancedFilter(@Nullable String name, @Nullable String period, @Nullable String name1, @Nullable String name2, @Nullable String name3, @Nullable String names, @Nullable String lastnames, @Nullable String names1, @Nullable String lastnames1, Pageable pageable);
+
+
 
     @Query(value = "SELECT  project.id AS id, project.name AS name, " +
             "project.perfil_path AS perfil, modality.name AS modality," +

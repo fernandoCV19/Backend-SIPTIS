@@ -136,11 +136,32 @@ public class ProjectController {
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "5") int pageSize,
             @RequestParam(required = false) String name,
+            @RequestParam(required = false) String period,
             @RequestParam(required = false) String modality,
             @RequestParam(required = false) String area,
             @RequestParam(required = false) String subarea
     ) {
-        ServiceAnswer serviceAnswer = projectService.getPaginatedCompletedProjectsByFilters(pageNumber, pageSize, name, modality, area, subarea);
+        ServiceAnswer serviceAnswer = projectService.getPaginatedCompletedProjectsByFilters(pageNumber, pageSize, name, period ,modality, area, subarea);
+        HttpStatus httpStatus = HttpStatus.OK;
+        ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
+        return new ResponseEntity<>(controllerAnswer, httpStatus);
+    }
+
+    @GetMapping("/page/advanced-filter")
+    public ResponseEntity<?> getProjectsWithAdvancedFilters(
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "5") int pageSize,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String period,
+            @RequestParam(required = false) String modality,
+            @RequestParam(required = false) String area,
+            @RequestParam(required = false) String subarea,
+            @RequestParam(required = false) String studentNames,
+            @RequestParam(required = false) String studentLastNames,
+            @RequestParam(required = false) String tutorNames,
+            @RequestParam(required = false) String tutorLastNames
+    ) {
+        ServiceAnswer serviceAnswer = projectService.getProjectsWithAdvancedFilter(pageNumber, pageSize, name, period ,modality, area, subarea, studentNames, studentLastNames, tutorNames, tutorLastNames);
         HttpStatus httpStatus = HttpStatus.OK;
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
         return new ResponseEntity<>(controllerAnswer, httpStatus);
