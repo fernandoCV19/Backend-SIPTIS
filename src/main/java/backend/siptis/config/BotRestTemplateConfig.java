@@ -14,11 +14,11 @@ public class BotRestTemplateConfig {
 
     @Bean
     @Qualifier("botRestTemplate")
-    public RestTemplate botRestTemplate(){
+    public RestTemplate botRestTemplate() {
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.getInterceptors().add((request,body,execution) ->{
+        restTemplate.getInterceptors().add((request, body, execution) -> {
             request.getHeaders().add("Authorization", "Bearer " + apiKey);
-            return execution.execute(request,body);
+            return execution.execute(request, body);
         });
         return restTemplate;
     }

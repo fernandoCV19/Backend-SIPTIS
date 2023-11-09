@@ -1,7 +1,6 @@
 package backend.siptis.model.repository.editorsAndReviewers;
 
 import backend.siptis.auth.entity.SiptisUser;
-import backend.siptis.model.entity.editorsAndReviewers.ProjectSupervisor;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectTutor;
 import backend.siptis.model.entity.projectManagement.Project;
 import jakarta.transaction.Transactional;

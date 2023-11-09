@@ -16,7 +16,7 @@ public class AreaControllerTest {
     private final AreaController areaController;
 
     @Autowired
-    public AreaControllerTest(AreaController areaController){
+    public AreaControllerTest(AreaController areaController) {
         this.areaController = areaController;
     }
 

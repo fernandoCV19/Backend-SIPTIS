@@ -5,12 +5,12 @@ import backend.siptis.model.entity.editorsAndReviewers.ProjectSupervisor;
 import backend.siptis.model.entity.projectManagement.Project;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.junit.runner.RunWith;
 
 import java.util.List;
 

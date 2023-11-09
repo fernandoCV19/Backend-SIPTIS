@@ -4,18 +4,17 @@ import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.model.pjo.dto.document.DocumentaryRecordDto;
 import backend.siptis.model.pjo.dto.document.LetterGenerationRequestDTO;
 import backend.siptis.model.pjo.dto.document.ReportDocumentDTO;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.io.IOException;
 
 public interface DocumentGeneratorService {
-    ServiceAnswer getAllDocumentsFromUser (long idUser);
+    ServiceAnswer getAllDocumentsFromUser(long idUser);
 
-    ServiceAnswer getAllDocumentsFromProject (long idProject);
+    ServiceAnswer getAllDocumentsFromProject(long idProject);
 
-    ServiceAnswer deleteDocument (long idDocument);
+    ServiceAnswer deleteDocument(long idDocument);
 
-    ServiceAnswer generateReport (ReportDocumentDTO reportDocumentDTO);
+    ServiceAnswer generateReport(ReportDocumentDTO reportDocumentDTO);
 
     ServiceAnswer generateSolvency(long idUser);
 

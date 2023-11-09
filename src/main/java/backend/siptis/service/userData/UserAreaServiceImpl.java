@@ -14,7 +14,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class UserAreaServiceImpl implements UserAreaService{
+public class UserAreaServiceImpl implements UserAreaService {
 
 
     private final UserAreaRepository userAreaRepository;
@@ -28,7 +28,7 @@ public class UserAreaServiceImpl implements UserAreaService{
     @Override
     public ServiceAnswer createUserArea(CreateAreaDTO dto) {
         ServiceAnswer answer = validateCreateUserArea(dto.getName());
-        if (answer != null){
+        if (answer != null) {
             return answer;
         }
         UserArea userArea = new UserArea();
@@ -37,22 +37,22 @@ public class UserAreaServiceImpl implements UserAreaService{
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.AREA_CREATED).data(userArea).build();
     }
 
-    private ServiceAnswer validateCreateUserArea(String name){
-        if(name == null || name.length()<2)
+    private ServiceAnswer validateCreateUserArea(String name) {
+        if (name == null || name.length() < 2)
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.INVALID_AREA_NAME).build();
-        if(userAreaRepository.existsUserAreaByName(name))
+        if (userAreaRepository.existsUserAreaByName(name))
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.AREA_ALREADY_EXIST).build();
 
         return null;
     }
 
-    private ServiceAnswer validateDeleteUserArea(Long id){
+    private ServiceAnswer validateDeleteUserArea(Long id) {
 
-        if(!userAreaRepository.existsUserAreaById(id)){
+        if (!userAreaRepository.existsUserAreaById(id)) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.AREA_NOT_FOUND).build();
         }
         UserArea area = userAreaRepository.findById(id.intValue()).get();
-        if(area.getSiptisUsers().size() > 0){
+        if (area.getSiptisUsers().size() > 0) {
             return ServiceAnswer.builder()
                     .serviceMessage(ServiceMessage.CANNOT_DELETE_AREA).build();
         }
@@ -72,7 +72,7 @@ public class UserAreaServiceImpl implements UserAreaService{
     @Override
     public UserArea getUserAreaById(int id) {
         Optional<UserArea> area = userAreaRepository.findById(id);
-        if(area.isEmpty())
+        if (area.isEmpty())
             return null;
         return area.get();
 

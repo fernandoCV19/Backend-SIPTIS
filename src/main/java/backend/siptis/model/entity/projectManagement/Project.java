@@ -7,8 +7,10 @@ import backend.siptis.model.pjo.dto.userDataDTO.UserListDTO;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.*;
-import org.apache.catalina.User;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -64,7 +66,7 @@ public class Project {
     @JsonManagedReference
     private Collection<SubArea> subAreas;
 
-    @ManyToMany(fetch =  FetchType.LAZY, cascade = {
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE
     })
@@ -109,11 +111,11 @@ public class Project {
     private Double totalDefensePoints;
 
 
-    public List<UserListDTO> getProjectStudents(){
+    public List<UserListDTO> getProjectStudents() {
         ArrayList<UserListDTO> studentsNames = new ArrayList<>();
         SiptisUser user;
         UserListDTO userListDTO;
-        for (ProjectStudent student: students) {
+        for (ProjectStudent student : students) {
             user = student.getStudent();
             userListDTO = new UserListDTO();
             userListDTO.setId(user.getId());
@@ -123,11 +125,11 @@ public class Project {
         return studentsNames;
     }
 
-    public List<UserListDTO> getProjectTutors(){
+    public List<UserListDTO> getProjectTutors() {
         ArrayList<UserListDTO> tutorsNames = new ArrayList<>();
         SiptisUser user;
         UserListDTO userListDTO;
-        for (ProjectTutor tutor: tutors) {
+        for (ProjectTutor tutor : tutors) {
             user = tutor.getTutor();
             userListDTO = new UserListDTO();
             userListDTO.setId(user.getId());
@@ -137,11 +139,11 @@ public class Project {
         return tutorsNames;
     }
 
-    public List<UserListDTO> getProjectTeachers(){
+    public List<UserListDTO> getProjectTeachers() {
         ArrayList<UserListDTO> teachersNames = new ArrayList<>();
         SiptisUser user;
         UserListDTO userListDTO;
-        for (ProjectTeacher teacher: teachers) {
+        for (ProjectTeacher teacher : teachers) {
             user = teacher.getTeacher();
             userListDTO = new UserListDTO();
             userListDTO.setId(user.getId());
@@ -151,11 +153,11 @@ public class Project {
         return teachersNames;
     }
 
-    public List<UserListDTO> getProjectSupervisors(){
+    public List<UserListDTO> getProjectSupervisors() {
         ArrayList<UserListDTO> supervisorsNames = new ArrayList<>();
         SiptisUser user;
         UserListDTO userListDTO;
-        for (ProjectSupervisor supervisor: supervisors) {
+        for (ProjectSupervisor supervisor : supervisors) {
             user = supervisor.getSupervisor();
             userListDTO = new UserListDTO();
             userListDTO.setId(user.getId());
@@ -165,11 +167,11 @@ public class Project {
         return supervisorsNames;
     }
 
-    public List<UserListDTO> getProjectTribunals(){
+    public List<UserListDTO> getProjectTribunals() {
         ArrayList<UserListDTO> tutorsNames = new ArrayList<>();
         SiptisUser user;
         UserListDTO userListDTO;
-        for (ProjectTribunal tribunal: tribunals) {
+        for (ProjectTribunal tribunal : tribunals) {
             user = tribunal.getTribunal();
             userListDTO = new UserListDTO();
             userListDTO.setId(user.getId());
@@ -179,17 +181,17 @@ public class Project {
         return tutorsNames;
     }
 
-    public List<String> getAreasNames(){
+    public List<String> getAreasNames() {
         ArrayList<String> areasNames = new ArrayList<>();
-        for (Area area: areas) {
+        for (Area area : areas) {
             areasNames.add(area.getName());
         }
         return areasNames;
     }
 
-    public List<String> getSubAreasNames(){
+    public List<String> getSubAreasNames() {
         ArrayList<String> subAreasNames = new ArrayList<>();
-        for (SubArea subArea: subAreas) {
+        for (SubArea subArea : subAreas) {
             subAreasNames.add(subArea.getName());
         }
         return subAreasNames;

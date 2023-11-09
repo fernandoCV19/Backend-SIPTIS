@@ -11,6 +11,7 @@ public interface AreaRepository extends JpaRepository<Area, Integer> {
     List<Area> findAll();
 
     boolean existsAreaById(Long id);
+
     boolean existsAreaByName(String name);
 
     Optional<Area> findById(Long id);

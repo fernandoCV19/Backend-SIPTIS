@@ -11,18 +11,19 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
-public class RoleServiceImpl implements RoleService{
+public class RoleServiceImpl implements RoleService {
 
     private final RoleRepository roleRepository;
+
     @Override
     public ServiceAnswer getAllowedRoles() {
-        return createResponse(ServiceMessage.OK,roleRepository.getAllowedRoles());
+        return createResponse(ServiceMessage.OK, roleRepository.getAllowedRoles());
     }
 
     @Override
     public ServiceAnswer getRoleByName(String name) {
 
-        if(!roleRepository.existsRoleByName(name)){
+        if (!roleRepository.existsRoleByName(name)) {
             return createResponse(ServiceMessage.ERROR, null);
         }
         return createResponse(ServiceMessage.OK, roleRepository.findRoleByName(name));
@@ -43,7 +44,7 @@ public class RoleServiceImpl implements RoleService{
         return new HashSet<>(Set.of("INF_DIRECTOR", "SIS_DIRECTOR"));
     }
 
-    private ServiceAnswer createResponse(ServiceMessage serviceMessage, Object data){
+    private ServiceAnswer createResponse(ServiceMessage serviceMessage, Object data) {
         return ServiceAnswer.builder().serviceMessage(
                 serviceMessage).data(data
         ).build();

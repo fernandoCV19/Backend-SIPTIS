@@ -8,7 +8,6 @@ import backend.siptis.service.notifications.GeneralActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 public class GeneralActivityController {
     private final GeneralActivityService generalActivityService;
+
     @Autowired
     public GeneralActivityController(GeneralActivityService generalActivityService) {
         this.generalActivityService = generalActivityService;
@@ -25,10 +25,12 @@ public class GeneralActivityController {
     public ResponseEntity<?> persistGeneralActivity(@RequestBody GeneralActivityDTO generalActivityDTO) {
         return createResponse(generalActivityService.persistGeneralActivity(generalActivityDTO));
     }
+
     @PutMapping("/{id}")
     public ResponseEntity<?> updateGeneralActivity(@RequestBody GeneralActivityDTO generalActivityDTO, @PathVariable long id) {
         return createResponse(generalActivityService.update(generalActivityDTO, id));
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteGeneralActivity(@PathVariable long id) {
         return createResponse(generalActivityService.delete(id));
@@ -42,9 +44,10 @@ public class GeneralActivityController {
                         .message("General activities found successfully")
                         .build(), null, 200);
     }
-    private ResponseEntity<?> createResponse(ServiceAnswer serviceAnswer){
+
+    private ResponseEntity<?> createResponse(ServiceAnswer serviceAnswer) {
         ServiceMessage serviceMessage = serviceAnswer.getServiceMessage();
-        if(serviceMessage == ServiceMessage.NOT_FOUND)
+        if (serviceMessage == ServiceMessage.NOT_FOUND)
             return new ResponseEntity<>(
                     ControllerAnswer.builder()
                             .data(null)

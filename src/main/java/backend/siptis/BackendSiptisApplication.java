@@ -8,9 +8,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 public class BackendSiptisApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(BackendSiptisApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(BackendSiptisApplication.class, args);
+    }
 
 }
 

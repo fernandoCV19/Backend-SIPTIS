@@ -1,6 +1,5 @@
 package backend.siptis.model.repository.editorsAndReviewers;
 
-import backend.siptis.model.entity.editorsAndReviewers.ProjectTribunal;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectTutor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

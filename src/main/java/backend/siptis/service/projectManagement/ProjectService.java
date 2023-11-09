@@ -1,8 +1,6 @@
 package backend.siptis.service.projectManagement;
 
 import backend.siptis.commons.ServiceAnswer;
-import backend.siptis.model.pjo.dto.projectManagement.AssignTribunalsDTO;
-import backend.siptis.model.pjo.dto.projectManagement.DefenseDTO;
 import backend.siptis.model.pjo.dto.projectManagement.NewProjectDTO;
 import org.springframework.data.domain.Pageable;
 
@@ -28,7 +26,7 @@ public interface ProjectService {
 
     ServiceAnswer getPaginatedCompletedProjectsByFilters(int pageNumber, int pageSize, String name, String modality, String area, String subArea);
 
-    ServiceAnswer getPresentations (Long idProyecto);
+    ServiceAnswer getPresentations(Long idProyecto);
 
     ServiceAnswer getProjectInfoToReview(Long idProject, Long idReviewer);
 

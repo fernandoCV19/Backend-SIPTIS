@@ -18,14 +18,15 @@ import java.time.Period;
 public class SemesterInformationServiceImpl implements SemesterInformationService {
 
     private final SemesterInformationRepository repository;
+
     @Override
     public ServiceAnswer startSemester(SemesterInformationDTO dto) {
         LocalDate endDate = dto.getEndDate();
         LocalDate startDate = dto.getStartDate();
-        if(Period.between(startDate, endDate).isNegative() || Period.between(startDate, endDate).isZero()){
+        if (Period.between(startDate, endDate).isNegative() || Period.between(startDate, endDate).isZero()) {
             return createResponse(ServiceMessage.ERROR_SEMESTER_DATES, null);
         }
-        if(repository.existsSemesterInformationByInProgressIsTrue())
+        if (repository.existsSemesterInformationByInProgressIsTrue())
             return createResponse(ServiceMessage.SEMESTER_ALREADY_EXIST, null);
         SemesterInformation semester = new SemesterInformation();
         semester.setStartDate(dto.getStartDate());
@@ -41,15 +42,15 @@ public class SemesterInformationServiceImpl implements SemesterInformationServic
     public ServiceAnswer editSemester(EditSemesterInfoDTO dto) {
         LocalDate endDate = dto.getEndDate();
         LocalDate startDate = dto.getStartDate();
-        if(Period.between(startDate, endDate).isNegative() || Period.between(startDate, endDate).isZero()){
+        if (Period.between(startDate, endDate).isNegative() || Period.between(startDate, endDate).isZero()) {
             return createResponse(ServiceMessage.ERROR_SEMESTER_DATES, null);
         }
-        if(!repository.existsSemesterInformationByInProgressIsTrue())
+        if (!repository.existsSemesterInformationByInProgressIsTrue())
             return createResponse(ServiceMessage.NO_CURRENT_SEMESTER, null);
-        if(!repository.existsById(dto.getId()))
+        if (!repository.existsById(dto.getId()))
             return createResponse(ServiceMessage.ID_DOES_NOT_EXIST, null);
         SemesterInformation semesterInformation = repository.findActiveSemesterById(dto.getId()).get();
-        if(semesterInformation == null)
+        if (semesterInformation == null)
             return createResponse(ServiceMessage.NO_CURRENT_SEMESTER, null);
         semesterInformation.setStartDate(dto.getStartDate());
         semesterInformation.setEndDate(dto.getEndDate());
@@ -68,7 +69,7 @@ public class SemesterInformationServiceImpl implements SemesterInformationServic
 
     @Override
     public ServiceAnswer getCurrentSemester() {
-        if(!repository.existsSemesterInformationByInProgressIsTrue()){
+        if (!repository.existsSemesterInformationByInProgressIsTrue()) {
             return createResponse(ServiceMessage.NO_CURRENT_SEMESTER, null);
         }
         SemesterInformation semester = repository.findActiveSemester().get();
@@ -82,7 +83,7 @@ public class SemesterInformationServiceImpl implements SemesterInformationServic
 
     @Override
     public ServiceAnswer getCurrentPeriod() {
-        if(!repository.existsSemesterInformationByInProgressIsTrue())
+        if (!repository.existsSemesterInformationByInProgressIsTrue())
             return createResponse(ServiceMessage.NO_CURRENT_SEMESTER, null);
         SemesterInformation semester = repository.findActiveSemester().get();
         return createResponse(ServiceMessage.SEMESTER_INFORMATION, semester.getPeriod());
@@ -91,8 +92,8 @@ public class SemesterInformationServiceImpl implements SemesterInformationServic
 
     @Override
     public ServiceAnswer closeSemester(Long id) {
-        if(!repository.existsSemesterInformationById(id)){
-            return  createResponse(ServiceMessage.NO_CURRENT_SEMESTER, null);
+        if (!repository.existsSemesterInformationById(id)) {
+            return createResponse(ServiceMessage.NO_CURRENT_SEMESTER, null);
         }
         SemesterInformation semester = repository.findById(id).get();
         semester.setInProgress(false);
@@ -100,7 +101,7 @@ public class SemesterInformationServiceImpl implements SemesterInformationServic
         return createResponse(ServiceMessage.SEMESTER_ENDED, null);
     }
 
-    private ServiceAnswer createResponse(ServiceMessage serviceMessage, Object data){
+    private ServiceAnswer createResponse(ServiceMessage serviceMessage, Object data) {
         return ServiceAnswer.builder().serviceMessage(
                 serviceMessage).data(data
         ).build();

@@ -39,9 +39,9 @@ public class WebSecurityConfig {
                 .requestMatchers("/user/register/student", "/user/register/admin", "/user/test", "/user/information/*",
                         "/user/register/teacher", "/user/editTeacher/*",
                         "/user/login", "/user/todos", "/user/editUser/*",
-                        "/user/register/student", "/user/register/admin","/user/personal-activities/*",
+                        "/user/register/student", "/user/register/admin", "/user/personal-activities/*",
                         "/user/buscarUser/**", "/user/personalInformation",
-                        "/user/updateAreas/**", "/user/refreshtoken","/user/**",
+                        "/user/updateAreas/**", "/user/refreshtoken", "/user/**",
                         "/user/updateAreas/**",
                         "/user/project/**",
                         "/user/project/*",
@@ -65,9 +65,9 @@ public class WebSecurityConfig {
                         "/email/changePassword", "/email/askemail/*",
                         "/email/prueba/*",
 
-                        "/general-activity", "/general-activity/create","/general-activity/*",
+                        "/general-activity", "/general-activity/create", "/general-activity/*",
 
-                        "/activity", "/activity/create","/activity/*",
+                        "/activity", "/activity/create", "/activity/*",
 
                         "/cloud/**",
                         "/modality/**",
@@ -106,7 +106,7 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public AuthenticationEntryPoint authenticationEntryPoint(){
+    public AuthenticationEntryPoint authenticationEntryPoint() {
         return new CustomAuthenticationEntryPoint();
     }
 }

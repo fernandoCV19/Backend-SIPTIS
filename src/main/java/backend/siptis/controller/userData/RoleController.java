@@ -7,7 +7,10 @@ import backend.siptis.service.userData.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/role")
@@ -24,15 +27,15 @@ public class RoleController {
     }
 
 
-    private ResponseEntity<?> createResponseEntity(ServiceAnswer serviceAnswer){
+    private ResponseEntity<?> createResponseEntity(ServiceAnswer serviceAnswer) {
         Object data = serviceAnswer.getData();
         ServiceMessage messageService = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
-        if(messageService == ServiceMessage.OK ){
+        if (messageService == ServiceMessage.OK) {
             httpStatus = HttpStatus.OK;
         }
-        if(messageService == ServiceMessage.NOT_FOUND )
+        if (messageService == ServiceMessage.NOT_FOUND)
             httpStatus = HttpStatus.NOT_FOUND;
 
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(data).message(messageService.toString()).build();

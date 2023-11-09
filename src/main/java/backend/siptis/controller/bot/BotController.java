@@ -30,12 +30,12 @@ public class BotController {
     private RestTemplate restTemplate;
 
     @GetMapping()
-    public String test(){
+    public String test() {
         return "Test";
     }
 
     @PostMapping("/chat")
-    public BotResponse chat(@RequestBody Message message){
+    public BotResponse chat(@RequestBody Message message) {
         BotRequest request = new BotRequest(model, message);
         BotResponse response = restTemplate.postForObject(url, request, BotResponse.class);
         return response;

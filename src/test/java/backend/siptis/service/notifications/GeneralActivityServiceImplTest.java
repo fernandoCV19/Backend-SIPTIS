@@ -28,8 +28,8 @@ import static org.junit.jupiter.api.Assertions.*;
 //@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class GeneralActivityServiceImplTest {
 
-    private final GeneralActivityService generalActivityService;
     private static final GeneralActivityDTO activityDTO = new GeneralActivityDTO();
+    private final GeneralActivityService generalActivityService;
 
     @Autowired
     GeneralActivityServiceImplTest(GeneralActivityService generalActivityService) {
@@ -42,11 +42,13 @@ class GeneralActivityServiceImplTest {
         activityDTO.setActivityName("test activity");
         activityDTO.setActivityDescription("test activity description");
     }
+
     @Test
     void findById() {
         GeneralActivityVO generalActivityVO = (GeneralActivityVO) generalActivityService.findById(5).getData();
         assertNotNull(generalActivityVO);
     }
+
     @Test
     void findNullById() {
         Object generalActivity = generalActivityService.findById(10).getData();
@@ -59,14 +61,16 @@ class GeneralActivityServiceImplTest {
         String activityName = generalActivityVO.getActivityName();
         assertEquals("Actividad General 1", activityName);
     }
+
     @Test
     void findByIdValidatingIncorretNameActivity() {
         GeneralActivityVO generalActivityVO = (GeneralActivityVO) generalActivityService.findById(6).getData();
         String activityName = generalActivityVO.getActivityName();
         assertNotEquals("Actividad General 2", activityName);
     }
+
     @Test
-     void findByIdValidatingCorrectDateActivity() {
+    void findByIdValidatingCorrectDateActivity() {
         GeneralActivityVO generalActivityVO = (GeneralActivityVO) generalActivityService.findById(9).getData();
         Date activityDate = generalActivityVO.getActivityDate();
         assertTrue(activityDate.getDate() == 1 && activityDate.getMonth() == 6 && activityDate.getYear() == 123);
@@ -110,12 +114,13 @@ class GeneralActivityServiceImplTest {
 
     @Test
     @Rollback
-    void persistGeneralActivityValidatingIncorrectNameActivity(){
+    void persistGeneralActivityValidatingIncorrectNameActivity() {
         GeneralActivityVO generalActivity = (GeneralActivityVO) generalActivityService.persistGeneralActivity(activityDTO).getData();
 
         String activityName = generalActivity.getActivityName();
         assertNotEquals("test activity 2", activityName);
     }
+
     @Test
     @Rollback
     void persistGeneralActivityValidatingCorrectDateActivity() {
@@ -123,6 +128,7 @@ class GeneralActivityServiceImplTest {
         Date activityDate = generalActivity.getActivityDate();
         assertEquals(new Date(2022, 1, 1), activityDate);
     }
+
     @Test
     @Rollback
     void persistGeneralActivityValidatingIncorrectDateActivity() {
@@ -130,6 +136,7 @@ class GeneralActivityServiceImplTest {
         Date activityDate = generalActivity.getActivityDate();
         assertNotEquals(new Date(2023, 6, 5), activityDate);
     }
+
     @Test
     @Rollback
     void persistGeneralActivityValidatingCorrectDescriptionActivity() {
@@ -137,6 +144,7 @@ class GeneralActivityServiceImplTest {
         String activityDescription = generalActivity.getActivityDescription();
         assertEquals("test activity description", activityDescription);
     }
+
     @Test
     @Rollback
     void persistGeneralActivityValidatingIncorrectDescriptionActivity() {
@@ -144,6 +152,7 @@ class GeneralActivityServiceImplTest {
         String activityDescription = generalActivity.getActivityDescription();
         assertNotEquals("Descripcion 5", activityDescription);
     }
+
     @Test
     void findAllVOTestCorrectQuantity() {
         assertEquals(5, generalActivityService.findAllVO().size());
@@ -153,6 +162,7 @@ class GeneralActivityServiceImplTest {
     void findAllVOTestIncorrectQuantity() {
         assertNotEquals(7, generalActivityService.findAllVO().size());
     }
+
     @Test
     void findAllVOTestingPaginationCorrectContentSize() {
         Pageable pageable = PageRequest.of(0, 2);
@@ -166,24 +176,28 @@ class GeneralActivityServiceImplTest {
         Page<GeneralActivityVO> page = generalActivityService.findAllVO(pageable);
         assertNotEquals(3, page.getContent().size());
     }
+
     @Test
     void findAllVOTestingPaginationCorrectPageNumber() {
         Pageable pageable = PageRequest.of(0, 2);
         Page<GeneralActivityVO> page = generalActivityService.findAllVO(pageable);
         assertEquals(0, page.getNumber());
     }
+
     @Test
     void findAllVOTestingPaginationIncorrectPageNumber() {
         Pageable pageable = PageRequest.of(0, 2);
         Page<GeneralActivityVO> page = generalActivityService.findAllVO(pageable);
         assertNotEquals(1, page.getNumber());
     }
+
     @Test
     void findAllVOTestingPaginationCorrectTotalPages() {
         Pageable pageable = PageRequest.of(0, 2);
         Page<GeneralActivityVO> page = generalActivityService.findAllVO(pageable);
         assertEquals(3, page.getTotalPages());
     }
+
     @Test
     void findAllVOTestingPaginationIncorrectTotalPages() {
         Pageable pageable = PageRequest.of(0, 2);

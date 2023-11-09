@@ -2,7 +2,6 @@ package backend.siptis.service.projectManagement;
 
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.model.entity.editorsAndReviewers.ProjectTribunal;
 import backend.siptis.model.entity.projectManagement.Defense;
 import backend.siptis.model.entity.projectManagement.PlaceToDefense;
 import backend.siptis.model.entity.projectManagement.Project;
@@ -24,7 +23,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class DefenseServiceImpl implements DefenseService{
+public class DefenseServiceImpl implements DefenseService {
 
     private final DefenseRepository defenseRepository;
     private final PlaceToDefenseRepository placeToDefenseRepository;
@@ -33,7 +32,7 @@ public class DefenseServiceImpl implements DefenseService{
 
     @Override
     public ServiceAnswer getDefenseByMonth(Integer month) {
-        if(month < 1 || month > 12){
+        if (month < 1 || month > 12) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.MONTH_NUMBER_NOT_VALID).data("Month must be a number between 1 and 12").build();
         }
 
@@ -44,7 +43,7 @@ public class DefenseServiceImpl implements DefenseService{
                 .stream()
                 .filter(defense -> defense.getDate().getMonthValue() == month && defense.getDate().getYear() == now.getYear())
                 .sorted((o1, o2) -> {
-                    if(o1.getStartTime().equals(o2.getEndTime()) || o1.getStartTime().isAfter(o2.getEndTime())){
+                    if (o1.getStartTime().equals(o2.getEndTime()) || o1.getStartTime().isAfter(o2.getEndTime())) {
                         return 1;
                     }
                     return -1;
@@ -57,11 +56,11 @@ public class DefenseServiceImpl implements DefenseService{
 
     @Override
     public ServiceAnswer registerDefense(DefenseDTO newDefense) {
-        if(newDefense.getDate() == null){
+        if (newDefense.getDate() == null) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.INVALID_DATE).data("The date is mandatory").build();
         }
 
-        if(newDefense.getStartTime() == null || newDefense.getEndTime() == null){
+        if (newDefense.getStartTime() == null || newDefense.getEndTime() == null) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.INVALID_HOUR).data("Start time and end time is mandatory").build();
         }
 
@@ -72,19 +71,20 @@ public class DefenseServiceImpl implements DefenseService{
         Optional<Project> project = projectRepository.findById(newDefense.getProjectId());
         Optional<PlaceToDefense> place = placeToDefenseRepository.findById(newDefense.getPlaceId());
 
-        if(startTime.isAfter(endTime)){
+        if (startTime.isAfter(endTime)) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.INVALID_HOUR).data("The start hour must be before the end hour").build();
         }
-        if(project.isEmpty()){
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data("").build();}
-        if(place.isEmpty()){
+        if (project.isEmpty()) {
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data("").build();
+        }
+        if (place.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_PLACE_DOES_NOT_EXIST).data("").build();
         }
-        if(date.isBefore(now)){
+        if (date.isBefore(now)) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.INVALID_DATE).data("The date must be after the current day").build();
         }
 
-        if(project.get().getDefense() != null){
+        if (project.get().getDefense() != null) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.DEFENSE_ERROR).data("The project has a defense").build();
         }
         List<Defense> defenses = defenseRepository.findAll()
@@ -93,13 +93,13 @@ public class DefenseServiceImpl implements DefenseService{
                 .toList();
 
         List<Defense> blocks = new ArrayList<>();
-        for(Defense defense: defenses) {
-            if(endTime.isAfter(defense.getStartTime()) && startTime.isBefore(defense.getEndTime())){
+        for (Defense defense : defenses) {
+            if (endTime.isAfter(defense.getStartTime()) && startTime.isBefore(defense.getEndTime())) {
                 blocks.add(defense);
             }
         }
 
-        if(!blocks.isEmpty()){
+        if (!blocks.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.INVALID_DATE).data("This date is already registered").build();
         }
 
@@ -112,14 +112,14 @@ public class DefenseServiceImpl implements DefenseService{
     @Override
     public ServiceAnswer removeDefense(Long projectId) {
         Optional<Project> optionalProject = projectRepository.findById(projectId);
-        if(optionalProject.isEmpty()){
+        if (optionalProject.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data("").build();
         }
         Project project = optionalProject.get();
-        if(project.getDefense() == null){
+        if (project.getDefense() == null) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.DEFENSE_ERROR).data("Project does not have a defense").build();
         }
-        if(project.getTotalDefensePoints() != null) {
+        if (project.getTotalDefensePoints() != null) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.DEFENSE_ERROR).data("Project has been defended").build();
         }
         defenseRepository.deleteADefense(project.getDefense().getId());

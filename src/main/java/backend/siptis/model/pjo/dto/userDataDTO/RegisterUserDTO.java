@@ -11,7 +11,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class RegisterUserDTO{
+public class RegisterUserDTO {
     @NotEmpty(message = "NAMES_CANNOT_BE_NULL")
     @Size(min = 2, message = "NAMES_INVALID_LENGTH")
     @Size(max = 50, message = "NAMES_INVALID_LENGTH")
@@ -23,7 +23,7 @@ public class RegisterUserDTO{
     @NotEmpty(message = "EMAIL_CANNOT_BE_NULL")
     @Size(min = 2, message = "EMAIL_INVALID_LENGTH")
     @Size(max = 50, message = "EMAIL_INVALID_LENGTH")
-    @Pattern(regexp=".+@.+\\..+", message="EMAIL_INVALID_FORMAT")
+    @Pattern(regexp = ".+@.+\\..+", message = "EMAIL_INVALID_FORMAT")
     private String email;
     @NotEmpty(message = "CEL_NUMBER_CANNOT_BE_NULL")
     @Size(min = 2, message = "CEL_NUMBER_INVALID_LENGTH")

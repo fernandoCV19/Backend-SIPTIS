@@ -1,7 +1,6 @@
 package backend.siptis.exception;
 
 import backend.siptis.model.pjo.dto.ResponseDTO;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;

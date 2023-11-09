@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class SubAreaServiceImpl implements SubAreaService{
+public class SubAreaServiceImpl implements SubAreaService {
     private final SubAreaRepository subAreaRepository;
 
     @Override
@@ -33,20 +33,20 @@ public class SubAreaServiceImpl implements SubAreaService{
                 .data(area).build();
     }
 
-    private ServiceAnswer validateCreateArea(String name){
-        if(name == null || name.length()<2)
+    private ServiceAnswer validateCreateArea(String name) {
+        if (name == null || name.length() < 2)
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.INVALID_SUB_AREA_NAME).build();
-        if(subAreaRepository.existsSubAreaByName(name))
+        if (subAreaRepository.existsSubAreaByName(name))
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.SUB_AREA_ALREADY_EXIST).build();
         return null;
     }
 
-    private ServiceAnswer validateDeleteArea(Long id){
-        if(!subAreaRepository.existsSubAreaById(id)){
+    private ServiceAnswer validateDeleteArea(Long id) {
+        if (!subAreaRepository.existsSubAreaById(id)) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.SUB_AREA_NOT_FOUND).build();
         }
         SubArea area = subAreaRepository.findById(id.intValue()).get();
-        if(area.getProjects().size() > 0){
+        if (area.getProjects().size() > 0) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.CANNOT_DELETE_SUB_AREA).build();
         }
         return null;

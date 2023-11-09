@@ -9,8 +9,10 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
-import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -27,47 +29,47 @@ class PresentationRepositoryTest {
     }
 
     @Test
-    void findByIdReturnNotNull(){
+    void findByIdReturnNotNull() {
         Optional<Presentation> ans = presentationRepository.findById(8L);
         assertNotNull(ans);
     }
 
     @Test
-    void findByIdReturnAnElement(){
+    void findByIdReturnAnElement() {
         Optional<Presentation> ans = presentationRepository.findById(8L);
         assertFalse(ans.isEmpty());
     }
 
     @Test
-    void findByIdReturnObjectActualId(){
+    void findByIdReturnObjectActualId() {
         Optional<Presentation> ans = presentationRepository.findById(8L);
         Presentation fAns = ans.get();
-        assertEquals(fAns.getId(),8L);
+        assertEquals(fAns.getId(), 8L);
     }
 
     @Test
-    void findTopByProjectIdAndReviewedReturnNotNull(){
+    void findTopByProjectIdAndReviewedReturnNotNull() {
         Optional<Presentation> ans = presentationRepository.findTopByProjectIdAndReviewed(1L, true);
         assertNotNull(ans);
     }
 
     @Test
-    void findTopByProjectIdAndReviewedReturnAnElement(){
+    void findTopByProjectIdAndReviewedReturnAnElement() {
         Optional<Presentation> ans = presentationRepository.findTopByProjectIdAndReviewed(1L, true);
         assertFalse(ans.isEmpty());
     }
 
     @Test
-    void findTopByProjectIdAndReviewedReturnAnything(){
+    void findTopByProjectIdAndReviewedReturnAnything() {
         Optional<Presentation> ans = presentationRepository.findTopByProjectIdAndReviewed(2L, true);
         assertTrue(ans.isEmpty());
     }
 
     @Test
-    void findTopByProjectIdAndReviewedReturnAnythingReturnObjectActualId(){
+    void findTopByProjectIdAndReviewedReturnAnythingReturnObjectActualId() {
         Optional<Presentation> ans = presentationRepository.findTopByProjectIdAndReviewed(1L, true);
         Presentation fAns = ans.get();
-        assertEquals(fAns.getId(),8L);
+        assertEquals(fAns.getId(), 8L);
     }
 
 

@@ -1,6 +1,5 @@
 package backend.siptis.model.entity.projectManagement;
 
-import backend.siptis.auth.entity.SiptisUser;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;

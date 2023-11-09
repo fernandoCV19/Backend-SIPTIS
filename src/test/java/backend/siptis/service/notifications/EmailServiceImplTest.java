@@ -6,7 +6,6 @@ import com.icegreen.greenmail.smtp.SmtpServer;
 import com.icegreen.greenmail.util.GreenMailUtil;
 import com.icegreen.greenmail.util.ServerSetupTest;
 import jakarta.mail.MessagingException;
-//import jakarta.mail.internet.MimeMessage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,25 +16,24 @@ import org.springframework.test.annotation.DirtiesContext;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 @SpringBootTest//(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class EmailServiceImplTest {
+    @RegisterExtension
+    static GreenMailExtension greenMail = new GreenMailExtension(ServerSetupTest.SMTP)
+            .withConfiguration(GreenMailConfiguration
+                    .aConfig()
+                    .withUser("siptis.umss@gmail.com", "ftryberzfpkddfvj"));
     private final EmailServiceImpl emailServiceImpl;
 
     @Autowired
     public EmailServiceImplTest(EmailServiceImpl emailServiceImpl) {
         this.emailServiceImpl = emailServiceImpl;
     }
-    @RegisterExtension
-    static GreenMailExtension greenMail = new GreenMailExtension(ServerSetupTest.SMTP)
-            .withConfiguration(GreenMailConfiguration
-                    .aConfig()
-                    .withUser("siptis.umss@gmail.com", "ftryberzfpkddfvj"));
 
     @Test
     void sendPersonalActivities() {
@@ -46,13 +44,13 @@ public class EmailServiceImplTest {
         SmtpServer s = greenMail.getSmtp();
         emailServiceImpl.sendGeneralActivities();
 
-            MimeMessage[] receivedMessages = greenMail.getReceivedMessages();
-            assertEquals(1, receivedMessages.length);
+        MimeMessage[] receivedMessages = greenMail.getReceivedMessages();
+        assertEquals(1, receivedMessages.length);
 
-            MimeMessage receivedMessage = receivedMessages[0];
-            assertEquals("Hello GreenMail!", GreenMailUtil.getBody(receivedMessage));
-            assertEquals(1, receivedMessage.getAllRecipients().length);
-            assertEquals("test@greenmail.io", receivedMessage.getAllRecipients()[0].toString());
+        MimeMessage receivedMessage = receivedMessages[0];
+        assertEquals("Hello GreenMail!", GreenMailUtil.getBody(receivedMessage));
+        assertEquals(1, receivedMessage.getAllRecipients().length);
+        assertEquals("test@greenmail.io", receivedMessage.getAllRecipients()[0].toString());
     }
 
     @Test

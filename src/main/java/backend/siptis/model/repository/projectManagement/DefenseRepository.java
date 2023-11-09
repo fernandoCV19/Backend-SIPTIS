@@ -17,5 +17,5 @@ public interface DefenseRepository extends JpaRepository<Defense, Long> {
     @Modifying
     @Transactional
     @Query(value = "DELETE FROM Defense t WHERE t.id = :id", nativeQuery = true)
-    public void deleteADefense(@Param("id") Long id);
+    void deleteADefense(@Param("id") Long id);
 }

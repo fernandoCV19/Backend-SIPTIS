@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class UserInformationImpl implements UserInformationService{
+public class UserInformationImpl implements UserInformationService {
 
     private final UserInformationRepository userInformationRepository;
 
@@ -28,7 +28,7 @@ public class UserInformationImpl implements UserInformationService{
         return userInformationRepository.existsById(id.intValue());
     }
 
-    private UserInformation findUserInformationById(Long id){
+    private UserInformation findUserInformationById(Long id) {
         return userInformationRepository.findById(id).get();
     }
 
@@ -41,9 +41,9 @@ public class UserInformationImpl implements UserInformationService{
 
     @Override
     public ServiceAnswer registerUserInformation(RegisterStudentDTO dto) {
-        if(existUserByCi(dto.getCi()))
+        if (existUserByCi(dto.getCi()))
             return createAnswer(ServiceMessage.CI_ALREADY_EXIST, null);
-        if(existUserByCodSIS(dto.getCodSIS()))
+        if (existUserByCodSIS(dto.getCodSIS()))
             return createAnswer(ServiceMessage.COD_SIS_ALREADY_EXIST, null);
 
         UserInformation userInformation = new UserInformation();
@@ -59,7 +59,7 @@ public class UserInformationImpl implements UserInformationService{
 
     @Override
     public ServiceAnswer registerUserInformation(RegisterUserDTO dto) {
-        if(existUserByCi(dto.getCi()))
+        if (existUserByCi(dto.getCi()))
             return createAnswer(ServiceMessage.CI_ALREADY_EXIST, null);
 
         UserInformation userInformation = new UserInformation();
@@ -81,8 +81,8 @@ public class UserInformationImpl implements UserInformationService{
 
     @Override
     public ServiceAnswer adminEditUserInformation(UserInformation userInformation, AdminEditUserInformationDTO dto) {
-        if(!userInformation.getCi().equals(dto.getCi()))
-            if(existUserByCi(dto.getCi()))
+        if (!userInformation.getCi().equals(dto.getCi()))
+            if (existUserByCi(dto.getCi()))
                 return createAnswer(ServiceMessage.CI_ALREADY_EXIST, null);
 
         userInformation.setLastnames(dto.getLastnames());
@@ -96,8 +96,8 @@ public class UserInformationImpl implements UserInformationService{
 
     @Override
     public ServiceAnswer adminEditStudentInformation(UserInformation userInformation, AdminEditStudentInformationDTO dto) {
-        if(!userInformation.getCodSIS().equals(dto.getCodSIS()))
-            if(existUserByCodSIS(dto.getCodSIS()))
+        if (!userInformation.getCodSIS().equals(dto.getCodSIS()))
+            if (existUserByCodSIS(dto.getCodSIS()))
                 return createAnswer(ServiceMessage.COD_SIS_ALREADY_EXIST, null);
         userInformation.setCodSIS(dto.getCodSIS());
         return adminEditUserInformation(userInformation, dto);
@@ -105,7 +105,7 @@ public class UserInformationImpl implements UserInformationService{
     }
 
 
-    private ServiceAnswer createAnswer(ServiceMessage message, Object data){
+    private ServiceAnswer createAnswer(ServiceMessage message, Object data) {
         return ServiceAnswer.builder().serviceMessage(message)
                 .data(data).build();
 

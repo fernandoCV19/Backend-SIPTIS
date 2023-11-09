@@ -8,9 +8,10 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 
 @Service
-public class WppServiceImpl implements WppService{
-    private  final String ACCOUNT_SID = "AC63a9e1f2f62cb06f952edf71abd34c64";
-    private  final String AUTH_TOKEN = "8a3fc48f638be3bb35259af456886396";
+public class WppServiceImpl implements WppService {
+    private final String ACCOUNT_SID = "AC63a9e1f2f62cb06f952edf71abd34c64";
+    private final String AUTH_TOKEN = "8a3fc48f638be3bb35259af456886396";
+
     @Override
     public void sendPersonalActivitiesWpp() {
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
@@ -30,7 +31,7 @@ public class WppServiceImpl implements WppService{
         list.add(new PhoneNumber("whatsapp:+59170540185"));
         list.add(new PhoneNumber("whatsapp:+59170795935"));
 
-        for(int i = 0; i < list.size(); i++){
+        for (int i = 0; i < list.size(); i++) {
             message = Message.creator(list.get(i),
                     message.getFrom(),
                     "wpp").create();

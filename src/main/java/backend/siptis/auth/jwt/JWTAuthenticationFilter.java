@@ -19,13 +19,14 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     public Authentication attemptAuthentication(
             HttpServletRequest request,
-            HttpServletResponse response)  {
-        Credentials authCredentials =new Credentials();
+            HttpServletResponse response) {
+        Credentials authCredentials = new Credentials();
         try {
             authCredentials = new ObjectMapper().readValue(
                     request.getReader(), Credentials.class
             );
-        } catch (Exception e){ }
+        } catch (Exception e) {
+        }
 
         try {
             UsernamePasswordAuthenticationToken PAToken =
@@ -34,8 +35,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                             authCredentials.getPassword(),
                             Collections.emptyList());
             return getAuthenticationManager().authenticate(PAToken);
-        }catch (
-    AuthenticationException e){
+        } catch (
+                AuthenticationException e) {
             return null;
         }
     }
@@ -48,9 +49,9 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             FilterChain filterChain,
             Authentication authentication
     ) throws IOException {
-        UserInformationService.UserDetailImp userDetails= (UserInformationService.UserDetailImp) authentication.getPrincipal();
+        UserInformationService.UserDetailImp userDetails = (UserInformationService.UserDetailImp) authentication.getPrincipal();
         String token = JWTokenUtils.createToken(userDetails);
-        response.addHeader("Authorization", "Bearer "+ token);
+        response.addHeader("Authorization", "Bearer " + token);
         response.getWriter().flush();
     }
 

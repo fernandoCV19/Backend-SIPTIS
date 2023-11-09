@@ -1,21 +1,18 @@
 package backend.siptis.auth.entity;
 
-import backend.siptis.model.entity.userData.*;
-import backend.siptis.model.entity.userData.UserArea;
-import backend.siptis.model.entity.userData.Document;
-import backend.siptis.model.entity.userData.Schedule;
 import backend.siptis.model.entity.editorsAndReviewers.*;
 import backend.siptis.model.entity.projectManagement.Review;
+import backend.siptis.model.entity.userData.*;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
-
-import java.util.Collection;
 
 @Entity
 @Table(name = "siptis_user")
@@ -53,7 +50,7 @@ public class SiptisUser implements UserDetails {
     @JsonManagedReference
     private Set<UserArea> areas;
 
-    @ManyToMany(fetch = FetchType.LAZY,cascade = {
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE
     })
@@ -71,35 +68,35 @@ public class SiptisUser implements UserDetails {
     private RefreshToken refreshToken;
 
 
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "siptisUser")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "siptisUser")
     @JsonManagedReference
     private Collection<Schedule> availableSchedules;
 
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "siptisUser")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "siptisUser")
     @JsonManagedReference
     private Collection<Document> documents;
 
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "student")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "student")
     @JsonManagedReference
     private Collection<ProjectStudent> students;
 
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "supervisor")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "supervisor")
     @JsonManagedReference
     private Collection<ProjectSupervisor> supervisorOf;
 
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "tutor")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "tutor")
     @JsonManagedReference
     private Collection<ProjectTutor> tutorOf;
 
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "teacher")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "teacher")
     @JsonManagedReference
     private Collection<ProjectTeacher> teacherOf;
 
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "tribunal")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "tribunal")
     @JsonManagedReference
     private Collection<ProjectTribunal> tribunalOf;
 
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "siptisUser")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "siptisUser")
     @JsonManagedReference
     private Collection<Review> reviews;
 
@@ -110,21 +107,23 @@ public class SiptisUser implements UserDetails {
     }
 
     //-------------------------------------------------------------------
-    public void addRol(Role role){
+    public void addRol(Role role) {
         this.roles.add(role);
     }
 
-    public void addCareer(UserCareer career){
+    public void addCareer(UserCareer career) {
         this.career.add(career);
     }
 
-    public void addAreas(UserArea area){ this.areas.add(area);}
+    public void addAreas(UserArea area) {
+        this.areas.add(area);
+    }
 
     //-------------------------------------------------------------------
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        for(Role role : roles){
+        for (Role role : roles) {
             authorities.add(new SimpleGrantedAuthority(role.getName()));
         }
         return authorities;
@@ -135,19 +134,19 @@ public class SiptisUser implements UserDetails {
         return password;
     }
 
-    public ArrayList<Long> getProjects(){
+    public ArrayList<Long> getProjects() {
         Collection<ProjectStudent> projects = getStudents();
         ArrayList<Long> ids = new ArrayList<>();
-        if(projects == null)
+        if (projects == null)
             return ids;
-        for ( ProjectStudent project :  projects) {
+        for (ProjectStudent project : projects) {
             ids.add(project.getProject().getId());
         }
         return ids;
     }
 
-    public String getFullName(){
-        return userInformation.getNames() + " " +userInformation.getLastnames();
+    public String getFullName() {
+        return userInformation.getNames() + " " + userInformation.getLastnames();
     }
 
     @Override

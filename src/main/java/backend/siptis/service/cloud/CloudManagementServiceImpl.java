@@ -55,22 +55,22 @@ public class CloudManagementServiceImpl implements CloudManagementService {
 
     @Override
     public ByteArrayOutputStream getObject(String key) {
-        try{
-        S3Object s3Object = s3Client.getObject(BUCKET, key);
-        // ObjectMetadata metadata = s3Object.getObjectMetadata();
+        try {
+            S3Object s3Object = s3Client.getObject(BUCKET, key);
+            // ObjectMetadata metadata = s3Object.getObjectMetadata();
 
-        InputStream is = s3Object.getObjectContent();
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        int len;
-        byte[] buffer = new byte[4096];
-        while ((len = is.read(buffer, 0, buffer.length)) != -1) {
-            outputStream.write(buffer, 0, len);
+            InputStream is = s3Object.getObjectContent();
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            int len;
+            byte[] buffer = new byte[4096];
+            while ((len = is.read(buffer, 0, buffer.length)) != -1) {
+                outputStream.write(buffer, 0, len);
+            }
+
+            return outputStream;
+        } catch (IOException ioException) {
+            System.err.println(ioException);
         }
-
-        return outputStream;
-    } catch (IOException ioException) {
-        System.err.println(ioException);
-    }
 
         return null;
     }
@@ -109,13 +109,14 @@ public class CloudManagementServiceImpl implements CloudManagementService {
     }
 
     @Override
-    public String uploadDocumentToCloud(String filename){
+    public String uploadDocumentToCloud(String filename) {
         File document = new File(filename);
         String key = putObject(document, "Documentos/");
         return key;
     }
+
     @Override
-    public String uploadLetterToCloud(String filename, String projectName){
+    public String uploadLetterToCloud(String filename, String projectName) {
         File document = new File(filename);
         String key = putObject(document, "Cartas/");
         document.delete();

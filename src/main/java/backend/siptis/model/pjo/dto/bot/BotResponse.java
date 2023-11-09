@@ -16,7 +16,7 @@ public class BotResponse {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class Choice{
+    public static class Choice {
         private int index;
         private Message message;
     }

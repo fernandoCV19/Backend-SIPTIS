@@ -20,10 +20,13 @@ public interface UserInformationService {
     ServiceAnswer findById(Long id);
 
     ServiceAnswer registerUserInformation(RegisterStudentDTO dto);
+
     ServiceAnswer registerUserInformation(RegisterUserDTO dto);
 
     ServiceAnswer userEditInformation(UserInformation userInformation, UserEditInformationDTO dto);
+
     ServiceAnswer adminEditUserInformation(UserInformation userInformation, AdminEditUserInformationDTO dto);
+
     ServiceAnswer adminEditStudentInformation(UserInformation userInformation, AdminEditStudentInformationDTO dto);
 
 
@@ -46,8 +49,8 @@ public interface UserInformationService {
             return siptisUser.getId();
         }
 
-        public ArrayList<Long> getProjects(){
-            if(siptisUser.getProjects() != null)
+        public ArrayList<Long> getProjects() {
+            if (siptisUser.getProjects() != null)
                 return siptisUser.getProjects();
             return new ArrayList<Long>();
         }
@@ -77,13 +80,13 @@ public interface UserInformationService {
             return true;
         }
 
-        public String getRoles(){
+        public String getRoles() {
             Set<Role> roles = siptisUser.getRoles();
             List<String> rolesResponse = new ArrayList<>();
-            for (Role rol: roles) {
+            for (Role rol : roles) {
                 rolesResponse.add(rol.getName());
             }
-             return siptisUser.getRoles().toString();
+            return siptisUser.getRoles().toString();
         }
 
 

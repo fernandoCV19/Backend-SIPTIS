@@ -28,26 +28,27 @@ import static org.junit.jupiter.api.Assertions.*;
 public class SiptisUserServiceTest {
 
     private final SiptisUserService siptisUserService;
-    private LogInDTO logInDTO = new LogInDTO();
-    private RegisterAdminDTO adminDTO = new RegisterAdminDTO();
-    private RegisterStudentDTO studentDTO = new RegisterStudentDTO();
-    private RegisterUserDTO userDTO = new RegisterUserDTO();
-    private RolesListDTO rolesListDTO = new RolesListDTO();
-    private UserEditInformationDTO userEditInformationDTO = new UserEditInformationDTO();
-    private AdminEditUserInformationDTO adminEditUserInformationDTO = new AdminEditUserInformationDTO();
-    private AdminEditStudentInformationDTO adminEditStudentInformationDTO = new AdminEditStudentInformationDTO();
+    private final LogInDTO logInDTO = new LogInDTO();
+    private final RegisterAdminDTO adminDTO = new RegisterAdminDTO();
+    private final RegisterStudentDTO studentDTO = new RegisterStudentDTO();
+    private final RegisterUserDTO userDTO = new RegisterUserDTO();
+    private final RolesListDTO rolesListDTO = new RolesListDTO();
+    private final UserEditInformationDTO userEditInformationDTO = new UserEditInformationDTO();
+    private final AdminEditUserInformationDTO adminEditUserInformationDTO = new AdminEditUserInformationDTO();
+    private final AdminEditStudentInformationDTO adminEditStudentInformationDTO = new AdminEditStudentInformationDTO();
 
     @Autowired
-    public SiptisUserServiceTest(SiptisUserService siptisUserService){
+    public SiptisUserServiceTest(SiptisUserService siptisUserService) {
         this.siptisUserService = siptisUserService;
     }
 
-    private ServiceAnswer registerAdmin(){
+    private ServiceAnswer registerAdmin() {
         adminDTO.setEmail("admin@gmail.com");
         adminDTO.setPassword("12121212");
         return siptisUserService.registerAdmin(adminDTO);
     }
-    private ServiceAnswer registerStudent(){
+
+    private ServiceAnswer registerStudent() {
         studentDTO.setEmail("student@gmail.com");
         studentDTO.setNames("Name1 Name2");
         studentDTO.setLastnames("Lastname1 Lastname2");
@@ -58,7 +59,8 @@ public class SiptisUserServiceTest {
         studentDTO.setCareer("INFORMATICA");
         return siptisUserService.registerStudent(studentDTO);
     }
-    private ServiceAnswer registerStudent2(){
+
+    private ServiceAnswer registerStudent2() {
         studentDTO.setEmail("student2@gmail.com");
         studentDTO.setNames("Name1 Name2");
         studentDTO.setLastnames("Lastname1 Lastname2");
@@ -69,7 +71,8 @@ public class SiptisUserServiceTest {
         studentDTO.setCareer("SISTEMAS");
         return siptisUserService.registerStudent(studentDTO);
     }
-    private ServiceAnswer registerGeneralUser(){
+
+    private ServiceAnswer registerGeneralUser() {
         userDTO.setEmail("student@gmail.com");
         userDTO.setNames("Name1 Name2");
         userDTO.setLastnames("Lastname1 Lastname2");
@@ -79,14 +82,14 @@ public class SiptisUserServiceTest {
         return siptisUserService.registerUser(userDTO);
     }
 
-    private ServiceAnswer userEditInfo(){
+    private ServiceAnswer userEditInfo() {
         userEditInformationDTO.setBirthDate(new Date());
         userEditInformationDTO.setEmail("newmail@gmail.com");
         userEditInformationDTO.setCelNumber("6755556667");
         return siptisUserService.userEditPersonalInformation(1L, userEditInformationDTO);
     }
 
-    private ServiceAnswer adminEditStudentInfo(){
+    private ServiceAnswer adminEditStudentInfo() {
         adminEditStudentInformationDTO.setNames("Name Updated");
         adminEditStudentInformationDTO.setLastnames("Last name Updated");
         adminEditStudentInformationDTO.setEmail("newmail@gmail.com");
@@ -94,18 +97,18 @@ public class SiptisUserServiceTest {
         adminEditStudentInformationDTO.setCelNumber("77743874");
         adminEditStudentInformationDTO.setCodSIS("202400188");
         adminEditStudentInformationDTO.setBirthDate(new Date());
-        return siptisUserService.adminEditStudentInformation(1l, adminEditStudentInformationDTO);
+        return siptisUserService.adminEditStudentInformation(1L, adminEditStudentInformationDTO);
     }
 
-    private ServiceAnswer updateRoles(Long id){
-        List<Long> roles = List.of(4L,5L);
+    private ServiceAnswer updateRoles(Long id) {
+        List<Long> roles = List.of(4L, 5L);
         rolesListDTO.setRoles(roles);
         return siptisUserService.updateRoles(id, rolesListDTO);
     }
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void logInAdminSuccessTest(){
+    public void logInAdminSuccessTest() {
         registerAdmin();
         logInDTO.setEmail("admin@gmail.com");
         logInDTO.setPassword("12121212");
@@ -115,7 +118,7 @@ public class SiptisUserServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void logInAdminFailWrongEmailTest(){
+    public void logInAdminFailWrongEmailTest() {
         registerAdmin();
         logInDTO.setEmail("admin123@gmail.com");
         logInDTO.setPassword("12121212");
@@ -125,7 +128,7 @@ public class SiptisUserServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void logInAdminFailWrongPasswordTest(){
+    public void logInAdminFailWrongPasswordTest() {
         registerAdmin();
         logInDTO.setEmail("admin@gmail.com");
         logInDTO.setPassword("123123");
@@ -135,14 +138,14 @@ public class SiptisUserServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void registerAdminSuccessTest(){
+    public void registerAdminSuccessTest() {
         ServiceAnswer answer = registerAdmin();
         assertEquals(ServiceMessage.SUCCESSFUL_REGISTER, answer.getServiceMessage());
     }
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void registerSecondAdminSuccessTest(){
+    public void registerSecondAdminSuccessTest() {
         registerAdmin();
         adminDTO.setEmail("admin2@gmail.com");
         ServiceAnswer answer = siptisUserService.registerAdmin(adminDTO);
@@ -151,21 +154,21 @@ public class SiptisUserServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void registerGeneralUserSuccessTest(){
+    public void registerGeneralUserSuccessTest() {
         ServiceAnswer answer = registerGeneralUser();
         assertEquals(ServiceMessage.SUCCESSFUL_REGISTER, answer.getServiceMessage());
     }
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void registerStudentSuccessTest(){
+    public void registerStudentSuccessTest() {
         ServiceAnswer answer = registerStudent();
         assertEquals(ServiceMessage.SUCCESSFUL_REGISTER, answer.getServiceMessage());
     }
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void registerAdminFailedAlreadyExistingEmailTest(){
+    public void registerAdminFailedAlreadyExistingEmailTest() {
         registerAdmin();
         ServiceAnswer answer = siptisUserService.registerAdmin(adminDTO);
         assertEquals(ServiceMessage.EMAIL_ALREADY_EXIST, answer.getServiceMessage());
@@ -173,7 +176,7 @@ public class SiptisUserServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void registerStudentFailedAlreadyExistingEmailTest(){
+    public void registerStudentFailedAlreadyExistingEmailTest() {
         registerStudent();
         ServiceAnswer answer = siptisUserService.registerStudent(studentDTO);
         assertEquals(ServiceMessage.EMAIL_ALREADY_EXIST, answer.getServiceMessage());
@@ -181,7 +184,7 @@ public class SiptisUserServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void registerStudentFailedAlreadyExistingCiTest(){
+    public void registerStudentFailedAlreadyExistingCiTest() {
         registerStudent();
         studentDTO.setEmail("newStudent@gmail.com");
         ServiceAnswer answer = siptisUserService.registerStudent(studentDTO);
@@ -190,7 +193,7 @@ public class SiptisUserServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void registerStudentFailedAlreadyExistingCodSISTest(){
+    public void registerStudentFailedAlreadyExistingCodSISTest() {
         registerStudent();
         studentDTO.setEmail("newStudent@gmail.com");
         studentDTO.setCi("123123123");
@@ -201,7 +204,7 @@ public class SiptisUserServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void deleteUserSuccessTest(){
+    public void deleteUserSuccessTest() {
         registerAdmin();
         ServiceAnswer answer = siptisUserService.deleteUser(1L);
         assertEquals(ServiceMessage.USER_DELETED, answer.getServiceMessage());
@@ -209,7 +212,7 @@ public class SiptisUserServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void deleteUserFailedNotFoundUserTest(){
+    public void deleteUserFailedNotFoundUserTest() {
         ServiceAnswer answer = siptisUserService.deleteUser(1L);
         assertEquals(ServiceMessage.ID_DOES_NOT_EXIST, answer.getServiceMessage());
     }
@@ -217,14 +220,14 @@ public class SiptisUserServiceTest {
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Sql(scripts = {"/custom_imports/siptisUserTest.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    public void deleteUserFailedUserCannotBeDeletedTest(){
+    public void deleteUserFailedUserCannotBeDeletedTest() {
         ServiceAnswer answer = siptisUserService.deleteUser(1L);
         assertEquals(ServiceMessage.ERROR_CANNOT_DELETE_USER, answer.getServiceMessage());
     }
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void getUserPersonalInformationSuccessTest(){
+    public void getUserPersonalInformationSuccessTest() {
         registerStudent();
         ServiceAnswer answer = siptisUserService.getUserPersonalInformation(1L);
         assertEquals(ServiceMessage.OK, answer.getServiceMessage());
@@ -232,14 +235,14 @@ public class SiptisUserServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void getUserPersonalInformationFailNotFoundUserTest(){
+    public void getUserPersonalInformationFailNotFoundUserTest() {
         ServiceAnswer answer = siptisUserService.getUserPersonalInformation(1L);
         assertEquals(ServiceMessage.NOT_FOUND, answer.getServiceMessage());
     }
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void getUserPersonalInformationFailNotFoundUserInformationTest(){
+    public void getUserPersonalInformationFailNotFoundUserInformationTest() {
         registerAdmin();
         ServiceAnswer answer = siptisUserService.getUserPersonalInformation(1L);
         assertEquals(ServiceMessage.NOT_FOUND, answer.getServiceMessage());
@@ -247,7 +250,7 @@ public class SiptisUserServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void getStudentCareerByIdSuccessTest(){
+    public void getStudentCareerByIdSuccessTest() {
         registerStudent();
         ServiceAnswer answer = siptisUserService.getStudentCareerById(1L);
         assertEquals(ServiceMessage.OK, answer.getServiceMessage());
@@ -255,14 +258,14 @@ public class SiptisUserServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void getStudentCareerByIdFailNotFoundUserTest(){
+    public void getStudentCareerByIdFailNotFoundUserTest() {
         ServiceAnswer answer = siptisUserService.getStudentCareerById(1L);
         assertEquals(ServiceMessage.NOT_FOUND, answer.getServiceMessage());
     }
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void getStudentCareerByIdSuccessNotCareersTest(){
+    public void getStudentCareerByIdSuccessNotCareersTest() {
         registerAdmin();
         ServiceAnswer answer = siptisUserService.getStudentCareerById(1L);
         assertEquals(ServiceMessage.OK, answer.getServiceMessage());
@@ -270,7 +273,7 @@ public class SiptisUserServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void getUserAreasByIdSuccessTest(){
+    public void getUserAreasByIdSuccessTest() {
         registerGeneralUser();
         ServiceAnswer answer = siptisUserService.getUserAreasById(1L);
         assertEquals(ServiceMessage.OK, answer.getServiceMessage());
@@ -278,14 +281,14 @@ public class SiptisUserServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void getUserAreasByIdFailNotFoundUserTest(){
+    public void getUserAreasByIdFailNotFoundUserTest() {
         ServiceAnswer answer = siptisUserService.getUserAreasById(1L);
         assertEquals(ServiceMessage.NOT_FOUND, answer.getServiceMessage());
     }
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void updateTokenFailNotFoundTokenTest(){
+    public void updateTokenFailNotFoundTokenTest() {
         String token = "0816a7f9-1aa5-411a-9f83-b97622e94669";
         ServiceAnswer answer = siptisUserService.updateToken(token);
         assertEquals(ServiceMessage.NOT_FOUND, answer.getServiceMessage());
@@ -294,7 +297,7 @@ public class SiptisUserServiceTest {
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Sql(scripts = {"/custom_imports/siptisUserTest.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    public void updateTokenFailExpiredTokenTest(){
+    public void updateTokenFailExpiredTokenTest() {
         String token = "0816a7f9-1aa5-411a-9f83-b97622e94669";
         ServiceAnswer answer = siptisUserService.updateToken(token);
         assertEquals(ServiceMessage.EXPIRED_REFRESH_TOKEN, answer.getServiceMessage());
@@ -303,7 +306,7 @@ public class SiptisUserServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void getRolesByIdSuccessTest(){
+    public void getRolesByIdSuccessTest() {
         registerAdmin();
         ServiceAnswer answer = siptisUserService.getRolesById(1L);
         assertEquals(ServiceMessage.OK, answer.getServiceMessage());
@@ -311,14 +314,14 @@ public class SiptisUserServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void getRolesByIdFailNotFoundTest(){
+    public void getRolesByIdFailNotFoundTest() {
         ServiceAnswer answer = siptisUserService.getRolesById(1L);
         assertEquals(ServiceMessage.NOT_FOUND, answer.getServiceMessage());
     }
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void updateRolesSuccessTest(){
+    public void updateRolesSuccessTest() {
         registerGeneralUser();
         ServiceAnswer answer = updateRoles(1L);
         assertEquals(ServiceMessage.OK, answer.getServiceMessage());
@@ -326,7 +329,7 @@ public class SiptisUserServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void updateRolesFailStudentUserTest(){
+    public void updateRolesFailStudentUserTest() {
         registerStudent();
         ServiceAnswer answer = updateRoles(1L);
         assertEquals(ServiceMessage.ERROR, answer.getServiceMessage());
@@ -334,7 +337,7 @@ public class SiptisUserServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void updateRolesFailAdminUserTest(){
+    public void updateRolesFailAdminUserTest() {
         registerAdmin();
         ServiceAnswer answer = updateRoles(1L);
         assertEquals(ServiceMessage.ERROR, answer.getServiceMessage());
@@ -342,16 +345,16 @@ public class SiptisUserServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void updateRolesFailRoleNotFoundTest(){
+    public void updateRolesFailRoleNotFoundTest() {
         registerGeneralUser();
-        rolesListDTO.setRoles(List.of(4L,123L,5L));
+        rolesListDTO.setRoles(List.of(4L, 123L, 5L));
         ServiceAnswer answer = siptisUserService.updateRoles(1L, rolesListDTO);
         assertEquals(ServiceMessage.NOT_FOUND, answer.getServiceMessage());
     }
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void userEditPersonalInformationSuccessTest(){
+    public void userEditPersonalInformationSuccessTest() {
         registerStudent();
         ServiceAnswer answer = userEditInfo();
         assertEquals(ServiceMessage.OK, answer.getServiceMessage());
@@ -359,7 +362,7 @@ public class SiptisUserServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void userEditPersonalInformationFailUserNotFoundTest(){
+    public void userEditPersonalInformationFailUserNotFoundTest() {
         registerStudent();
         ServiceAnswer answer = siptisUserService.userEditPersonalInformation(123L, userEditInformationDTO);
         assertEquals(ServiceMessage.ID_DOES_NOT_EXIST, answer.getServiceMessage());
@@ -367,7 +370,7 @@ public class SiptisUserServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void userEditPersonalInformationFailEmailAlreadyExistTest(){
+    public void userEditPersonalInformationFailEmailAlreadyExistTest() {
         registerStudent();
         registerAdmin();
         userEditInfo();
@@ -378,7 +381,7 @@ public class SiptisUserServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void setAdminEditStudentInformationSuccessTest(){
+    public void setAdminEditStudentInformationSuccessTest() {
         registerStudent();
         ServiceAnswer answer = adminEditStudentInfo();
         assertEquals(ServiceMessage.OK, answer.getServiceMessage());
@@ -386,14 +389,14 @@ public class SiptisUserServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void setAdminEditStudentInformationFailUserNotFoundTest(){
+    public void setAdminEditStudentInformationFailUserNotFoundTest() {
         ServiceAnswer answer = adminEditStudentInfo();
         assertEquals(ServiceMessage.ID_DOES_NOT_EXIST, answer.getServiceMessage());
     }
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void setAdminEditStudentInformationFailEmailAlreadyExistTest(){
+    public void setAdminEditStudentInformationFailEmailAlreadyExistTest() {
         registerStudent();
         registerAdmin();
         adminEditStudentInfo();
@@ -404,7 +407,7 @@ public class SiptisUserServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void adminEditStudentInformationFailCodSISAlreadyExistTest(){
+    public void adminEditStudentInformationFailCodSISAlreadyExistTest() {
         registerStudent();
         registerStudent2();
         adminEditStudentInfo();
@@ -415,7 +418,7 @@ public class SiptisUserServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void adminEditStudentInformationFailCiAlreadyExistTest(){
+    public void adminEditStudentInformationFailCiAlreadyExistTest() {
         registerStudent();
         registerStudent2();
         adminEditStudentInfo();
@@ -426,7 +429,7 @@ public class SiptisUserServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void registerUserAsCareerDirectorSuccessTest(){
+    public void registerUserAsCareerDirectorSuccessTest() {
         registerGeneralUser();
         ServiceAnswer answer = siptisUserService.registerUserAsCareerDirector(1L, Roles.INF_DIRECTOR.toString());
         assertEquals(ServiceMessage.OK, answer.getServiceMessage());
@@ -434,7 +437,7 @@ public class SiptisUserServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void registerUserAsCareerDirectorFailUserNotFoundTest(){
+    public void registerUserAsCareerDirectorFailUserNotFoundTest() {
         registerGeneralUser();
         ServiceAnswer answer = siptisUserService.registerUserAsCareerDirector(1123L, Roles.INF_DIRECTOR.toString());
         assertEquals(ServiceMessage.ID_DOES_NOT_EXIST, answer.getServiceMessage());
@@ -442,7 +445,7 @@ public class SiptisUserServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void registerUserAsCareerDirectorFailCannotAssignStudentTest(){
+    public void registerUserAsCareerDirectorFailCannotAssignStudentTest() {
         registerStudent();
         ServiceAnswer answer = siptisUserService.registerUserAsCareerDirector(1L, Roles.INF_DIRECTOR.toString());
         assertEquals(ServiceMessage.CANNOT_ASSIGN_ROLE, answer.getServiceMessage());
@@ -450,7 +453,7 @@ public class SiptisUserServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void registerUserAsCareerDirectorFailCannotAssignAdminTest(){
+    public void registerUserAsCareerDirectorFailCannotAssignAdminTest() {
         registerAdmin();
         ServiceAnswer answer = siptisUserService.registerUserAsCareerDirector(1L, Roles.INF_DIRECTOR.toString());
         assertEquals(ServiceMessage.CANNOT_ASSIGN_ROLE, answer.getServiceMessage());
@@ -458,7 +461,7 @@ public class SiptisUserServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void registerUserAsCareerDirectorFailDirectorAlreadyExistTest(){
+    public void registerUserAsCareerDirectorFailDirectorAlreadyExistTest() {
         registerGeneralUser();
         siptisUserService.registerUserAsCareerDirector(1L, Roles.INF_DIRECTOR.toString());
         ServiceAnswer answer = siptisUserService.registerUserAsCareerDirector(1L, Roles.INF_DIRECTOR.toString());
@@ -467,7 +470,7 @@ public class SiptisUserServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void getDirectorPersonalInformationSuccessTest(){
+    public void getDirectorPersonalInformationSuccessTest() {
         registerGeneralUser();
         siptisUserService.registerUserAsCareerDirector(1L, Roles.INF_DIRECTOR.toString());
         ServiceAnswer answer = siptisUserService.getDirectorPersonalInformation(Roles.INF_DIRECTOR.toString());
@@ -476,14 +479,14 @@ public class SiptisUserServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void getDirectorPersonalInformationFailDirectorNotFoundTest(){
+    public void getDirectorPersonalInformationFailDirectorNotFoundTest() {
         ServiceAnswer answer = siptisUserService.getDirectorPersonalInformation(Roles.INF_DIRECTOR.toString());
         assertEquals(ServiceMessage.NOT_FOUND, answer.getServiceMessage());
     }
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void removeDirectorSuccessTest(){
+    public void removeDirectorSuccessTest() {
         registerGeneralUser();
         siptisUserService.registerUserAsCareerDirector(1L, Roles.INF_DIRECTOR.toString());
         ServiceAnswer answer = siptisUserService.removeDirectorRole(Roles.INF_DIRECTOR.toString());
@@ -492,14 +495,14 @@ public class SiptisUserServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void removeDirectorFailNotFoundTest(){
+    public void removeDirectorFailNotFoundTest() {
         ServiceAnswer answer = siptisUserService.removeDirectorRole(Roles.INF_DIRECTOR.toString());
         assertEquals(ServiceMessage.NOT_FOUND, answer.getServiceMessage());
     }
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void existCareerDirectorSuccessTest(){
+    public void existCareerDirectorSuccessTest() {
         registerGeneralUser();
         siptisUserService.registerUserAsCareerDirector(1L, Roles.INF_DIRECTOR.toString());
         boolean answer = siptisUserService.existCareerDirector(Roles.INF_DIRECTOR.toString());
@@ -508,7 +511,7 @@ public class SiptisUserServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void existCareerDirectorFailNotFounTest(){
+    public void existCareerDirectorFailNotFounTest() {
         boolean answer = siptisUserService.existCareerDirector(Roles.INF_DIRECTOR.toString());
         assertFalse(answer);
     }

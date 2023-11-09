@@ -50,14 +50,14 @@ public class UserAreaController {
         return createResponseEntity(answerService);
     }
 
-    private ResponseEntity<?> createResponseEntity(ServiceAnswer serviceAnswer){
+    private ResponseEntity<?> createResponseEntity(ServiceAnswer serviceAnswer) {
         Object data = serviceAnswer.getData();
         ServiceMessage messageService = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
-        if(okResponse.contains(messageService)){
+        if (okResponse.contains(messageService)) {
             httpStatus = HttpStatus.OK;
-        }else if (notFoundResponse.contains(messageService)){
+        } else if (notFoundResponse.contains(messageService)) {
             httpStatus = HttpStatus.NOT_FOUND;
         }
 

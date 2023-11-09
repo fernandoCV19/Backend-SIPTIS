@@ -12,9 +12,10 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class UserCareerServiceImpl implements UserCareerService{
+public class UserCareerServiceImpl implements UserCareerService {
 
     private final UserCareerRepository userCareerRepository;
+
     @Override
     public ServiceAnswer getAllCareers() {
 
@@ -32,14 +33,14 @@ public class UserCareerServiceImpl implements UserCareerService{
 
     @Override
     public ServiceAnswer getCareerByName(String name) {
-        if(!userCareerRepository.existsByName(name)){
+        if (!userCareerRepository.existsByName(name)) {
             return createResponse(ServiceMessage.ERROR, null);
         }
         return createResponse(ServiceMessage.OK, userCareerRepository.findUserCareerByName(name));
     }
 
 
-    private ServiceAnswer createResponse(ServiceMessage serviceMessage, Object data){
+    private ServiceAnswer createResponse(ServiceMessage serviceMessage, Object data) {
         return ServiceAnswer.builder().serviceMessage(
                 serviceMessage).data(data
         ).build();

@@ -20,7 +20,7 @@ public class ProjectToReviewSectionVO {
     private Integer numberOfDays;
     private Boolean reviewed;
 
-    public ProjectToReviewSectionVO(Project project, Boolean studentChanges,Integer numberOfDays, Boolean reviewed) {
+    public ProjectToReviewSectionVO(Project project, Boolean studentChanges, Integer numberOfDays, Boolean reviewed) {
         students = project.getStudents().stream().map((studentProject) -> studentProject.getStudent().getUserInformation().getNames() + " " + studentProject.getStudent().getUserInformation().getLastnames()).toList();
         projectName = project.getName();
         modality = project.getModality().getName();

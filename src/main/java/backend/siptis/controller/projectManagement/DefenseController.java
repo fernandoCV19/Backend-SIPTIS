@@ -19,10 +19,10 @@ public class DefenseController {
     private DefenseService defenseService;
 
     @GetMapping("/defensesByMonth/{month}")
-    public ResponseEntity<?> getPlaceReservationsByMonth(@PathVariable("month") Integer month){
+    public ResponseEntity<?> getPlaceReservationsByMonth(@PathVariable("month") Integer month) {
         ServiceAnswer serviceAnswer = defenseService.getDefenseByMonth(month);
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
-        if(serviceAnswer.getServiceMessage().equals(ServiceMessage.OK)){
+        if (serviceAnswer.getServiceMessage().equals(ServiceMessage.OK)) {
             httpStatus = HttpStatus.OK;
         }
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
@@ -30,10 +30,10 @@ public class DefenseController {
     }
 
     @PostMapping("/createDefense")
-    public ResponseEntity<?> createDefense(@RequestBody DefenseDTO defenseDTO){
+    public ResponseEntity<?> createDefense(@RequestBody DefenseDTO defenseDTO) {
         ServiceAnswer serviceAnswer = defenseService.registerDefense(defenseDTO);
         HttpStatus httpStatus = HttpStatus.OK;
-        if(serviceAnswer.getServiceMessage() != ServiceMessage.OK){
+        if (serviceAnswer.getServiceMessage() != ServiceMessage.OK) {
             httpStatus = HttpStatus.BAD_REQUEST;
         }
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
@@ -41,10 +41,10 @@ public class DefenseController {
     }
 
     @DeleteMapping("/removeDefense/{id}")
-    public ResponseEntity<?> removeDefenseFromAProject(@PathVariable("id") Long projectId){
+    public ResponseEntity<?> removeDefenseFromAProject(@PathVariable("id") Long projectId) {
         ServiceAnswer serviceAnswer = defenseService.removeDefense(projectId);
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
-        if(serviceAnswer.getServiceMessage().equals(ServiceMessage.OK)){
+        if (serviceAnswer.getServiceMessage().equals(ServiceMessage.OK)) {
             httpStatus = HttpStatus.OK;
         }
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();

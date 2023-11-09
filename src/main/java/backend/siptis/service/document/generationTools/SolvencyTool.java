@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -20,15 +19,17 @@ import java.time.format.DateTimeFormatter;
 @RequiredArgsConstructor
 public class SolvencyTool {
     private Path location;
-    public SolvencyTool (Path location){
+
+    public SolvencyTool(Path location) {
         this.location = location;
     }
-    public String generate(String completeName, String ci, String career)  {
+
+    public String generate(String completeName, String ci, String career) {
         LocalDate today = LocalDate.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String date = today.format(dateTimeFormatter);
-        String fileName =  completeName + "Solvencia"+".pdf";
-        fileName = fileName.replaceAll(" ","");
+        String fileName = completeName + "Solvencia" + ".pdf";
+        fileName = fileName.replaceAll(" ", "");
         try {
             Path temporal = location;
             PdfReader reader = new PdfReader(temporal.toString());
@@ -56,7 +57,7 @@ public class SolvencyTool {
             reader.close();
             // Files.delete(temporal);
             return fileName;
-        }catch(IOException de) {
+        } catch (IOException de) {
             System.err.println(de.getMessage());
         }
         return fileName;

@@ -2,7 +2,6 @@ package backend.siptis.model.pjo.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 
 @Getter

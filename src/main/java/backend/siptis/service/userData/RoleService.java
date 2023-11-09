@@ -7,6 +7,7 @@ import java.util.Set;
 public interface RoleService {
 
     ServiceAnswer getAllowedRoles();
+
     ServiceAnswer getRoleByName(String name);
 
     Set<String> assignableRoles();

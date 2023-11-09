@@ -3,15 +3,11 @@ package backend.siptis.controller.userData;
 import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.model.pjo.dto.userDataDTO.UserSelectedAreasDTO;
 import backend.siptis.model.pjo.dto.authentication.RefreshTokenDTO;
+import backend.siptis.model.pjo.dto.notifications.LogInDTO;
 import backend.siptis.model.pjo.dto.userDataDTO.*;
-import backend.siptis.model.pjo.dto.userDataDTO.RegisterStudentDTO;
-import backend.siptis.model.pjo.dto.userDataDTO.RegisterUserDTO;
-import backend.siptis.service.userData.RefreshTokenService;
 import backend.siptis.service.userData.SiptisUserService;
 import jakarta.validation.Valid;
-import backend.siptis.model.pjo.dto.notifications.LogInDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -34,7 +30,7 @@ public class SiptisUserController {
     private final Set<ServiceMessage> okResponse = new HashSet<>(
             List.of(ServiceMessage.OK, ServiceMessage.SUCCESSFUL_REGISTER, ServiceMessage.USER_DELETED));
     private final Set<ServiceMessage> badRequestResponse = new HashSet<>(
-            List.of(ServiceMessage.ERROR_REGISTER_ACCOUNT,ServiceMessage.EMAIL_ALREADY_EXIST,
+            List.of(ServiceMessage.ERROR_REGISTER_ACCOUNT, ServiceMessage.EMAIL_ALREADY_EXIST,
                     ServiceMessage.CI_ALREADY_EXIST, ServiceMessage.COD_SIS_ALREADY_EXIST,
                     ServiceMessage.ERROR_VALIDATION, ServiceMessage.EMAIL_ALREADY_EXIST,
                     ServiceMessage.COD_SIS_ALREADY_EXIST, ServiceMessage.CI_ALREADY_EXIST,
@@ -63,7 +59,7 @@ public class SiptisUserController {
 
     @PostMapping("/register/general")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterUserDTO dto ) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterUserDTO dto) {
         ServiceAnswer user = siptisUserService.registerUser(dto);
         return createResponseEntity(user);
     }
@@ -282,8 +278,8 @@ public class SiptisUserController {
     ResponseEntity<?> registerCareerDirector(@PathVariable String career, @PathVariable int userId) {
         Long id = Long.valueOf(userId);
         String directorRole = "SIS_DIRECTOR";
-        if(career.equals("informatica")){
-            directorRole =  "INF_DIRECTOR";
+        if (career.equals("informatica")) {
+            directorRole = "INF_DIRECTOR";
         }
         ServiceAnswer answer = siptisUserService.registerUserAsCareerDirector(id, directorRole);
         return createResponseEntity(answer);
@@ -293,8 +289,8 @@ public class SiptisUserController {
     @PreAuthorize("hasAuthority('ADMIN')")
     ResponseEntity<?> getDirectorInfo(@PathVariable String career) {
         String directorRole = "SIS_DIRECTOR";
-        if(career.equals("informatica")){
-            directorRole =  "INF_DIRECTOR";
+        if (career.equals("informatica")) {
+            directorRole = "INF_DIRECTOR";
         }
         ServiceAnswer answer = siptisUserService.getDirectorPersonalInformation(directorRole);
         return createResponseEntity(answer);
@@ -304,8 +300,8 @@ public class SiptisUserController {
     @PreAuthorize("hasAuthority('ADMIN')")
     ResponseEntity<?> removeDirector(@PathVariable String career) {
         String directorRole = "SIS_DIRECTOR";
-        if(career.equals("informatica")){
-            directorRole =  "INF_DIRECTOR";
+        if (career.equals("informatica")) {
+            directorRole = "INF_DIRECTOR";
         }
         ServiceAnswer answer = siptisUserService.removeDirectorRole(directorRole);
         return createResponseEntity(answer);
@@ -331,7 +327,7 @@ public class SiptisUserController {
         ServiceMessage messageService = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
-        if(okResponse.contains(messageService))
+        if (okResponse.contains(messageService))
             httpStatus = HttpStatus.OK;
 
         if (messageService == ServiceMessage.NOT_FOUND || messageService == ServiceMessage.ERROR)

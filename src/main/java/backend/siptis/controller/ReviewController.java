@@ -19,10 +19,10 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @PostMapping("/createReview")
-    ResponseEntity<?> attachFile (@RequestParam Long projectId, @RequestParam Long userId, @RequestParam MultipartFile file, @RequestParam String commentary) {
+    ResponseEntity<?> attachFile(@RequestParam Long projectId, @RequestParam Long userId, @RequestParam MultipartFile file, @RequestParam String commentary) {
         ServiceAnswer serviceAnswer = reviewService.addReview(projectId, userId, file, commentary);
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
-        if(serviceAnswer.getServiceMessage().equals(ServiceMessage.OK)){
+        if (serviceAnswer.getServiceMessage().equals(ServiceMessage.OK)) {
             httpStatus = HttpStatus.OK;
         }
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();

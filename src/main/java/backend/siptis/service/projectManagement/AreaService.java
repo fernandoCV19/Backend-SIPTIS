@@ -1,7 +1,6 @@
 package backend.siptis.service.projectManagement;
 
 import backend.siptis.commons.ServiceAnswer;
-import backend.siptis.model.entity.userData.UserArea;
 import backend.siptis.model.pjo.dto.generalInformation.userArea.CreateAreaDTO;
 
 public interface AreaService {

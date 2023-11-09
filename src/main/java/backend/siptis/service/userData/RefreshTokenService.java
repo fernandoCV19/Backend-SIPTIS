@@ -2,7 +2,6 @@ package backend.siptis.service.userData;
 
 import backend.siptis.auth.entity.RefreshToken;
 import backend.siptis.auth.entity.SiptisUser;
-import backend.siptis.commons.ServiceAnswer;
 
 public interface RefreshTokenService {
 

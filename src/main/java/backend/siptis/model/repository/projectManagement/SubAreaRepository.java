@@ -11,6 +11,7 @@ public interface SubAreaRepository extends JpaRepository<SubArea, Integer> {
     List<SubArea> findAll();
 
     boolean existsSubAreaById(Long id);
+
     boolean existsSubAreaByName(String name);
 
     Optional<SubArea> findById(Long id);

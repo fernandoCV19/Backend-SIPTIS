@@ -3,7 +3,6 @@ package backend.siptis.service.projectManagement;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.projectManagement.NewProjectDTO;
-import backend.siptis.service.semester.SemesterInformationService;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -33,12 +32,12 @@ class ProjectServiceTest {
         this.projectService = projectService;
     }
 
-    private ServiceAnswer createNewProjectDTO(){
-        List<Long> students = List.of(1l);
-        List<Long> tutors = List.of(3l);
-        List<Long> teachers = List.of(7l);
-        List<Long> areas = List.of(1l);
-        List<Long> subAreas = List.of(1l);
+    private ServiceAnswer createNewProjectDTO() {
+        List<Long> students = List.of(1L);
+        List<Long> tutors = List.of(3L);
+        List<Long> teachers = List.of(7L);
+        List<Long> areas = List.of(1L);
+        List<Long> subAreas = List.of(1L);
         newProjectDTO.setName("PROJECT FOR TEST");
         newProjectDTO.setModalityId(1L);
         newProjectDTO.setStudentsId(students);
@@ -53,36 +52,36 @@ class ProjectServiceTest {
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Sql(scripts = {"/custom_imports/projectTest.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    void createProjectSuccessTest(){
-        ServiceAnswer answer =  createNewProjectDTO();
+    void createProjectSuccessTest() {
+        ServiceAnswer answer = createNewProjectDTO();
         assertEquals(ServiceMessage.SUCCESSFUL_PROJECT_REGISTER, answer.getServiceMessage());
     }
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Sql(scripts = {"/custom_imports/projectTest.sql", "/custom_imports/delete_semester.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    void createProjectFailNoSemesterTest(){
-        ServiceAnswer answer =  createNewProjectDTO();
+    void createProjectFailNoSemesterTest() {
+        ServiceAnswer answer = createNewProjectDTO();
         assertEquals(ServiceMessage.NO_CURRENT_SEMESTER, answer.getServiceMessage());
     }
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Sql(scripts = {"/custom_imports/projectTest.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    void createProjectFailNameAlreadyExistTest(){
+    void createProjectFailNameAlreadyExistTest() {
         createNewProjectDTO();
-        ServiceAnswer answer =  createNewProjectDTO();
+        ServiceAnswer answer = createNewProjectDTO();
         assertEquals(ServiceMessage.PROJECT_NAME_ALREADY_EXIST, answer.getServiceMessage());
     }
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Sql(scripts = {"/custom_imports/projectTest.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    void createProjectFailModalityDoesNotExistTest(){
+    void createProjectFailModalityDoesNotExistTest() {
         createNewProjectDTO();
         newProjectDTO.setName("new name");
         newProjectDTO.setModalityId(123L);
-        ServiceAnswer answer =  projectService.createProject(newProjectDTO);
+        ServiceAnswer answer = projectService.createProject(newProjectDTO);
         assertEquals(ServiceMessage.MODALITY_DOES_NOT_EXIST, answer.getServiceMessage());
     }
 

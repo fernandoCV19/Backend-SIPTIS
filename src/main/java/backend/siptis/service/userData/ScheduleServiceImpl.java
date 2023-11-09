@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @AllArgsConstructor
 @Service
-public class ScheduleServiceImpl implements ScheduleService{
+public class ScheduleServiceImpl implements ScheduleService {
 
     private final ProjectRepository projectRepository;
 
@@ -23,7 +23,7 @@ public class ScheduleServiceImpl implements ScheduleService{
     @Override
     public ServiceAnswer getAllSchedulesFromAProject(Long projectId) {
         Optional<Project> projectOptional = projectRepository.findById(projectId);
-        if(projectOptional.isEmpty()){
+        if (projectOptional.isEmpty()) {
             return new ServiceAnswer(ServiceMessage.ID_DOES_NOT_EXIST, null);
         }
         Project project = projectOptional.get();

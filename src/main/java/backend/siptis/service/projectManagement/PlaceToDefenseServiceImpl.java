@@ -15,14 +15,14 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class PlaceToDefenseServiceImpl implements PlaceToDefenseService{
+public class PlaceToDefenseServiceImpl implements PlaceToDefenseService {
 
     private final PlaceToDefenseRepository placeToDefenseRepository;
 
     @Override
     public ServiceAnswer getReservedDates() {
         List<PlaceToDefense> query = placeToDefenseRepository.findAll();
-        List <PlaceWithReservedDateVO> reservedDates = query.stream().filter(placeToDefense -> !placeToDefense.getDefenses().isEmpty()).map(PlaceWithReservedDateVO::new).toList();
+        List<PlaceWithReservedDateVO> reservedDates = query.stream().filter(placeToDefense -> !placeToDefense.getDefenses().isEmpty()).map(PlaceWithReservedDateVO::new).toList();
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(reservedDates).build();
     }
 

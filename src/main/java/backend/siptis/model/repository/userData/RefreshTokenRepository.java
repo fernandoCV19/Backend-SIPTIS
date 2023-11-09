@@ -3,6 +3,7 @@ package backend.siptis.model.repository.userData;
 import backend.siptis.auth.entity.RefreshToken;
 import backend.siptis.auth.entity.SiptisUser;
 import org.springframework.data.jpa.repository.JpaRepository;
+
 import java.util.Optional;
 
 public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long> {

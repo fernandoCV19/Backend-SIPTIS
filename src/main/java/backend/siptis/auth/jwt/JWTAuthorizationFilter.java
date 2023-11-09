@@ -15,6 +15,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+
 import java.io.IOException;
 
 @Component
@@ -27,19 +28,19 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
 
-        String bearerToken =request.getHeader("Authorization");
-        try{
-            if(bearerToken != null && bearerToken.startsWith("Bearer ")){
-                String token =bearerToken.replace("Bearer ", "");
-                if(JWTokenUtils.validateJwtToken(token)){
+        String bearerToken = request.getHeader("Authorization");
+        try {
+            if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+                String token = bearerToken.replace("Bearer ", "");
+                if (JWTokenUtils.validateJwtToken(token)) {
                     UsernamePasswordAuthenticationToken
                             usernamePAT = JWTokenUtils.getAuthentication(token);
                     SecurityContextHolder.getContext().setAuthentication(usernamePAT);
-                }else{
+                } else {
                 }
             }
             filterChain.doFilter(request, response);
-        }catch(ExpiredJwtException ex){
+        } catch (ExpiredJwtException ex) {
             ObjectMapper mapper = new ObjectMapper();
             ResponseDTO dto = new ResponseDTO();
             dto.setData("");
@@ -47,7 +48,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             response.setContentType("application/json;charset=UTF-8");
             response.setStatus(401);
             response.getWriter().write(mapper.writeValueAsString(dto));
-        }catch(MalformedJwtException ex){
+        } catch (MalformedJwtException ex) {
             ObjectMapper mapper = new ObjectMapper();
             ResponseDTO dto = new ResponseDTO();
             dto.setData("");
@@ -55,7 +56,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             response.setContentType("application/json;charset=UTF-8");
             response.setStatus(401);
             response.getWriter().write(mapper.writeValueAsString(dto));
-        }catch(UnsupportedJwtException ex){
+        } catch (UnsupportedJwtException ex) {
             ObjectMapper mapper = new ObjectMapper();
             ResponseDTO dto = new ResponseDTO();
             dto.setData("");
@@ -63,7 +64,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             response.setContentType("application/json;charset=UTF-8");
             response.setStatus(401);
             response.getWriter().write(mapper.writeValueAsString(dto));
-        }catch(IllegalArgumentException ex){
+        } catch (IllegalArgumentException ex) {
             ObjectMapper mapper = new ObjectMapper();
             ResponseDTO dto = new ResponseDTO();
             dto.setData("");
@@ -71,7 +72,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             response.setContentType("application/json;charset=UTF-8");
             response.setStatus(401);
             response.getWriter().write(mapper.writeValueAsString(dto));
-        }catch(SignatureException ex){
+        } catch (SignatureException ex) {
             ObjectMapper mapper = new ObjectMapper();
             ResponseDTO dto = new ResponseDTO();
             dto.setData("");
@@ -79,7 +80,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             response.setContentType("application/json;charset=UTF-8");
             response.setStatus(401);
             response.getWriter().write(mapper.writeValueAsString(dto));
-        }catch(UserNotFoundException ex){
+        } catch (UserNotFoundException ex) {
             ObjectMapper mapper = new ObjectMapper();
             ResponseDTO dto = new ResponseDTO();
             dto.setData("");

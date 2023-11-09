@@ -1,8 +1,5 @@
 package backend.siptis.model.pjo.dto.projectManagement;
 
-import backend.siptis.commons.Roles;
-import backend.siptis.commons.ServiceAnswer;
-import backend.siptis.commons.ServiceMessage;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -21,7 +18,7 @@ public class NewProjectDTO {
     private String name;
     @NotNull(message = "INVALID_NAME")
     private Long modalityId;
-    
+
     @NotNull(message = "INVALID_PROJECT_STUDENTS_VALUE")
     @NotEmpty(message = "INVALID_PROJECT_STUDENTS_VALUE")
     private List<Long> studentsId;

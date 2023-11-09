@@ -20,35 +20,36 @@ import static org.junit.jupiter.api.Assertions.*;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class UserAreaServiceTest {
 
+    private static final CreateAreaDTO createAreaDTO = new CreateAreaDTO();
     private final UserAreaService userAreaService;
-    private static CreateAreaDTO createAreaDTO = new CreateAreaDTO();
 
     @Autowired
-    public UserAreaServiceTest(UserAreaService userAreaService){
+    public UserAreaServiceTest(UserAreaService userAreaService) {
         this.userAreaService = userAreaService;
     }
 
-    private ServiceAnswer registerArea(){
+    private ServiceAnswer registerArea() {
         createAreaDTO.setName("New Area Example");
         return userAreaService.createUserArea(createAreaDTO);
     }
+
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void getAllAreasListSuccessTest(){
+    public void getAllAreasListSuccessTest() {
         ServiceAnswer answer = userAreaService.getAllUserAreas();
         assertEquals(ServiceMessage.OK, answer.getServiceMessage());
     }
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void createAreaSuccessTest(){
+    public void createAreaSuccessTest() {
         ServiceAnswer answer = registerArea();
         assertEquals(ServiceMessage.AREA_CREATED, answer.getServiceMessage());
     }
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void createAreaFailAlreadyExistingAreaNameTest(){
+    public void createAreaFailAlreadyExistingAreaNameTest() {
         registerArea();
         ServiceAnswer answer = registerArea();
         assertEquals(ServiceMessage.AREA_ALREADY_EXIST, answer.getServiceMessage());
@@ -56,7 +57,7 @@ public class UserAreaServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void createAreaFailInvalidAreaNameTest(){
+    public void createAreaFailInvalidAreaNameTest() {
         createAreaDTO.setName("N");
         ServiceAnswer answer = userAreaService.createUserArea(createAreaDTO);
         assertEquals(ServiceMessage.INVALID_AREA_NAME, answer.getServiceMessage());
@@ -64,29 +65,30 @@ public class UserAreaServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void deleteAreaSuccessTest(){
+    public void deleteAreaSuccessTest() {
         registerArea();
-        ServiceAnswer answer = userAreaService.deleteUserArea(1l);
+        ServiceAnswer answer = userAreaService.deleteUserArea(1L);
         assertEquals(ServiceMessage.AREA_DELETED, answer.getServiceMessage());
     }
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void deleteAreaFailNotFoundAreaTest(){
-        ServiceAnswer answer = userAreaService.deleteUserArea(1l);
+    public void deleteAreaFailNotFoundAreaTest() {
+        ServiceAnswer answer = userAreaService.deleteUserArea(1L);
         assertEquals(ServiceMessage.AREA_NOT_FOUND, answer.getServiceMessage());
     }
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void getAreaByIdSuccessTest(){
+    public void getAreaByIdSuccessTest() {
         registerArea();
         UserArea userArea = userAreaService.getUserAreaById(1);
         assertNotNull(userArea);
     }
+
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void getAreaByIdFailNotFoundTest(){
+    public void getAreaByIdFailNotFoundTest() {
         UserArea userArea = userAreaService.getUserAreaById(1);
         assertNull(userArea);
     }

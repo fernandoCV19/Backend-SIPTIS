@@ -3,7 +3,6 @@ package backend.siptis.service.projectManagement;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.projectManagement.Area;
-import backend.siptis.model.entity.userData.UserArea;
 import backend.siptis.model.pjo.dto.generalInformation.userArea.CreateAreaDTO;
 import backend.siptis.model.repository.projectManagement.AreaRepository;
 import jakarta.transaction.Transactional;
@@ -35,19 +34,19 @@ public class AreaServiceImpl implements AreaService {
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.AREA_CREATED).data(area).build();
     }
 
-    private ServiceAnswer validateCreateArea(String name){
-        if(name == null || name.length()<2)
+    private ServiceAnswer validateCreateArea(String name) {
+        if (name == null || name.length() < 2)
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.INVALID_AREA_NAME).build();
-        if(areaRepository.existsAreaByName(name))
+        if (areaRepository.existsAreaByName(name))
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.AREA_ALREADY_EXIST).data(null).build();
         return null;
     }
 
-    private ServiceAnswer validateDeleteArea(Long id){
-        if(!areaRepository.existsAreaById(id))
+    private ServiceAnswer validateDeleteArea(Long id) {
+        if (!areaRepository.existsAreaById(id))
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.AREA_NOT_FOUND).data(null).build();
         Area area = areaRepository.findById(id.intValue()).get();
-        if(area.getProjects().size() > 0)
+        if (area.getProjects().size() > 0)
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.CANNOT_DELETE_AREA).data(null).build();
         return null;
     }

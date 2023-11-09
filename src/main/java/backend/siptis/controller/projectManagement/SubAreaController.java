@@ -4,7 +4,6 @@ import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.generalInformation.userArea.CreateAreaDTO;
-import backend.siptis.service.projectManagement.AreaService;
 import backend.siptis.service.projectManagement.SubAreaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -51,14 +50,14 @@ public class SubAreaController {
         return createResponseEntity(answerService);
     }
 
-    private ResponseEntity<?> createResponseEntity(ServiceAnswer serviceAnswer){
+    private ResponseEntity<?> createResponseEntity(ServiceAnswer serviceAnswer) {
         Object data = serviceAnswer.getData();
         ServiceMessage messageService = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
-        if(okResponse.contains(messageService)){
+        if (okResponse.contains(messageService)) {
             httpStatus = HttpStatus.OK;
-        }else if(notFoundResponse.contains(messageService))
+        } else if (notFoundResponse.contains(messageService))
             httpStatus = HttpStatus.NOT_FOUND;
 
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(data).message(messageService.toString()).build();

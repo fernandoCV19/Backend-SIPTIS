@@ -14,9 +14,9 @@ public class BotRequest {
     private String model;
     private List<Message> messages;
 
-    public BotRequest(String model, Message message){
+    public BotRequest(String model, Message message) {
         this.model = model;
         this.messages = new ArrayList<>();
-        messages.add(new Message(message.getRole() ,message.getContent()));
+        messages.add(new Message(message.getRole(), message.getContent()));
     }
 }
