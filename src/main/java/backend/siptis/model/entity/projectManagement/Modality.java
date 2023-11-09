@@ -9,7 +9,6 @@ import lombok.Setter;
 
 import java.util.Collection;
 
-@Data
 @Entity
 @Table(name = "modality")
 @Getter

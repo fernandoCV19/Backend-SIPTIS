@@ -1,7 +1,7 @@
 package backend.siptis.controller;
 
 import backend.siptis.commons.ControllerAnswer;
-import backend.siptis.commons.Phase;
+import backend.siptis.commons.PhaseName;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.service.projectManagement.PresentationService;
@@ -25,7 +25,7 @@ public class PresentationController {
     }
 
     @PostMapping("/create")
-    ResponseEntity<?> create(@RequestParam Long idProyecto, @RequestParam Phase fase) {
+    ResponseEntity<?> create(@RequestParam Long idProyecto, @RequestParam PhaseName fase) {
         ServiceAnswer respuestaServicio = presentationService.createPresentation(idProyecto, fase);
         return crearResponseEntityConPresentacion(respuestaServicio);
     }

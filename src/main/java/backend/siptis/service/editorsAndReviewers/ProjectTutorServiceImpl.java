@@ -1,6 +1,6 @@
 package backend.siptis.service.editorsAndReviewers;
 
-import backend.siptis.commons.Phase;
+import backend.siptis.commons.PhaseName;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectSupervisor;
@@ -96,7 +96,7 @@ public class ProjectTutorServiceImpl implements ProjectTutorService {
 
         Project project = query.getProject();
 
-        if (!project.getPhase().equals(Phase.REVIEWERS_PHASE.toString())) {
+        if (!project.getPhase().equals(PhaseName.REVIEWERS_PHASE.toString())) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_IS_ON_ANOTHER_PHASE).data(null).build();
         }
 
@@ -105,13 +105,18 @@ public class ProjectTutorServiceImpl implements ProjectTutorService {
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("THE PROJECT HAS CHANGED THE ACCEPTED PARAMETER").build();
     }
 
+    @Override
+    public ServiceAnswer getAllTutorProject(Long idTutor) {
+        return null;
+    }
+
     private ServiceAnswer verifyChangeOfFase(ProjectTutor query) {
         Project project = query.getProject();
         boolean allReviewersHaveAccepted = project.getSupervisors().stream().allMatch(ProjectSupervisor::getAccepted) &&
                 project.getTeachers().stream().allMatch(ProjectTeacher::getAccepted) && project.getTutors().stream().allMatch(ProjectTutor::getAccepted);
 
         if (allReviewersHaveAccepted) {
-            project.setPhase(Phase.ASSIGN_TRIBUNALS_PHASE.toString());
+            project.setPhase(PhaseName.ASSIGN_TRIBUNALS_PHASE.toString());
             projectRepository.save(project);
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("THE PROJECT HAS CHANGED TO THE PHASE OF TRIBUNALS").build();
         }

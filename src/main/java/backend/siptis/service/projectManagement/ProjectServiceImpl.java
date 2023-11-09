@@ -1,7 +1,7 @@
 package backend.siptis.service.projectManagement;
 
 import backend.siptis.auth.entity.SiptisUser;
-import backend.siptis.commons.Phase;
+import backend.siptis.commons.PhaseName;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.editorsAndReviewers.*;
@@ -358,6 +358,11 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    public ServiceAnswer getProjectById(Long id) {
+        return null;
+    }
+
+    @Override
     public ServiceAnswer getProjectInfoToAssignTribunals(Long idProject) {
         Optional<Project> query = projectRepository.findById(idProject);
         if (query.isEmpty()) {
@@ -405,13 +410,13 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
         List<Project> projectsToDefend = projectTribunalRepository
-                .findByTribunal_IdAndProject_PhaseAndDefensePointsNull(userId, Phase.DEFENSE_PHASE.toString())
+                .findByTribunal_IdAndProject_PhaseAndDefensePointsNull(userId, PhaseName.DEFENSE_PHASE.toString())
                 .stream()
                 .map(ProjectTribunal::getProject)
                 .toList();
 
         List<Project> projectsDefended = projectTribunalRepository
-                .findByTribunal_IdAndProject_PhaseAndDefensePointsNotNull(userId, Phase.DEFENSE_PHASE.toString())
+                .findByTribunal_IdAndProject_PhaseAndDefensePointsNotNull(userId, PhaseName.DEFENSE_PHASE.toString())
                 .stream()
                 .map(ProjectTribunal::getProject)
                 .toList();
@@ -430,7 +435,7 @@ public class ProjectServiceImpl implements ProjectService {
                 .map(ProjectCompleteInfoVO::new).toList();
 
         List<ProjectCompleteInfoVO> withoutTribunals = projects
-                .stream().filter(project -> project.getPhase().equals(Phase.ASSIGN_TRIBUNALS_PHASE.toString()))
+                .stream().filter(project -> project.getPhase().equals(PhaseName.ASSIGN_TRIBUNALS_PHASE.toString()))
                 .map(ProjectCompleteInfoVO::new).toList();
 
         ProjectsWithoutAndWithTribunalsVO data = new ProjectsWithoutAndWithTribunalsVO(withTribunals, withoutTribunals);
@@ -442,12 +447,12 @@ public class ProjectServiceImpl implements ProjectService {
         List<Project> projects = projectRepository.findAll();
         List<ProjectCompleteInfoVO> withDefense = projects
                 .stream()
-                .filter(project -> project.getDefense() != null && project.getPhase().equals(Phase.DEFENSE_PHASE.toString()) && project.getTotalDefensePoints() == null)
+                .filter(project -> project.getDefense() != null && project.getPhase().equals(PhaseName.DEFENSE_PHASE.toString()) && project.getTotalDefensePoints() == null)
                 .map(ProjectCompleteInfoVO::new)
                 .toList();
         List<ProjectCompleteInfoVO> withoutDefense = projects
                 .stream()
-                .filter(project -> project.getDefense() == null && project.getPhase().equals(Phase.DEFENSE_PHASE.toString()))
+                .filter(project -> project.getDefense() == null && project.getPhase().equals(PhaseName.DEFENSE_PHASE.toString()))
                 .map(ProjectCompleteInfoVO::new)
                 .toList();
         ProjectsWithoutAndWithoutDefensePlaceVO data = new ProjectsWithoutAndWithoutDefensePlaceVO(withDefense, withoutDefense);
