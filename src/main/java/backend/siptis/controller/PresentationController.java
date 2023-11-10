@@ -7,7 +7,6 @@ import backend.siptis.commons.ServiceMessage;
 import backend.siptis.service.projectManagement.PresentationService;
 import backend.siptis.service.userData.SiptisUserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +27,7 @@ public class PresentationController {
     ResponseEntity<?> create(@RequestHeader(name = "Authorization") String token, @RequestParam PhaseName phase) {
         ArrayList<?> projects = userAuthService.getProjectsFromToken(token);
         int projectId = (int) projects.get(0);
-        ServiceAnswer serviceAnswer = presentationService.createPresentation((long)projectId, phase);
+        ServiceAnswer serviceAnswer = presentationService.createPresentation((long) projectId, phase);
         return createResponseEntity(serviceAnswer);
     }
 
