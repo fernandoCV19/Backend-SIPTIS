@@ -24,9 +24,9 @@ public interface ProjectService {
 
     ServiceAnswer getPaginatedCompletedProjectsBySubArea(int pageNumber, int pageSize, String subArea);
 
-    ServiceAnswer getPaginatedCompletedProjectsByFilters(int pageNumber, int pageSize, String name, String period ,String modality, String area, String subArea);
+    ServiceAnswer getProjectsWithStandardFilter(int pageNumber, int pageSize, String name, String period);
 
-    ServiceAnswer getProjectsWithAdvancedFilter (int pageNumber, int pageSize, String name, String period ,String modality, String area, String subarea, String studentNames, String studentLastNames, String tutorNames, String tutorLastNames);
+    ServiceAnswer getProjectsWithAdvancedFilter(int pageNumber, int pageSize, String name, String period, String modality, String area, String subarea, String student, String tutor);
 
     ServiceAnswer getPresentations(Long projectId);
 

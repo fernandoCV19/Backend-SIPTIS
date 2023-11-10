@@ -49,6 +49,7 @@ public class UserInformationImpl implements UserInformationService {
         UserInformation userInformation = new UserInformation();
         userInformation.setNames(dto.getNames());
         userInformation.setLastnames(dto.getLastnames());
+        userInformation.setFullname(dto.getNames() + " " + dto.getLastnames());
         userInformation.setCi(dto.getCi());
         userInformation.setCelNumber(dto.getCelNumber());
         userInformation.setBirthDate(dto.getBirthDate());

@@ -1,7 +1,6 @@
 package backend.siptis.model.entity.projectManagement;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,7 +22,7 @@ public class Defense {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "place_to_defense_id")
-    @JsonManagedReference
+    @JsonBackReference
     private PlaceToDefense placeToDefense;
 
     @OneToOne(fetch = FetchType.LAZY)

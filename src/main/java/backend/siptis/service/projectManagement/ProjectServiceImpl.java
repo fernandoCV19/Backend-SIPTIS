@@ -245,9 +245,9 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ServiceAnswer getPaginatedCompletedProjectsByFilters(int pageNumber, int pageSize, String name, String period  ,String modality, String area, String subArea) {
+    public ServiceAnswer getProjectsWithStandardFilter(int pageNumber, int pageSize, String name, String period) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        Page<Project> projectPage = projectRepository.findAllWithFilters(pageable, name, period ,modality, area, subArea);
+        Page<Project> projectPage = projectRepository.standardFilter(pageable, name, period);
         if (projectPage.isEmpty())
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_PROJECTS).data(null).build();
 
@@ -297,9 +297,9 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ServiceAnswer getProjectsWithAdvancedFilter(int pageNumber, int pageSize, String name, String period, String modality, String area, String subarea, String studentNames, String studentLastNames, String tutorNames, String tutorLastNames) {
+    public ServiceAnswer getProjectsWithAdvancedFilter(int pageNumber, int pageSize, String name, String period, String modality, String area, String subarea, String student, String tutor) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        Page<Project> projectPage = projectRepository.advancedFilter(name, period ,modality, area, subarea, studentNames, studentLastNames, tutorLastNames, tutorLastNames , pageable);
+        Page<Project> projectPage = projectRepository.advancedFilter(name, period, modality, area, subarea, student, tutor, pageable);
         if (projectPage.isEmpty())
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_PROJECTS).data(null).build();
 

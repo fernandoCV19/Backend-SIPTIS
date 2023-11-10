@@ -81,7 +81,7 @@ public class PresentationServiceImpl implements PresentationService {
         List<Map<String, Object>> reviews = presentation
                 .getReviews()
                 .stream()
-                .map(review->{
+                .map(review -> {
                     Map<String, Object> jsonMap = new HashMap<>();
                     jsonMap.put("id", review.getId());
                     jsonMap.put("date", review.getDate());

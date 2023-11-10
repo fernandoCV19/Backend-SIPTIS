@@ -24,6 +24,7 @@ public class UserInformation {
 
     private String names;
     private String lastnames;
+    private String fullname;
     private String celNumber;
     private String ci;
     private Date birthDate;

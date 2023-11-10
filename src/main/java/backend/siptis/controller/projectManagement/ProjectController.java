@@ -57,7 +57,7 @@ public class ProjectController {
     public ResponseEntity<?> getPresentations(@RequestHeader(name = "Authorization") String token) {
         ArrayList<?> projects = userAuthService.getProjectsFromToken(token);
         int projectId = (int) projects.get(0);
-        ServiceAnswer serviceAnswer = projectService.getPresentations((long)projectId);
+        ServiceAnswer serviceAnswer = projectService.getPresentations((long) projectId);
         return createResponseEntity(serviceAnswer);
     }
 
@@ -131,37 +131,32 @@ public class ProjectController {
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
 
-    @GetMapping("/page/filter")
+    @GetMapping("/standard-filter")
     public ResponseEntity<?> getPaginatedProjectsByFilter(
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "5") int pageSize,
             @RequestParam(required = false) String name,
-            @RequestParam(required = false) String period,
-            @RequestParam(required = false) String modality,
-            @RequestParam(required = false) String area,
-            @RequestParam(required = false) String subarea
+            @RequestParam(required = false) String period
     ) {
-        ServiceAnswer serviceAnswer = projectService.getPaginatedCompletedProjectsByFilters(pageNumber, pageSize, name, period ,modality, area, subarea);
+        ServiceAnswer serviceAnswer = projectService.getProjectsWithStandardFilter(pageNumber, pageSize, name, period);
         HttpStatus httpStatus = HttpStatus.OK;
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
 
-    @GetMapping("/page/advanced-filter")
+    @GetMapping("/advanced-filter")
     public ResponseEntity<?> getProjectsWithAdvancedFilters(
             @RequestParam(defaultValue = "0") int pageNumber,
-            @RequestParam(defaultValue = "5") int pageSize,
+            @RequestParam(defaultValue = "6") int pageSize,
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String period,
             @RequestParam(required = false) String modality,
             @RequestParam(required = false) String area,
             @RequestParam(required = false) String subarea,
-            @RequestParam(required = false) String studentNames,
-            @RequestParam(required = false) String studentLastNames,
-            @RequestParam(required = false) String tutorNames,
-            @RequestParam(required = false) String tutorLastNames
+            @RequestParam(required = false) String student,
+            @RequestParam(required = false) String tutor
     ) {
-        ServiceAnswer serviceAnswer = projectService.getProjectsWithAdvancedFilter(pageNumber, pageSize, name, period ,modality, area, subarea, studentNames, studentLastNames, tutorNames, tutorLastNames);
+        ServiceAnswer serviceAnswer = projectService.getProjectsWithAdvancedFilter(pageNumber, pageSize, name, period, modality, area, subarea, student, tutor);
         HttpStatus httpStatus = HttpStatus.OK;
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
         return new ResponseEntity<>(controllerAnswer, httpStatus);

@@ -56,11 +56,8 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
             "JOIN p.subAreas s " +
             "WHERE p.defense IS NOT NULL " +
             "AND (:name IS NULL OR UPPER(p.name) LIKE CONCAT('%', UPPER(:name), '%'))  " +
-            "AND (:period IS NULL OR p.period = :period)" +
-            "AND (:modality IS NULL OR UPPER(m.name) LIKE CONCAT('%', UPPER(:modality), '%')) " +
-            "AND (:area IS NULL OR UPPER(a.name) LIKE CONCAT('%', UPPER(:area), '%')) " +
-            "AND (:subarea IS NULL OR UPPER(s.name) LIKE CONCAT('%', UPPER(:subarea), '%'))")
-    Page<Project> findAllWithFilters(Pageable pageable, @Param("name") String name, @Param("period") String period  ,@Param("modality") String modality, @Param("area") String area, @Param("subarea") String subarea);
+            "AND (:period IS NULL OR p.period = :period)")
+    Page<Project> standardFilter(Pageable pageable, @Param("name") String name, @Param("period") String period);
 
     @Query("""
             select distinct p from Project p 
@@ -69,18 +66,14 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
             left join p.students students 
             left join p.tutors tutors
             where p.defense is not null 
-            and ((?1) is null or upper(p.name) like upper(?1)) 
+            and ((?1) is null or upper(p.name) like concat('%',upper(?1),'%')) 
             and ((?2) is null or p.period = ?2)
-            and ((?3) is null or upper(p.modality.name) like upper(?3))
-            and ((?4) is null or upper(areas.name) like upper(?4)) 
-            and ((?5) is null or upper(subAreas.name) like upper(?5)) 
-            and ((?6) is null or upper(students.student.userInformation.names) like upper(?6)) 
-            and ((?7) is null or upper(students.student.userInformation.lastnames) like upper(?7))
-            and ((?8) is null or upper(tutors.tutor.userInformation.names) like upper(?8)) 
-            and ((?9) is null or upper(tutors.tutor.userInformation.lastnames) like upper(?9))""")
-    Page<Project> advancedFilter(@Nullable String name, @Nullable String period, @Nullable String name1, @Nullable String name2, @Nullable String name3, @Nullable String names, @Nullable String lastnames, @Nullable String names1, @Nullable String lastnames1, Pageable pageable);
-
-
+            and ((?3) is null or upper(p.modality.name) like concat('%',upper(?3),'%'))
+            and ((?4) is null or upper(areas.name) like concat('%',upper(?4),'%')) 
+            and ((?5) is null or upper(subAreas.name) like concat('%',upper(?5),'%')) 
+            and ((?6) is null or upper(students.student.userInformation.fullname) like concat('%',upper(?6),'%')) 
+            and ((?7) is null or upper(tutors.tutor.userInformation.fullname) like concat('%',upper(?7),'%')) """)
+    Page<Project> advancedFilter(@Nullable String name, @Nullable String period, @Nullable String modality, @Nullable String areas, @Nullable String subAreas, @Nullable String student, @Nullable String tutor, Pageable pageable);
 
     @Query(value = "SELECT  project.id AS id, project.name AS name, " +
             "project.perfil_path AS perfil, modality.name AS modality," +
