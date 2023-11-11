@@ -240,7 +240,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
         ProjectTeacher teacher = projectTeacherRepository.findByTeacherIdAndProjectId(dto.getUserId(), dto.getProjectId());
         if (teacher == null)
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
-        if (!teacher.getAccepted())
+        if (teacher.getAccepted() == null || !teacher.getAccepted())
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_APPROVED).data(null).build();
         SiptisUser user = teacher.getTeacher();
         String teacherName = user.getFullName();
@@ -281,8 +281,8 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
         ProjectTutor tutor = projectTutorRepository.findByTutorIdAndProjectId(dto.getUserId(), dto.getProjectId());
         if (tutor == null)
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
-        if (!tutor.getAccepted())
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.CANNOT_GENERATE_LETTER).data(null).build();
+        if (tutor.getAccepted() == null || !tutor.getAccepted())
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_APPROVED).data(null).build();
         SiptisUser user = tutor.getTutor();
         String tutorName = user.getFullName();
         Collection<ProjectStudent> students = project.getStudents();
@@ -326,8 +326,8 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
         ProjectSupervisor supervisor = projectSupervisorRepository.findBySupervisorIdAndProjectId(dto.getUserId(), dto.getProjectId());
         if (supervisor == null)
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
-        if (!supervisor.getAccepted())
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.CANNOT_GENERATE_LETTER).data(null).build();
+        if (supervisor.getAccepted() == null || !supervisor.getAccepted())
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_APPROVED).data(null).build();
         SiptisUser user = supervisor.getSupervisor();
         String supervisorName = user.getFullName();
         Collection<ProjectStudent> students = project.getStudents();
@@ -409,8 +409,8 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
         ProjectTribunal tribunal = projectTribunalRepository.findByProject_IdAndTribunal_Id(dto.getUserId(), dto.getProjectId());
         if (tribunal == null)
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
-        if (!tribunal.getAccepted())
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.CANNOT_GENERATE_LETTER).data(null).build();
+        if (tribunal.getAccepted() == null || !tribunal.getAccepted())
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_APPROVED).data(null).build();
 
         SiptisUser user = tribunal.getTribunal();
         String tribunalName = user.getFullName();

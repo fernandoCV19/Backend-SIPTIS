@@ -70,6 +70,12 @@ public class DocumentController {
         return createResponseEntity(documentGeneratorService.teacherTribunalRequest(dto));
     }
 
+    @PostMapping("/create-student-tribunal-request")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    ResponseEntity<?> createStudentTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) throws IOException {
+        return createResponseEntity(documentGeneratorService.studentTribunalRequest(dto));
+    }
+
     @PostMapping("/create-documentary-record")
     ResponseEntity<?> createDocumentaryRecord(@RequestHeader(name = "Authorization") String token, @RequestBody DocumentaryRecordDto documentaryRecordDto) {
         Long userId = userAuthService.getIdFromToken(token);
@@ -98,7 +104,7 @@ public class DocumentController {
         if (mensajeServicio == ServiceMessage.NOT_FOUND || mensajeServicio == ServiceMessage.ERROR)
             httpStatus = HttpStatus.NOT_FOUND;
 
-        if (mensajeServicio == ServiceMessage.CANNOT_GENERATE_LETTER || mensajeServicio == ServiceMessage.ERROR)
+        if (mensajeServicio == ServiceMessage.CANNOT_GENERATE_LETTER || mensajeServicio == ServiceMessage.ERROR || mensajeServicio == ServiceMessage.NOT_APPROVED)
             httpStatus = HttpStatus.BAD_REQUEST;
 
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(data).message(mensajeServicio.toString()).build();
