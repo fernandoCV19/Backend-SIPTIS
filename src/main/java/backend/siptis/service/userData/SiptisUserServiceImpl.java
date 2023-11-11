@@ -415,13 +415,25 @@ public class SiptisUserServiceImpl implements SiptisUserService {
             return createResponse(ServiceMessage.ID_DOES_NOT_EXIST, null);
         ServiceAnswer answer;
         SiptisUser user = siptisUserRepository.findById(id).get();
+
         if (!user.getEmail().equals(dto.getEmail()))
             if (existsUserByEmail(dto.getEmail()))
                 return createResponse(ServiceMessage.EMAIL_ALREADY_EXIST, null);
         UserInformation userInformation = user.getUserInformation();
         if (userInformation == null)
             return createResponse(ServiceMessage.ERROR, null);
-        answer = userInformationService.adminEditUserInformation(userInformation, dto);
+        boolean isStudent = false;
+        Set<Role> roles = user.getRoles();
+        for (Role role : roles){
+            if(role.getName().equals(Roles.STUDENT.toString())){
+                isStudent = true;
+            }
+        }
+        if(isStudent){
+            answer = userInformationService.adminEditStudentInformation(userInformation, dto);
+        }else{
+            answer = userInformationService.adminEditUserInformation(userInformation, dto);
+        }
         if (!answer.getServiceMessage().equals(ServiceMessage.OK))
             return answer;
         user.setEmail(dto.getEmail());

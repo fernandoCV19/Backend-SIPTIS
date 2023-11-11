@@ -230,7 +230,7 @@ public class SiptisUserController {
         ServiceAnswer answer = siptisUserService.adminEditUserInformation(id, dto);
         return createResponseEntity(answer);
     }
-
+/*
     @PutMapping("/editStudentInformation/{userId}")
     public ResponseEntity<?> editSpecialUser(
             @PathVariable int userId,
@@ -240,7 +240,7 @@ public class SiptisUserController {
         ServiceAnswer answer = siptisUserService.adminEditStudentInformation(id, dto);
         return createResponseEntity(answer);
     }
-
+*/
     @PutMapping("/updateAreas")
     public ResponseEntity<?> updateAreas(
             @RequestHeader(name = "Authorization") String token, @RequestBody UserSelectedAreasDTO dto) {

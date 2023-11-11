@@ -95,7 +95,12 @@ public class UserInformationImpl implements UserInformationService {
 
 
     @Override
-    public ServiceAnswer adminEditStudentInformation(UserInformation userInformation, AdminEditStudentInformationDTO dto) {
+    public ServiceAnswer adminEditStudentInformation(UserInformation userInformation, AdminEditUserInformationDTO dto) {
+        if(dto.getCodSIS() == null)
+            return createAnswer(ServiceMessage.CODSIS_CANNOT_BE_NULL, null);
+        if(dto.getCodSIS().length() > 10 &&  dto.getCodSIS().length() < 8)
+            return createAnswer(ServiceMessage.INVALID_CODSIS_LENGTH, null);
+
         if (!userInformation.getCodSIS().equals(dto.getCodSIS()))
             if (existUserByCodSIS(dto.getCodSIS()))
                 return createAnswer(ServiceMessage.COD_SIS_ALREADY_EXIST, null);

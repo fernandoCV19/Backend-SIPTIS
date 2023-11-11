@@ -27,7 +27,7 @@ public interface UserInformationService {
 
     ServiceAnswer adminEditUserInformation(UserInformation userInformation, AdminEditUserInformationDTO dto);
 
-    ServiceAnswer adminEditStudentInformation(UserInformation userInformation, AdminEditStudentInformationDTO dto);
+    ServiceAnswer  adminEditStudentInformation(UserInformation userInformation, AdminEditUserInformationDTO dto);
 
 
     @AllArgsConstructor

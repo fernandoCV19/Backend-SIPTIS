@@ -36,4 +36,5 @@ public class AdminEditUserInformationDTO {
     private String ci;
     @NotNull(message = "BIRTH_DATE_CANNOT_BE_NULL")
     private Date birthDate;
+    private String codSIS;
 }
