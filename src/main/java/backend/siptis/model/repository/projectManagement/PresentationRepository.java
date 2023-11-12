@@ -12,7 +12,7 @@ public interface PresentationRepository extends JpaRepository<Presentation, Long
 
     Optional<Presentation> findTopByProjectIdAndReviewed(long idProyecto, boolean revisado);
 
-    Optional<Presentation> findByProjectIdAndReviewed(long idProyecto, boolean revisado);
+    Optional<Presentation> findByProjectIdAndReviewed(long projectId, boolean reviewed);
 
     @Override
     void deleteById(Long aLong);

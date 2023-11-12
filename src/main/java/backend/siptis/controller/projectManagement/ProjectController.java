@@ -134,7 +134,7 @@ public class ProjectController {
     @GetMapping("/standard-filter")
     public ResponseEntity<?> getPaginatedProjectsByFilter(
             @RequestParam(defaultValue = "0") int pageNumber,
-            @RequestParam(defaultValue = "5") int pageSize,
+            @RequestParam(defaultValue = "6") int pageSize,
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String period
     ) {
