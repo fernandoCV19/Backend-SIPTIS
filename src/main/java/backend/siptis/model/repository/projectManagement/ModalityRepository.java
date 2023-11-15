@@ -1,4 +1,4 @@
-package backend.siptis.model.repository.editorsAndReviewers;
+package backend.siptis.model.repository.projectManagement;
 
 import backend.siptis.model.entity.projectManagement.Modality;
 import org.springframework.data.jpa.repository.JpaRepository;

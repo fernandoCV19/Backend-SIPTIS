@@ -1,6 +1,7 @@
 package backend.siptis.model.repository.projectManagement;
 
 import backend.siptis.model.entity.presentations.Presentation;
+import backend.siptis.model.repository.presentations.PresentationRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;

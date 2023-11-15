@@ -49,7 +49,7 @@ public class SemesterInformationServiceImpl implements SemesterInformationServic
             return createResponse(ServiceMessage.NO_CURRENT_SEMESTER, null);
         if (!repository.existsById(dto.getId()))
             return createResponse(ServiceMessage.ID_DOES_NOT_EXIST, null);
-        SemesterInformation semesterInformation = repository.findActiveSemesterById(dto.getId()).get();
+        SemesterInformation semesterInformation = repository.findFirstByInProgressTrueAndIdOrderByEndDateDesc(dto.getId()).get();
         if (semesterInformation == null)
             return createResponse(ServiceMessage.NO_CURRENT_SEMESTER, null);
         semesterInformation.setStartDate(dto.getStartDate());
@@ -71,7 +71,7 @@ public class SemesterInformationServiceImpl implements SemesterInformationServic
     public ServiceAnswer getCurrentSemester() {
         if (!repository.existsSemesterInformationByInProgressIsTrue())
             return createResponse(ServiceMessage.NO_CURRENT_SEMESTER, null);
-        SemesterInformation semester = repository.findActiveSemester().get();
+        SemesterInformation semester = repository.findFirstByInProgressTrueOrderByEndDateDesc().get();
         ResponseSemesterInfoDTO dto = new ResponseSemesterInfoDTO();
         dto.setId(semester.getId());
         dto.setEndDate(semester.getEndDateString());
@@ -84,7 +84,7 @@ public class SemesterInformationServiceImpl implements SemesterInformationServic
     public ServiceAnswer getCurrentPeriod() {
         if (!repository.existsSemesterInformationByInProgressIsTrue())
             return createResponse(ServiceMessage.NO_CURRENT_SEMESTER, null);
-        SemesterInformation semester = repository.findActiveSemester().get();
+        SemesterInformation semester = repository.findFirstByInProgressTrueOrderByEndDateDesc().get();
         return createResponse(ServiceMessage.SEMESTER_INFORMATION, semester.getPeriod());
 
     }

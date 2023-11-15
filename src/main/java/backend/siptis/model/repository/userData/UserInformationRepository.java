@@ -37,5 +37,4 @@ public interface UserInformationRepository extends JpaRepository<UserInformation
             "    WHERE pt.project_id = :idProject" +
             ")", nativeQuery = true)
     List<String> getTutorsNames(Long idProject);
-
 }

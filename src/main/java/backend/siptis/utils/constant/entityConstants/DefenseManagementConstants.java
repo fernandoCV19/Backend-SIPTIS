@@ -3,7 +3,7 @@ package backend.siptis.utils.constant.entityConstants;
 public final class DefenseManagementConstants {
 
     public static class DefenseTable {
-        public static final String NAME = "project_tutor_";
+        public static final String NAME = "defense_";
 
         public static class Id {
             public static final String NAME = "id_";

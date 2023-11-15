@@ -5,7 +5,7 @@ import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.defenseManagement.PlaceToDefense;
 import backend.siptis.model.pjo.vo.projectManagement.PlaceToDefenseVO;
 import backend.siptis.model.pjo.vo.projectManagement.PlaceWithReservedDateVO;
-import backend.siptis.model.repository.projectManagement.PlaceToDefenseRepository;
+import backend.siptis.model.repository.defenseManagement.PlaceToDefenseRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

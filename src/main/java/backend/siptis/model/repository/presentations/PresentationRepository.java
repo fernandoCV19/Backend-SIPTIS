@@ -1,4 +1,4 @@
-package backend.siptis.model.repository.projectManagement;
+package backend.siptis.model.repository.presentations;
 
 import backend.siptis.model.entity.presentations.Presentation;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface PresentationRepository extends JpaRepository<Presentation, Long> {
     Optional<Presentation> findById(long id);
 
-    Optional<Presentation> findTopByProjectIdAndReviewed(long idProyecto, boolean revisado);
+    Optional<Presentation> findTopByProjectIdAndReviewed(long projectId, boolean reviewed);
 
     Optional<Presentation> findByProjectIdAndReviewed(long projectId, boolean reviewed);
 

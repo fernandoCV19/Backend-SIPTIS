@@ -12,6 +12,4 @@ public interface ActivityRepository extends JpaRepository<Activity, Long> {
     List<Activity> findByProjectId(Long id);
 
     Page<ActivityVO> findByProjectId(Long id, Pageable pageable);
-
-
 }

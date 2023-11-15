@@ -7,7 +7,7 @@ import backend.siptis.model.entity.presentations.Presentation;
 import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.pjo.vo.projectManagement.InfoToReviewAProjectVO;
 import backend.siptis.model.pjo.vo.projectManagement.ReviewShortInfoVO;
-import backend.siptis.model.repository.projectManagement.PresentationRepository;
+import backend.siptis.model.repository.presentations.PresentationRepository;
 import backend.siptis.model.repository.projectManagement.ProjectRepository;
 import backend.siptis.service.cloud.CloudManagementService;
 import jakarta.transaction.Transactional;

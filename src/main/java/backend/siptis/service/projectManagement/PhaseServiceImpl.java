@@ -6,7 +6,7 @@ import backend.siptis.model.entity.phaseManagement.Phase;
 import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.pjo.dto.PhaseDTO;
 import backend.siptis.model.pjo.vo.projectManagement.PhaseVO;
-import backend.siptis.model.repository.projectManagement.PhaseRepository;
+import backend.siptis.model.repository.phaseManagement.PhaseRepository;
 import backend.siptis.service.userData.SiptisUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -101,7 +101,7 @@ public class PhaseServiceImpl implements PhaseService {
         }
 
         Long modalityId = ((Project) projectAnswer.getData()).getModality().getId();
-        List<Phase> list = phaseRepository.findAllByModalityId(modalityId);
+        List<Phase> list = phaseRepository.findByModality_IdOrderByNumberPhaseAsc(modalityId);
         return ServiceAnswer.builder()
                 .serviceMessage(ServiceMessage.OK)
                 .data(list)
@@ -110,7 +110,7 @@ public class PhaseServiceImpl implements PhaseService {
 
     @Override
     public ServiceAnswer findPhaseByModalityId(Long idModality) {
-        List<Phase> list = phaseRepository.findAllByModalityId(idModality);
+        List<Phase> list = phaseRepository.findByModality_IdOrderByNumberPhaseAsc(idModality);
 
         return ServiceAnswer.builder()
                 .serviceMessage(ServiceMessage.OK)

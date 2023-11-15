@@ -8,9 +8,9 @@ import backend.siptis.model.entity.editorsAndReviewers.ProjectTeacher;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectTutor;
 import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.pjo.vo.projectManagement.ProjectToHomePageVO;
+import backend.siptis.model.repository.auth.SiptisUserRepository;
 import backend.siptis.model.repository.editorsAndReviewers.ProjectTutorRepository;
 import backend.siptis.model.repository.projectManagement.ProjectRepository;
-import backend.siptis.model.repository.userData.SiptisUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

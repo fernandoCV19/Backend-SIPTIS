@@ -2,7 +2,7 @@ package backend.siptis.service.userData;
 
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.model.repository.userData.RoleRepository;
+import backend.siptis.model.repository.auth.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

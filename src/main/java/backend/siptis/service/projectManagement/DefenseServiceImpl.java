@@ -7,10 +7,10 @@ import backend.siptis.model.entity.defenseManagement.PlaceToDefense;
 import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.pjo.dto.projectManagement.DefenseDTO;
 import backend.siptis.model.pjo.vo.projectManagement.PlaceReservedByMonthVO;
-import backend.siptis.model.repository.projectManagement.DefenseRepository;
-import backend.siptis.model.repository.projectManagement.PlaceToDefenseRepository;
+import backend.siptis.model.repository.auth.SiptisUserRepository;
+import backend.siptis.model.repository.defenseManagement.DefenseRepository;
+import backend.siptis.model.repository.defenseManagement.PlaceToDefenseRepository;
 import backend.siptis.model.repository.projectManagement.ProjectRepository;
-import backend.siptis.model.repository.userData.SiptisUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -122,7 +122,7 @@ public class DefenseServiceImpl implements DefenseService {
         if (project.getTotalDefensePoints() != null) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.DEFENSE_ERROR).data("Project has been defended").build();
         }
-        defenseRepository.deleteADefense(project.getDefense().getId());
+        defenseRepository.deleteById(project.getDefense().getId());
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("Defense has been deleted").build();
     }
 

@@ -2,8 +2,8 @@ package backend.siptis.service.userData;
 
 import backend.siptis.auth.entity.RefreshToken;
 import backend.siptis.auth.entity.SiptisUser;
-import backend.siptis.model.repository.userData.RefreshTokenRepository;
-import backend.siptis.model.repository.userData.SiptisUserRepository;
+import backend.siptis.model.repository.auth.RefreshTokenRepository;
+import backend.siptis.model.repository.auth.SiptisUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

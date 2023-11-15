@@ -1,7 +1,7 @@
 package backend.siptis.service.userData;
 
 import backend.siptis.auth.entity.SiptisUser;
-import backend.siptis.model.repository.userData.SiptisUserRepository;
+import backend.siptis.model.repository.auth.SiptisUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

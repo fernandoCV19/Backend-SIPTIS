@@ -1,4 +1,4 @@
-package backend.siptis.model.repository.userData;
+package backend.siptis.model.repository.auth;
 
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.model.entity.notifications.Activity;
@@ -42,11 +42,6 @@ public interface SiptisUserRepository extends JpaRepository<SiptisUser, Long> {
 
     Optional<SiptisUser> findOneById(Long id);
 
-
-    @Query("SELECT a FROM Activity a, ProjectStudent ps " +
-            "WHERE ps.student.id = :id AND ps.project.id = a.project.id")
-    Page<Activity> findAllPersonalActivities(Long id, Pageable pageable);
-
     @Query("SELECT a FROM Activity a, ProjectStudent ps " +
             "WHERE ps.student.id = :id AND ps.project.id = a.project.id AND a.activityDate >= :now")
     Page<Activity> findAllPersonalActivities(Long id, @Param("now") Date now, Pageable pageable);
@@ -54,7 +49,6 @@ public interface SiptisUserRepository extends JpaRepository<SiptisUser, Long> {
     @Query("SELECT p FROM Project p, ProjectStudent ps " +
             "WHERE ps.student.id = :id AND ps.project.id = p.id")
     Optional<Project> findProjectById(Long id);
-
 
     @Query(value = "SELECT su.id, ui.names, ui.lastnames, su.email, ui.codsis, role.name " +
             " FROM siptis_user su, user_information ui,  siptis_user_role sur, role role" +

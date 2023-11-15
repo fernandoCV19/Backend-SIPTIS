@@ -1,4 +1,4 @@
-package backend.siptis.model.repository.projectManagement;
+package backend.siptis.model.repository.defenseManagement;
 
 import backend.siptis.model.entity.defenseManagement.PlaceToDefense;
 import org.springframework.data.jpa.repository.JpaRepository;

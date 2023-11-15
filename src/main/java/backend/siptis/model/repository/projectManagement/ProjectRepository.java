@@ -24,8 +24,6 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
             "SELECT tut.tutor.id AS idUser FROM ProjectTutor tut WHERE tut.project.id = :projectId")
     List<Long> getIdsListFromReviewers(Long projectId);
 
-    List<Project> findByPhase(String phase);
-
     @Query("SELECT p FROM Project p WHERE p.defense IS NOT NULL")
     Page<Project> findAllWithDefense(Pageable pageable);
 
@@ -71,17 +69,9 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
             and ((?3) is null or upper(p.modality.name) like concat('%',upper(?3),'%'))
             and ((?4) is null or upper(areas.name) like concat('%',upper(?4),'%')) 
             and ((?5) is null or upper(subAreas.name) like concat('%',upper(?5),'%')) 
-            and ((?6) is null or upper(students.student.userInformation.fullname) like concat('%',upper(?6),'%')) 
-            and ((?7) is null or upper(tutors.tutor.userInformation.fullname) like concat('%',upper(?7),'%')) """)
+            and ((?6) is null or upper(students.student.userInformation.fullName) like concat('%',upper(?6),'%')) 
+            and ((?7) is null or upper(tutors.tutor.userInformation.fullName) like concat('%',upper(?7),'%')) """)
     Page<Project> advancedFilter(@Nullable String name, @Nullable String period, @Nullable String modality, @Nullable String areas, @Nullable String subAreas, @Nullable String student, @Nullable String tutor, Pageable pageable);
-
-    @Query(value = "SELECT  project.id AS id, project.name AS name, " +
-            "project.perfil_path AS perfil, modality.name AS modality," +
-            " modality.id AS modalityId  " +
-            " FROM project project, modality modality " +
-            " WHERE project.modality_id = modality.id ", nativeQuery = true)
-    List<ProjectInfoDTO> getProjectsList();
-
 
     boolean existsByName(String name);
 
@@ -92,9 +82,6 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
             " WHERE project.modality_id = modality.id " +
             " AND LOWER( project.name ) LIKE LOWER( CONCAT( '%', :search, '%'))  ", nativeQuery = true)
     Page<ProjectInfoDTO> searchProject(String search, Pageable pageable);
-
-    List<Project> findByTribunals_Tribunal_IdAndPhase(Long tribunal, String phase);
-
 
     @Query(value = "SELECT modality.name AS modality, COUNT(projectId) AS number_projects FROM " +
             "( SELECT project.id AS projectId, project.modality_id AS modalityId " +

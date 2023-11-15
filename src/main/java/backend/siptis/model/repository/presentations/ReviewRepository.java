@@ -1,4 +1,4 @@
-package backend.siptis.model.repository.projectManagement;
+package backend.siptis.model.repository.presentations;
 
 import backend.siptis.model.entity.presentations.Review;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -16,6 +16,4 @@ public interface ProjectTutorRepository extends JpaRepository<ProjectTutor, Long
     List<ProjectTutor> findByTutorIdAndAcceptedIsTrue(Long id);
 
     ProjectTutor findByTutorIdAndProjectId(Long tutorId, Long projectId);
-
-    List<ProjectTutor> findByTutorId(Long tutorId);
 }

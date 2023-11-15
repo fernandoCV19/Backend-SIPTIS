@@ -8,26 +8,16 @@ import java.util.Optional;
 
 public interface SemesterInformationRepository extends JpaRepository<SemesterInformation, Long> {
 
-
     boolean existsSemesterInformationByInProgressIsTrue();
 
-    @Query(value = "SELECT * " +
-            "FROM semester_information si " +
-            "WHERE si.in_progress = true ORDER BY end_date DESC LIMIT 1", nativeQuery = true)
-    Optional<SemesterInformation> findActiveSemester();
+    Optional<SemesterInformation> findFirstByInProgressTrueOrderByEndDateDesc();
 
     @Query(value = "SELECT si.period " +
             "FROM semester_information si " +
             "WHERE si.in_progress = true ORDER BY end_date DESC LIMIT 1", nativeQuery = true)
     String getCurrentPeriod();
 
-
-    @Query(value = "SELECT * " +
-            "FROM semester_information si " +
-            "WHERE si.in_progress = true " +
-            "AND si.id = :id ORDER BY end_date DESC LIMIT 1", nativeQuery = true)
-    Optional<SemesterInformation> findActiveSemesterById(Long id);
-
+    Optional<SemesterInformation> findFirstByInProgressTrueAndIdOrderByEndDateDesc(Long id);
 
     Optional<SemesterInformation> findById(long id);
 

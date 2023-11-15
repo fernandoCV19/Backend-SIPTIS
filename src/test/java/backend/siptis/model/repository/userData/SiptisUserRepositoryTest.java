@@ -1,6 +1,7 @@
 package backend.siptis.model.repository.userData;
 
 import backend.siptis.auth.entity.SiptisUser;
+import backend.siptis.model.repository.auth.SiptisUserRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;

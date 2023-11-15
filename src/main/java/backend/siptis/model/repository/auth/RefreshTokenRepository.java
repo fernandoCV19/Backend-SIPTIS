@@ -1,4 +1,4 @@
-package backend.siptis.model.repository.userData;
+package backend.siptis.model.repository.auth;
 
 import backend.siptis.auth.entity.RefreshToken;
 import backend.siptis.auth.entity.SiptisUser;

@@ -9,7 +9,7 @@ import backend.siptis.model.pjo.dto.ChangePasswordDTO;
 import backend.siptis.model.pjo.dto.TokenPasswordDTO;
 import backend.siptis.model.pjo.vo.ActivityVO;
 import backend.siptis.model.pjo.vo.GeneralActivityVO;
-import backend.siptis.model.repository.userData.SiptisUserRepository;
+import backend.siptis.model.repository.auth.SiptisUserRepository;
 import backend.siptis.service.userData.SiptisUserService;
 import jakarta.mail.Address;
 import jakarta.mail.MessagingException;

@@ -1,4 +1,4 @@
-package backend.siptis.model.repository.userData;
+package backend.siptis.model.repository.auth;
 
 import backend.siptis.auth.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;

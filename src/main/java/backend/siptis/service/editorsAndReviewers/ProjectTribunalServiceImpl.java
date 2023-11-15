@@ -10,9 +10,9 @@ import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.pjo.dto.editorsAndReviewers.ReviewADefenseDTO;
 import backend.siptis.model.pjo.dto.projectManagement.AssignTribunalsDTO;
 import backend.siptis.model.pjo.vo.projectManagement.ProjectToTribunalHomePageVO;
+import backend.siptis.model.repository.auth.SiptisUserRepository;
 import backend.siptis.model.repository.editorsAndReviewers.ProjectTribunalRepository;
 import backend.siptis.model.repository.projectManagement.ProjectRepository;
-import backend.siptis.model.repository.userData.SiptisUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
