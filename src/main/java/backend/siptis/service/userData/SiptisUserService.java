@@ -51,8 +51,6 @@ public interface SiptisUserService {
 
     ServiceAnswer adminEditUserInformation(Long id, AdminEditUserInformationDTO dto);
 
-    ServiceAnswer adminEditStudentInformation(Long id, AdminEditStudentInformationDTO dto);
-
     ServiceAnswer updateAreas(Long id, UserSelectedAreasDTO dto);
 
     ServiceAnswer existsTokenPassword(String tokenPassword);

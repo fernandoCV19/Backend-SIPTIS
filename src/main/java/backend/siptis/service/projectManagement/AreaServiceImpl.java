@@ -27,7 +27,6 @@ public class AreaServiceImpl implements AreaService {
         ServiceAnswer answer = validateCreateArea(dto.getName());
         if (answer != null)
             return answer;
-
         Area area = new Area();
         area.setName(dto.getName());
         areaRepository.save(area);

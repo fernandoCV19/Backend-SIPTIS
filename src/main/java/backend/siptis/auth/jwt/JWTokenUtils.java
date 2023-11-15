@@ -40,18 +40,7 @@ public class JWTokenUtils {
                 .compact();
     }
 
-    public static String createToken(SiptisUser user) {
-        UserInformationService.UserDetailImp userDI = new UserInformationService.UserDetailImp(user);
-        Date fechaExpiracion = new Date(System.currentTimeMillis() + EXPIRE_TIME_DURATION);
 
-        return Jwts.builder().setSubject(user.getEmail())
-                .setExpiration(fechaExpiracion)
-                .claim("id", userDI.getId())
-                .claim("projects", userDI.getProjects())
-                .claim("roles", userDI.getRoles())
-                .signWith(Keys.hmacShaKeyFor(ACCESS_TOKEN_SECRET.getBytes()))
-                .compact();
-    }
 
     public static UserDetails getUserDetails(String token) {
         SiptisUser siptisUserDetails = new SiptisUser();
@@ -90,7 +79,6 @@ public class JWTokenUtils {
     public static ArrayList<?> getProjects(String token) {
         Claims claims = getClaims(token);
 
-        //Long id = Long.valueOf(jwtId)
         return (ArrayList<?>) claims.get("projects");
     }
 
@@ -106,9 +94,6 @@ public class JWTokenUtils {
     }
 
     public static UsernamePasswordAuthenticationToken getAuthentication(String token) {
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(ACCESS_TOKEN_SECRET.getBytes())
-                .build().parseClaimsJws(token).getBody();
         UserDetails userDetails = getUserDetails(token);
         return new UsernamePasswordAuthenticationToken(
                 userDetails, null, userDetails.getAuthorities());

@@ -18,7 +18,6 @@ public class UserCareerServiceImpl implements UserCareerService {
 
     @Override
     public ServiceAnswer getAllCareers() {
-
         List<UserCareer> careers = userCareerRepository.findAll();
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
                 .data(careers).build();
@@ -34,7 +33,7 @@ public class UserCareerServiceImpl implements UserCareerService {
     @Override
     public ServiceAnswer getCareerByName(String name) {
         if (!userCareerRepository.existsByName(name)) {
-            return createResponse(ServiceMessage.ERROR, null);
+            return createResponse(ServiceMessage.NOT_FOUND, null);
         }
         return createResponse(ServiceMessage.OK, userCareerRepository.findUserCareerByName(name));
     }

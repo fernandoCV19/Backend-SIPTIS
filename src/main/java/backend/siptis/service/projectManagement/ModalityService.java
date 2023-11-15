@@ -6,5 +6,4 @@ public interface ModalityService {
 
     ServiceAnswer getAllModalities();
 
-    ServiceAnswer getModalityByUser(Long idUser);
 }

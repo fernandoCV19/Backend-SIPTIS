@@ -1,6 +1,5 @@
 package backend.siptis.auth.security;
 
-import backend.siptis.auth.jwt.JWTAuthenticationFilter;
 import backend.siptis.auth.jwt.JWTAuthorizationFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -30,8 +29,6 @@ public class WebSecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager manager)
             throws Exception {
-        JWTAuthenticationFilter jwtAuthenticationFilter = new JWTAuthenticationFilter();
-        jwtAuthenticationFilter.setAuthenticationManager(manager);
 
         return http.cors().and()
                 .csrf().disable()
@@ -87,7 +84,7 @@ public class WebSecurityConfig {
                 .and().exceptionHandling().authenticationEntryPoint(authenticationEntryPoint())
                 .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().addFilter(jwtAuthenticationFilter)
+                .and()
                 .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

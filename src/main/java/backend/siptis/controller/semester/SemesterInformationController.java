@@ -27,27 +27,27 @@ public class SemesterInformationController {
             List.of(ServiceMessage.OK, ServiceMessage.SEMESTER_STARTED, ServiceMessage.SEMESTER_INFORMATION,
                     ServiceMessage.SEMESTER_ENDED, ServiceMessage.SEMESTER_INFO_EDITED));
     private final Set<ServiceMessage> badRequestResponse = new HashSet<>(
-            List.of(ServiceMessage.NO_CURRENT_SEMESTER, ServiceMessage.ERROR,
+            List.of(ServiceMessage.ERROR,
                     ServiceMessage.SEMESTER_ALREADY_EXIST));
 
     private final SemesterInformationService semesterService;
 
     @GetMapping("/checkActiveSemester")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    //@PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> checkActiveSemester() {
         ServiceAnswer answerService = semesterService.existActiveSemester();
         return createResponse(answerService);
     }
 
     @GetMapping("/getActiveSemesterInformation")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    //@PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> getActiveSemester() {
         ServiceAnswer answerService = semesterService.getCurrentSemester();
         return createResponse(answerService);
     }
 
-    @GetMapping("/getcurrentSemesterPeriod")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("/getCurrentSemesterPeriod")
+    //@PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> getcurrentSemesterPeriod() {
         ServiceAnswer answerService = semesterService.getCurrentPeriod();
         return createResponse(answerService);
@@ -56,7 +56,7 @@ public class SemesterInformationController {
     @PostMapping("/startSemester")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> createSemester(
-            @RequestBody SemesterInformationDTO dto) {
+            @Valid @RequestBody SemesterInformationDTO dto) {
         ServiceAnswer answerService = semesterService.startSemester(dto);
         return createResponse(answerService);
     }

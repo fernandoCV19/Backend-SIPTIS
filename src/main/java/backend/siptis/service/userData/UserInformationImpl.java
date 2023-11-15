@@ -41,32 +41,35 @@ public class UserInformationImpl implements UserInformationService {
 
     @Override
     public ServiceAnswer registerUserInformation(RegisterStudentDTO dto) {
+        dto.setCi(dto.getCi().trim());
         if (existUserByCi(dto.getCi()))
             return createAnswer(ServiceMessage.CI_ALREADY_EXIST, null);
+        dto.setCodSIS(dto.getCodSIS().trim());
         if (existUserByCodSIS(dto.getCodSIS()))
             return createAnswer(ServiceMessage.COD_SIS_ALREADY_EXIST, null);
 
         UserInformation userInformation = new UserInformation();
-        userInformation.setNames(dto.getNames());
-        userInformation.setLastnames(dto.getLastnames());
-        userInformation.setCi(dto.getCi());
-        userInformation.setCelNumber(dto.getCelNumber());
+        userInformation.setNames(dto.getNames().trim());
+        userInformation.setLastnames(dto.getLastnames().trim());
+        userInformation.setCi(dto.getCi().trim());
+        userInformation.setCelNumber(dto.getCelNumber().trim());
         userInformation.setBirthDate(dto.getBirthDate());
-        userInformation.setCodSIS(dto.getCodSIS());
+        userInformation.setCodSIS(dto.getCodSIS().trim());
 
         return createAnswer(ServiceMessage.OK, userInformation);
     }
 
     @Override
     public ServiceAnswer registerUserInformation(RegisterUserDTO dto) {
+        dto.setCi(dto.getCi().trim());
         if (existUserByCi(dto.getCi()))
             return createAnswer(ServiceMessage.CI_ALREADY_EXIST, null);
 
         UserInformation userInformation = new UserInformation();
-        userInformation.setNames(dto.getNames());
-        userInformation.setLastnames(dto.getLastnames());
+        userInformation.setNames(dto.getNames().trim());
+        userInformation.setLastnames(dto.getLastnames().trim());
         userInformation.setCi(dto.getCi());
-        userInformation.setCelNumber(dto.getCelNumber());
+        userInformation.setCelNumber(dto.getCelNumber().trim());
         userInformation.setBirthDate(dto.getBirthDate());
 
         return createAnswer(ServiceMessage.OK, userInformation);
@@ -81,14 +84,15 @@ public class UserInformationImpl implements UserInformationService {
 
     @Override
     public ServiceAnswer adminEditUserInformation(UserInformation userInformation, AdminEditUserInformationDTO dto) {
+        dto.setCi(dto.getCi().trim());
         if (!userInformation.getCi().equals(dto.getCi()))
             if (existUserByCi(dto.getCi()))
                 return createAnswer(ServiceMessage.CI_ALREADY_EXIST, null);
 
-        userInformation.setLastnames(dto.getLastnames());
-        userInformation.setNames(dto.getNames());
+        userInformation.setLastnames(dto.getLastnames().trim());
+        userInformation.setNames(dto.getNames().trim());
         userInformation.setCi(dto.getCi());
-        userInformation.setCelNumber(dto.getCelNumber());
+        userInformation.setCelNumber(dto.getCelNumber().trim());
         userInformation.setBirthDate(dto.getBirthDate());
         return createAnswer(ServiceMessage.OK, userInformation);
     }
@@ -96,6 +100,7 @@ public class UserInformationImpl implements UserInformationService {
 
     @Override
     public ServiceAnswer adminEditStudentInformation(UserInformation userInformation, AdminEditUserInformationDTO dto) {
+        dto.setCodSIS(dto.getCodSIS().trim());
         if(dto.getCodSIS() == null)
             return createAnswer(ServiceMessage.CODSIS_CANNOT_BE_NULL, null);
         if(dto.getCodSIS().length() > 10 &&  dto.getCodSIS().length() < 8)

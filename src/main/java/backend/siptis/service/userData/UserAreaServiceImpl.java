@@ -42,7 +42,6 @@ public class UserAreaServiceImpl implements UserAreaService {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.INVALID_AREA_NAME).build();
         if (userAreaRepository.existsUserAreaByName(name))
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.AREA_ALREADY_EXIST).build();
-
         return null;
     }
 
@@ -63,8 +62,8 @@ public class UserAreaServiceImpl implements UserAreaService {
     @Override
     public ServiceAnswer deleteUserArea(Long id) {
         ServiceAnswer answer = validateDeleteUserArea(id);
-        if (answer != null) return answer;
-
+        if (answer != null)
+            return answer;
         userAreaRepository.deleteById(id.intValue());
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.AREA_DELETED).build();
     }
@@ -75,7 +74,6 @@ public class UserAreaServiceImpl implements UserAreaService {
         if (area.isEmpty())
             return null;
         return area.get();
-
     }
 
     @Override

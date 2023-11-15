@@ -140,7 +140,7 @@ public class SemesterInformationServiceTest {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void getCurrentPeriodSuccessTest() {
         startSemester();
-        ServiceAnswer answer = semesterInformationService.getCurrentPeriod();
+        ServiceAnswer answer = semesterInformationService.  getCurrentPeriod();
         assertEquals(ServiceMessage.SEMESTER_INFORMATION, answer.getServiceMessage());
     }
 

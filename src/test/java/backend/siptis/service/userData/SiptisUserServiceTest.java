@@ -393,7 +393,7 @@ public class SiptisUserServiceTest {
         ServiceAnswer answer = adminEditStudentInfo();
         assertEquals(ServiceMessage.ID_DOES_NOT_EXIST, answer.getServiceMessage());
     }
-
+/*
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void setAdminEditStudentInformationFailEmailAlreadyExistTest() {
@@ -426,7 +426,7 @@ public class SiptisUserServiceTest {
         ServiceAnswer answer = siptisUserService.adminEditStudentInformation(1L, adminEditStudentInformationDTO);
         assertEquals(ServiceMessage.CI_ALREADY_EXIST, answer.getServiceMessage());
     }
-
+*/
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void registerUserAsCareerDirectorSuccessTest() {

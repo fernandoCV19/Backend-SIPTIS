@@ -60,8 +60,8 @@ public class ProjectServiceImpl implements ProjectService {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.MODALITY_DOES_NOT_EXIST).build();
 
         Project newProject = new Project();
-        ArrayList<ProjectStudent> students = new ArrayList<>();
 
+        ArrayList<ProjectStudent> students = new ArrayList<>();
         for (Long studentId : dto.getStudentsId()) {
             if (!siptisUserRepository.existsById(studentId))
                 return ServiceAnswer.builder().serviceMessage(ServiceMessage.USER_ID_DOES_NOT_EXIST).build();
@@ -86,7 +86,6 @@ public class ProjectServiceImpl implements ProjectService {
             }
             if(currentProjects > 9)
                 return ServiceAnswer.builder().serviceMessage(ServiceMessage.CANNOT_ASSIGN_TUTOR).build();
-
             projectTutor.setTutor(user);
             projectTutor.setProject(newProject);
             tutors.add(projectTutor);
@@ -94,7 +93,6 @@ public class ProjectServiceImpl implements ProjectService {
 
         ArrayList<ProjectSupervisor> supervisors = new ArrayList<>();
         String modalityName = modalityRepository.findModalityById(dto.getModalityId()).getName();
-
         if (dto.getSupervisorsId() != null &&
                 (modalityName.equals(backend.siptis.commons.Modality.TRABAJO_DIRIGIDO.toString())
                         || modalityName.equals(backend.siptis.commons.Modality.ADSCRIPCION.toString()))) {
@@ -167,10 +165,10 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ServiceAnswer getProjects() {
-        List<Project> proyectos = projectRepository.findAll();
-        if (proyectos.isEmpty())
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_PROJECTS).data(proyectos).build();
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(proyectos).build();
+        List<Project> projects = projectRepository.findAll();
+        if (projects.isEmpty())
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_PROJECTS).data(projects).build();
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(projects).build();
     }
 
     @Override

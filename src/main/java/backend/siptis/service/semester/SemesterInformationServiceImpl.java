@@ -69,9 +69,8 @@ public class SemesterInformationServiceImpl implements SemesterInformationServic
 
     @Override
     public ServiceAnswer getCurrentSemester() {
-        if (!repository.existsSemesterInformationByInProgressIsTrue()) {
+        if (!repository.existsSemesterInformationByInProgressIsTrue())
             return createResponse(ServiceMessage.NO_CURRENT_SEMESTER, null);
-        }
         SemesterInformation semester = repository.findActiveSemester().get();
         ResponseSemesterInfoDTO dto = new ResponseSemesterInfoDTO();
         dto.setId(semester.getId());
@@ -96,14 +95,16 @@ public class SemesterInformationServiceImpl implements SemesterInformationServic
             return createResponse(ServiceMessage.NO_CURRENT_SEMESTER, null);
         }
         SemesterInformation semester = repository.findById(id).get();
+        if (!semester.isInProgress()) {
+            return createResponse(ServiceMessage.NO_CURRENT_SEMESTER, null);
+        }
         semester.setInProgress(false);
         repository.save(semester);
-        return createResponse(ServiceMessage.SEMESTER_ENDED, null);
+        return createResponse(ServiceMessage.SEMESTER_ENDED, semester);
     }
 
     private ServiceAnswer createResponse(ServiceMessage serviceMessage, Object data) {
         return ServiceAnswer.builder().serviceMessage(
-                serviceMessage).data(data
-        ).build();
+                serviceMessage).data(data).build();
     }
 }

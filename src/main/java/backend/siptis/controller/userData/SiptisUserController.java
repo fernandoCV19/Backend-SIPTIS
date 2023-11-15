@@ -90,7 +90,7 @@ public class SiptisUserController {
     }
 
     @GetMapping("/userAreas")
-    //@PreAuthorize("hasAuthority('')")
+    @PreAuthorize("hasAuthority('TRIBUNAL')")
     public ResponseEntity<?> getAreas(@RequestHeader(name = "Authorization") String token) {
 
         Long id = siptisUserService.getIdFromToken(token);
@@ -230,17 +230,7 @@ public class SiptisUserController {
         ServiceAnswer answer = siptisUserService.adminEditUserInformation(id, dto);
         return createResponseEntity(answer);
     }
-/*
-    @PutMapping("/editStudentInformation/{userId}")
-    public ResponseEntity<?> editSpecialUser(
-            @PathVariable int userId,
-            @Valid @RequestBody AdminEditStudentInformationDTO dto) {
 
-        Long id = Long.valueOf(userId);
-        ServiceAnswer answer = siptisUserService.adminEditStudentInformation(id, dto);
-        return createResponseEntity(answer);
-    }
-*/
     @PutMapping("/updateAreas")
     public ResponseEntity<?> updateAreas(
             @RequestHeader(name = "Authorization") String token, @RequestBody UserSelectedAreasDTO dto) {
