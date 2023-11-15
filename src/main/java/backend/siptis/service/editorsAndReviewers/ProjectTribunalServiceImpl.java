@@ -31,25 +31,25 @@ public class ProjectTribunalServiceImpl implements ProjectTribunalService {
     private final ProjectRepository projectRepository;
 
     @Override
-    public ServiceAnswer getAllProjectsNotReviewedByTribunalId(Long id) {
+    public ServiceAnswer getAllProjectsNotAcceptedReviewedByTribunalId(Long id) {
         if (siptisUserRepository.findById(id).isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data(null).build();
         }
 
-        List<ProjectTribunal> listaProyectos = projectTribunalRepository.findByTribunalIdAndAcceptedIsFalseAndReviewedIsFalse(id);
+        List<ProjectTribunal> projectsList = projectTribunalRepository.findByTribunalIdAndAcceptedIsFalseAndReviewedIsTrue(id);
 
-        return getProjects(listaProyectos);
+        return getProjects(projectsList);
     }
 
     @Override
-    public ServiceAnswer getAllProjectsReviewedNotAcceptedByTribunalId(Long id) {
+    public ServiceAnswer getAllProjectsNotAcceptedNotReviewedByTribunalId(Long id) {
         if (siptisUserRepository.findById(id).isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data(null).build();
         }
 
-        List<ProjectTribunal> listaProyectos = projectTribunalRepository.findByTribunalIdAndAcceptedIsFalseAndReviewedIsTrue(id);
+        List<ProjectTribunal> projectsList = projectTribunalRepository.findByTribunalIdAndAcceptedIsFalseAndReviewedIsFalse(id);
 
-        return getProjects(listaProyectos);
+        return getProjects(projectsList);
     }
 
     @Override
@@ -58,9 +58,9 @@ public class ProjectTribunalServiceImpl implements ProjectTribunalService {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data(null).build();
         }
 
-        List<ProjectTribunal> listaProyectos = projectTribunalRepository.findByTribunalIdAndAcceptedIsTrueAndDefensePointsIsNull(id);
+        List<ProjectTribunal> projectsList = projectTribunalRepository.findByTribunalIdAndAcceptedIsTrueAndDefensePointsIsNull(id);
 
-        return getProjects(listaProyectos);
+        return getProjects(projectsList);
     }
 
     @Override
@@ -69,9 +69,9 @@ public class ProjectTribunalServiceImpl implements ProjectTribunalService {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data(null).build();
         }
 
-        List<ProjectTribunal> listaProyectos = projectTribunalRepository.findByTribunalIdAndDefensePointsIsNotNull(id);
+        List<ProjectTribunal> projectsList = projectTribunalRepository.findByTribunalIdAndDefensePointsIsNotNull(id);
 
-        return getProjects(listaProyectos);
+        return getProjects(projectsList);
     }
 
     @Override
@@ -94,34 +94,6 @@ public class ProjectTribunalServiceImpl implements ProjectTribunalService {
         query.setAccepted(Boolean.TRUE);
         projectTribunalRepository.save(query);
         return verifyChangeOfFase(query);
-    }
-
-    @Override
-    public ServiceAnswer removeAcceptProject(Long idTribunal, Long idProject) {
-        if (siptisUserRepository.findById(idTribunal).isEmpty()) {
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.USER_ID_DOES_NOT_EXIST).data(null).build();
-        }
-        if (projectRepository.findById(idProject).isEmpty()) {
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data(null).build();
-        }
-        ProjectTribunal query = projectTribunalRepository.findByProject_IdAndTribunal_Id(idProject, idTribunal);
-        if (query == null) {
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_REVIEWER_DOES_NOT_MATCH_WITH_PROJECT).data(null).build();
-        }
-
-        if (Boolean.FALSE.equals(query.getAccepted())) {
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_IS_ALREADY_NOT_ACCEPTED).data(null).build();
-        }
-
-        Project project = query.getProject();
-
-        if (!project.getPhase().equals(PhaseName.ASSIGN_TRIBUNALS_PHASE.toString())) {
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_IS_ON_ANOTHER_PHASE).data(null).build();
-        }
-
-        query.setAccepted(Boolean.FALSE);
-        projectTribunalRepository.save(query);
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("THE PROJECT HAS CHANGED THE ACCEPTED PARAMETER").build();
     }
 
     @Override
@@ -198,7 +170,7 @@ public class ProjectTribunalServiceImpl implements ProjectTribunalService {
         boolean allTribunalsHaveAccepted = project.getTribunals().stream().allMatch(ProjectTribunal::getAccepted);
 
         if (allTribunalsHaveAccepted) {
-            project.setPhase(PhaseName.DEFENSE_PHASE.toString());
+            project.setPhase(PhaseName.ASSIGN_DEFENSE_PHASE.toString());
             projectRepository.save(project);
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("THE PROJECT HAS CHANGED TO THE PHASE OF DEFENSE").build();
         }

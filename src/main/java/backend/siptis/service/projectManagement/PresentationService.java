@@ -16,5 +16,5 @@ public interface PresentationService {
 
     ServiceAnswer delete(Long idPresentacion);
 
-    ServiceAnswer getLastReviewsFromAPresentation(Long idProject);
+    ServiceAnswer getReviewsFromLastPresentation(Long idProject);
 }

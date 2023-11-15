@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "review")
@@ -35,9 +35,9 @@ public class Review {
     @JoinColumn(name = "presentation_id", nullable = false)
     @JsonBackReference
     private Presentation presentation;
-    private Date date;
+    private LocalDateTime date;
 
-    public Review(String documentPath, String commentary, SiptisUser siptisUser, Presentation presentation, Date date) {
+    public Review(String documentPath, String commentary, SiptisUser siptisUser, Presentation presentation, LocalDateTime date) {
         this.documentPath = documentPath;
         this.commentary = commentary;
         this.siptisUser = siptisUser;

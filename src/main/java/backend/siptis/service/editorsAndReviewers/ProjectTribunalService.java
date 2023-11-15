@@ -6,17 +6,15 @@ import backend.siptis.model.pjo.dto.projectManagement.AssignTribunalsDTO;
 
 public interface ProjectTribunalService {
 
-    ServiceAnswer getAllProjectsNotReviewedByTribunalId(Long id);
+    ServiceAnswer getAllProjectsNotAcceptedNotReviewedByTribunalId(Long id);
 
-    ServiceAnswer getAllProjectsReviewedNotAcceptedByTribunalId(Long id);
+    ServiceAnswer getAllProjectsNotAcceptedReviewedByTribunalId(Long id);
 
     ServiceAnswer getAllProjectsAcceptedWithoutDefensePointsByTribunalId(Long id);
 
     ServiceAnswer getAllProjectsDefendedByTribunalId(Long id);
 
     ServiceAnswer acceptProject(Long idTribunal, Long idProject);
-
-    ServiceAnswer removeAcceptProject(Long idTribunal, Long idProject);
 
     ServiceAnswer reviewADefense(ReviewADefenseDTO reviewADefenseDTO);
 

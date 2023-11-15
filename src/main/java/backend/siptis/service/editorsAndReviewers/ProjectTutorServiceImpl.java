@@ -31,8 +31,8 @@ public class ProjectTutorServiceImpl implements ProjectTutorService {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data(null).build();
         }
 
-        List<ProjectTutor> listaProyectos = projectTutorRepository.findByTutorIdAndAcceptedIsFalseAndReviewedIsTrue(id);
-        return getProjects(listaProyectos);
+        List<ProjectTutor> projectsList = projectTutorRepository.findByTutorIdAndAcceptedIsFalseAndReviewedIsTrue(id);
+        return getProjects(projectsList);
     }
 
     @Override
@@ -41,8 +41,8 @@ public class ProjectTutorServiceImpl implements ProjectTutorService {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data(null).build();
         }
 
-        List<ProjectTutor> listaProyectos = projectTutorRepository.findByTutorIdAndAcceptedIsFalseAndReviewedIsFalse(id);
-        return getProjects(listaProyectos);
+        List<ProjectTutor> projectsList = projectTutorRepository.findByTutorIdAndAcceptedIsFalseAndReviewedIsFalse(id);
+        return getProjects(projectsList);
     }
 
     @Override
@@ -51,8 +51,8 @@ public class ProjectTutorServiceImpl implements ProjectTutorService {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data(null).build();
         }
 
-        List<ProjectTutor> listaProyectos = projectTutorRepository.findByTutorIdAndAcceptedIsTrue(id);
-        return getProjects(listaProyectos);
+        List<ProjectTutor> projectsList = projectTutorRepository.findByTutorIdAndAcceptedIsTrue(id);
+        return getProjects(projectsList);
     }
 
     @Override
@@ -75,34 +75,6 @@ public class ProjectTutorServiceImpl implements ProjectTutorService {
         query.setAccepted(Boolean.TRUE);
         projectTutorRepository.save(query);
         return verifyChangeOfFase(query);
-    }
-
-    @Override
-    public ServiceAnswer removeAcceptProject(Long idTutor, Long idProject) {
-        if (siptisUserRepository.findById(idTutor).isEmpty()) {
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.USER_ID_DOES_NOT_EXIST).data(null).build();
-        }
-        if (projectRepository.findById(idProject).isEmpty()) {
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data(null).build();
-        }
-        ProjectTutor query = projectTutorRepository.findByTutorIdAndProjectId(idTutor, idProject);
-        if (query == null) {
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_REVIEWER_DOES_NOT_MATCH_WITH_PROJECT).data(null).build();
-        }
-
-        if (Boolean.FALSE.equals(query.getAccepted())) {
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_IS_ALREADY_NOT_ACCEPTED).data(null).build();
-        }
-
-        Project project = query.getProject();
-
-        if (!project.getPhase().equals(PhaseName.REVIEWERS_PHASE.toString())) {
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_IS_ON_ANOTHER_PHASE).data(null).build();
-        }
-
-        query.setAccepted(Boolean.FALSE);
-        projectTutorRepository.save(query);
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("THE PROJECT HAS CHANGED THE ACCEPTED PARAMETER").build();
     }
 
     @Override

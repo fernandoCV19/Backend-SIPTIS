@@ -12,5 +12,4 @@ public interface ProjectTeacherService {
 
     ServiceAnswer acceptProject(Long idTeacher, Long idProject);
 
-    ServiceAnswer removeAcceptProject(Long idTeacher, Long idProject);
 }

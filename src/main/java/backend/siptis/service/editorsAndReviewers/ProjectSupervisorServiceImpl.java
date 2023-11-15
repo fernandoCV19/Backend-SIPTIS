@@ -33,8 +33,8 @@ public class ProjectSupervisorServiceImpl implements ProjectSupervisorService {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data(null).build();
         }
 
-        List<ProjectSupervisor> listaProyectos = projectSupervisorRepository.findBySupervisorIdAndAcceptedIsFalseAndReviewedIsTrue(id);
-        return getProjects(listaProyectos);
+        List<ProjectSupervisor> projectsList = projectSupervisorRepository.findBySupervisorIdAndAcceptedIsFalseAndReviewedIsTrue(id);
+        return getProjects(projectsList);
     }
 
     @Override
@@ -43,8 +43,8 @@ public class ProjectSupervisorServiceImpl implements ProjectSupervisorService {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data(null).build();
         }
 
-        List<ProjectSupervisor> listaProyectos = projectSupervisorRepository.findBySupervisorIdAndAcceptedIsFalseAndReviewedIsFalse(id);
-        return getProjects(listaProyectos);
+        List<ProjectSupervisor> projectsList = projectSupervisorRepository.findBySupervisorIdAndAcceptedIsFalseAndReviewedIsFalse(id);
+        return getProjects(projectsList);
     }
 
     @Override
@@ -53,8 +53,8 @@ public class ProjectSupervisorServiceImpl implements ProjectSupervisorService {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data(null).build();
         }
 
-        List<ProjectSupervisor> listaProyectos = projectSupervisorRepository.findBySupervisorIdAndAcceptedIsTrue(id);
-        return getProjects(listaProyectos);
+        List<ProjectSupervisor> projectsList = projectSupervisorRepository.findBySupervisorIdAndAcceptedIsTrue(id);
+        return getProjects(projectsList);
     }
 
     @Override
@@ -79,34 +79,6 @@ public class ProjectSupervisorServiceImpl implements ProjectSupervisorService {
         return verifyChangeOfPhase(query);
     }
 
-    @Override
-    public ServiceAnswer removeAcceptProject(Long idSupervisor, Long idProject) {
-        if (siptisUserRepository.findById(idSupervisor).isEmpty()) {
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.USER_ID_DOES_NOT_EXIST).data(null).build();
-        }
-        if (projectRepository.findById(idProject).isEmpty()) {
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data(null).build();
-        }
-        ProjectSupervisor query = projectSupervisorRepository.findBySupervisorIdAndProjectId(idSupervisor, idProject);
-        if (query == null) {
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_REVIEWER_DOES_NOT_MATCH_WITH_PROJECT).data(null).build();
-        }
-
-        if (Boolean.FALSE.equals(query.getAccepted())) {
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_IS_ALREADY_NOT_ACCEPTED).data(null).build();
-        }
-
-        Project project = query.getProject();
-
-        if (!project.getPhase().equals(PhaseName.REVIEWERS_PHASE.toString())) {
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_IS_ON_ANOTHER_PHASE).data(null).build();
-        }
-
-        query.setAccepted(Boolean.FALSE);
-        projectSupervisorRepository.save(query);
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("THE PROJECT HAS CHANGED THE ACCEPTED PARAMETER").build();
-    }
-
     private ServiceAnswer verifyChangeOfPhase(ProjectSupervisor query) {
         Project project = query.getProject();
         boolean allReviewersHaveAccepted = project.getSupervisors().stream().allMatch(ProjectSupervisor::getAccepted) &&
@@ -120,12 +92,12 @@ public class ProjectSupervisorServiceImpl implements ProjectSupervisorService {
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("THE PROJECT HAS NOT CHANGED TO THE PHASE OF TRIBUNALS").build();
     }
 
-    private ServiceAnswer getProjects(List<ProjectSupervisor> listaProyectos) {
-        if (listaProyectos.isEmpty()) {
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.WITHOUT_PROJECTS).data(listaProyectos).build();
+    private ServiceAnswer getProjects(List<ProjectSupervisor> projectsList) {
+        if (projectsList.isEmpty()) {
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.WITHOUT_PROJECTS).data(projectsList).build();
         }
 
-        List<ProjectToHomePageVO> data = listaProyectos
+        List<ProjectToHomePageVO> data = projectsList
                 .stream()
                 .map(aux -> new ProjectToHomePageVO(aux.getProject(), aux.getAccepted(), aux.getReviewed()))
                 .collect(Collectors.toList());

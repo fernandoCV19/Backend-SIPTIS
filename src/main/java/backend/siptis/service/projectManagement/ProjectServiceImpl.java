@@ -22,8 +22,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -421,7 +421,7 @@ public class ProjectServiceImpl implements ProjectService {
                 .toList();
 
         List<Project> projectsDefended = projectTribunalRepository
-                .findByTribunal_IdAndProject_PhaseAndDefensePointsNotNull(userId, PhaseName.DEFENSE_PHASE.toString())
+                .findByTribunal_IdAndProject_PhaseAndDefensePointsNotNull(userId, PhaseName.POST_DEFENSE_PHASE.toString())
                 .stream()
                 .map(ProjectTribunal::getProject)
                 .toList();
@@ -505,10 +505,8 @@ public class ProjectServiceImpl implements ProjectService {
         return new UserDefenseScheduleVO(student.getId(), student.getUserInformation().getNames() + " " + student.getUserInformation().getLastnames(), schedules);
     }
 
-    private Integer getDaysDifference(Date compare) {
-        Date now = new Date();
-        long diffMillis = now.getTime() - compare.getTime();
-        long diffDias = TimeUnit.DAYS.convert(diffMillis, TimeUnit.MILLISECONDS);
-        return (int) diffDias;
+    private Integer getDaysDifference(LocalDateTime compare) {
+        LocalDateTime now = LocalDateTime.now();
+        return now.getDayOfYear() - compare.getDayOfYear();
     }
 }

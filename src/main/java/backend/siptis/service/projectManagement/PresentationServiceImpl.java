@@ -139,9 +139,9 @@ public class PresentationServiceImpl implements PresentationService {
 
 
     @Override
-    public ServiceAnswer getLastReviewsFromAPresentation(Long projectId) {
-        Optional<Project> projectOptinal = projectRepository.findById(projectId);
-        if (projectOptinal.isEmpty()) {
+    public ServiceAnswer getReviewsFromLastPresentation(Long projectId) {
+        Optional<Project> projectOptional = projectRepository.findById(projectId);
+        if (projectOptional.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data(null).build();
         }
         Presentation presentation = presentationRepository.findTopByProjectIdOrderByDateDesc(projectId);
@@ -149,7 +149,7 @@ public class PresentationServiceImpl implements PresentationService {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.THERE_IS_NO_PRESENTATION_YET).data(null).build();
         }
         List<ReviewShortInfoVO> reviews = presentation.getReviews().stream().map(ReviewShortInfoVO::new).toList();
-        InfoToReviewAProjectVO data = new InfoToReviewAProjectVO(projectOptinal.get(), reviews);
+        InfoToReviewAProjectVO data = new InfoToReviewAProjectVO(projectOptional.get(), reviews);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(data).build();
     }
 
