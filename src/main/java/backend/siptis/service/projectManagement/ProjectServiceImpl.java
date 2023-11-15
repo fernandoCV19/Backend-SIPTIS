@@ -142,7 +142,6 @@ public class ProjectServiceImpl implements ProjectService {
         newProject.setAreas(areas);
         newProject.setSubAreas(subAreas);
         newProject.setPhase("REVIEWERS_PHASE");
-        newProject.setTotalDefensePoints(0.0);
         newProject.setTeachers(teachers);
         newProject.setPeriod(semesterInformationRepository.getCurrentPeriod());
 
