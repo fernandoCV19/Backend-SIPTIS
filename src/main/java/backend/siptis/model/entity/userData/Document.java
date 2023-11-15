@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "document")
 @Getter
@@ -27,4 +29,6 @@ public class Document {
     @JoinColumn(name = "user_id", nullable = false)
     @JsonBackReference
     private SiptisUser siptisUser;
+
+    private LocalDateTime date;
 }

@@ -5,16 +5,19 @@ import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.projectManagement.Presentation;
 import backend.siptis.model.entity.projectManagement.Project;
+import backend.siptis.model.entity.projectManagement.Review;
 import backend.siptis.model.pjo.vo.projectManagement.InfoToReviewAProjectVO;
 import backend.siptis.model.pjo.vo.projectManagement.ReviewShortInfoVO;
 import backend.siptis.model.repository.projectManagement.PresentationRepository;
 import backend.siptis.model.repository.projectManagement.ProjectRepository;
+import backend.siptis.model.repository.projectManagement.ReviewRepository;
 import backend.siptis.service.cloud.CloudManagementService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,10 +32,10 @@ public class PresentationServiceImpl implements PresentationService {
     private final CloudManagementService cloudManagementService;
     private final PresentationRepository presentationRepository;
     private final ProjectRepository projectRepository;
+    private final ReviewRepository reviewRepository;
 
     @Override
-    public ServiceAnswer createPresentation(Long projectId, PhaseName fase) {
-        /*TODO: FECHA al crear una nueva presentacion y actualizar path del proyecto*/
+    public ServiceAnswer createPresentation(Long projectId, PhaseName fase, MultipartFile bluebookFile, MultipartFile projectFile) {
         Optional<Presentation> pendingPresentation = presentationRepository.findByProjectIdAndReviewed(projectId, false);
         if (pendingPresentation.isPresent()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PENDING_PRESENTATION).data(null).build();
@@ -43,32 +46,22 @@ public class PresentationServiceImpl implements PresentationService {
         }
         Project project = optionalProject.get();
         Presentation presentation = new Presentation();
-
+        if(bluebookFile!=null){
+            String key = cloudManagementService.putObject(bluebookFile, "Libro-Azul/");
+            project.setBlueBookPath(key);
+            presentation.setBlueBookPath(key);
+        }
+        if(projectFile!=null){
+            String key = cloudManagementService.putObject(projectFile, "Trabajos-Grado/");
+            project.setProjectPath(key);
+            presentation.setProjectPath(key);
+        }
+        presentation.setDate(LocalDateTime.now());
         presentation.setPhase(fase.toString());
         presentation.setProject(project);
         presentationRepository.save(presentation);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.PRESENTATION_CREATED).data(presentation).build();
 
-    }
-
-    @Override
-    public ServiceAnswer gradePresentation(Long idPresentacion) {
-        Optional<Presentation> opresentacion = presentationRepository.findById(idPresentacion);
-        if (opresentacion.isEmpty()) {
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
-        }
-        Presentation presentation = opresentacion.get();
-        presentation.setReviewed(true);
-        Project proyecto = presentation.getProject();
-        String fase = presentation.getPhase();
-        if (presentation.getProjectPath() != null)
-            proyecto.setProjectPath(presentation.getProjectPath());
-        if (presentation.getBlueBookPath() != null)
-            proyecto.setBlueBookPath(presentation.getBlueBookPath());
-        proyecto.setPhase(fase);
-        projectRepository.saveAndFlush(proyecto);
-        presentationRepository.saveAndFlush(presentation);
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.PRESENTACION_REVISADA).data(presentation).build();
     }
 
     @Override
@@ -105,74 +98,36 @@ public class PresentationServiceImpl implements PresentationService {
     }
 
     @Override
-    public ServiceAnswer attachFile(Long presentationId, MultipartFile file, String path) {
-        path = correctFileContext(path);
-        if (path.equals("Unknown")) {
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
-        }
+    public ServiceAnswer deletePresentation(Long presentationId) {
         Optional<Presentation> optionalPresentation = presentationRepository.findById(presentationId);
-        if (optionalPresentation.isEmpty()) {
+        if (!optionalPresentation.isPresent()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
         }
         Presentation presentation = optionalPresentation.get();
-        String key = cloudManagementService.putObject(file, path);
-        if (path.equals("Libro-Azul/")) {
-            presentation.setBlueBookPath(key);
-        }
-        if (path.equals("Trabajos-Grado/")) {
-            presentation.setProjectPath(key);
-        }
+        Project toProject = presentation.getProject();
+        String blue = presentation.getBlueBookPath();
+        String project = presentation.getProjectPath();
+        if (blue != null)
+            cloudManagementService.deleteObject(blue);
+        if (project != null)
+            cloudManagementService.deleteObject(project);
+        presentation.getReviews().stream()
+                        .peek(review ->{
+                            review.setPresentation(null);
+                            reviewRepository.delete(review);
+                        });
 
-        presentationRepository.saveAndFlush(presentation);
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.CLOUD_OPERATION_COMPLETE).data(key).build();
-    }
-
-    @Override
-    public ServiceAnswer removeFile(Long presentationId, String path) {
-        path = correctFileContext(path);
-        if (path.equals("Unknown")) {
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
+        presentationRepository.delete(presentation);
+        Presentation backup = presentationRepository.findTopByProjectIdOrderByDateDesc(toProject.getId());
+        if(backup == null){
+            toProject.setBlueBookPath(null);
+            toProject.setProjectPath(null);
+        }else{
+            toProject.setBlueBookPath(backup.getBlueBookPath());
+            toProject.setProjectPath(backup.getProjectPath());
         }
-        Optional<Presentation> optionalPresentation = presentationRepository.findById(presentationId);
-        if (optionalPresentation.isEmpty()) {
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
-        }
-        Presentation presentation = optionalPresentation.get();
-        String key = "";
-        if (path.equals("Libro-Azul/")) {
-            key = presentation.getBlueBookPath();
-            if (key == null) {
-                return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_FILE_ATTACHED).data(null).build();
-            }
-            presentation.setBlueBookPath(null);
-        }
-        if (path.equals("Trabajos-Grado/")) {
-            key = presentation.getProjectPath();
-            if (key == null) {
-                return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_FILE_ATTACHED).data(null).build();
-            }
-            presentation.setProjectPath(null);
-        }
-        cloudManagementService.deleteObject(key);
-        presentationRepository.saveAndFlush(presentation);
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.CLOUD_OPERATION_COMPLETE).data(presentation).build();
-    }
-
-    @Override
-    public ServiceAnswer delete(Long presentationId) {
-        /*TODO: restaurar path previo al proyecto*/
-        Optional<Presentation> optionalPresentation = presentationRepository.findById(presentationId);
-        if (optionalPresentation.isPresent()) {
-            String blue = optionalPresentation.get().getBlueBookPath();
-            String project = optionalPresentation.get().getProjectPath();
-            if (blue != null)
-                cloudManagementService.deleteObject(blue);
-            if (project != null)
-                cloudManagementService.deleteObject(project);
-            presentationRepository.deleteById(presentationId);
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.PRESENTATION_DELETED).data(null).build();
-        }
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
+        projectRepository.save(toProject);
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.PRESENTATION_DELETED).data(null).build();
     }
 
 
@@ -200,4 +155,6 @@ public class PresentationServiceImpl implements PresentationService {
         }
         return "Unknown";
     }
+
+
 }

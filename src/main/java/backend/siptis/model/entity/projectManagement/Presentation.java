@@ -38,7 +38,7 @@ public class Presentation {
     @JsonBackReference
     private Project project;
 
-    @OneToMany(mappedBy = "presentation", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "presentation", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private Collection<Review> reviews;
 

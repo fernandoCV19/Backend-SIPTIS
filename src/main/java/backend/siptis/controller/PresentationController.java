@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 
 @RestController
@@ -24,18 +25,16 @@ public class PresentationController {
     private final SiptisUserService userAuthService;
 
     @PostMapping("/create")
-    ResponseEntity<?> create(@RequestHeader(name = "Authorization") String token, @RequestParam PhaseName phase) {
+    ResponseEntity<?> create(@RequestHeader(name = "Authorization") String token,
+                             @RequestParam("phase") PhaseName phase,
+                             @RequestPart("bluebook") @Nullable MultipartFile bluebook,
+                             @RequestPart("project")  @Nullable MultipartFile project) {
         ArrayList<?> projects = userAuthService.getProjectsFromToken(token);
         int projectId = (int) projects.get(0);
-        ServiceAnswer serviceAnswer = presentationService.createPresentation((long) projectId, phase);
+        ServiceAnswer serviceAnswer = presentationService.createPresentation((long) projectId, phase, bluebook, project);
         return createResponseEntity(serviceAnswer);
     }
 
-    @PostMapping("/grade")
-    ResponseEntity<?> grade(@RequestParam Long presentationId) {
-        ServiceAnswer serviceAnswer = presentationService.gradePresentation(presentationId);
-        return createResponseEntity(serviceAnswer);
-    }
 
     @GetMapping("/reviews/{presentationId}")
     ResponseEntity<?> getReviewsFromPresentation(@PathVariable("presentationId") Long presentationId) {
@@ -45,19 +44,7 @@ public class PresentationController {
 
     @DeleteMapping("/{presentationId}")
     ResponseEntity<?> deletePresentation(@PathVariable("presentationId") Long presentationId) {
-        ServiceAnswer serviceAnswer = presentationService.delete(presentationId);
-        return createResponseEntity(serviceAnswer);
-    }
-
-    @PostMapping("/attach-file")
-    ResponseEntity<?> attachFile(@RequestParam Long presentationId, @RequestParam MultipartFile file, @RequestParam String path) {
-        ServiceAnswer serviceAnswer = presentationService.attachFile(presentationId, file, path);
-        return createResponseEntity(serviceAnswer);
-    }
-
-    @DeleteMapping("/remove-file")
-    ResponseEntity<?> removeFile(@RequestParam Long presentationId, @RequestParam String path) {
-        ServiceAnswer serviceAnswer = presentationService.removeFile(presentationId, path);
+        ServiceAnswer serviceAnswer = presentationService.deletePresentation(presentationId);
         return createResponseEntity(serviceAnswer);
     }
 
