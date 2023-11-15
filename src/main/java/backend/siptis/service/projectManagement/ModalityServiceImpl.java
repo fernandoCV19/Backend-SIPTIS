@@ -3,7 +3,7 @@ package backend.siptis.service.projectManagement;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.repository.projectManagement.ModalityRepository;
-import backend.siptis.service.userData.SiptisUserService;
+import backend.siptis.service.auth.SiptisUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -5,7 +5,7 @@ import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.notifications.ActivityDTO;
 import backend.siptis.service.notifications.ActivityService;
-import backend.siptis.service.userData.SiptisUserService;
+import backend.siptis.service.auth.SiptisUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

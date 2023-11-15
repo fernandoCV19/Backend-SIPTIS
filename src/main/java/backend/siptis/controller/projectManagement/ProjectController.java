@@ -5,7 +5,7 @@ import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.projectManagement.NewProjectDTO;
 import backend.siptis.service.projectManagement.ProjectService;
-import backend.siptis.service.userData.SiptisUserService;
+import backend.siptis.service.auth.SiptisUserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;

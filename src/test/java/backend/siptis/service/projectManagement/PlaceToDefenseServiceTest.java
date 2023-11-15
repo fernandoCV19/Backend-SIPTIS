@@ -3,6 +3,7 @@ package backend.siptis.service.projectManagement;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.vo.projectManagement.PlaceToDefenseVO;
+import backend.siptis.service.defenseManagement.PlaceToDefenseService;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
