@@ -7,18 +7,22 @@ public final class SemesterConstants {
 
         public static class Id {
             public static final String NAME = "id_";
-            public static final Boolean NULLABLE = false;
-            public static final Boolean UNIQUE = true;
+            public static final boolean NULLABLE = false;
+            public static final boolean UNIQUE = true;
         }
+
         public static class StartDate {
             public static final String NAME = "start_date_";
         }
+
         public static class EndDate {
             public static final String NAME = "end_date_";
         }
+
         public static class Period {
             public static final String NAME = "period_";
         }
+
         public static class InProgress {
             public static final String NAME = "in_progress_";
         }

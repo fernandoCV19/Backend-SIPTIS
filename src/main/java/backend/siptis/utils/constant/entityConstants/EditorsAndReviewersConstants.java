@@ -6,16 +6,18 @@ public final class EditorsAndReviewersConstants {
 
         public static class Id {
             public static final String NAME = "id_";
-            public static final Boolean NULLABLE = false;
-            public static final Boolean UNIQUE = true;
+            public static final boolean NULLABLE = false;
+            public static final boolean UNIQUE = true;
         }
+
         public static class JoinStudent {
             public static final String NAME = "user_id_";
-            public static final Boolean NULLABLE = false;
+            public static final boolean NULLABLE = false;
         }
+
         public static class JoinProject {
             public static final String NAME = "project_id_";
-            public static final Boolean NULLABLE = false;
+            public static final boolean NULLABLE = false;
         }
     }
 
@@ -24,20 +26,24 @@ public final class EditorsAndReviewersConstants {
 
         public static class Id {
             public static final String NAME = "id_";
-            public static final Boolean NULLABLE = false;
-            public static final Boolean UNIQUE = true;
+            public static final boolean NULLABLE = false;
+            public static final boolean UNIQUE = true;
         }
+
         public static class JoinSupervisor {
             public static final String NAME = "user_id_";
-            public static final Boolean NULLABLE = false;
+            public static final boolean NULLABLE = false;
         }
+
         public static class JoinProject {
             public static final String NAME = "project_id_";
-            public static final Boolean NULLABLE = false;
+            public static final boolean NULLABLE = false;
         }
+
         public static class Accepted {
             public static final String NAME = "accepted_";
         }
+
         public static class Reviewed {
             public static final String NAME = "reviewed_";
         }
@@ -48,20 +54,24 @@ public final class EditorsAndReviewersConstants {
 
         public static class Id {
             public static final String NAME = "id_";
-            public static final Boolean NULLABLE = false;
-            public static final Boolean UNIQUE = true;
+            public static final boolean NULLABLE = false;
+            public static final boolean UNIQUE = true;
         }
+
         public static class JoinTeacher {
             public static final String NAME = "user_id_";
-            public static final Boolean NULLABLE = false;
+            public static final boolean NULLABLE = false;
         }
+
         public static class JoinProject {
             public static final String NAME = "project_id_";
-            public static final Boolean NULLABLE = false;
+            public static final boolean NULLABLE = false;
         }
+
         public static class Accepted {
             public static final String NAME = "accepted_";
         }
+
         public static class Reviewed {
             public static final String NAME = "reviewed_";
         }
@@ -72,24 +82,29 @@ public final class EditorsAndReviewersConstants {
 
         public static class Id {
             public static final String NAME = "id_";
-            public static final Boolean NULLABLE = false;
-            public static final Boolean UNIQUE = true;
+            public static final boolean NULLABLE = false;
+            public static final boolean UNIQUE = true;
         }
+
         public static class JoinTribunal {
             public static final String NAME = "user_id_";
-            public static final Boolean NULLABLE = false;
+            public static final boolean NULLABLE = false;
         }
+
         public static class JoinProject {
             public static final String NAME = "project_id_";
-            public static final Boolean NULLABLE = false;
+            public static final boolean NULLABLE = false;
         }
+
         public static class Accepted {
             public static final String NAME = "accepted_";
         }
+
         public static class Reviewed {
             public static final String NAME = "reviewed_";
         }
-        public static class DefensePoints{
+
+        public static class DefensePoints {
             public static final String NAME = "defense_points_";
         }
     }
@@ -99,20 +114,24 @@ public final class EditorsAndReviewersConstants {
 
         public static class Id {
             public static final String NAME = "id_";
-            public static final Boolean NULLABLE = false;
-            public static final Boolean UNIQUE = true;
+            public static final boolean NULLABLE = false;
+            public static final boolean UNIQUE = true;
         }
+
         public static class JoinTutor {
             public static final String NAME = "user_id_";
-            public static final Boolean NULLABLE = false;
+            public static final boolean NULLABLE = false;
         }
+
         public static class JoinProject {
             public static final String NAME = "project_id_";
-            public static final Boolean NULLABLE = false;
+            public static final boolean NULLABLE = false;
         }
+
         public static class Accepted {
             public static final String NAME = "accepted_";
         }
+
         public static class Reviewed {
             public static final String NAME = "reviewed_";
         }

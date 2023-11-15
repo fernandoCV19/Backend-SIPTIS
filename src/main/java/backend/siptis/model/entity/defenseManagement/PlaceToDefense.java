@@ -1,6 +1,5 @@
 package backend.siptis.model.entity.defenseManagement;
 
-import backend.siptis.model.entity.defenseManagement.Defense;
 import backend.siptis.utils.constant.entityConstants.DefenseManagementConstants.PlaceToDefenseTable;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;

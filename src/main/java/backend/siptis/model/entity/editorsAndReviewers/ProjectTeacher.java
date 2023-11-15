@@ -2,7 +2,6 @@ package backend.siptis.model.entity.editorsAndReviewers;
 
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.model.entity.projectManagement.Project;
-import backend.siptis.utils.constant.entityConstants.EditorsAndReviewersConstants;
 import backend.siptis.utils.constant.entityConstants.EditorsAndReviewersConstants.ProjectTeacherTable;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;

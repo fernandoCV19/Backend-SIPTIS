@@ -2,8 +2,8 @@ package backend.siptis.service.editorsAndReviewers;
 
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.model.entity.editorsAndReviewers.ProjectTribunal;
 import backend.siptis.model.entity.defenseManagement.Defense;
+import backend.siptis.model.entity.editorsAndReviewers.ProjectTribunal;
 import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.pjo.dto.editorsAndReviewers.ReviewADefenseDTO;
 import backend.siptis.model.pjo.vo.projectManagement.ProjectToTribunalHomePageVO;

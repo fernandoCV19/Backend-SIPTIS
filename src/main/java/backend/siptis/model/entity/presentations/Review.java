@@ -1,7 +1,6 @@
 package backend.siptis.model.entity.presentations;
 
 import backend.siptis.auth.entity.SiptisUser;
-import backend.siptis.model.entity.presentations.Presentation;
 import backend.siptis.utils.constant.entityConstants.PresentationsConstants.ReviewTable;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;

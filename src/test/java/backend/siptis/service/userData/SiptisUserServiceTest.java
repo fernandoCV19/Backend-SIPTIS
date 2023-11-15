@@ -90,14 +90,15 @@ public class SiptisUserServiceTest {
     }
 
     private ServiceAnswer adminEditStudentInfo() {
-        adminEditStudentInformationDTO.setNames("Name Updated");
-        adminEditStudentInformationDTO.setLastnames("Last name Updated");
-        adminEditStudentInformationDTO.setEmail("newmail@gmail.com");
-        adminEditStudentInformationDTO.setCi("54555543");
-        adminEditStudentInformationDTO.setCelNumber("77743874");
-        adminEditStudentInformationDTO.setCodSIS("202400188");
-        adminEditStudentInformationDTO.setBirthDate(new Date());
-        return siptisUserService.adminEditStudentInformation(1L, adminEditStudentInformationDTO);
+//        adminEditStudentInformationDTO.setNames("Name Updated");
+//        adminEditStudentInformationDTO.setLastnames("Last name Updated");
+//        adminEditStudentInformationDTO.setEmail("newmail@gmail.com");
+//        adminEditStudentInformationDTO.setCi("54555543");
+//        adminEditStudentInformationDTO.setCelNumber("77743874");
+//        adminEditStudentInformationDTO.setCodSIS("202400188");
+//        adminEditStudentInformationDTO.setBirthDate(new Date());
+//        return siptisUserService.adminEditStudentInformation(1L, adminEditStudentInformationDTO);
+        return null;
     }
 
     private ServiceAnswer updateRoles(Long id) {

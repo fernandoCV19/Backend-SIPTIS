@@ -6,6 +6,7 @@ import backend.siptis.model.entity.editorsAndReviewers.*;
 import backend.siptis.model.entity.notifications.Activity;
 import backend.siptis.model.entity.presentations.Presentation;
 import backend.siptis.model.pjo.dto.userDataDTO.UserListDTO;
+import backend.siptis.utils.constant.entityConstants.ProjectManagementConstants.ProjectTable;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -20,7 +21,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "project")
+@Table(name = ProjectTable.NAME)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -28,33 +29,36 @@ import java.util.Set;
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false, unique = true)
+    @Column(name = ProjectTable.Id.NAME,
+            nullable = ProjectTable.Id.NULLABLE,
+            unique = ProjectTable.Id.UNIQUE)
     private Long id;
 
+    @Column(name = ProjectTable.Name.NAME)
     private String name;
 
-    @Column(name = "perfil_path")
+    @Column(name = ProjectTable.PerfilPath.NAME)
     private String perfilPath;
 
-    @Column(name = "blue_book_path")
+    @Column(name = ProjectTable.BlueBookPath.NAME)
     private String blueBookPath;
 
-    @Column(name = "project_path")
+    @Column(name = ProjectTable.ProjectPath.NAME)
     private String projectPath;
 
-    @Column(name = "phase")
+    @Column(name = ProjectTable.Phase.NAME)
     private String phase;
 
-    @Column(name = "period")
+    @Column(name = ProjectTable.Period.NAME)
     private String period;
 
-    @OneToOne(mappedBy = "project", cascade = CascadeType.ALL, optional = true)
-    @JoinColumn(name = "defense_id")
+    @OneToOne(mappedBy = ProjectTable.JoinDefense.MAPPED_PROJECT, cascade = CascadeType.ALL)
+    @JoinColumn(name = ProjectTable.JoinDefense.NAME)
     @JsonManagedReference
     private Defense defense;
 
     @ManyToOne
-    @JoinColumn(name = "modality_id", nullable = false)
+    @JoinColumn(name = ProjectTable.JoinModality.NAME, nullable = false)
     @JsonManagedReference
     private Modality modality;
 
@@ -62,7 +66,9 @@ public class Project {
             CascadeType.PERSIST,
             CascadeType.MERGE
     })
-    @JoinTable(name = "project_sub_area", joinColumns = @JoinColumn(name = "project_id"), inverseJoinColumns = @JoinColumn(name = "sub_area_id"))
+    @JoinTable(name = ProjectTable.SubAreasRelation.NAME,
+            joinColumns = @JoinColumn(name = ProjectTable.SubAreasRelation.JOIN_COLUMN),
+            inverseJoinColumns = @JoinColumn(name = ProjectTable.SubAreasRelation.INVERSE_JOIN_COLUMN))
     @JsonManagedReference
     private Collection<SubArea> subAreas;
 
@@ -70,44 +76,46 @@ public class Project {
             CascadeType.PERSIST,
             CascadeType.MERGE
     })
-    @JoinTable(name = "project_area", joinColumns = @JoinColumn(name = "project_id"), inverseJoinColumns = @JoinColumn(name = "area_id"))
+    @JoinTable(name = ProjectTable.AreasRelation.NAME,
+            joinColumns = @JoinColumn(name = ProjectTable.AreasRelation.JOIN_COLUMN),
+            inverseJoinColumns = @JoinColumn(name = ProjectTable.AreasRelation.INVERSE_JOIN_COLUMN))
     @JsonManagedReference
     private Set<Area> areas;
 
-    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = ProjectTable.MappedPresentations.NAME, fetch = FetchType.LAZY)
     @JsonManagedReference
     private Collection<Presentation> presentations;
 
     @ManyToOne
-    @JoinColumn(name = "state_id", nullable = true)
+    @JoinColumn(name = ProjectTable.JoinState.NAME)
     @JsonBackReference
     private State state;
 
-    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = ProjectTable.MappedActivities.NAME, fetch = FetchType.LAZY)
     @JsonManagedReference
     private Collection<Activity> activities;
 
-    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = ProjectTable.MappedStudents.NAME, fetch = FetchType.LAZY)
     @JsonManagedReference
     private Collection<ProjectStudent> students;
 
-    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = ProjectTable.MappedSupervisors.NAME, fetch = FetchType.LAZY)
     @JsonManagedReference
     private Collection<ProjectSupervisor> supervisors;
 
-    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = ProjectTable.MappedTutors.NAME, fetch = FetchType.LAZY)
     @JsonManagedReference
     private Collection<ProjectTutor> tutors;
 
-    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = ProjectTable.MappedTeachers.NAME, fetch = FetchType.LAZY)
     @JsonManagedReference
     private Collection<ProjectTeacher> teachers;
 
-    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = ProjectTable.MappedTribunals.NAME, fetch = FetchType.LAZY)
     @JsonManagedReference
     private Collection<ProjectTribunal> tribunals;
 
-    @Column(name = "total_defense_points")
+    @Column(name = ProjectTable.TotalDefensePoints.NAME)
     private Double totalDefensePoints;
 
 

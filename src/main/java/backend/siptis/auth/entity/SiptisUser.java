@@ -3,6 +3,7 @@ package backend.siptis.auth.entity;
 import backend.siptis.model.entity.editorsAndReviewers.*;
 import backend.siptis.model.entity.presentations.Review;
 import backend.siptis.model.entity.userData.*;
+import backend.siptis.utils.constant.entityConstants.AuthConstants.SiptisUserTable;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -15,28 +16,35 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.*;
 
 @Entity
-@Table(name = "siptis_user")
+@Table(name = SiptisUserTable.NAME)
 @Getter
 @Setter
 @NoArgsConstructor
 public class SiptisUser implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false, unique = true)
+    @Column(name = SiptisUserTable.Id.NAME,
+            nullable = SiptisUserTable.Id.NULLABLE,
+            unique = SiptisUserTable.Id.UNIQUE)
     private Long id;
-    private String email;
-    private String password;
-    private String tokenPassword;
 
+    @Column(name = SiptisUserTable.Email.NAME)
+    private String email;
+
+    @Column(name = SiptisUserTable.Password.NAME)
+    private String password;
+
+    @Column(name = SiptisUserTable.TokenPassword.NAME)
+    private String tokenPassword;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE
     })
     @JoinTable(
-            name = "siptisUser_role",
-            joinColumns = @JoinColumn(name = "siptisUser_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
+            name = SiptisUserTable.RolesRelation.NAME,
+            joinColumns = @JoinColumn(name = SiptisUserTable.RolesRelation.JOIN_COLUMN),
+            inverseJoinColumns = @JoinColumn(name = SiptisUserTable.RolesRelation.INVERSE_JOIN_COLUMN))
     @JsonManagedReference
     private Set<Role> roles = new HashSet<>();
 
@@ -44,9 +52,9 @@ public class SiptisUser implements UserDetails {
             CascadeType.PERSIST,
             CascadeType.MERGE
     })
-    @JoinTable(name = "siptisUser_area",
-            joinColumns = @JoinColumn(name = "siptisuser_id"),
-            inverseJoinColumns = @JoinColumn(name = "area_id"))
+    @JoinTable(name = SiptisUserTable.AreasRelation.NAME,
+            joinColumns = @JoinColumn(name = SiptisUserTable.AreasRelation.JOIN_COLUMN),
+            inverseJoinColumns = @JoinColumn(name = SiptisUserTable.AreasRelation.INVERSE_JOIN_COLUMN))
     @JsonManagedReference
     private Set<UserArea> areas;
 
@@ -54,49 +62,48 @@ public class SiptisUser implements UserDetails {
             CascadeType.PERSIST,
             CascadeType.MERGE
     })
-    @JoinTable(name = "siptisUser_career",
-            joinColumns = @JoinColumn(name = "siptisuser_id"),
-            inverseJoinColumns = @JoinColumn(name = "career_id"))
+    @JoinTable(name = SiptisUserTable.CareersRelation.NAME,
+            joinColumns = @JoinColumn(name = SiptisUserTable.CareersRelation.JOIN_COLUMN),
+            inverseJoinColumns = @JoinColumn(name = SiptisUserTable.CareersRelation.INVERSE_JOIN_COLUMN))
     @JsonManagedReference
     private Set<UserCareer> career = new HashSet<>();
 
 
-    @OneToOne(mappedBy = "siptisUser", cascade = CascadeType.ALL, optional = true)
+    @OneToOne(mappedBy = SiptisUserTable.MappedUserInformation.NAME, cascade = CascadeType.ALL)
     private UserInformation userInformation;
 
-    @OneToOne(mappedBy = "siptisUser", cascade = CascadeType.ALL, optional = true)
+    @OneToOne(mappedBy = SiptisUserTable.MappedRefreshToken.NAME, cascade = CascadeType.ALL)
     private RefreshToken refreshToken;
 
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "siptisUser")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = SiptisUserTable.MappedAvailableSchedules.NAME)
     @JsonManagedReference
     private Collection<Schedule> availableSchedules;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "siptisUser")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = SiptisUserTable.MappedDocuments.NAME)
     @JsonManagedReference
     private Collection<Document> documents;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "student")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = SiptisUserTable.MappedStudents.NAME)
     @JsonManagedReference
     private Collection<ProjectStudent> students;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "supervisor")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = SiptisUserTable.MappedSupervisorOf.NAME)
     @JsonManagedReference
     private Collection<ProjectSupervisor> supervisorOf;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "tutor")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = SiptisUserTable.MappedTutorOf.NAME)
     @JsonManagedReference
     private Collection<ProjectTutor> tutorOf;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "teacher")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = SiptisUserTable.MappedTeacherOf.NAME)
     @JsonManagedReference
     private Collection<ProjectTeacher> teacherOf;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "tribunal")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = SiptisUserTable.MappedTribunalOf.NAME)
     @JsonManagedReference
     private Collection<ProjectTribunal> tribunalOf;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "siptisUser")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = SiptisUserTable.MappedReviews.NAME)
     @JsonManagedReference
     private Collection<Review> reviews;
 
@@ -106,7 +113,6 @@ public class SiptisUser implements UserDetails {
         this.tokenPassword = null;
     }
 
-    //-------------------------------------------------------------------
     public void addRol(Role role) {
         this.roles.add(role);
     }
@@ -115,11 +121,6 @@ public class SiptisUser implements UserDetails {
         this.career.add(career);
     }
 
-    public void addAreas(UserArea area) {
-        this.areas.add(area);
-    }
-
-    //-------------------------------------------------------------------
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();

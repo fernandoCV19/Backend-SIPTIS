@@ -1,5 +1,6 @@
 package backend.siptis.auth.entity;
 
+import backend.siptis.utils.constant.entityConstants.AuthConstants.RefreshTokenTable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +10,7 @@ import lombok.Setter;
 import java.time.Instant;
 
 @Entity
-@Table(name = "refresh_token")
+@Table(name = RefreshTokenTable.NAME)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,15 +19,22 @@ public class RefreshToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = RefreshTokenTable.Id.NAME,
+            unique = RefreshTokenTable.Id.UNIQUE,
+            nullable = RefreshTokenTable.Id.NULLABLE)
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "siptis_user_id", referencedColumnName = "id")
+    @JoinColumn(name = RefreshTokenTable.JoinSiptisUser.NAME,
+            referencedColumnName = RefreshTokenTable.JoinSiptisUser.REFERENCED_COLUMN)
     private SiptisUser siptisUser;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = RefreshTokenTable.Token.NAME,
+            nullable = RefreshTokenTable.Token.NULLABLE,
+            unique = RefreshTokenTable.Token.UNIQUE)
     private String token;
 
-    @Column(nullable = false, name = "expire_date")
+    @Column(nullable = RefreshTokenTable.ExpireDate.NULLABLE,
+            name = RefreshTokenTable.ExpireDate.NAME)
     private Instant expireDate;
 }
