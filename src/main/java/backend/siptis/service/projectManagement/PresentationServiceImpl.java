@@ -1,11 +1,9 @@
 package backend.siptis.service.projectManagement;
 
-import backend.siptis.commons.PhaseName;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.projectManagement.Presentation;
 import backend.siptis.model.entity.projectManagement.Project;
-import backend.siptis.model.entity.projectManagement.Review;
 import backend.siptis.model.pjo.vo.projectManagement.InfoToReviewAProjectVO;
 import backend.siptis.model.pjo.vo.projectManagement.ReviewShortInfoVO;
 import backend.siptis.model.repository.projectManagement.PresentationRepository;
@@ -35,7 +33,7 @@ public class PresentationServiceImpl implements PresentationService {
     private final ReviewRepository reviewRepository;
 
     @Override
-    public ServiceAnswer createPresentation(Long projectId, PhaseName fase, MultipartFile bluebookFile, MultipartFile projectFile) {
+    public ServiceAnswer createPresentation(Long projectId, MultipartFile bluebookFile, MultipartFile projectFile) {
         Optional<Presentation> pendingPresentation = presentationRepository.findByProjectIdAndReviewed(projectId, false);
         if (pendingPresentation.isPresent()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PENDING_PRESENTATION).data(null).build();
@@ -46,18 +44,18 @@ public class PresentationServiceImpl implements PresentationService {
         }
         Project project = optionalProject.get();
         Presentation presentation = new Presentation();
-        if(bluebookFile!=null){
+        if (bluebookFile != null) {
             String key = cloudManagementService.putObject(bluebookFile, "Libro-Azul/");
             project.setBlueBookPath(key);
             presentation.setBlueBookPath(key);
         }
-        if(projectFile!=null){
+        if (projectFile != null) {
             String key = cloudManagementService.putObject(projectFile, "Trabajos-Grado/");
             project.setProjectPath(key);
             presentation.setProjectPath(key);
         }
         presentation.setDate(LocalDateTime.now());
-        presentation.setPhase(fase.toString());
+        presentation.setPhase(project.getPhase());
         presentation.setProject(project);
         presentationRepository.save(presentation);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.PRESENTATION_CREATED).data(presentation).build();
@@ -112,17 +110,17 @@ public class PresentationServiceImpl implements PresentationService {
         if (project != null)
             cloudManagementService.deleteObject(project);
         presentation.getReviews().stream()
-                        .peek(review ->{
-                            review.setPresentation(null);
-                            reviewRepository.delete(review);
-                        });
+                .peek(review -> {
+                    review.setPresentation(null);
+                    reviewRepository.delete(review);
+                });
 
         presentationRepository.delete(presentation);
         Presentation backup = presentationRepository.findTopByProjectIdOrderByDateDesc(toProject.getId());
-        if(backup == null){
+        if (backup == null) {
             toProject.setBlueBookPath(null);
             toProject.setProjectPath(null);
-        }else{
+        } else {
             toProject.setBlueBookPath(backup.getBlueBookPath());
             toProject.setProjectPath(backup.getProjectPath());
         }

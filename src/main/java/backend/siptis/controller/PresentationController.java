@@ -1,7 +1,6 @@
 package backend.siptis.controller;
 
 import backend.siptis.commons.ControllerAnswer;
-import backend.siptis.commons.PhaseName;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.service.projectManagement.PresentationService;
@@ -26,12 +25,11 @@ public class PresentationController {
 
     @PostMapping("/create")
     ResponseEntity<?> create(@RequestHeader(name = "Authorization") String token,
-                             @RequestParam("phase") PhaseName phase,
                              @RequestPart("bluebook") @Nullable MultipartFile bluebook,
-                             @RequestPart("project")  @Nullable MultipartFile project) {
+                             @RequestPart("project") @Nullable MultipartFile project) {
         ArrayList<?> projects = userAuthService.getProjectsFromToken(token);
         int projectId = (int) projects.get(0);
-        ServiceAnswer serviceAnswer = presentationService.createPresentation((long) projectId, phase, bluebook, project);
+        ServiceAnswer serviceAnswer = presentationService.createPresentation((long) projectId, bluebook, project);
         return createResponseEntity(serviceAnswer);
     }
 
