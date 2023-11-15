@@ -32,7 +32,7 @@ public class ChatBotServiceImpl implements ChatBotService {
                     .build();
         }
         String completion = botService.getCompletion(request);
-        if (completion == null){
+        if (completion == null) {
             return ServiceAnswer.builder()
                     .data(null)
                     .serviceMessage(ServiceMessage.BOT_REQUEST_ERROR)
