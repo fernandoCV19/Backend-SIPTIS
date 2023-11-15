@@ -53,8 +53,8 @@ public class UserInformationImpl implements UserInformationService {
 
         UserInformation userInformation = new UserInformation();
         userInformation.setNames(dto.getNames());
-        userInformation.setLastnames(dto.getLastnames());
-        userInformation.setFullname(dto.getNames() + " " + dto.getLastnames());
+        userInformation.setLastNames(dto.getLastnames());
+        userInformation.setFullName(dto.getNames() + " " + dto.getLastnames());
         userInformation.setCi(dto.getCi());
         userInformation.setCelNumber(dto.getCelNumber());
         userInformation.setBirthDate(dto.getBirthDate());
@@ -71,7 +71,7 @@ public class UserInformationImpl implements UserInformationService {
 
         UserInformation userInformation = new UserInformation();
         userInformation.setNames(dto.getNames().trim());
-        userInformation.setLastnames(dto.getLastnames().trim());
+        userInformation.setLastNames(dto.getLastnames().trim());
         userInformation.setCi(dto.getCi());
         userInformation.setCelNumber(dto.getCelNumber().trim());
         userInformation.setBirthDate(dto.getBirthDate());
@@ -93,7 +93,7 @@ public class UserInformationImpl implements UserInformationService {
             if (existUserByCi(dto.getCi()))
                 return createAnswer(ServiceMessage.CI_ALREADY_EXIST, null);
 
-        userInformation.setLastnames(dto.getLastnames().trim());
+        userInformation.setLastNames(dto.getLastnames().trim());
         userInformation.setNames(dto.getNames().trim());
         userInformation.setCi(dto.getCi());
         userInformation.setCelNumber(dto.getCelNumber().trim());

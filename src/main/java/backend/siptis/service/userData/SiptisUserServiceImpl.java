@@ -495,7 +495,7 @@ public class SiptisUserServiceImpl implements SiptisUserService {
                 roleName = Roles.SIS_DIRECTOR.toString();
             SiptisUser user = siptisUserRepository.findOneByRolesName(roleName).get();
             UserInformation information = user.getUserInformation();
-            return information.getNames() + " " + information.getLastnames();
+            return information.getNames() + " " + information.getLastNames();
         } catch (Exception e) {
             return null;
         }
@@ -539,7 +539,7 @@ public class SiptisUserServiceImpl implements SiptisUserService {
         UserInformationDTO dto = new UserInformationDTO();
         dto.setEmail(user.getEmail());
         dto.setNames(information.getNames());
-        dto.setLastnames(information.getLastnames());
+        dto.setLastnames(information.getLastNames());
         dto.setCi(information.getCi());
         dto.setCodSIS(information.getCodSIS());
         dto.setCelNumber(information.getCelNumber());

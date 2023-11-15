@@ -1,5 +1,7 @@
 package backend.siptis.model.entity.projectManagement;
 
+import backend.siptis.model.entity.phaseManagement.Phase;
+import backend.siptis.utils.constant.entityConstants.ProjectManagementConstants.ModalityTable;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -10,7 +12,7 @@ import lombok.Setter;
 import java.util.Collection;
 
 @Entity
-@Table(name = "modality")
+@Table(name = ModalityTable.NAME)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,16 +21,19 @@ import java.util.Collection;
 public class Modality {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false, unique = true)
+    @Column(name = ModalityTable.Id.NAME,
+            nullable = ModalityTable.Id.NULLABLE,
+            unique = ModalityTable.Id.UNIQUE)
     private Long id;
 
+    @Column(name = ModalityTable.Name.NAME)
     private String name;
 
-    @OneToMany(mappedBy = "modality")
+    @OneToMany(mappedBy = ModalityTable.MappedProjects.NAME)
     @JsonBackReference
     private Collection<Project> projects;
 
-    @OneToMany(mappedBy = "modality")
+    @OneToMany(mappedBy = ModalityTable.MappedPhases.NAME)
     @JsonBackReference
     private Collection<Phase> phases;
 }

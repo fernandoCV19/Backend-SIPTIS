@@ -1,6 +1,7 @@
 package backend.siptis.model.entity.userData;
 
 import backend.siptis.auth.entity.SiptisUser;
+import backend.siptis.utils.constant.entityConstants.UserDataConstants.UserInformationTable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,7 +11,7 @@ import lombok.Setter;
 import java.util.Date;
 
 @Entity
-@Table(name = "user_information")
+@Table(name = UserInformationTable.NAME)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,19 +20,33 @@ public class UserInformation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false, unique = true)
+    @Column(name = UserInformationTable.Id.NAME,
+            nullable = UserInformationTable.Id.NULLABLE,
+            unique = UserInformationTable.Id.UNIQUE)
     private Long id;
 
+    @Column(name = UserInformationTable.Names.NAME)
     private String names;
-    private String lastnames;
-    private String fullname;
+
+    @Column(name = UserInformationTable.LastNames.NAME)
+    private String lastNames;
+
+    @Column(name = UserInformationTable.FullName.NAME)
+    private String fullName;
+
+    @Column(name = UserInformationTable.CellNumber.NAME)
     private String celNumber;
+
+    @Column(name = UserInformationTable.CI.NAME)
     private String ci;
+
+    @Column(name = UserInformationTable.BirthDate.NAME)
     private Date birthDate;
+
+    @Column(name = UserInformationTable.CodSIS.NAME)
     private String codSIS;
-    //private boolean wppMessages = Boolean.FALSE;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = UserInformationTable.JoinSiptisUser.NAME)
     private SiptisUser siptisUser;
 }

@@ -2,7 +2,7 @@ package backend.siptis.service.projectManagement;
 
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.model.entity.projectManagement.PlaceToDefense;
+import backend.siptis.model.entity.defenseManagement.PlaceToDefense;
 import backend.siptis.model.pjo.vo.projectManagement.PlaceToDefenseVO;
 import backend.siptis.model.pjo.vo.projectManagement.PlaceWithReservedDateVO;
 import backend.siptis.model.repository.projectManagement.PlaceToDefenseRepository;

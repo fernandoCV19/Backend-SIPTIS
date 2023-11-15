@@ -1,5 +1,7 @@
-package backend.siptis.model.entity.projectManagement;
+package backend.siptis.model.entity.phaseManagement;
 
+import backend.siptis.model.entity.projectManagement.Modality;
+import backend.siptis.utils.constant.entityConstants.PhaseManagementConstants.PhaseTable;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -12,7 +14,7 @@ import lombok.Setter;
 import java.util.Collection;
 
 @Entity
-@Table(name = "phase")
+@Table(name = PhaseTable.NAME)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,23 +22,31 @@ import java.util.Collection;
 public class Phase {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false, unique = true)
+    @Column(name = PhaseTable.Id.NAME,
+            nullable = PhaseTable.Id.NULLABLE,
+            unique = PhaseTable.Id.UNIQUE)
     private Long id;
 
+    @Column(name = PhaseTable.Name.NAME)
     private String name;
-    @Size(max = 1000)
+
+    @Size(max = PhaseTable.DescriptionPhaseSort.MAX_SIZE)
+    @Column(name = PhaseTable.DescriptionPhaseSort.NAME)
     private String descriptionPhaseShort;
-    @Size(max = 5000)
+
+    @Size(max = PhaseTable.DescriptionPhaseLong.MAX_SIZE)
+    @Column(name = PhaseTable.DescriptionPhaseLong.NAME)
     private String descriptionPhaseLong;
 
+    @Column(name = PhaseTable.NumberPhase.NAME)
     private int numberPhase;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "modality_id")
+    @JoinColumn(name = PhaseTable.JoinModality.NAME)
     @JsonManagedReference
     private Modality modality;
 
-    @OneToMany(mappedBy = "phase")
+    @OneToMany(mappedBy = PhaseTable.MappedDocuments.NAME)
     @JsonBackReference
     private Collection<DocumentPhase> documents;
 }

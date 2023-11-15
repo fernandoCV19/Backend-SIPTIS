@@ -3,7 +3,7 @@ package backend.siptis.service.projectManagement;
 import backend.siptis.commons.PhaseName;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.model.entity.projectManagement.Presentation;
+import backend.siptis.model.entity.presentations.Presentation;
 import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.pjo.vo.projectManagement.InfoToReviewAProjectVO;
 import backend.siptis.model.pjo.vo.projectManagement.ReviewShortInfoVO;
@@ -91,7 +91,7 @@ public class PresentationServiceImpl implements PresentationService {
                     Map<String, Object> reviewerInfo = new HashMap<>();
                     reviewerInfo.put("id", review.getSiptisUser().getId());
                     reviewerInfo.put("names", review.getSiptisUser().getUserInformation().getNames());
-                    reviewerInfo.put("lastNames", review.getSiptisUser().getUserInformation().getLastnames());
+                    reviewerInfo.put("lastNames", review.getSiptisUser().getUserInformation().getLastNames());
 
                     jsonMap.put("reviewer", reviewerInfo);
                     return jsonMap;

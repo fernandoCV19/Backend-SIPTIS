@@ -17,7 +17,7 @@ public class ProjectInfoToAssignTribunalsVO {
 
     public ProjectInfoToAssignTribunalsVO(Project project) {
         name = project.getName();
-        students = project.getStudents().stream().map(e -> e.getStudent().getUserInformation().getNames() + " " + e.getStudent().getUserInformation().getLastnames()).toList();
+        students = project.getStudents().stream().map(e -> e.getStudent().getUserInformation().getNames() + " " + e.getStudent().getUserInformation().getLastNames()).toList();
         areas = project.getAreas().stream().map(Area::getName).toList();
         subAreas = project.getSubAreas().stream().map(SubArea::getName).toList();
     }

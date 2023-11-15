@@ -1,5 +1,6 @@
 package backend.siptis.model.entity.projectManagement;
 
+import backend.siptis.utils.constant.entityConstants.ProjectManagementConstants.SubAreaTable;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -10,7 +11,7 @@ import lombok.Setter;
 import java.util.Collection;
 
 @Entity
-@Table(name = "sub_area")
+@Table(name = SubAreaTable.NAME)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,12 +19,15 @@ import java.util.Collection;
 public class SubArea {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false, unique = true)
+    @Column(name = SubAreaTable.Id.NAME,
+            nullable = SubAreaTable.Id.NULLABLE,
+            unique = SubAreaTable.Id.UNIQUE)
     private Long id;
 
+    @Column(name = SubAreaTable.Name.NAME)
     private String name;
 
-    @ManyToMany(mappedBy = "subAreas")
+    @ManyToMany(mappedBy = SubAreaTable.MappedProjects.NAME)
     @JsonBackReference
     private Collection<Project> projects;
 }

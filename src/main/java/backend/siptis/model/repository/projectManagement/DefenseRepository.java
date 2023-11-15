@@ -1,6 +1,6 @@
 package backend.siptis.model.repository.projectManagement;
 
-import backend.siptis.model.entity.projectManagement.Defense;
+import backend.siptis.model.entity.defenseManagement.Defense;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

@@ -111,7 +111,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
         }
         SiptisUser user = oUser.get();
-        String postulant = user.getUserInformation().getNames() + ' ' + user.getUserInformation().getLastnames();
+        String postulant = user.getUserInformation().getNames() + ' ' + user.getUserInformation().getLastNames();
         ReportTool reportTool = new ReportTool();
         Integer reportNumber = reportDocumentDTO.getReportNumber();
         String filename = reportTool.generate(postulant, Integer.toString(reportNumber), title, tutors, teacherCompleteName, reportDocumentDTO.getDescription());
@@ -137,7 +137,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
         }
         SiptisUser user = oUser.get();
         UserInformation info = user.getUserInformation();
-        String name = info.getNames() + " " + info.getLastnames();
+        String name = info.getNames() + " " + info.getLastNames();
         String ci = info.getCi();
         UserCareer career = null;
         String careerName = "";
@@ -187,7 +187,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
         }
         SiptisUser user = oUser.get();
         UserInformation info = user.getUserInformation();
-        String authorLastNames = info.getLastnames();
+        String authorLastNames = info.getLastNames();
         String authorNames = info.getNames();
         UserCareer career = null;
         String careerName = "";
@@ -288,7 +288,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
         String key = "";
         for (ProjectStudent projectStudent : students) {
             UserInformation student = projectStudent.getStudent().getUserInformation();
-            String studentName = student.getNames() + " " + student.getLastnames();
+            String studentName = student.getNames() + " " + student.getLastNames();
 
             Set<UserCareer> career = projectStudent.getStudent().getCareer();
             String careerName = career.iterator().next().getName();
@@ -333,7 +333,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
         String key = "";
         for (ProjectStudent projectStudent : students) {
             UserInformation student = projectStudent.getStudent().getUserInformation();
-            String studentName = student.getNames() + " " + student.getLastnames();
+            String studentName = student.getNames() + " " + student.getLastNames();
             Set<UserCareer> career = projectStudent.getStudent().getCareer();
             String careerName = career.iterator().next().getName();
 
@@ -370,7 +370,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
         if (projectStudent == null)
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
         UserInformation student = projectStudent.getStudent().getUserInformation();
-        String studentName = student.getNames() + " " + student.getLastnames();
+        String studentName = student.getNames() + " " + student.getLastNames();
         String studentCi = student.getCi();
         String key = "";
         Set<UserCareer> career = projectStudent.getStudent().getCareer();

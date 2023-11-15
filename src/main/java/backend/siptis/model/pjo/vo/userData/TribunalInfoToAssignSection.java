@@ -16,7 +16,7 @@ public class TribunalInfoToAssignSection {
 
     public TribunalInfoToAssignSection(SiptisUser user) {
         id = user.getId();
-        name = user.getUserInformation().getNames() + " " + user.getUserInformation().getLastnames();
+        name = user.getUserInformation().getNames() + " " + user.getUserInformation().getLastNames();
         areas = user.getAreas().stream().map(UserArea::getName).toList();
         numberOfProjects = user.getTribunalOf().size();
         projectsNames = user.getTribunalOf().stream().map(projectTribunal -> projectTribunal.getProject().getName()).toList();

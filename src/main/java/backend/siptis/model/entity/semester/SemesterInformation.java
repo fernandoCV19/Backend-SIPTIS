@@ -1,5 +1,6 @@
 package backend.siptis.model.entity.semester;
 
+import backend.siptis.utils.constant.entityConstants.SemesterConstants.SemesterInformationTable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +10,7 @@ import lombok.Setter;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "semester_information")
+@Table(name = SemesterInformationTable.NAME)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,16 +18,21 @@ import java.time.LocalDate;
 public class SemesterInformation {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false, unique = true)
+    @Column(name = SemesterInformationTable.Id.NAME,
+            nullable = SemesterInformationTable.Id.NULLABLE,
+            unique = SemesterInformationTable.Id.UNIQUE)
     private Long id;
 
-    @Column(name = "start_date")
+    @Column(name = SemesterInformationTable.StartDate.NAME)
     private LocalDate startDate;
-    @Column(name = "end_date")
+
+    @Column(name = SemesterInformationTable.EndDate.NAME)
     private LocalDate endDate;
-    @Column(name = "period")
+
+    @Column(name = SemesterInformationTable.Period.NAME)
     private String period;
-    @Column(name = "in_progress")
+
+    @Column(name = SemesterInformationTable.InProgress.NAME)
     private boolean inProgress;
 
     public String getStartDateString() {

@@ -1,7 +1,7 @@
 package backend.siptis.auth.entity;
 
 import backend.siptis.model.entity.editorsAndReviewers.*;
-import backend.siptis.model.entity.projectManagement.Review;
+import backend.siptis.model.entity.presentations.Review;
 import backend.siptis.model.entity.userData.*;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -146,7 +146,7 @@ public class SiptisUser implements UserDetails {
     }
 
     public String getFullName() {
-        return userInformation.getNames() + " " + userInformation.getLastnames();
+        return userInformation.getNames() + " " + userInformation.getLastNames();
     }
 
     @Override

@@ -41,27 +41,27 @@ public class ProjectCompleteInfoVO {
         score = project.getTotalDefensePoints();
         students = project.getStudents() != null ? project.getStudents()
                 .stream()
-                .map(e -> e.getStudent().getUserInformation().getNames() + " " + e.getStudent().getUserInformation().getLastnames())
+                .map(e -> e.getStudent().getUserInformation().getNames() + " " + e.getStudent().getUserInformation().getLastNames())
                 .toList() : null;
 
         teachers = project.getTeachers() != null ? project.getTeachers()
                 .stream()
-                .map(e -> e.getTeacher().getUserInformation().getNames() + " " + e.getTeacher().getUserInformation().getLastnames())
+                .map(e -> e.getTeacher().getUserInformation().getNames() + " " + e.getTeacher().getUserInformation().getLastNames())
                 .toList() : null;
 
         tutors = project.getTutors() != null ? project.getTutors()
                 .stream()
-                .map(e -> e.getTutor().getUserInformation().getNames() + " " + e.getTutor().getUserInformation().getLastnames())
+                .map(e -> e.getTutor().getUserInformation().getNames() + " " + e.getTutor().getUserInformation().getLastNames())
                 .toList() : null;
 
         supervisors = project.getSupervisors() != null ? project.getSupervisors()
                 .stream()
-                .map(e -> e.getSupervisor().getUserInformation().getNames() + " " + e.getSupervisor().getUserInformation().getLastnames())
+                .map(e -> e.getSupervisor().getUserInformation().getNames() + " " + e.getSupervisor().getUserInformation().getLastNames())
                 .toList() : null;
 
         tribunals = project.getTribunals() != null ? project.getTribunals()
                 .stream()
-                .map(e -> e.getTribunal().getUserInformation().getNames() + " " + e.getTribunal().getUserInformation().getLastnames())
+                .map(e -> e.getTribunal().getUserInformation().getNames() + " " + e.getTribunal().getUserInformation().getLastNames())
                 .toList() : null;
     }
 }

@@ -1,5 +1,6 @@
 package backend.siptis.model.entity.projectManagement;
 
+import backend.siptis.utils.constant.entityConstants.ProjectManagementConstants.StateTable;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -10,7 +11,7 @@ import lombok.Setter;
 import java.util.Collection;
 
 @Entity
-@Table(name = "state")
+@Table(name = StateTable.NAME)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,13 +19,15 @@ import java.util.Collection;
 public class State {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false, unique = true)
+    @Column(name = StateTable.Id.NAME,
+            nullable = StateTable.Id.NULLABLE,
+            unique = StateTable.Id.UNIQUE)
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = StateTable.Name.NAME)
     private String name;
 
-    @OneToMany(mappedBy = "state")
+    @OneToMany(mappedBy = StateTable.MappedProjects.NAME)
     @JsonManagedReference
     private Collection<Project> projects;
 }

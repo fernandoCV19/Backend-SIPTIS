@@ -1,6 +1,7 @@
 package backend.siptis.model.entity.userData;
 
 import backend.siptis.auth.entity.SiptisUser;
+import backend.siptis.utils.constant.entityConstants.UserDataConstants.UserAreaTable;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,7 +12,7 @@ import lombok.Setter;
 import java.util.Collection;
 
 @Entity
-@Table(name = "user_area")
+@Table(name = UserAreaTable.NAME)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,12 +20,16 @@ import java.util.Collection;
 public class UserArea {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false, unique = true)
+    @Column(name = UserAreaTable.Id.NAME,
+            nullable = UserAreaTable.Id.NULLABLE,
+            unique = UserAreaTable.Id.UNIQUE)
     private Long id;
+
+    @Column(name = UserAreaTable.Name.NAME)
     private String name;
 
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "areas")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = UserAreaTable.MappedSiptisUsers.NAME)
     @JsonBackReference
     private Collection<SiptisUser> siptisUsers;
 }

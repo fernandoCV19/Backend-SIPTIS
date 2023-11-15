@@ -1,6 +1,6 @@
 package backend.siptis.model.pjo.vo.projectManagement;
 
-import backend.siptis.model.entity.projectManagement.Review;
+import backend.siptis.model.entity.presentations.Review;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -15,7 +15,7 @@ public class ReviewShortInfoVO {
     public ReviewShortInfoVO(Review review) {
         documentPath = review.getDocumentPath();
         commentary = review.getCommentary();
-        user = review.getSiptisUser().getUserInformation().getNames() + " " + review.getSiptisUser().getUserInformation().getLastnames();
+        user = review.getSiptisUser().getUserInformation().getNames() + " " + review.getSiptisUser().getUserInformation().getLastNames();
         date = review.getDate();
     }
 }

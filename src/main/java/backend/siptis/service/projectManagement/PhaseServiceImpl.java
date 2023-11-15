@@ -2,7 +2,7 @@ package backend.siptis.service.projectManagement;
 
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.model.entity.projectManagement.Phase;
+import backend.siptis.model.entity.phaseManagement.Phase;
 import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.pjo.dto.PhaseDTO;
 import backend.siptis.model.pjo.vo.projectManagement.PhaseVO;

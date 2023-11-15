@@ -1,6 +1,6 @@
 package backend.siptis.model.repository.projectManagement;
 
-import backend.siptis.model.entity.projectManagement.Presentation;
+import backend.siptis.model.entity.presentations.Presentation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

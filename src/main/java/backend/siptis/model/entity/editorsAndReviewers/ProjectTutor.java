@@ -2,6 +2,7 @@ package backend.siptis.model.entity.editorsAndReviewers;
 
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.model.entity.projectManagement.Project;
+import backend.siptis.utils.constant.entityConstants.EditorsAndReviewersConstants.ProjectTutorTable;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "project_tutor")
+@Table(name = ProjectTutorTable.NAME)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,18 +19,26 @@ import lombok.Setter;
 public class ProjectTutor {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false, unique = true)
+    @Column(name = ProjectTutorTable.Id.NAME,
+            nullable = ProjectTutorTable.Id.NULLABLE,
+            unique = ProjectTutorTable.Id.UNIQUE)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = ProjectTutorTable.JoinTutor.NAME,
+            nullable = ProjectTutorTable.JoinTutor.NULLABLE)
     @JsonBackReference
     private SiptisUser tutor;
 
     @ManyToOne
-    @JoinColumn(name = "project_id", nullable = false)
+    @JoinColumn(name = ProjectTutorTable.JoinProject.NAME,
+            nullable = ProjectTutorTable.JoinProject.NULLABLE)
     @JsonBackReference
     private Project project;
+
+    @Column(name = ProjectTutorTable.Accepted.NAME)
     private Boolean accepted;
+
+    @Column(name = ProjectTutorTable.Reviewed.NAME)
     private Boolean reviewed;
 }

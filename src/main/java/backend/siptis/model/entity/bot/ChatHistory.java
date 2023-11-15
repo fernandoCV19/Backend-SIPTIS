@@ -1,5 +1,6 @@
 package backend.siptis.model.entity.bot;
 
+import backend.siptis.utils.constant.entityConstants.BotConstants.ChatHistoryTable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "chat_history")
+@Table(name = ChatHistoryTable.NAME)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,13 +17,15 @@ public class ChatHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false, unique = true)
+    @Column(name = ChatHistoryTable.Id.NAME,
+            nullable = ChatHistoryTable.Id.NULLABLE,
+            unique = ChatHistoryTable.Id.UNIQUE)
     private Long id;
 
-    @Column(name = "prompt")
+    @Column(name = ChatHistoryTable.Prompt.NAME)
     private String prompt;
 
-    @Column(name = "completion")
+    @Column(name = ChatHistoryTable.Completion.NAME)
     private String completion;
 
 

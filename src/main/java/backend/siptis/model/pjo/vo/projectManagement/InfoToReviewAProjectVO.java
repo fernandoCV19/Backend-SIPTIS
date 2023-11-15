@@ -15,7 +15,7 @@ public class InfoToReviewAProjectVO {
 
     public InfoToReviewAProjectVO(Project project, List<ReviewShortInfoVO> reviews) {
         projectName = project.getName();
-        students = project.getStudents().stream().map(student -> student.getStudent().getUserInformation().getNames() + " " + student.getStudent().getUserInformation().getLastnames()).toList();
+        students = project.getStudents().stream().map(student -> student.getStudent().getUserInformation().getNames() + " " + student.getStudent().getUserInformation().getLastNames()).toList();
         otherReviews = reviews;
     }
 }

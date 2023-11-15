@@ -1,6 +1,6 @@
 package backend.siptis.model.pjo.vo.projectManagement;
 
-import backend.siptis.model.entity.projectManagement.Defense;
+import backend.siptis.model.entity.defenseManagement.Defense;
 import lombok.Data;
 
 import java.time.LocalDate;

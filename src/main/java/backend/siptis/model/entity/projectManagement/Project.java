@@ -1,8 +1,10 @@
 package backend.siptis.model.entity.projectManagement;
 
 import backend.siptis.auth.entity.SiptisUser;
+import backend.siptis.model.entity.defenseManagement.Defense;
 import backend.siptis.model.entity.editorsAndReviewers.*;
 import backend.siptis.model.entity.notifications.Activity;
+import backend.siptis.model.entity.presentations.Presentation;
 import backend.siptis.model.pjo.dto.userDataDTO.UserListDTO;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;

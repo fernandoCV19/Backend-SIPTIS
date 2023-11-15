@@ -22,7 +22,7 @@ public class SchedulesVO {
     public SchedulesVO(ProjectStudent student) {
         SiptisUser studentUser = student.getStudent();
         this.id = studentUser.getId();
-        this.name = studentUser.getUserInformation().getNames() + " " + studentUser.getUserInformation().getLastnames();
+        this.name = studentUser.getUserInformation().getNames() + " " + studentUser.getUserInformation().getLastNames();
         this.schedules = studentUser.getAvailableSchedules()
                 .stream()
                 .map((schedule) -> schedule.getDay() + ":" + schedule.getHourStart() + " - " + schedule.getHourFinish())
@@ -32,7 +32,7 @@ public class SchedulesVO {
     public SchedulesVO(ProjectTribunal tribunal) {
         SiptisUser tribunalUser = tribunal.getTribunal();
         this.id = tribunalUser.getId();
-        this.name = tribunalUser.getUserInformation().getNames() + " " + tribunalUser.getUserInformation().getLastnames();
+        this.name = tribunalUser.getUserInformation().getNames() + " " + tribunalUser.getUserInformation().getLastNames();
         this.schedules = tribunalUser.getAvailableSchedules()
                 .stream()
                 .map((schedule) -> schedule.getDay() + ":" + schedule.getHourStart() + " - " + schedule.getHourFinish())

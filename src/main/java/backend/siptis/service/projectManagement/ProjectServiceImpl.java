@@ -5,6 +5,8 @@ import backend.siptis.commons.PhaseName;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.editorsAndReviewers.*;
+import backend.siptis.model.entity.presentations.Presentation;
+import backend.siptis.model.entity.presentations.Review;
 import backend.siptis.model.entity.projectManagement.*;
 import backend.siptis.model.entity.userData.Schedule;
 import backend.siptis.model.pjo.dto.projectManagement.NewProjectDTO;
@@ -284,7 +286,7 @@ public class ProjectServiceImpl implements ProjectService {
             List<String> studentsNames = new ArrayList<>();
             for (ProjectStudent ps : projectStudents) {
                 String names = ps.getStudent().getUserInformation().getNames().trim();
-                String lastnames = ps.getStudent().getUserInformation().getLastnames().trim();
+                String lastnames = ps.getStudent().getUserInformation().getLastNames().trim();
                 studentsNames.add(names + " " + lastnames);
             }
 
@@ -294,7 +296,7 @@ public class ProjectServiceImpl implements ProjectService {
             List<String> tutorsNames = new ArrayList<>();
             for (ProjectTutor ps : projectTutors) {
                 String names = ps.getTutor().getUserInformation().getNames().trim();
-                String lastnames = ps.getTutor().getUserInformation().getLastnames().trim();
+                String lastnames = ps.getTutor().getUserInformation().getLastNames().trim();
                 tutorsNames.add(names + " " + lastnames);
             }
             jsonMap.put("tutors", tutorsNames);
@@ -336,7 +338,7 @@ public class ProjectServiceImpl implements ProjectService {
             List<String> studentsNames = new ArrayList<>();
             for (ProjectStudent ps : projectStudents) {
                 String names = ps.getStudent().getUserInformation().getNames().trim();
-                String lastnames = ps.getStudent().getUserInformation().getLastnames().trim();
+                String lastnames = ps.getStudent().getUserInformation().getLastNames().trim();
                 studentsNames.add(names + " " + lastnames);
             }
 
@@ -346,7 +348,7 @@ public class ProjectServiceImpl implements ProjectService {
             List<String> tutorsNames = new ArrayList<>();
             for (ProjectTutor ps : projectTutors) {
                 String names = ps.getTutor().getUserInformation().getNames().trim();
-                String lastnames = ps.getTutor().getUserInformation().getLastnames().trim();
+                String lastnames = ps.getTutor().getUserInformation().getLastNames().trim();
                 tutorsNames.add(names + " " + lastnames);
             }
             jsonMap.put("tutors", tutorsNames);
@@ -563,7 +565,7 @@ public class ProjectServiceImpl implements ProjectService {
             List<String[]> aux = schedules.get(day);
             aux.add(new String[]{start, finish});
         }
-        return new UserDefenseScheduleVO(student.getId(), student.getUserInformation().getNames() + " " + student.getUserInformation().getLastnames(), schedules);
+        return new UserDefenseScheduleVO(student.getId(), student.getUserInformation().getNames() + " " + student.getUserInformation().getLastNames(), schedules);
     }
 
     private Integer getDaysDifference(LocalDateTime compare) {
