@@ -102,10 +102,8 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
         }
         Project project = optionalProject.get();
-        //List<String> aaaa = userInformationRepository.getTeachersNames(idProject);
         List<String> tutors = userInformationRepository.getTutorsNames(idProject);
         String teacherCompleteName = userInformationRepository.getTeachersNames(idProject).get(0);
-        //String tutorCompleteName = userInformationRepository.getTutorsNames(idProject).get(0);
         String title = project.getName();
         Optional<SiptisUser> oUser = siptisUserRepository.findOneById(idUser);
 
@@ -166,6 +164,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
         document.setDescription("Formulario de Solvencia");
         document.setSiptisUser(user);
         documentRepository.save(document);
+
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
     }
 

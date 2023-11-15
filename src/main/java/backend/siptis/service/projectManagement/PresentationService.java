@@ -6,15 +6,17 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface PresentationService {
 
-    ServiceAnswer createPresentation(Long idProyecto, PhaseName fase);
+    ServiceAnswer createPresentation(Long idProject, PhaseName phase);
 
-    ServiceAnswer gradePresentation(Long idPresentacion);
+    ServiceAnswer gradePresentation(Long idPresentation);
 
-    ServiceAnswer attachFile(Long idPresentacion, MultipartFile file, String context);
+    ServiceAnswer getReviewsFromAPresentation(Long idPresentation);
 
-    ServiceAnswer removeFile(Long idPresentacion, String context);
+    ServiceAnswer attachFile(Long idPresentation, MultipartFile file, String context);
 
-    ServiceAnswer delete(Long idPresentacion);
+    ServiceAnswer removeFile(Long idPresentation, String context);
+
+    ServiceAnswer delete(Long idPresentation);
 
     ServiceAnswer getReviewsFromLastPresentation(Long idProject);
 }

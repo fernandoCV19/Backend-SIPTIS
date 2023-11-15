@@ -9,7 +9,9 @@ spring:
       enabled: true
       max-file-size: 50MB
       max-request-size: 50MB
-
+  output:
+    ansi:
+      enabled: always
   jpa:
     hibernate:
       ddl-auto: update
@@ -31,8 +33,6 @@ spring:
         ssl.trust: smtp.gmail.com
         starttls.enable: true
       debug: true
-
-
 
 server:
   port: 9090
@@ -70,3 +70,16 @@ security:
     token:
       secret-key: $2a$12$JTfIoPcl28jeEFio3aHBa.rcqtBUgvykiKYgKxvikVzzxVAt82CEu
       expire-length: 3600000 # hora.
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: basic
+
+application:
+  name: SIPTIS
+  gateway:
+    chatAPI: http://localhost:3000/

@@ -52,10 +52,11 @@ public class UserInformationImpl implements UserInformationService {
             return createAnswer(ServiceMessage.COD_SIS_ALREADY_EXIST, null);
 
         UserInformation userInformation = new UserInformation();
-        userInformation.setNames(dto.getNames().trim());
-        userInformation.setLastnames(dto.getLastnames().trim());
-        userInformation.setCi(dto.getCi().trim());
-        userInformation.setCelNumber(dto.getCelNumber().trim());
+        userInformation.setNames(dto.getNames());
+        userInformation.setLastnames(dto.getLastnames());
+        userInformation.setFullname(dto.getNames() + " " + dto.getLastnames());
+        userInformation.setCi(dto.getCi());
+        userInformation.setCelNumber(dto.getCelNumber());
         userInformation.setBirthDate(dto.getBirthDate());
         userInformation.setCodSIS(dto.getCodSIS().trim());
 

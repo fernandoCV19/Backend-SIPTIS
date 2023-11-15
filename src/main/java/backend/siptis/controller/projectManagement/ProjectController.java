@@ -5,20 +5,24 @@ import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.projectManagement.NewProjectDTO;
 import backend.siptis.service.projectManagement.ProjectService;
+import backend.siptis.service.userData.SiptisUserService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+
 @RestController
 @RequestMapping("/project")
+@RequiredArgsConstructor
 @CrossOrigin
 public class ProjectController {
-    @Autowired
-    public ProjectService projectService;
 
+    public final ProjectService projectService;
+    private final SiptisUserService userAuthService;
 
     @PostMapping("/newProject")
     public ResponseEntity<?> createProject(@Valid @RequestBody NewProjectDTO dto) {
@@ -44,8 +48,16 @@ public class ProjectController {
     }
 
     @GetMapping("/presentations/{id}")
-    public ResponseEntity<?> getPresentaciones(@PathVariable("id") Long idProyecto) {
-        ServiceAnswer serviceAnswer = projectService.getPresentations(idProyecto);
+    public ResponseEntity<?> getPresentationsById(@PathVariable("id") Long projectId) {
+        ServiceAnswer serviceAnswer = projectService.getPresentations(projectId);
+        return createResponseEntity(serviceAnswer);
+    }
+
+    @GetMapping("/presentations")
+    public ResponseEntity<?> getPresentations(@RequestHeader(name = "Authorization") String token) {
+        ArrayList<?> projects = userAuthService.getProjectsFromToken(token);
+        int projectId = (int) projects.get(0);
+        ServiceAnswer serviceAnswer = projectService.getPresentations((long) projectId);
         return createResponseEntity(serviceAnswer);
     }
 
@@ -119,16 +131,32 @@ public class ProjectController {
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
 
-    @GetMapping("/page/filter")
+    @GetMapping("/standard-filter")
     public ResponseEntity<?> getPaginatedProjectsByFilter(
             @RequestParam(defaultValue = "0") int pageNumber,
-            @RequestParam(defaultValue = "5") int pageSize,
+            @RequestParam(defaultValue = "6") int pageSize,
             @RequestParam(required = false) String name,
+            @RequestParam(required = false) String period
+    ) {
+        ServiceAnswer serviceAnswer = projectService.getProjectsWithStandardFilter(pageNumber, pageSize, name, period);
+        HttpStatus httpStatus = HttpStatus.OK;
+        ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
+        return new ResponseEntity<>(controllerAnswer, httpStatus);
+    }
+
+    @GetMapping("/advanced-filter")
+    public ResponseEntity<?> getProjectsWithAdvancedFilters(
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "6") int pageSize,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String period,
             @RequestParam(required = false) String modality,
             @RequestParam(required = false) String area,
-            @RequestParam(required = false) String subarea
+            @RequestParam(required = false) String subarea,
+            @RequestParam(required = false) String student,
+            @RequestParam(required = false) String tutor
     ) {
-        ServiceAnswer serviceAnswer = projectService.getPaginatedCompletedProjectsByFilters(pageNumber, pageSize, name, modality, area, subarea);
+        ServiceAnswer serviceAnswer = projectService.getProjectsWithAdvancedFilter(pageNumber, pageSize, name, period, modality, area, subarea, student, tutor);
         HttpStatus httpStatus = HttpStatus.OK;
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
         return new ResponseEntity<>(controllerAnswer, httpStatus);

@@ -162,6 +162,7 @@ public class ProjectServiceImpl implements ProjectService {
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.SUCCESSFUL_PROJECT_REGISTER).data(newProject).build();
     }
 
+
     @Override
     public ServiceAnswer getProjects() {
         List<Project> projects = projectRepository.findAll();
@@ -252,9 +253,9 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ServiceAnswer getPaginatedCompletedProjectsByFilters(int pageNumber, int pageSize, String name, String modality, String area, String subArea) {
+    public ServiceAnswer getProjectsWithStandardFilter(int pageNumber, int pageSize, String name, String period) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        Page<Project> projectPage = projectRepository.findAllWithFilters(pageable, name, modality, area, subArea);
+        Page<Project> projectPage = projectRepository.standardFilter(pageable, name, period);
         if (projectPage.isEmpty())
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_PROJECTS).data(null).build();
 
@@ -269,8 +270,8 @@ public class ProjectServiceImpl implements ProjectService {
         for (Project p : projects) {
             Map<String, Object> jsonMap = new HashMap<>();
             jsonMap.put("id", p.getId());
-
             jsonMap.put("projectName", p.getName());
+            jsonMap.put("period", p.getPeriod());
             jsonMap.put("modality", p.getModality().getName());
             jsonMap.put("perfilPath", p.getPerfilPath());
             jsonMap.put("blueBookPath", p.getBlueBookPath());
@@ -304,8 +305,60 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ServiceAnswer getPresentations(Long idProyecto) {
-        Optional<Project> oProyectoGrado = projectRepository.findById(idProyecto);
+    public ServiceAnswer getProjectsWithAdvancedFilter(int pageNumber, int pageSize, String name, String period, String modality, String area, String subarea, String student, String tutor) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Project> projectPage = projectRepository.advancedFilter(name, period, modality, area, subarea, student, tutor, pageable);
+        if (projectPage.isEmpty())
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_PROJECTS).data(null).build();
+
+        List<Project> projects = projectPage.getContent();
+        int total = projectPage.getTotalPages();
+        Map<String, Object> totalResponse = new HashMap<>();
+        totalResponse.put("totalPages", total);
+        totalResponse.put("page", pageNumber);
+
+        List<Map<String, Object>> foundProjects = new ArrayList<>();
+
+        for (Project p : projects) {
+            Map<String, Object> jsonMap = new HashMap<>();
+            jsonMap.put("id", p.getId());
+            jsonMap.put("projectName", p.getName());
+            jsonMap.put("period", p.getPeriod());
+            jsonMap.put("modality", p.getModality().getName());
+            jsonMap.put("perfilPath", p.getPerfilPath());
+            jsonMap.put("blueBookPath", p.getBlueBookPath());
+            jsonMap.put("projectPath", p.getProjectPath());
+
+            jsonMap.put("areas", p.getAreas().toArray());
+            jsonMap.put("subAreas", p.getSubAreas().toArray());
+
+            List<ProjectStudent> projectStudents = p.getStudents().stream().toList();
+            List<String> studentsNames = new ArrayList<>();
+            for (ProjectStudent ps : projectStudents) {
+                String names = ps.getStudent().getUserInformation().getNames().trim();
+                String lastnames = ps.getStudent().getUserInformation().getLastnames().trim();
+                studentsNames.add(names + " " + lastnames);
+            }
+
+            jsonMap.put("students", studentsNames);
+
+            List<ProjectTutor> projectTutors = p.getTutors().stream().toList();
+            List<String> tutorsNames = new ArrayList<>();
+            for (ProjectTutor ps : projectTutors) {
+                String names = ps.getTutor().getUserInformation().getNames().trim();
+                String lastnames = ps.getTutor().getUserInformation().getLastnames().trim();
+                tutorsNames.add(names + " " + lastnames);
+            }
+            jsonMap.put("tutors", tutorsNames);
+            foundProjects.add(jsonMap);
+        }
+        totalResponse.put("content", foundProjects);
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(totalResponse).build();
+    }
+
+    @Override
+    public ServiceAnswer getPresentations(Long projectId) {
+        Optional<Project> oProyectoGrado = projectRepository.findById(projectId);
         if (oProyectoGrado.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
         }

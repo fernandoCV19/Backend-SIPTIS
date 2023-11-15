@@ -1,6 +1,6 @@
 package backend.siptis.model.entity.projectManagement;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,6 +26,6 @@ public class PlaceToDefense {
     private Integer capacity;
 
     @OneToMany(mappedBy = "placeToDefense")
-    @JsonBackReference
+    @JsonManagedReference
     private Collection<Defense> defenses;
 }

@@ -112,6 +112,7 @@ public class CloudManagementServiceImpl implements CloudManagementService {
     public String uploadDocumentToCloud(String filename) {
         File document = new File(filename);
         String key = putObject(document, "Documentos/");
+        document.delete();
         return key;
     }
 
