@@ -16,29 +16,9 @@ import org.springframework.web.client.RestTemplate;
 @CrossOrigin
 public class BotController {
 
-    @Value("${openai.model}")
-    private String model;
-
-    @Value("${openai.api.url}")
-    private String url;
-
-    @Value("${openai.api.key}")
-    private String apiKey;
-
-    @Autowired
-    @Qualifier("botRestTemplate")
-    private RestTemplate restTemplate;
-
-    @GetMapping()
-    public String test() {
-        return "Test";
-    }
-
     @PostMapping("/chat")
     public BotResponse chat(@RequestBody Message message) {
-        BotRequest request = new BotRequest(model, message);
-        BotResponse response = restTemplate.postForObject(url, request, BotResponse.class);
-        return response;
+        return null;
     }
 
 }

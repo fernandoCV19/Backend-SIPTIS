@@ -25,6 +25,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.0.3'
     testImplementation 'junit:junit:4.13.2'
     implementation 'junit:junit:4.13.2'
     implementation group: 'jakarta.validation', name: 'jakarta.validation-api', version: '3.0.2'

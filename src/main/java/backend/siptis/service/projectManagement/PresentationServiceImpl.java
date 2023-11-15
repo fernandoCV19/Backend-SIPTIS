@@ -32,6 +32,7 @@ public class PresentationServiceImpl implements PresentationService {
 
     @Override
     public ServiceAnswer createPresentation(Long projectId, PhaseName fase) {
+        /*TODO: FECHA al crear una nueva presentacion y actualizar path del proyecto*/
         Optional<Presentation> pendingPresentation = presentationRepository.findByProjectIdAndReviewed(projectId, false);
         if (pendingPresentation.isPresent()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PENDING_PRESENTATION).data(null).build();
@@ -159,6 +160,7 @@ public class PresentationServiceImpl implements PresentationService {
 
     @Override
     public ServiceAnswer delete(Long presentationId) {
+        /*TODO: restaurar path previo al proyecto*/
         Optional<Presentation> optionalPresentation = presentationRepository.findById(presentationId);
         if (optionalPresentation.isPresent()) {
             String blue = optionalPresentation.get().getBlueBookPath();
