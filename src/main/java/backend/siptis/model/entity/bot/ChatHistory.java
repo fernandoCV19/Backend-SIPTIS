@@ -26,5 +26,4 @@ public class ChatHistory {
     private String completion;
 
 
-
 }

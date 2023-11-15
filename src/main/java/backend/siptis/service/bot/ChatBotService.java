@@ -6,6 +6,6 @@ import backend.siptis.commons.ServiceAnswer;
 
 public interface ChatBotService {
 
-    ServiceAnswer chat (CompletionRequest request);
+    ServiceAnswer chat(CompletionRequest request);
 
 }

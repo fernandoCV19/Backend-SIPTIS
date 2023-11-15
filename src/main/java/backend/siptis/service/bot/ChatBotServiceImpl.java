@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class ChatBotServiceImpl implements ChatBotService{
+public class ChatBotServiceImpl implements ChatBotService {
 
     private final BotService botService;
 
@@ -21,11 +21,11 @@ public class ChatBotServiceImpl implements ChatBotService{
     @Override
     public ServiceAnswer chat(CompletionRequest request) {
         Optional<ChatHistory> optionalChatHistory = chatHistoryRespository.findByPromptLikeIgnoreCase(request.getPrompt());
-        if(optionalChatHistory.isPresent()){
+        if (optionalChatHistory.isPresent()) {
             String commonCompletion = optionalChatHistory.get().getCompletion();
 
         }
-        String completion =  botService.getCompletion(request);
+        String completion = botService.getCompletion(request);
         return null;
     }
 
