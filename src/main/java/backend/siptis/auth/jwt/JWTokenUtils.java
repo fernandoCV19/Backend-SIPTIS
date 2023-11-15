@@ -41,7 +41,6 @@ public class JWTokenUtils {
     }
 
 
-
     public static UserDetails getUserDetails(String token) {
         SiptisUser siptisUserDetails = new SiptisUser();
         Claims claims = getClaims(token);

@@ -76,15 +76,15 @@ public class ProjectServiceImpl implements ProjectService {
             if (!siptisUserRepository.existsById(tutorId))
                 return ServiceAnswer.builder().serviceMessage(ServiceMessage.USER_ID_DOES_NOT_EXIST).build();
             ProjectTutor projectTutor = new ProjectTutor();
-            SiptisUser user= siptisUserRepository.findById(tutorId).get();
+            SiptisUser user = siptisUserRepository.findById(tutorId).get();
             Collection<ProjectTutor> projectsTutor = user.getTutorOf();
             int currentProjects = 0;
-            for (ProjectTutor thisTutor: projectsTutor) {
-                if(thisTutor.getAccepted() == null || !thisTutor.getAccepted()){
+            for (ProjectTutor thisTutor : projectsTutor) {
+                if (thisTutor.getAccepted() == null || !thisTutor.getAccepted()) {
                     currentProjects++;
                 }
             }
-            if(currentProjects > 9)
+            if (currentProjects > 9)
                 return ServiceAnswer.builder().serviceMessage(ServiceMessage.CANNOT_ASSIGN_TUTOR).build();
             projectTutor.setTutor(user);
             projectTutor.setProject(newProject);

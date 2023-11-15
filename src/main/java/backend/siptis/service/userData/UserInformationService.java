@@ -4,7 +4,10 @@ import backend.siptis.auth.entity.Role;
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.model.entity.userData.UserInformation;
-import backend.siptis.model.pjo.dto.userDataDTO.*;
+import backend.siptis.model.pjo.dto.userDataDTO.AdminEditUserInformationDTO;
+import backend.siptis.model.pjo.dto.userDataDTO.RegisterStudentDTO;
+import backend.siptis.model.pjo.dto.userDataDTO.RegisterUserDTO;
+import backend.siptis.model.pjo.dto.userDataDTO.UserEditInformationDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,7 +30,7 @@ public interface UserInformationService {
 
     ServiceAnswer adminEditUserInformation(UserInformation userInformation, AdminEditUserInformationDTO dto);
 
-    ServiceAnswer  adminEditStudentInformation(UserInformation userInformation, AdminEditUserInformationDTO dto);
+    ServiceAnswer adminEditStudentInformation(UserInformation userInformation, AdminEditUserInformationDTO dto);
 
 
     @AllArgsConstructor

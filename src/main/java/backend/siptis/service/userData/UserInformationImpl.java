@@ -4,7 +4,10 @@ package backend.siptis.service.userData;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.userData.UserInformation;
-import backend.siptis.model.pjo.dto.userDataDTO.*;
+import backend.siptis.model.pjo.dto.userDataDTO.AdminEditUserInformationDTO;
+import backend.siptis.model.pjo.dto.userDataDTO.RegisterStudentDTO;
+import backend.siptis.model.pjo.dto.userDataDTO.RegisterUserDTO;
+import backend.siptis.model.pjo.dto.userDataDTO.UserEditInformationDTO;
 import backend.siptis.model.repository.userData.UserInformationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -101,9 +104,9 @@ public class UserInformationImpl implements UserInformationService {
     @Override
     public ServiceAnswer adminEditStudentInformation(UserInformation userInformation, AdminEditUserInformationDTO dto) {
         dto.setCodSIS(dto.getCodSIS().trim());
-        if(dto.getCodSIS() == null)
+        if (dto.getCodSIS() == null)
             return createAnswer(ServiceMessage.CODSIS_CANNOT_BE_NULL, null);
-        if(dto.getCodSIS().length() > 10 &&  dto.getCodSIS().length() < 8)
+        if (dto.getCodSIS().length() > 10 && dto.getCodSIS().length() < 8)
             return createAnswer(ServiceMessage.INVALID_CODSIS_LENGTH, null);
 
         if (!userInformation.getCodSIS().equals(dto.getCodSIS()))

@@ -96,13 +96,17 @@ public class SiptisUserServiceImpl implements SiptisUserService {
         SiptisUser user;
         if (answer.getServiceMessage() == ServiceMessage.OK) {
             user = (SiptisUser) answer.getData();
-        } else {return answer;}
+        } else {
+            return answer;
+        }
 
         answer = roleService.getRoleByName(Roles.ADMIN.toString());
         if (answer.getServiceMessage() == ServiceMessage.OK) {
             Role role = (Role) answer.getData();
             user.addRol(role);
-        } else {return answer;}
+        } else {
+            return answer;
+        }
 
         siptisUserRepository.save(user);
         return createResponse(ServiceMessage.SUCCESSFUL_REGISTER, null);
@@ -123,19 +127,25 @@ public class SiptisUserServiceImpl implements SiptisUserService {
             UserInformation information = (UserInformation) answer.getData();
             user.setUserInformation(information);
             information.setSiptisUser(user);
-        } else {return answer;}
+        } else {
+            return answer;
+        }
 
         answer = roleService.getRoleByName(Roles.STUDENT.toString());
         if (answer.getServiceMessage() == ServiceMessage.OK) {
             Role role = (Role) answer.getData();
             user.addRol(role);
-        } else {return answer;}
+        } else {
+            return answer;
+        }
 
         answer = userCareerService.getCareerByName(dto.getCareer());
         if (answer.getServiceMessage() == ServiceMessage.OK) {
             UserCareer career = (UserCareer) answer.getData();
             user.addCareer(career);
-        } else {return answer;}
+        } else {
+            return answer;
+        }
 
         siptisUserRepository.save(user);
         return createResponse(ServiceMessage.SUCCESSFUL_REGISTER, createUserInformationDTO(user));
@@ -388,13 +398,13 @@ public class SiptisUserServiceImpl implements SiptisUserService {
             return createResponse(ServiceMessage.ERROR, null);
         boolean isStudent = false;
         Set<Role> roles = user.getRoles();
-        for (Role role : roles){
-            if(role.getName().equals(Roles.STUDENT.toString()))
+        for (Role role : roles) {
+            if (role.getName().equals(Roles.STUDENT.toString()))
                 isStudent = true;
         }
-        if(isStudent){
+        if (isStudent) {
             answer = userInformationService.adminEditStudentInformation(userInformation, dto);
-        }else{
+        } else {
             answer = userInformationService.adminEditUserInformation(userInformation, dto);
         }
         if (!answer.getServiceMessage().equals(ServiceMessage.OK))
@@ -521,7 +531,7 @@ public class SiptisUserServiceImpl implements SiptisUserService {
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(activities).build();
     }
 
-    private UserInformationDTO createUserInformationDTO(SiptisUser user){
+    private UserInformationDTO createUserInformationDTO(SiptisUser user) {
         UserInformation information = user.getUserInformation();
         if (information == null) {
             return null;

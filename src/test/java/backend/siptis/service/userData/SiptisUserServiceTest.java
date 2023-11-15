@@ -393,40 +393,41 @@ public class SiptisUserServiceTest {
         ServiceAnswer answer = adminEditStudentInfo();
         assertEquals(ServiceMessage.ID_DOES_NOT_EXIST, answer.getServiceMessage());
     }
-/*
-    @Test
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void setAdminEditStudentInformationFailEmailAlreadyExistTest() {
-        registerStudent();
-        registerAdmin();
-        adminEditStudentInfo();
-        adminEditStudentInformationDTO.setEmail("admin@gmail.com");
-        ServiceAnswer answer = siptisUserService.adminEditStudentInformation(1L, adminEditStudentInformationDTO);
-        assertEquals(ServiceMessage.EMAIL_ALREADY_EXIST, answer.getServiceMessage());
-    }
 
-    @Test
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void adminEditStudentInformationFailCodSISAlreadyExistTest() {
-        registerStudent();
-        registerStudent2();
-        adminEditStudentInfo();
-        adminEditStudentInformationDTO.setCodSIS("202300124");
-        ServiceAnswer answer = siptisUserService.adminEditStudentInformation(1L, adminEditStudentInformationDTO);
-        assertEquals(ServiceMessage.COD_SIS_ALREADY_EXIST, answer.getServiceMessage());
-    }
+    /*
+        @Test
+        @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+        public void setAdminEditStudentInformationFailEmailAlreadyExistTest() {
+            registerStudent();
+            registerAdmin();
+            adminEditStudentInfo();
+            adminEditStudentInformationDTO.setEmail("admin@gmail.com");
+            ServiceAnswer answer = siptisUserService.adminEditStudentInformation(1L, adminEditStudentInformationDTO);
+            assertEquals(ServiceMessage.EMAIL_ALREADY_EXIST, answer.getServiceMessage());
+        }
 
-    @Test
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void adminEditStudentInformationFailCiAlreadyExistTest() {
-        registerStudent();
-        registerStudent2();
-        adminEditStudentInfo();
-        adminEditStudentInformationDTO.setCi("4444444");
-        ServiceAnswer answer = siptisUserService.adminEditStudentInformation(1L, adminEditStudentInformationDTO);
-        assertEquals(ServiceMessage.CI_ALREADY_EXIST, answer.getServiceMessage());
-    }
-*/
+        @Test
+        @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+        public void adminEditStudentInformationFailCodSISAlreadyExistTest() {
+            registerStudent();
+            registerStudent2();
+            adminEditStudentInfo();
+            adminEditStudentInformationDTO.setCodSIS("202300124");
+            ServiceAnswer answer = siptisUserService.adminEditStudentInformation(1L, adminEditStudentInformationDTO);
+            assertEquals(ServiceMessage.COD_SIS_ALREADY_EXIST, answer.getServiceMessage());
+        }
+
+        @Test
+        @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+        public void adminEditStudentInformationFailCiAlreadyExistTest() {
+            registerStudent();
+            registerStudent2();
+            adminEditStudentInfo();
+            adminEditStudentInformationDTO.setCi("4444444");
+            ServiceAnswer answer = siptisUserService.adminEditStudentInformation(1L, adminEditStudentInformationDTO);
+            assertEquals(ServiceMessage.CI_ALREADY_EXIST, answer.getServiceMessage());
+        }
+    */
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void registerUserAsCareerDirectorSuccessTest() {
