@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -53,7 +53,7 @@ public class ReviewServiceImpl implements ReviewService {
 
         try {
             String newKey = cloudManagementService.putObject(multipartFile, "Reviews/");
-            Review newReview = new Review(newKey, commentary, userOptional.get(), lastPresentation, new Date());
+            Review newReview = new Review(newKey, commentary, userOptional.get(), lastPresentation, LocalDateTime.now());
             Optional<Review> lastPossibleReview = lastPresentation.getReviews().stream().filter(review -> Objects.equals(review.getSiptisUser().getId(), userId)).findFirst();
             if (lastPossibleReview.isEmpty()) {
                 newReview.setId(lastPossibleReview.get().getId());

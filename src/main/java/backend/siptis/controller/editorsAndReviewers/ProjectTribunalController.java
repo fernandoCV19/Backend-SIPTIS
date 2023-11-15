@@ -21,13 +21,13 @@ public class ProjectTribunalController {
 
     @GetMapping("/notReviewedProjects/{id}")
     public ResponseEntity<?> getProjectsWithoutReview(@PathVariable("id") Long id) {
-        ServiceAnswer serviceAnswer = projectTribunalService.getAllProjectsNotReviewedByTribunalId(id);
+        ServiceAnswer serviceAnswer = projectTribunalService.getAllProjectsNotAcceptedNotReviewedByTribunalId(id);
         return createResponseEntity(serviceAnswer);
     }
 
     @GetMapping("/reviewedProjects/{id}")
     public ResponseEntity<?> getReviewedProjects(@PathVariable("id") Long id) {
-        ServiceAnswer serviceAnswer = projectTribunalService.getAllProjectsReviewedNotAcceptedByTribunalId(id);
+        ServiceAnswer serviceAnswer = projectTribunalService.getAllProjectsNotAcceptedReviewedByTribunalId(id);
         return createResponseEntity(serviceAnswer);
     }
 
@@ -46,17 +46,6 @@ public class ProjectTribunalController {
     @GetMapping("/acceptProject/{idProject}/{idReviewer}")
     public ResponseEntity<?> acceptProject(@PathVariable("idProject") Long idProject, @PathVariable("idReviewer") Long idReviewer) {
         ServiceAnswer serviceAnswer = projectTribunalService.acceptProject(idReviewer, idProject);
-        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
-        if (serviceAnswer.getServiceMessage().equals(ServiceMessage.OK)) {
-            httpStatus = HttpStatus.OK;
-        }
-        ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
-        return new ResponseEntity<>(controllerAnswer, httpStatus);
-    }
-
-    @GetMapping("/removeAccepted/{idProject}/{idReviewer}")
-    public ResponseEntity<?> removeAcceptedFromAProject(@PathVariable("idProject") Long idProject, @PathVariable("idReviewer") Long idReviewer) {
-        ServiceAnswer serviceAnswer = projectTribunalService.removeAcceptProject(idReviewer, idProject);
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         if (serviceAnswer.getServiceMessage().equals(ServiceMessage.OK)) {
             httpStatus = HttpStatus.OK;

@@ -50,112 +50,112 @@ class ProjectTribunalServiceTest {
 
     @Test
     void getAllProjectsNotReviewedByTribunalIdWithAnIdThatExistReturnOk() {
-        ServiceAnswer ans = projectTribunalService.getAllProjectsNotReviewedByTribunalId(4L);
+        ServiceAnswer ans = projectTribunalService.getAllProjectsNotAcceptedNotReviewedByTribunalId(4L);
         ServiceMessage serviceMessage = ans.getServiceMessage();
         assertEquals(ServiceMessage.OK, serviceMessage);
     }
 
     @Test
     void getAllProjectsNotReviewedByTribunalIdWithAndIdThatExistReturnData() {
-        ServiceAnswer ans = projectTribunalService.getAllProjectsNotReviewedByTribunalId(4L);
+        ServiceAnswer ans = projectTribunalService.getAllProjectsNotAcceptedNotReviewedByTribunalId(4L);
         Object data = ans.getData();
         assertNotNull(data);
     }
 
     @Test
     void getAllProjectsNotReviewedByTribunalIdWithAndIdThatExistReturnACorrectDTOObject() {
-        ServiceAnswer ans = projectTribunalService.getAllProjectsNotReviewedByTribunalId(4L);
+        ServiceAnswer ans = projectTribunalService.getAllProjectsNotAcceptedNotReviewedByTribunalId(4L);
         Object data = ans.getData();
         assertTrue(data instanceof List && ((List<?>) data).get(0) instanceof ProjectToTribunalHomePageVO);
     }
 
     @Test
     void getAllProjectsNotReviewedByTribunalIdWithAndIdThatExistReturnADTOObjectThatIsNotAcceptedAndReviewed() {
-        ServiceAnswer ans = projectTribunalService.getAllProjectsNotReviewedByTribunalId(4L);
+        ServiceAnswer ans = projectTribunalService.getAllProjectsNotAcceptedNotReviewedByTribunalId(4L);
         List<ProjectToTribunalHomePageVO> data = (List<ProjectToTribunalHomePageVO>) ans.getData();
         assertTrue(!data.get(0).getReviewed() && !data.get(0).getAccepted());
     }
 
     @Test
     void getAllProjectsNotReviewedByTribunalIdWithAnIdThatDoesNotHaveProjectsReturnWithout_Projects() {
-        ServiceAnswer ans = projectTribunalService.getAllProjectsNotReviewedByTribunalId(1L);
+        ServiceAnswer ans = projectTribunalService.getAllProjectsNotAcceptedNotReviewedByTribunalId(1L);
         ServiceMessage serviceMessage = ans.getServiceMessage();
         assertEquals(ServiceMessage.WITHOUT_PROJECTS, serviceMessage);
     }
 
     @Test
     void getAllProjectsNotReviewedByTribunalIdWithAnIdThatDoesNotHaveProjectsReturnAEmptyListOfProjects() {
-        ServiceAnswer ans = projectTribunalService.getAllProjectsNotReviewedByTribunalId(1L);
+        ServiceAnswer ans = projectTribunalService.getAllProjectsNotAcceptedNotReviewedByTribunalId(1L);
         Object data = ans.getData();
         assertTrue(((List<?>) data).isEmpty());
     }
 
     @Test
     void getAllProjectsNotReviewedByTribunalIdWithAnIdThatDoesNotExistReturnIdDoesNotExist() {
-        ServiceAnswer ans = projectTribunalService.getAllProjectsNotReviewedByTribunalId(0L);
+        ServiceAnswer ans = projectTribunalService.getAllProjectsNotAcceptedNotReviewedByTribunalId(0L);
         ServiceMessage serviceMessage = ans.getServiceMessage();
         assertEquals(ServiceMessage.ID_DOES_NOT_EXIST, serviceMessage);
     }
 
     @Test
     void getAllProjectsNotReviewedByTribunalIdWithAnIdThatDoesNotExistReturnNullInData() {
-        ServiceAnswer ans = projectTribunalService.getAllProjectsNotReviewedByTribunalId(0L);
+        ServiceAnswer ans = projectTribunalService.getAllProjectsNotAcceptedNotReviewedByTribunalId(0L);
         Object data = ans.getData();
         assertNull(data);
     }
 
     @Test
     void getAllProjectsReviewedNotAcceptedByTribunalIdWithAnIdThatExistReturnOk() {
-        ServiceAnswer ans = projectTribunalService.getAllProjectsReviewedNotAcceptedByTribunalId(4L);
+        ServiceAnswer ans = projectTribunalService.getAllProjectsNotAcceptedReviewedByTribunalId(4L);
         ServiceMessage serviceMessage = ans.getServiceMessage();
         assertEquals(ServiceMessage.OK, serviceMessage);
     }
 
     @Test
     void getAllProjectsReviewedNotAcceptedByTribunalIdWithAndIdThatExistReturnData() {
-        ServiceAnswer ans = projectTribunalService.getAllProjectsReviewedNotAcceptedByTribunalId(4L);
+        ServiceAnswer ans = projectTribunalService.getAllProjectsNotAcceptedReviewedByTribunalId(4L);
         Object data = ans.getData();
         assertNotNull(data);
     }
 
     @Test
     void getAllProjectsReviewedNotAcceptedByTribunalIdWithAndIdThatExistReturnACorrectDTOObject() {
-        ServiceAnswer ans = projectTribunalService.getAllProjectsReviewedNotAcceptedByTribunalId(4L);
+        ServiceAnswer ans = projectTribunalService.getAllProjectsNotAcceptedReviewedByTribunalId(4L);
         Object data = ans.getData();
         assertTrue(data instanceof List && ((List<?>) data).get(0) instanceof ProjectToTribunalHomePageVO);
     }
 
     @Test
     void getAllProjectsReviewedNotAcceptedByTribunalIdWithAndIdThatExistReturnADTOObjectThatIsNotAcceptedAndReviewed() {
-        ServiceAnswer ans = projectTribunalService.getAllProjectsReviewedNotAcceptedByTribunalId(4L);
+        ServiceAnswer ans = projectTribunalService.getAllProjectsNotAcceptedReviewedByTribunalId(4L);
         List<ProjectToTribunalHomePageVO> data = (List<ProjectToTribunalHomePageVO>) ans.getData();
         assertTrue(data.get(0).getReviewed() && !data.get(0).getAccepted());
     }
 
     @Test
     void getAllProjectsReviewedNotAcceptedByTribunalIdWithAnIdThatDoesNotHaveProjectsReturnWithout_Projects() {
-        ServiceAnswer ans = projectTribunalService.getAllProjectsReviewedNotAcceptedByTribunalId(1L);
+        ServiceAnswer ans = projectTribunalService.getAllProjectsNotAcceptedReviewedByTribunalId(1L);
         ServiceMessage serviceMessage = ans.getServiceMessage();
         assertEquals(ServiceMessage.WITHOUT_PROJECTS, serviceMessage);
     }
 
     @Test
     void getAllProjectsReviewedNotAcceptedByTribunalIdWithAnIdThatDoesNotHaveProjectsReturnAEmptyListOfProjects() {
-        ServiceAnswer ans = projectTribunalService.getAllProjectsReviewedNotAcceptedByTribunalId(1L);
+        ServiceAnswer ans = projectTribunalService.getAllProjectsNotAcceptedReviewedByTribunalId(1L);
         Object data = ans.getData();
         assertTrue(((List<?>) data).isEmpty());
     }
 
     @Test
     void getAllProjectsReviewedNotAcceptedByTribunalIdWithAnIdThatDoesNotExistReturnIdDoesNotExist() {
-        ServiceAnswer ans = projectTribunalService.getAllProjectsReviewedNotAcceptedByTribunalId(0L);
+        ServiceAnswer ans = projectTribunalService.getAllProjectsNotAcceptedReviewedByTribunalId(0L);
         ServiceMessage serviceMessage = ans.getServiceMessage();
         assertEquals(ServiceMessage.ID_DOES_NOT_EXIST, serviceMessage);
     }
 
     @Test
     void getAllProjectsReviewedNotAcceptedByTribunalIdWithAnIdThatDoesNotExistReturnNullInData() {
-        ServiceAnswer ans = projectTribunalService.getAllProjectsReviewedNotAcceptedByTribunalId(0L);
+        ServiceAnswer ans = projectTribunalService.getAllProjectsNotAcceptedReviewedByTribunalId(0L);
         Object data = ans.getData();
         assertNull(data);
     }
@@ -386,95 +386,6 @@ class ProjectTribunalServiceTest {
         assertTrue(res.getAccepted());
     }
 
-    @Test
-    void removeAcceptProjectWithIncorrectUserIdReturnUserIdDoesNotExist() {
-        ServiceAnswer query = projectTribunalService.removeAcceptProject(0L, 55L);
-        assertEquals(ServiceMessage.USER_ID_DOES_NOT_EXIST, query.getServiceMessage());
-    }
-
-    @Test
-    void removeAcceptProjectWithIncorrectUserIdReturnNullData() {
-        ServiceAnswer query = projectTribunalService.removeAcceptProject(0L, 55L);
-        assertNull(query.getData());
-    }
-
-    @Test
-    void removeAcceptProjectWithIncorrectProjectIdReturnProjectIdDoesNotExist() {
-        ServiceAnswer query = projectTribunalService.removeAcceptProject(50L, 0L);
-        assertEquals(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST, query.getServiceMessage());
-    }
-
-    @Test
-    void removeAcceptProjectWithIncorrectProjectIdReturnNullData() {
-        ServiceAnswer query = projectTribunalService.removeAcceptProject(50L, 0L);
-        assertNull(query.getData());
-    }
-
-    @Test
-    void removeAcceptProjectWithIdReviewerThatDoesNotMatchTheProjectReturnIdReviewerDoesNotMatchWithProject() {
-        ServiceAnswer query = projectTribunalService.removeAcceptProject(50L, 2L);
-        assertEquals(ServiceMessage.ID_REVIEWER_DOES_NOT_MATCH_WITH_PROJECT, query.getServiceMessage());
-
-    }
-
-    @Test
-    void removeAcceptProjectWithIdReviewerThatDoesNotMatchTheProjectReturnNullData() {
-        ServiceAnswer query = projectTribunalService.removeAcceptProject(50L, 2L);
-        assertNull(query.getData());
-    }
-
-    @Test
-    void removeAcceptProjectWithAProjectThatIsNoAcceptedReturnProjectIsAlreadyNotAccepted() {
-        ServiceAnswer query = projectTribunalService.removeAcceptProject(50L, 50L);
-        assertEquals(ServiceMessage.PROJECT_IS_ALREADY_NOT_ACCEPTED, query.getServiceMessage());
-
-    }
-
-    @Test
-    void removeAcceptProjectWithAProjectThatIsNoAcceptedReturnNullData() {
-        ServiceAnswer query = projectTribunalService.removeAcceptProject(50L, 50L);
-        assertNull(query.getData());
-    }
-
-    @Test
-    void removeAcceptProjectWithAProjectThatIsInReviewersPhaseReturnProjectIsOnAnotherPhase() {
-        ServiceAnswer query = projectTribunalService.removeAcceptProject(50L, 53L);
-        assertEquals(ServiceMessage.PROJECT_IS_ON_ANOTHER_PHASE, query.getServiceMessage());
-    }
-
-    @Test
-    void removeAcceptProjectWithAProjectThatIsInTribunalsPhaseReturnNullData() {
-        ServiceAnswer query = projectTribunalService.removeAcceptProject(50L, 53L);
-        assertNull(query.getData());
-    }
-
-    @Test
-    void removeAcceptProjectWithAProjectThatIsInTribunalsPhaseWillNotChangeThePhase() {
-        Project projectBefore = projectRepository.findById(53L).get();
-        ServiceAnswer query = projectTribunalService.removeAcceptProject(50L, 53L);
-        Project projectAfter = projectRepository.findById(53L).get();
-        assertEquals(projectBefore.getPhase(), projectAfter.getPhase());
-    }
-
-    @Test
-    void removeAcceptProjectWithAProjectThatAcceptedParameterCanBeChangeReturnOk() {
-        ServiceAnswer query = projectTribunalService.removeAcceptProject(51L, 51L);
-        assertEquals(ServiceMessage.OK, query.getServiceMessage());
-    }
-
-    @Test
-    void removeAcceptProjectWithAProjectThatAcceptedParameterCanBeChangeReturnDataWithAValue() {
-        ServiceAnswer query = projectTribunalService.removeAcceptProject(51L, 51L);
-        assertNotNull(query.getData());
-    }
-
-    @Test
-    void removeAcceptProjectWithAProjectThatAcceptedParameterCanChangeWillChangeThatParameter() {
-        ServiceAnswer query = projectTribunalService.removeAcceptProject(51L, 51L);
-        ProjectTribunal res = projectTribunalRepository.findByProjectId(51L);
-        assertFalse(res.getAccepted());
-    }
-    //////////////////////////
 
     @Test
     void reviewADefenseWithWrongProjectIdReturnProjectIdDoesNotExist() {

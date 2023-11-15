@@ -8,8 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Date;
 
 @Entity
 @Table(name = "presentation")
@@ -42,5 +42,5 @@ public class Presentation {
     @JsonManagedReference
     private Collection<Review> reviews;
 
-    private Date date;
+    private LocalDateTime date;
 }

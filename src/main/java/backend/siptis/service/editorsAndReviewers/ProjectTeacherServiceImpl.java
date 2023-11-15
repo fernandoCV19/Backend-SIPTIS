@@ -31,8 +31,8 @@ public class ProjectTeacherServiceImpl implements ProjectTeacherService {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data(null).build();
         }
 
-        List<ProjectTeacher> listaProyectos = projectTeacherRepository.findByTeacherIdAndAcceptedIsFalseAndReviewedIsTrue(id);
-        return getProjects(listaProyectos);
+        List<ProjectTeacher> projectsList = projectTeacherRepository.findByTeacherIdAndAcceptedIsFalseAndReviewedIsTrue(id);
+        return getProjects(projectsList);
     }
 
 
@@ -41,8 +41,8 @@ public class ProjectTeacherServiceImpl implements ProjectTeacherService {
         if (siptisUserRepository.findById(id).isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data(null).build();
         }
-        List<ProjectTeacher> listaProyectos = projectTeacherRepository.findByTeacherIdAndAcceptedIsFalseAndReviewedIsFalse(id);
-        return getProjects(listaProyectos);
+        List<ProjectTeacher> projectsList = projectTeacherRepository.findByTeacherIdAndAcceptedIsFalseAndReviewedIsFalse(id);
+        return getProjects(projectsList);
     }
 
     @Override
@@ -51,8 +51,8 @@ public class ProjectTeacherServiceImpl implements ProjectTeacherService {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).data(null).build();
         }
 
-        List<ProjectTeacher> listaProyectos = projectTeacherRepository.findByTeacherIdAndAcceptedIsTrue(id);
-        return getProjects(listaProyectos);
+        List<ProjectTeacher> projectsList = projectTeacherRepository.findByTeacherIdAndAcceptedIsTrue(id);
+        return getProjects(projectsList);
     }
 
     @Override
@@ -75,34 +75,6 @@ public class ProjectTeacherServiceImpl implements ProjectTeacherService {
         query.setAccepted(Boolean.TRUE);
         projectTeacherRepository.save(query);
         return verifyChangeOfFase(query);
-    }
-
-    @Override
-    public ServiceAnswer removeAcceptProject(Long idTeacher, Long idProject) {
-        if (siptisUserRepository.findById(idTeacher).isEmpty()) {
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.USER_ID_DOES_NOT_EXIST).data(null).build();
-        }
-        if (projectRepository.findById(idProject).isEmpty()) {
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data(null).build();
-        }
-        ProjectTeacher query = projectTeacherRepository.findByTeacherIdAndProjectId(idTeacher, idProject);
-        if (query == null) {
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_REVIEWER_DOES_NOT_MATCH_WITH_PROJECT).data(null).build();
-        }
-
-        if (Boolean.FALSE.equals(query.getAccepted())) {
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_IS_ALREADY_NOT_ACCEPTED).data(null).build();
-        }
-
-        Project project = query.getProject();
-
-        if (!project.getPhase().equals(PhaseName.REVIEWERS_PHASE.toString())) {
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_IS_ON_ANOTHER_PHASE).data(null).build();
-        }
-
-        query.setAccepted(Boolean.FALSE);
-        projectTeacherRepository.save(query);
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("THE PROJECT HAS CHANGED THE ACCEPTED PARAMETER").build();
     }
 
     private ServiceAnswer verifyChangeOfFase(ProjectTeacher query) {

@@ -3,14 +3,14 @@ package backend.siptis.model.pjo.vo.projectManagement;
 import backend.siptis.model.entity.projectManagement.Review;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 public class ReviewShortInfoVO {
     private String documentPath;
     private String commentary;
     private String user;
-    private Date date;
+    private LocalDateTime date;
 
     public ReviewShortInfoVO(Review review) {
         documentPath = review.getDocumentPath();
