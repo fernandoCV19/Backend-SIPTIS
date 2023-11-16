@@ -30,7 +30,7 @@ public final class NotificationsConstants {
     }
 
     public static class GeneralActivityTable {
-        public static final String NAME = "activity_";
+        public static final String NAME = "general_activity_";
 
         public static class Id {
             public static final String NAME = "id_";
