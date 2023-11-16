@@ -56,8 +56,8 @@ public class ProjectTribunalServiceReviewADefense {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.DEFENSE_HAS_NOT_STARTED).data(null).build();
         }
 
-        Double newProjectDefensePoint = 0.0;
-        Integer count = 0;
+        double newProjectDefensePoint = 0.0;
+        int count = 0;
         for (ProjectTribunal aux : project.getTribunals()) {
             if (aux.getDefensePoints() != null) {
                 newProjectDefensePoint += aux.getDefensePoints();
@@ -67,7 +67,9 @@ public class ProjectTribunalServiceReviewADefense {
         if (count > 2) {
             project.setPhase(PhaseName.POST_DEFENSE_PHASE.toString());
         }
-        newProjectDefensePoint = newProjectDefensePoint / count;
+        if(count != 0) {
+            newProjectDefensePoint = newProjectDefensePoint / count;
+        }
         project.setTotalDefensePoints(newProjectDefensePoint);
         projectRepository.save(project);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("SCORE HAS BEEN ASSIGNED").build();

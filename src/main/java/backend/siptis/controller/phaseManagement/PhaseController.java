@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class PhaseController {
     private final PhaseService phaseService;
     private final SiptisUserServiceTokenOperations siptisUserServiceTokenOperations;
-    private final String phaseFound = "Phase found";
+    private static final String phaseFound = "Phase found";
 
     @GetMapping("")
     public ResponseEntity<?> findAll() {
