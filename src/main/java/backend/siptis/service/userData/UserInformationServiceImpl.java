@@ -18,7 +18,6 @@ public class UserInformationServiceImpl implements UserInformationService {
 
     private final UserInformationRepository userInformationRepository;
 
-
     private boolean existUserByCodSIS(String codSIS) {
         return userInformationRepository.existsByCodSIS(codSIS);
     }
@@ -34,7 +33,6 @@ public class UserInformationServiceImpl implements UserInformationService {
     private UserInformation findUserInformationById(Long id) {
         return userInformationRepository.findById(id).get();
     }
-
 
     @Override
     public ServiceAnswer findById(Long id) {
@@ -117,7 +115,6 @@ public class UserInformationServiceImpl implements UserInformationService {
         return adminEditUserInformation(userInformation, dto);
 
     }
-
 
     private ServiceAnswer createAnswer(ServiceMessage message, Object data) {
         return ServiceAnswer.builder().serviceMessage(message)

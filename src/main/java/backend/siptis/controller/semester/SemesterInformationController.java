@@ -6,6 +6,7 @@ import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.semester.EditSemesterInfoDTO;
 import backend.siptis.model.pjo.dto.semester.SemesterInformationDTO;
 import backend.siptis.service.semester.SemesterInformationService;
+import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/semester")
+@RequestMapping(ControllerConstants.SemesterInformation.BASE_PATH)
 @AllArgsConstructor
 @CrossOrigin
 public class SemesterInformationController {

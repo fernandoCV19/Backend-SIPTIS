@@ -4,6 +4,7 @@ import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.service.userData.ScheduleService;
+import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/schedule")
+@RequestMapping(ControllerConstants.Schedule.BASE_PATH)
 @AllArgsConstructor
 @Getter
 @Setter

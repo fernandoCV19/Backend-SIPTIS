@@ -4,13 +4,14 @@ import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.service.editorsAndReviewers.ProjectTutorService;
+import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/tutor")
+@RequestMapping(ControllerConstants.ProjectTutor.BASE_PATH)
 @RequiredArgsConstructor
 @CrossOrigin
 public class ProjectTutorController {

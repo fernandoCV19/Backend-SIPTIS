@@ -32,7 +32,6 @@ public class PresentationServiceImpl implements PresentationService {
 
     @Override
     public ServiceAnswer createPresentation(Long projectId, PhaseName fase) {
-        /*TODO: FECHA al crear una nueva presentacion y actualizar path del proyecto*/
         Optional<Presentation> pendingPresentation = presentationRepository.findByProjectIdAndReviewed(projectId, false);
         if (pendingPresentation.isPresent()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PENDING_PRESENTATION).data(null).build();

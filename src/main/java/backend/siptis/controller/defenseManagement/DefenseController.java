@@ -5,13 +5,14 @@ import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.projectManagement.DefenseDTO;
 import backend.siptis.service.defenseManagement.DefenseService;
+import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/defense")
+@RequestMapping(ControllerConstants.Defense.BASE_PATH)
 @CrossOrigin
 public class DefenseController {
 

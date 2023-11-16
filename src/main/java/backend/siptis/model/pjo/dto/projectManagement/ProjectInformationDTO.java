@@ -1,5 +1,8 @@
 package backend.siptis.model.pjo.dto.projectManagement;
 
+import backend.siptis.model.entity.projectManagement.Modality;
+import backend.siptis.model.entity.projectManagement.Project;
+import backend.siptis.model.entity.projectManagement.State;
 import backend.siptis.model.pjo.dto.userDataDTO.UserListDTO;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,4 +25,25 @@ public class ProjectInformationDTO {
     private List<UserListDTO> supervisors;
     private List<String> areas;
     private List<String> subareas;
+
+    public ProjectInformationDTO(Project project) {
+        this.projectName = project.getName();
+        this.period = project.getPeriod();
+        Modality modality = project.getModality();
+        if (modality != null) {
+            this.modality = modality.getName();
+        }
+        State state = project.getState();
+        if (state != null) {
+            this.state = state.getName();
+        }
+        this.phase = project.getPhase();
+        this.students = project.getProjectStudents();
+        this.tutors = project.getProjectTutors();
+        this.teachers = project.getProjectTeachers();
+        this.tribunals = project.getProjectTribunals();
+        this.supervisors = project.getProjectSupervisors();
+        this.areas = project.getAreasNames();
+        this.subareas = project.getSubAreasNames();
+    }
 }

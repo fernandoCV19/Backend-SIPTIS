@@ -4,8 +4,9 @@ import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.PhaseName;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
+import backend.siptis.service.auth.siptisUserServices.SiptisUserServiceTokenOperations;
 import backend.siptis.service.presentations.PresentationService;
-import backend.siptis.service.auth.SiptisUserService;
+import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,17 +16,17 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.ArrayList;
 
 @RestController
-@RequestMapping("/presentation")
+@RequestMapping(ControllerConstants.Presentation.BASE_PATH)
 @RequiredArgsConstructor
 @CrossOrigin
 public class PresentationController {
 
     private final PresentationService presentationService;
-    private final SiptisUserService userAuthService;
+    private final SiptisUserServiceTokenOperations siptisUserServiceTokenOperations;
 
     @PostMapping("/create")
     ResponseEntity<?> create(@RequestHeader(name = "Authorization") String token, @RequestParam PhaseName phase) {
-        ArrayList<?> projects = userAuthService.getProjectsFromToken(token);
+        ArrayList<?> projects = siptisUserServiceTokenOperations.getProjectsFromToken(token);
         int projectId = (int) projects.get(0);
         ServiceAnswer serviceAnswer = presentationService.createPresentation((long) projectId, phase);
         return createResponseEntity(serviceAnswer);

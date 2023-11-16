@@ -5,8 +5,9 @@ import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.TokenPasswordDTO;
 import backend.siptis.service.notifications.EmailServiceImpl;
+import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
 import jakarta.mail.MessagingException;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,14 +16,11 @@ import java.io.IOException;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/email")
+@RequestMapping(ControllerConstants.Email.BASE_PATH)
+@RequiredArgsConstructor
 public class EmailController {
-    private final EmailServiceImpl emailServiceImpl;
 
-    @Autowired
-    public EmailController(EmailServiceImpl emailServiceImpl) {
-        this.emailServiceImpl = emailServiceImpl;
-    }
+    private final EmailServiceImpl emailServiceImpl;
 
     @GetMapping("")
     public String sendNotification() throws MessagingException, IOException {

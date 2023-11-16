@@ -4,7 +4,8 @@ import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.service.projectManagement.ModalityService;
-import org.springframework.beans.factory.annotation.Autowired;
+import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -13,12 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/modality")
+@RequestMapping(ControllerConstants.Modality.BASE_PATH)
 @CrossOrigin
+@RequiredArgsConstructor
 public class ModalityController {
 
-    @Autowired
-    private ModalityService modalityService;
+    private final ModalityService modalityService;
 
     @GetMapping("")
     ResponseEntity<?> getAllModalities() {

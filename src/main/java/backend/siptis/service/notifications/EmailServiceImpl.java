@@ -3,14 +3,13 @@ package backend.siptis.service.notifications;
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.model.entity.editorsAndReviewers.ProjectStudent;
-import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.pjo.dto.ChangePasswordDTO;
 import backend.siptis.model.pjo.dto.TokenPasswordDTO;
-import backend.siptis.model.pjo.vo.ActivityVO;
 import backend.siptis.model.pjo.vo.GeneralActivityVO;
 import backend.siptis.model.repository.auth.SiptisUserRepository;
-import backend.siptis.service.auth.SiptisUserService;
+import backend.siptis.service.auth.siptisUserServices.SiptisUserServiceGeneralUserOperations;
+import backend.siptis.service.auth.siptisUserServices.SiptisUserServiceTokenOperations;
+import backend.siptis.service.notifications.generalActivityServices.GeneralActivityServiceFindOperations;
 import jakarta.mail.Address;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
@@ -28,7 +27,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -37,46 +35,11 @@ import java.util.UUID;
 @Transactional
 @AllArgsConstructor
 public class EmailServiceImpl implements EmailService {
-    private final ActivityService activityService;
-    private final GeneralActivityService generalActivityService;
-    private final SiptisUserService siptisUserService;
+    private final GeneralActivityServiceFindOperations generalActivityServiceFindOperations;
     private final SiptisUserRepository siptisUserRepository;
+    private final SiptisUserServiceGeneralUserOperations siptisUserServiceGeneralUserOperations;
+    private final SiptisUserServiceTokenOperations siptisUserServiceTokenOperations;
     private JavaMailSender mailSender;
-
-    @Override
-    @Scheduled(cron = "0 0 8 * * *")
-    public void sendPersonalActivities() throws MessagingException, IOException {
-        int mesActual = LocalDateTime.now().getMonthValue();
-        int diaActual = LocalDateTime.now().getDayOfMonth();
-
-        List<ActivityVO> activityList = activityService.findAllVO();
-        for (ActivityVO vo : activityList) {
-
-            Date date = vo.getActivityDate();
-            int activityDay = date.getDate();
-            int activityMonth = date.getMonth() + 1;
-
-            if (activityMonth == mesActual &&
-                    (
-                            diaActual == activityDay - 1 ||
-                                    diaActual >= activityDay - 3 ||
-                                    diaActual >= activityDay - 5
-                    )) {
-
-                Project activityProject = vo.getProject();
-                Collection<ProjectStudent> students = activityProject.getStudents();
-                Address[] addresses = new Address[students.size()];
-                int i = 0;
-                for (ProjectStudent student : students) {
-                    addresses[i] = new InternetAddress(student.getStudent().getEmail());
-                    i++;
-                }
-                List<SiptisUser> users = (List) siptisUserService.getAllUsers().getData();
-                sendEmailFromTemplate(addresses, vo.getActivityName(), vo.getActivityDescription(), vo.getActivityDate());
-
-            }
-        }
-    }
 
     @Override
     @Scheduled(cron = "0 0 8 * * *")
@@ -84,8 +47,8 @@ public class EmailServiceImpl implements EmailService {
         int mesActual = LocalDateTime.now().getMonthValue();
         int diaActual = LocalDateTime.now().getDayOfMonth();
 
-        List<GeneralActivityVO> generalActivityList = generalActivityService.findAllVO();
-        List<SiptisUser> users = (List) siptisUserService.getAllUsers().getData();
+        List<GeneralActivityVO> generalActivityList = generalActivityServiceFindOperations.findAllVO();
+        List<SiptisUser> users = (List) siptisUserServiceGeneralUserOperations.getAllUsers().getData();
         Address[] addresses = getAllEmails(users);
         for (GeneralActivityVO vo : generalActivityList) {
 
@@ -107,12 +70,12 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public ServiceAnswer changePassword(TokenPasswordDTO dto) {
-        boolean check = (boolean) siptisUserService.existsTokenPassword(dto.getTokenPassword()).getData();
+        boolean check = (boolean) siptisUserServiceTokenOperations.existsTokenPassword(dto.getTokenPassword()).getData();
         if (!check) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.INVALID_TOKEN)
                     .data("INVALID TOKEN").build();
         }
-        SiptisUser user = siptisUserService.findByTokenPassword(dto.getTokenPassword());
+        SiptisUser user = siptisUserServiceTokenOperations.findByTokenPassword(dto.getTokenPassword());
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String password = encoder.encode(dto.getPassword());
         user.setPassword(password);

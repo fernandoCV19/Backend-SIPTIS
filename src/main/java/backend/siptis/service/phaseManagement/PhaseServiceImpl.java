@@ -4,11 +4,10 @@ import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.phaseManagement.Phase;
 import backend.siptis.model.entity.projectManagement.Project;
-import backend.siptis.model.pjo.dto.PhaseDTO;
 import backend.siptis.model.pjo.vo.projectManagement.PhaseVO;
 import backend.siptis.model.repository.phaseManagement.PhaseRepository;
-import backend.siptis.service.projectManagement.ProjectService;
-import backend.siptis.service.auth.SiptisUserService;
+import backend.siptis.service.auth.siptisUserServices.SiptisUserServiceGeneralUserOperations;
+import backend.siptis.service.projectManagement.project.ProjectServiceGetProjectInfo;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -20,51 +19,8 @@ import java.util.List;
 public class PhaseServiceImpl implements PhaseService {
 
     private final PhaseRepository phaseRepository;
-    private final SiptisUserService siptisUserService;
-    private final ProjectService projectService;
-
-    @Override
-    public ServiceAnswer createPhase(PhaseDTO phaseDTO) {
-        ServiceAnswer serviceAnswer = new ServiceAnswer();
-        Phase phase = new Phase();
-        phase.setName(phaseDTO.getName());
-        phase = phaseRepository.save(phase);
-        return ServiceAnswer.builder()
-                .serviceMessage(ServiceMessage.OK)
-                .data(phase).build();
-    }
-
-    @Override
-    public ServiceAnswer deletePhase(Long idPhase) {
-        ServiceAnswer serviceAnswer = new ServiceAnswer();
-        Phase phase = phaseRepository.findById(idPhase).orElse(null);
-        if (phase == null) {
-            return ServiceAnswer.builder()
-                    .serviceMessage(ServiceMessage.NOT_FOUND)
-                    .build();
-        }
-        phaseRepository.deleteById(idPhase);
-        return ServiceAnswer.builder()
-                .serviceMessage(ServiceMessage.OK)
-                .build();
-    }
-
-    @Override
-    public ServiceAnswer updatePhase(PhaseDTO phaseDTO, Long idPhase) {
-        ServiceAnswer serviceAnswer = new ServiceAnswer();
-        Phase phase = phaseRepository.findById(idPhase).orElse(null);
-        if (phase == null) {
-            return ServiceAnswer.builder()
-                    .serviceMessage(ServiceMessage.NOT_FOUND)
-                    .build();
-        }
-        phase.setName(phaseDTO.getName());
-        phase = phaseRepository.save(phase);
-        return ServiceAnswer.builder()
-                .serviceMessage(ServiceMessage.OK)
-                .data(phase)
-                .build();
-    }
+    private final ProjectServiceGetProjectInfo projectServiceGetProjectInfo;
+    private final SiptisUserServiceGeneralUserOperations siptisUserServiceGeneralUserOperations;
 
     @Override
     public ServiceAnswer findAllPhases() {
@@ -93,8 +49,8 @@ public class PhaseServiceImpl implements PhaseService {
 
     @Override
     public ServiceAnswer getPhasesByUserId(Long id) {
-        Long projectId = siptisUserService.getProjectById(id);
-        ServiceAnswer projectAnswer = projectService.getProjectById(projectId);
+        Long projectId = siptisUserServiceGeneralUserOperations.getProjectById(id);
+        ServiceAnswer projectAnswer = projectServiceGetProjectInfo.getProjectById(projectId);
         if (projectAnswer.getServiceMessage() == ServiceMessage.PROJECT_ID_DOES_NOT_EXIST) {
             return ServiceAnswer.builder()
                     .serviceMessage(ServiceMessage.NOT_FOUND)

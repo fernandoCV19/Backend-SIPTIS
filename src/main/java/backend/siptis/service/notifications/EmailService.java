@@ -10,8 +10,6 @@ import java.io.IOException;
 import java.util.Date;
 
 public interface EmailService {
-    void sendPersonalActivities() throws MessagingException, IOException;
-
     void sendGeneralActivities() throws MessagingException, IOException;
 
     ServiceAnswer changePassword(TokenPasswordDTO tokenPasswordDTO);

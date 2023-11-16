@@ -3,6 +3,7 @@ package backend.siptis.controller.defenseManagement;
 import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.service.defenseManagement.PlaceToDefenseService;
+import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/placesToDefense")
+@RequestMapping(ControllerConstants.PlaceToDefense.BASE_PATH)
 @RequiredArgsConstructor
 @CrossOrigin
 public class PlaceToDefenseController {

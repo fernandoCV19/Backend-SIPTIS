@@ -5,6 +5,7 @@ import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.generalInformation.userArea.CreateAreaDTO;
 import backend.siptis.service.projectManagement.SubAreaService;
+import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/subarea")
+@RequestMapping(ControllerConstants.Subarea.BASE_PATH)
 @RequiredArgsConstructor
 @CrossOrigin
 public class SubAreaController {

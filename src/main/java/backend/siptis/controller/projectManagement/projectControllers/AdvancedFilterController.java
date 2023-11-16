@@ -1,0 +1,37 @@
+package backend.siptis.controller.projectManagement.projectControllers;
+
+import backend.siptis.commons.ControllerAnswer;
+import backend.siptis.commons.ServiceAnswer;
+import backend.siptis.service.projectManagement.project.ProjectServiceAdvancedFilter;
+import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping(ControllerConstants.Project.BASE_PATH)
+@RequiredArgsConstructor
+@CrossOrigin
+public class AdvancedFilterController {
+
+    private final ProjectServiceAdvancedFilter projectServiceAdvancedFilter;
+
+    @GetMapping("/advanced-filter")
+    public ResponseEntity<?> getProjectsWithAdvancedFilters(
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "6") int pageSize,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String period,
+            @RequestParam(required = false) String modality,
+            @RequestParam(required = false) String area,
+            @RequestParam(required = false) String subarea,
+            @RequestParam(required = false) String student,
+            @RequestParam(required = false) String tutor
+    ) {
+        ServiceAnswer serviceAnswer = projectServiceAdvancedFilter.getProjectsWithAdvancedFilter(pageNumber, pageSize, name, period, modality, area, subarea, student, tutor);
+        HttpStatus httpStatus = HttpStatus.OK;
+        ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
+        return new ResponseEntity<>(controllerAnswer, httpStatus);
+    }
+}

@@ -22,7 +22,6 @@ public class WppServiceImpl implements WppService {
                         "Hello, there!")
                 .create();
 
-        System.out.println(message.getSid());
 
         ArrayList<PhoneNumber> list = new ArrayList<>();
         list.add(new PhoneNumber("whatsapp:+59179795112"));
@@ -31,22 +30,12 @@ public class WppServiceImpl implements WppService {
         list.add(new PhoneNumber("whatsapp:+59170540185"));
         list.add(new PhoneNumber("whatsapp:+59170795935"));
 
-        for (int i = 0; i < list.size(); i++) {
-            message = Message.creator(list.get(i),
+        for (PhoneNumber phoneNumber : list) {
+            message = Message.creator(phoneNumber,
                     message.getFrom(),
                     "wpp").create();
-            System.out.println(message.getStatus());
         }
 
     }
 
-    @Override
-    public void sendGeneralActivitiesWpp() {
-
-    }
-
-    @Override
-    public void sendPersonalMessagesWpp(String to, String message) {
-
-    }
 }

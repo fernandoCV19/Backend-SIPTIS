@@ -17,12 +17,12 @@ import backend.siptis.model.repository.editorsAndReviewers.*;
 import backend.siptis.model.repository.projectManagement.ProjectRepository;
 import backend.siptis.model.repository.userData.DocumentRepository;
 import backend.siptis.model.repository.userData.UserInformationRepository;
+import backend.siptis.service.auth.siptisUserServices.SiptisUserServiceCareerDirectorOperations;
 import backend.siptis.service.cloud.CloudManagementService;
 import backend.siptis.service.userData.document.generationTools.DocumentaryRecordTool;
 import backend.siptis.service.userData.document.generationTools.LetterTool;
 import backend.siptis.service.userData.document.generationTools.ReportTool;
 import backend.siptis.service.userData.document.generationTools.SolvencyTool;
-import backend.siptis.service.auth.SiptisUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +38,6 @@ import java.util.stream.Stream;
 public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
     private final CloudManagementService nube;
     private final SiptisUserRepository siptisUserRepository;
-    private final SiptisUserService siptisUserService;
     private final UserInformationRepository userInformationRepository;
     private final ProjectRepository projectRepository;
     private final DocumentRepository documentRepository;
@@ -47,6 +46,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
     private final ProjectTutorRepository projectTutorRepository;
     private final ProjectSupervisorRepository projectSupervisorRepository;
     private final ProjectStudentRepository projectStudentRepository;
+    private final SiptisUserServiceCareerDirectorOperations siptisUserServiceCareerDirectorOperations;
 
     @Override
     public ServiceAnswer getAllDocumentsFromUser(long idUser) {
@@ -248,7 +248,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
             String studentName = projectStudent.getStudent().getFullName();
             Set<UserCareer> career = projectStudent.getStudent().getCareer();
             String careerName = career.iterator().next().getName();
-            String directorName = siptisUserService.getCareerDirectorName(careerName);
+            String directorName = siptisUserServiceCareerDirectorOperations.getCareerDirectorName(careerName);
             if (directorName == null)
                 ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_CURRENT_DIRECTOR).data(null).build();
             String filename = letterTool.generateTribunalRequest(studentName, directorName, careerName, projectName, teacherName);
@@ -293,7 +293,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
             Set<UserCareer> career = projectStudent.getStudent().getCareer();
             String careerName = career.iterator().next().getName();
 
-            String directorName = siptisUserService.getCareerDirectorName(careerName);
+            String directorName = siptisUserServiceCareerDirectorOperations.getCareerDirectorName(careerName);
             if (directorName == null)
                 ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
             String filename = letterTool.generateTutorTribunalRequest(
@@ -337,7 +337,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
             Set<UserCareer> career = projectStudent.getStudent().getCareer();
             String careerName = career.iterator().next().getName();
 
-            String directorName = siptisUserService.getCareerDirectorName(careerName);
+            String directorName = siptisUserServiceCareerDirectorOperations.getCareerDirectorName(careerName);
             if (directorName == null)
                 ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
             String filename = letterTool.generateSupervisorTribunalRequest(
@@ -375,7 +375,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
         String key = "";
         Set<UserCareer> career = projectStudent.getStudent().getCareer();
         String careerName = career.iterator().next().getName();
-        String directorName = siptisUserService.getCareerDirectorName(careerName);
+        String directorName = siptisUserServiceCareerDirectorOperations.getCareerDirectorName(careerName);
         if (directorName == null)
             ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
         String filename = letterTool.generateStudentTribunalRequest(studentName, directorName, careerName, projectName, studentCi);
@@ -417,7 +417,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
         for (ProjectStudent projectStudent : students) {
             Set<UserCareer> career = projectStudent.getStudent().getCareer();
             String careerName = career.iterator().next().getName();
-            String directorName = siptisUserService.getCareerDirectorName(careerName);
+            String directorName = siptisUserServiceCareerDirectorOperations.getCareerDirectorName(careerName);
             if (directorName == null)
                 ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
 

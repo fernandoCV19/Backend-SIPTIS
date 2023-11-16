@@ -10,8 +10,6 @@ public interface RoleService {
 
     ServiceAnswer getRoleByName(String name);
 
-    Set<String> assignableRoles();
-
     Set<String> notAssignableRoles();
 
     Set<String> directorRoles();

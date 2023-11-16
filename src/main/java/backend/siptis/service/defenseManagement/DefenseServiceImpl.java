@@ -7,7 +7,6 @@ import backend.siptis.model.entity.defenseManagement.PlaceToDefense;
 import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.pjo.dto.projectManagement.DefenseDTO;
 import backend.siptis.model.pjo.vo.projectManagement.PlaceReservedByMonthVO;
-import backend.siptis.model.repository.auth.SiptisUserRepository;
 import backend.siptis.model.repository.defenseManagement.DefenseRepository;
 import backend.siptis.model.repository.defenseManagement.PlaceToDefenseRepository;
 import backend.siptis.model.repository.projectManagement.ProjectRepository;
@@ -27,7 +26,6 @@ public class DefenseServiceImpl implements DefenseService {
 
     private final DefenseRepository defenseRepository;
     private final PlaceToDefenseRepository placeToDefenseRepository;
-    private final SiptisUserRepository siptisUserRepository;
     private final ProjectRepository projectRepository;
 
     @Override
@@ -35,10 +33,8 @@ public class DefenseServiceImpl implements DefenseService {
         if (month < 1 || month > 12) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.MONTH_NUMBER_NOT_VALID).data("Month must be a number between 1 and 12").build();
         }
-
         List<Defense> defenses = defenseRepository.findAll();
         LocalDateTime now = LocalDateTime.now();
-
         defenses = defenses
                 .stream()
                 .filter(defense -> defense.getDate().getMonthValue() == month && defense.getDate().getYear() == now.getYear())
@@ -59,7 +55,6 @@ public class DefenseServiceImpl implements DefenseService {
         if (newDefense.getDate() == null) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.INVALID_DATE).data("The date is mandatory").build();
         }
-
         if (newDefense.getStartTime() == null || newDefense.getEndTime() == null) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.INVALID_HOUR).data("Start time and end time is mandatory").build();
         }
@@ -98,14 +93,11 @@ public class DefenseServiceImpl implements DefenseService {
                 blocks.add(defense);
             }
         }
-
         if (!blocks.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.INVALID_DATE).data("This date is already registered").build();
         }
-
         Defense defense = new Defense(place.get(), project.get(), date, startTime, endTime, newDefense.getSubstituteName());
         defenseRepository.save(defense);
-
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("The defense has been registered").build();
     }
 
@@ -125,7 +117,4 @@ public class DefenseServiceImpl implements DefenseService {
         defenseRepository.deleteById(project.getDefense().getId());
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("Defense has been deleted").build();
     }
-
 }
-
-

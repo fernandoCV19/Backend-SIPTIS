@@ -16,8 +16,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class RefreshTokenServiceImpl implements RefreshTokenService {
 
-    private static final long REFRESH_TOKEN_EXPIRE_TIME_DURATION
-            = 24 * 60 * 60 * 1000; //1 day
+    private static final long REFRESH_TOKEN_EXPIRE_TIME_DURATION = 24 * 60 * 60 * 1000;
 
     private final RefreshTokenRepository refreshTokenRepository;
     private final SiptisUserRepository siptisUserRepository;
@@ -54,5 +53,4 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         }
         return true;
     }
-
 }

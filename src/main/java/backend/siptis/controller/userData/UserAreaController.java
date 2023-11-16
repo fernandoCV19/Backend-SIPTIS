@@ -5,6 +5,7 @@ import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.generalInformation.userArea.CreateAreaDTO;
 import backend.siptis.service.userData.UserAreaService;
+import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/userArea")
+@RequestMapping(ControllerConstants.UserArea.BASE_PATH)
 @RequiredArgsConstructor
 @CrossOrigin
 public class UserAreaController {

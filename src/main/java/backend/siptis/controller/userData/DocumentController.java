@@ -6,8 +6,9 @@ import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.document.DocumentaryRecordDto;
 import backend.siptis.model.pjo.dto.document.LetterGenerationRequestDTO;
 import backend.siptis.model.pjo.dto.document.ReportDocumentDTO;
+import backend.siptis.service.auth.siptisUserServices.SiptisUserServiceTokenOperations;
 import backend.siptis.service.userData.document.DocumentGeneratorServiceImpl;
-import backend.siptis.service.auth.SiptisUserService;
+import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,18 +19,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 @RestController
-@RequestMapping("/document")
+@RequestMapping(ControllerConstants.Document.BASE_PATH)
 @RequiredArgsConstructor
 @CrossOrigin
 public class DocumentController {
 
     private final DocumentGeneratorServiceImpl documentGeneratorService;
-    private final SiptisUserService userAuthService;
+    private final SiptisUserServiceTokenOperations siptisUserServiceTokenOperations;
 
 
     @GetMapping("/")
     ResponseEntity<?> getDocumentsFromUser(@RequestHeader(name = "Authorization") String token) {
-        Long userId = userAuthService.getIdFromToken(token);
+        Long userId = siptisUserServiceTokenOperations.getIdFromToken(token);
         return createResponseEntity(documentGeneratorService.getAllDocumentsFromUser(userId));
     }
 
@@ -46,15 +47,15 @@ public class DocumentController {
 
     @PostMapping("/create-report")
     ResponseEntity<?> createReport(@RequestHeader(name = "Authorization") String token, @RequestBody ReportDocumentDTO reportDocumentDTO) {
-        Long userId = userAuthService.getIdFromToken(token);
-        ArrayList<?> projects = userAuthService.getProjectsFromToken(token);
+        Long userId = siptisUserServiceTokenOperations.getIdFromToken(token);
+        ArrayList<?> projects = siptisUserServiceTokenOperations.getProjectsFromToken(token);
         int projectId = (int) projects.get(0);
         return createResponseEntity(documentGeneratorService.generateReport(reportDocumentDTO, userId, (long) projectId));
     }
 
     @GetMapping("/create-solvency")
     ResponseEntity<?> createSolvency(@RequestHeader(name = "Authorization") String token) {
-        Long userId = userAuthService.getIdFromToken(token);
+        Long userId = siptisUserServiceTokenOperations.getIdFromToken(token);
         return createResponseEntity(documentGeneratorService.generateSolvency(userId));
     }
 
@@ -78,8 +79,8 @@ public class DocumentController {
 
     @PostMapping("/create-documentary-record")
     ResponseEntity<?> createDocumentaryRecord(@RequestHeader(name = "Authorization") String token, @RequestBody DocumentaryRecordDto documentaryRecordDto) {
-        Long userId = userAuthService.getIdFromToken(token);
-        ArrayList<?> projects = userAuthService.getProjectsFromToken(token);
+        Long userId = siptisUserServiceTokenOperations.getIdFromToken(token);
+        ArrayList<?> projects = siptisUserServiceTokenOperations.getProjectsFromToken(token);
         int projectId = (int) projects.get(0);
         return createResponseEntity(documentGeneratorService.generateDocumentaryRecord(documentaryRecordDto, userId, (long) projectId));
     }

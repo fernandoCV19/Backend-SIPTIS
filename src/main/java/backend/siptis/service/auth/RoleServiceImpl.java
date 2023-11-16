@@ -30,11 +30,6 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Set<String> assignableRoles() {
-        return new HashSet<>(Set.of("TEACHER", "TUTOR", "SUPERVISOR", "TRIBUNAL", "REVIEWER"));
-    }
-
-    @Override
     public Set<String> notAssignableRoles() {
         return new HashSet<>(Set.of("STUDENT", "ADMIN"));
     }

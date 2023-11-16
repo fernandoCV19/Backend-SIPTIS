@@ -2,6 +2,7 @@ package backend.siptis.controller.cloud;
 
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.service.cloud.FileManagerService;
+import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -12,7 +13,7 @@ import java.io.ByteArrayOutputStream;
 
 
 @RestController
-@RequestMapping("/cloud")
+@RequestMapping(ControllerConstants.Cloud.BASE_PATH)
 @CrossOrigin
 public class CloudController {
 
