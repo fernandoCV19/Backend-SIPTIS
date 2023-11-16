@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = DocumentTable.NAME)
 @Getter
@@ -37,4 +39,6 @@ public class Document {
             nullable = DocumentTable.JoinSiptisUser.NULLABLE)
     @JsonBackReference
     private SiptisUser siptisUser;
+
+    private LocalDateTime date;
 }
