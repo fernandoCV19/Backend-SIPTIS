@@ -1,8 +1,9 @@
-package backend.siptis.service.notifications;
+package backend.siptis.service.notifications.notificationSenders;
 
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.model.pjo.vo.GeneralActivityVO;
 import backend.siptis.service.auth.siptisUserServices.SiptisUserServiceGeneralUserOperations;
+import backend.siptis.service.notifications.EmailFactory;
 import backend.siptis.service.notifications.generalActivityServices.GeneralActivityServiceFindOperations;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;

@@ -1,5 +1,6 @@
-package backend.siptis.service.notifications;
+package backend.siptis.service.notifications.notificationSenders;
 
+import backend.siptis.service.notifications.EmailFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;

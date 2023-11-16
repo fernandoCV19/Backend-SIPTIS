@@ -116,7 +116,7 @@ public class EmailServiceImpl implements EmailService {
         message.setRecipients(MimeMessage.RecipientType.TO, arrayTO);
         message.setSubject("Notificacion de SIPTIS");
 
-        String htmlTemplate = readFile("record.html");
+        String htmlTemplate = readFile(".html");
 
         htmlTemplate = htmlTemplate.replace("#nombre", activityName);
         htmlTemplate = htmlTemplate.replace("#date", activityDate.toString());

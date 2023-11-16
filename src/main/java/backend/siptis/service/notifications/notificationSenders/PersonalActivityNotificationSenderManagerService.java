@@ -1,4 +1,4 @@
-package backend.siptis.service.notifications;
+package backend.siptis.service.notifications.notificationSenders;
 
 import jakarta.mail.MessagingException;
 
