@@ -1,9 +1,15 @@
 package backend.siptis.model.pjo.vo.projectManagement;
 
 import backend.siptis.model.entity.projectManagement.Project;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProjectToTribunalHomePageVO extends ProjectToHomePageVO {
     private DefenseVO defense;
     private Double defensePoints;

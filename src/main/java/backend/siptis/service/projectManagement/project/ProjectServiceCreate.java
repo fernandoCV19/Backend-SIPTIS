@@ -25,10 +25,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Transactional
@@ -60,20 +57,22 @@ public class ProjectServiceCreate {
 
         ArrayList<ProjectStudent> students = new ArrayList<>();
         for (Long studentId : dto.getStudentsId()) {
-            if (!siptisUserRepository.existsById(studentId))
+            Optional<SiptisUser> userOptional = siptisUserRepository.findById(studentId);
+            if (userOptional.isEmpty())
                 return ServiceAnswer.builder().serviceMessage(ServiceMessage.USER_ID_DOES_NOT_EXIST).build();
             ProjectStudent projectStudent = new ProjectStudent();
-            projectStudent.setStudent(siptisUserRepository.findById(studentId).get());
+            projectStudent.setStudent(userOptional.get());
             projectStudent.setProject(newProject);
             students.add(projectStudent);
         }
 
         ArrayList<ProjectTutor> tutors = new ArrayList<>();
         for (Long tutorId : dto.getTutorsId()) {
-            if (!siptisUserRepository.existsById(tutorId))
+            Optional<SiptisUser> tutorOptional = siptisUserRepository.findById(tutorId);
+            if (tutorOptional.isEmpty())
                 return ServiceAnswer.builder().serviceMessage(ServiceMessage.USER_ID_DOES_NOT_EXIST).build();
             ProjectTutor projectTutor = new ProjectTutor();
-            SiptisUser user = siptisUserRepository.findById(tutorId).get();
+            SiptisUser user = tutorOptional.get();
             Collection<ProjectTutor> projectsTutor = user.getTutorOf();
             int currentProjects = 0;
             for (ProjectTutor thisTutor : projectsTutor) {
@@ -94,10 +93,11 @@ public class ProjectServiceCreate {
                 (modalityName.equals(backend.siptis.commons.Modality.TRABAJO_DIRIGIDO.toString())
                         || modalityName.equals(backend.siptis.commons.Modality.ADSCRIPCION.toString()))) {
             for (Long supervisorId : dto.getSupervisorsId()) {
-                if (!siptisUserRepository.existsById(supervisorId))
+                Optional<SiptisUser> supervisorOptional = siptisUserRepository.findById(supervisorId);
+                if (supervisorOptional.isEmpty())
                     return ServiceAnswer.builder().serviceMessage(ServiceMessage.USER_ID_DOES_NOT_EXIST).build();
                 ProjectSupervisor projectSupervisor = new ProjectSupervisor();
-                projectSupervisor.setSupervisor(siptisUserRepository.findById(supervisorId).get());
+                projectSupervisor.setSupervisor(supervisorOptional.get());
                 projectSupervisor.setProject(newProject);
                 supervisors.add(projectSupervisor);
             }
@@ -107,27 +107,30 @@ public class ProjectServiceCreate {
 
         ArrayList<ProjectTeacher> teachers = new ArrayList<>();
         for (Long teacherId : dto.getTeachersId()) {
-            if (!siptisUserRepository.existsById(teacherId))
+            Optional<SiptisUser> teacherOptional = siptisUserRepository.findById(teacherId);
+            if (teacherOptional.isEmpty())
                 return ServiceAnswer.builder().serviceMessage(ServiceMessage.USER_ID_DOES_NOT_EXIST).build();
             ProjectTeacher projectTeacher = new ProjectTeacher();
-            projectTeacher.setTeacher(siptisUserRepository.findById(teacherId).get());
+            projectTeacher.setTeacher(teacherOptional.get());
             projectTeacher.setProject(newProject);
             teachers.add(projectTeacher);
         }
 
         Set<Area> areas = new HashSet<>();
         for (Long areaId : dto.getAreasId()) {
-            if (!areaRepository.existsAreaById(areaId))
+            Optional<Area> areaOptional = areaRepository.findById(areaId);
+            if (areaOptional.isEmpty())
                 return ServiceAnswer.builder().serviceMessage(ServiceMessage.AREA_NOT_FOUND).build();
-            Area area = areaRepository.findById(areaId).get();
+            Area area = areaOptional.get();
             areas.add(area);
         }
 
         Set<SubArea> subAreas = new HashSet<>();
         for (Long subAreaId : dto.getSubAreasId()) {
-            if (!subAreaRepository.existsSubAreaById(subAreaId))
+            Optional<SubArea> subAreaOptional = subAreaRepository.findById(subAreaId);
+            if (subAreaOptional.isEmpty())
                 return ServiceAnswer.builder().serviceMessage(ServiceMessage.SUB_AREA_NOT_FOUND).build();
-            SubArea subArea = subAreaRepository.findById(subAreaId).get();
+            SubArea subArea = subAreaOptional.get();
             subAreas.add(subArea);
         }
 
@@ -143,18 +146,10 @@ public class ProjectServiceCreate {
         newProject.setPeriod(semesterInformationRepository.getCurrentPeriod());
 
         projectRepository.save(newProject);
-
-        for (ProjectStudent projectStudent : students)
-            projectStudentRepository.save(projectStudent);
-
-        for (ProjectTutor projectTutor : tutors)
-            projectTutorRepository.save(projectTutor);
-
-        for (ProjectSupervisor projectSupervisor : supervisors)
-            projectSupervisorRepository.save(projectSupervisor);
-
-        for (ProjectTeacher projectTeacher : teachers)
-            projectTeacherRepository.save(projectTeacher);
+        projectStudentRepository.saveAll(students);
+        projectTutorRepository.saveAll(tutors);
+        projectSupervisorRepository.saveAll(supervisors);
+        projectTeacherRepository.saveAll(teachers);
 
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.SUCCESSFUL_PROJECT_REGISTER).data(newProject).build();
     }

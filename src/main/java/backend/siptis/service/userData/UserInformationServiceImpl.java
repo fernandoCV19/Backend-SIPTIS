@@ -12,6 +12,8 @@ import backend.siptis.model.repository.userData.UserInformationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class UserInformationServiceImpl implements UserInformationService {
@@ -26,12 +28,9 @@ public class UserInformationServiceImpl implements UserInformationService {
         return userInformationRepository.existsByCi(ci);
     }
 
-    private boolean existsUserById(Long id) {
-        return userInformationRepository.existsById(id.intValue());
-    }
-
     private UserInformation findUserInformationById(Long id) {
-        return userInformationRepository.findById(id).get();
+        Optional<UserInformation> userInformation = userInformationRepository.findById(id);
+        return userInformation.orElse(null);
     }
 
     @Override
@@ -87,10 +86,10 @@ public class UserInformationServiceImpl implements UserInformationService {
     @Override
     public ServiceAnswer adminEditUserInformation(UserInformation userInformation, AdminEditUserInformationDTO dto) {
         dto.setCi(dto.getCi().trim());
-        if (!userInformation.getCi().equals(dto.getCi()))
-            if (existUserByCi(dto.getCi()))
-                return createAnswer(ServiceMessage.CI_ALREADY_EXIST, null);
+        if (!userInformation.getCi().equals(dto.getCi()) && (existUserByCi(dto.getCi()))) {
+            return createAnswer(ServiceMessage.CI_ALREADY_EXIST, null);
 
+        }
         userInformation.setLastNames(dto.getLastnames().trim());
         userInformation.setNames(dto.getNames().trim());
         userInformation.setCi(dto.getCi());
@@ -105,12 +104,11 @@ public class UserInformationServiceImpl implements UserInformationService {
         dto.setCodSIS(dto.getCodSIS().trim());
         if (dto.getCodSIS() == null)
             return createAnswer(ServiceMessage.CODSIS_CANNOT_BE_NULL, null);
-        if (dto.getCodSIS().length() > 10 && dto.getCodSIS().length() < 8)
-            return createAnswer(ServiceMessage.INVALID_CODSIS_LENGTH, null);
 
-        if (!userInformation.getCodSIS().equals(dto.getCodSIS()))
-            if (existUserByCodSIS(dto.getCodSIS()))
-                return createAnswer(ServiceMessage.COD_SIS_ALREADY_EXIST, null);
+        if (!userInformation.getCodSIS().equals(dto.getCodSIS()) && (existUserByCodSIS(dto.getCodSIS()))) {
+            return createAnswer(ServiceMessage.COD_SIS_ALREADY_EXIST, null);
+
+        }
         userInformation.setCodSIS(dto.getCodSIS());
         return adminEditUserInformation(userInformation, dto);
 

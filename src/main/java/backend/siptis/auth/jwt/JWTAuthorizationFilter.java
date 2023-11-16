@@ -1,7 +1,7 @@
 package backend.siptis.auth.jwt;
 
 import backend.siptis.exception.UserNotFoundException;
-import backend.siptis.model.pjo.dto.ResponseDTO;
+import backend.siptis.model.pjo.dto.userDataDTO.ResponseDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
@@ -36,7 +36,6 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
                     UsernamePasswordAuthenticationToken
                             usernamePAT = JWTokenUtils.getAuthentication(token);
                     SecurityContextHolder.getContext().setAuthentication(usernamePAT);
-                } else {
                 }
             }
             filterChain.doFilter(request, response);

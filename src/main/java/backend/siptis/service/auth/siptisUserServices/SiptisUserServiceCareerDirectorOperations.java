@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -29,9 +30,10 @@ public class SiptisUserServiceCareerDirectorOperations {
             return createResponse(ServiceMessage.ERROR, null);
         if (siptisUserServiceExistValidation.existCareerDirector(directorRole))
             return createResponse(ServiceMessage.DIRECTOR_ALREADY_EXIST, null);
-        if (!siptisUserServiceExistValidation.existsUserById(id))
-            return createResponse(ServiceMessage.ID_DOES_NOT_EXIST, null);
-        SiptisUser user = siptisUserRepository.findById(id).get();
+        Optional<SiptisUser> userOptional = siptisUserRepository.findById(id);
+        if (userOptional.isEmpty())
+            return createResponse(ServiceMessage.NOT_FOUND, null);
+        SiptisUser user = userOptional.get();
         Set<Role> roles = user.getRoles();
         for (Role role : roles) {
             if (role.getName().equals(Roles.STUDENT.toString()) || role.getName().equals(Roles.ADMIN.toString()))

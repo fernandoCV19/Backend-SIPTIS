@@ -19,13 +19,13 @@ public class ValidationHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         ArrayList<String> errors = new ArrayList<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
+        ex.getBindingResult().getAllErrors().forEach(error -> {
             String message = error.getDefaultMessage();
             errors.add(message);
         });
         ControllerAnswer answer = ControllerAnswer.builder()
                 .data(null).message(errors.get(0)).build();
 
-        return new ResponseEntity<Object>(answer, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(answer, HttpStatus.BAD_REQUEST);
     }
 }

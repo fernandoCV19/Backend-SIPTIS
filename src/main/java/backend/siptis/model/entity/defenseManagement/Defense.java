@@ -4,7 +4,10 @@ import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.utils.constant.entityConstants.DefenseManagementConstants.DefenseTable;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -13,7 +16,6 @@ import java.time.LocalTime;
 @Table(name = DefenseTable.NAME)
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class Defense {

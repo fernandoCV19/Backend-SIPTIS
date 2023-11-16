@@ -1,8 +1,8 @@
 package backend.siptis.service.notifications;
 
 import backend.siptis.commons.ServiceAnswer;
-import backend.siptis.model.pjo.dto.ChangePasswordDTO;
-import backend.siptis.model.pjo.dto.TokenPasswordDTO;
+import backend.siptis.model.pjo.dto.userDataDTO.ChangePasswordDTO;
+import backend.siptis.model.pjo.dto.userDataDTO.TokenPasswordDTO;
 import jakarta.mail.Address;
 import jakarta.mail.MessagingException;
 
@@ -17,7 +17,7 @@ public interface EmailService {
     String readFile(String filen) throws IOException;
 
     void sendEmailFromTemplate(Address[] arrayTO, String activityName, String activityDescription,
-                               Date ActivityDate) throws MessagingException, IOException;
+                               Date activityDate) throws MessagingException, IOException;
 
     void sendSpecificEmail(String email, String messageNotification) throws MessagingException, IOException;
 

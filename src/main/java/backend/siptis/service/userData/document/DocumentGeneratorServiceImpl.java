@@ -30,6 +30,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -122,6 +123,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
         document.setType(DocumentType.REPORT.toString());
         document.setDescription(reportDocumentDTO.getShortDescription());
         document.setSiptisUser(user);
+        document.setDate(LocalDateTime.now());
         documentRepository.save(document);
 
         projectRepository.save(project);
@@ -163,6 +165,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
         document.setType(DocumentType.FORM.toString());
         document.setDescription("Formulario de Solvencia");
         document.setSiptisUser(user);
+        document.setDate(LocalDateTime.now());
         documentRepository.save(document);
 
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
@@ -212,6 +215,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
         document.setPath(key);
         document.setType(DocumentType.RECORD.toString());
         document.setDescription("Ficha documental");
+        document.setDate(LocalDateTime.now());
         document.setSiptisUser(user);
         documentRepository.save(document);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
@@ -231,9 +235,10 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
     @Override
     public ServiceAnswer teacherTribunalRequest(LetterGenerationRequestDTO dto) throws IOException {
         LetterTool letterTool = new LetterTool();
-        if (!projectRepository.existsById(dto.getProjectId()))
+        Optional<Project> projectOptional = projectRepository.findById(dto.getProjectId());
+        if (projectOptional.isEmpty())
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
-        Project project = projectRepository.findById(dto.getProjectId()).get();
+        Project project = projectOptional.get();
         String projectName = project.getName();
         Collection<ProjectStudent> students = project.getStudents();
         ProjectTeacher teacher = projectTeacherRepository.findByTeacherIdAndProjectId(dto.getUserId(), dto.getProjectId());
@@ -263,6 +268,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
             document.setPath(key);
             document.setType(DocumentType.LETTER.toString());
             document.setDescription("Carta de Conformidad y solicitud de asignación de tribunales, emitida por el docente de Taller de Grado 2 encargado del proyecto.");
+            document.setDate(LocalDateTime.now());
             document.setSiptisUser(projectStudent.getStudent());
             documentRepository.save(document);
         }
@@ -273,9 +279,10 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
     @Override
     public ServiceAnswer tutorTribunalRequest(LetterGenerationRequestDTO dto) throws IOException {
         LetterTool letterTool = new LetterTool();
-        if (!projectRepository.existsById(dto.getProjectId()))
+        Optional<Project> projectOptional = projectRepository.findById(dto.getProjectId());
+        if (projectOptional.isEmpty())
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
-        Project project = projectRepository.findById(dto.getProjectId()).get();
+        Project project = projectOptional.get();
         String projectName = project.getName();
         ProjectTutor tutor = projectTutorRepository.findByTutorIdAndProjectId(dto.getUserId(), dto.getProjectId());
         if (tutor == null)
@@ -309,6 +316,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
             document.setPath(key);
             document.setType(DocumentType.LETTER.toString());
             document.setDescription("Carta de Conformidad y solicitud de asignación de tribunales, emitida por el tutor encargado del proyecto.");
+            document.setDate(LocalDateTime.now());
             document.setSiptisUser(projectStudent.getStudent());
             documentRepository.save(document);
         }
@@ -318,9 +326,10 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
     @Override
     public ServiceAnswer supervisorTribunalRequest(LetterGenerationRequestDTO dto) throws IOException {
         LetterTool letterTool = new LetterTool();
-        if (!projectRepository.existsById(dto.getProjectId()))
+        Optional<Project> projectOptional = projectRepository.findById(dto.getProjectId());
+        if (projectOptional.isEmpty())
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
-        Project project = projectRepository.findById(dto.getProjectId()).get();
+        Project project = projectOptional.get();
         String projectName = project.getName();
         ProjectSupervisor supervisor = projectSupervisorRepository.findBySupervisorIdAndProjectId(dto.getUserId(), dto.getProjectId());
         if (supervisor == null)
@@ -353,6 +362,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
             document.setPath(key);
             document.setType(DocumentType.LETTER.toString());
             document.setDescription("Carta de Conformidad y solicitud de asignación de tribunales, emitida por el tutor encargado del proyecto.");
+            document.setDate(LocalDateTime.now());
             document.setSiptisUser(projectStudent.getStudent());
             documentRepository.save(document);
         }
@@ -362,9 +372,10 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
     @Override
     public ServiceAnswer studentTribunalRequest(LetterGenerationRequestDTO dto) throws IOException {
         LetterTool letterTool = new LetterTool();
-        if (!projectRepository.existsById(dto.getProjectId()))
+        Optional<Project> projectOptional = projectRepository.findById(dto.getProjectId());
+        if (projectOptional.isEmpty())
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
-        Project project = projectRepository.findById(dto.getProjectId()).get();
+        Project project = projectOptional.get();
         String projectName = project.getName();
         ProjectStudent projectStudent = projectStudentRepository.findByStudentIdAndProjectId(dto.getUserId(), dto.getProjectId());
         if (projectStudent == null)
@@ -390,6 +401,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
         document.setPath(key);
         document.setType(DocumentType.LETTER.toString());
         document.setDescription("Carta de solicitud de asignación de tribunales emitida por estudiante que realizó el proyecto.");
+        document.setDate(LocalDateTime.now());
         document.setSiptisUser(projectStudent.getStudent());
         documentRepository.save(document);
 
@@ -399,9 +411,10 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
     @Override
     public ServiceAnswer generateTribunalApproval(LetterGenerationRequestDTO dto) throws IOException {
         LetterTool letterTool = new LetterTool();
-        if (!projectRepository.existsById(dto.getProjectId()))
+        Optional<Project> projectOptional = projectRepository.findById(dto.getProjectId());
+        if (projectOptional.isEmpty())
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
-        Project project = projectRepository.findById(dto.getProjectId()).get();
+        Project project = projectOptional.get();
         String projectName = project.getName();
         Collection<ProjectStudent> students = project.getStudents();
         String key = "";
@@ -434,7 +447,8 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
             }
             document.setPath(key);
             document.setType(DocumentType.LETTER.toString());
-            document.setDescription("Carta de aprobaciÃ³n de Tribunal encargado del proyecto.");
+            document.setDescription("Carta de aprobación de Tribunal encargado del proyecto.");
+            document.setDate(LocalDateTime.now());
             document.setSiptisUser(projectStudent.getStudent());
             documentRepository.save(document);
         }

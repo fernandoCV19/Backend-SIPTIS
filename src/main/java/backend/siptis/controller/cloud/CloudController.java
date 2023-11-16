@@ -3,7 +3,7 @@ package backend.siptis.controller.cloud;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.service.cloud.FileManagerService;
 import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +15,10 @@ import java.io.ByteArrayOutputStream;
 @RestController
 @RequestMapping(ControllerConstants.Cloud.BASE_PATH)
 @CrossOrigin
+@RequiredArgsConstructor
 public class CloudController {
 
-    @Autowired
-    private FileManagerService fileDownloaderService;
+    private final FileManagerService fileDownloaderService;
 
     @GetMapping("/download-file/{folder}/{file}")
     ResponseEntity<?> downloadFile(@PathVariable String folder, @PathVariable String file) {

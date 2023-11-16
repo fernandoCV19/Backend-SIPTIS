@@ -1,7 +1,6 @@
 package backend.siptis.controller.presentations;
 
 import backend.siptis.commons.ControllerAnswer;
-import backend.siptis.commons.PhaseName;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.service.auth.siptisUserServices.SiptisUserServiceTokenOperations;
@@ -13,7 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
+import javax.annotation.Nullable;
+import java.util.List;
 
 @RestController
 @RequestMapping(ControllerConstants.Presentation.BASE_PATH)
@@ -25,16 +25,12 @@ public class PresentationController {
     private final SiptisUserServiceTokenOperations siptisUserServiceTokenOperations;
 
     @PostMapping("/create")
-    ResponseEntity<?> create(@RequestHeader(name = "Authorization") String token, @RequestParam PhaseName phase) {
-        ArrayList<?> projects = siptisUserServiceTokenOperations.getProjectsFromToken(token);
+    ResponseEntity<?> create(@RequestHeader(name = "Authorization") String token,
+                             @RequestPart("bluebook") @Nullable MultipartFile bluebook,
+                             @RequestPart("project") @Nullable MultipartFile project) {
+        List<?> projects = siptisUserServiceTokenOperations.getProjectsFromToken(token);
         int projectId = (int) projects.get(0);
-        ServiceAnswer serviceAnswer = presentationService.createPresentation((long) projectId, phase);
-        return createResponseEntity(serviceAnswer);
-    }
-
-    @PostMapping("/grade")
-    ResponseEntity<?> grade(@RequestParam Long presentationId) {
-        ServiceAnswer serviceAnswer = presentationService.gradePresentation(presentationId);
+        ServiceAnswer serviceAnswer = presentationService.createPresentation((long) projectId, bluebook, project);
         return createResponseEntity(serviceAnswer);
     }
 
@@ -46,19 +42,7 @@ public class PresentationController {
 
     @DeleteMapping("/{presentationId}")
     ResponseEntity<?> deletePresentation(@PathVariable("presentationId") Long presentationId) {
-        ServiceAnswer serviceAnswer = presentationService.delete(presentationId);
-        return createResponseEntity(serviceAnswer);
-    }
-
-    @PostMapping("/attach-file")
-    ResponseEntity<?> attachFile(@RequestParam Long presentationId, @RequestParam MultipartFile file, @RequestParam String path) {
-        ServiceAnswer serviceAnswer = presentationService.attachFile(presentationId, file, path);
-        return createResponseEntity(serviceAnswer);
-    }
-
-    @DeleteMapping("/remove-file")
-    ResponseEntity<?> removeFile(@RequestParam Long presentationId, @RequestParam String path) {
-        ServiceAnswer serviceAnswer = presentationService.removeFile(presentationId, path);
+        ServiceAnswer serviceAnswer = presentationService.deletePresentation(presentationId);
         return createResponseEntity(serviceAnswer);
     }
 

@@ -31,7 +31,6 @@ public class LetterTool {
             Paragraph bodyHeader = new Paragraph();
             bodyHeader.add(new Phrase("Estimado Director de Carrera:\n", FontFactory.getFont(FontFactory.HELVETICA, 10)));
             bodyHeader.setSpacingBefore(40);
-            // document.add(bodyHeader);
 
             Paragraph bodyContent = new Paragraph();
             bodyContent.setAlignment(Element.ALIGN_JUSTIFIED);

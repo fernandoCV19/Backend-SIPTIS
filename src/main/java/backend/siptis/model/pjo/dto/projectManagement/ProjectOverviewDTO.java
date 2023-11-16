@@ -15,9 +15,7 @@ public class ProjectOverviewDTO {
     private String blueBookPath;
     private String projectPath;
     private String perfilPath;
-
     private List<String> areas;
     private List<String> subareas;
 
-    //private Collection<ProjectTutor> tutors;
 }

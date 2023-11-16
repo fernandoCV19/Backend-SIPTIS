@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -48,13 +49,13 @@ public class SiptisUserServiceModifyUserOperations {
     }
 
     public ServiceAnswer userEditPersonalInformation(Long id, UserEditInformationDTO dto) {
-        if (!siptisUserServiceExistValidation.existsUserById(id))
-            return createResponse(ServiceMessage.ID_DOES_NOT_EXIST, null);
+        Optional<SiptisUser> userOptional = siptisUserRepository.findById(id);
+        if (userOptional.isEmpty())
+            return createResponse(ServiceMessage.NOT_FOUND, null);
+        SiptisUser user = userOptional.get();
         ServiceAnswer answer;
-        SiptisUser user = siptisUserRepository.findById(id).get();
-        if (!user.getEmail().equals(dto.getEmail()))
-            if (siptisUserServiceExistValidation.existsUserByEmail(dto.getEmail()))
-                return createResponse(ServiceMessage.EMAIL_ALREADY_EXIST, null);
+        if (!user.getEmail().equals(dto.getEmail()) && (siptisUserServiceExistValidation.existsUserByEmail(dto.getEmail())))
+            return createResponse(ServiceMessage.EMAIL_ALREADY_EXIST, null);
         UserInformation userInformation = user.getUserInformation();
         answer = userInformationService.userEditInformation(userInformation, dto);
         if (!answer.getServiceMessage().equals(ServiceMessage.OK))
@@ -95,7 +96,8 @@ public class SiptisUserServiceModifyUserOperations {
     }
 
     private SiptisUser findUserById(long id) {
-        return siptisUserRepository.findById(id).get();
+        Optional<SiptisUser> userOptional = siptisUserRepository.findById(id);
+        return userOptional.orElse(null);
     }
 
     private ServiceAnswer createResponse(ServiceMessage serviceMessage, Object data) {

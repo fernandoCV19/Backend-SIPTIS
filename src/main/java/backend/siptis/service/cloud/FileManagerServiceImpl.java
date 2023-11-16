@@ -3,7 +3,6 @@ package backend.siptis.service.cloud;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
@@ -11,8 +10,8 @@ import java.io.ByteArrayOutputStream;
 @Service
 @RequiredArgsConstructor
 public class FileManagerServiceImpl implements FileManagerService {
-    @Autowired
-    private CloudManagementService nube;
+
+    private final CloudManagementService nube;
 
     @Override
     public ServiceAnswer downloadFileFromCloud(String key) {

@@ -30,9 +30,7 @@ public class SiptisUserServiceGeneralUserOperations {
 
     public Long getProjectById(Long id) {
         Optional<Project> project = siptisUserRepository.findProjectById(id);
-        if (project.isEmpty()) return null;
-        Long idL = project.get().getId();
-        return idL;
+        return project.map(Project::getId).orElse(null);
     }
 
     public ServiceAnswer getAllUsers() {
@@ -50,9 +48,10 @@ public class SiptisUserServiceGeneralUserOperations {
     }
 
     public ServiceAnswer getUserAreasById(Long id) {
-        if (!siptisUserServiceExistValidation.existsUserById(id))
+        Optional<SiptisUser> userOptional = siptisUserRepository.findById(id);
+        if (userOptional.isEmpty())
             return createResponse(ServiceMessage.NOT_FOUND, null);
-        SiptisUser user = siptisUserRepository.findById(id).get();
+        SiptisUser user = userOptional.get();
         Set<UserArea> areas = user.getAreas();
         return createResponse(ServiceMessage.OK, areas);
     }
@@ -75,7 +74,8 @@ public class SiptisUserServiceGeneralUserOperations {
     }
 
     private SiptisUser findUserById(long id) {
-        return siptisUserRepository.findById(id).get();
+        Optional<SiptisUser> userOptional = siptisUserRepository.findById(id);
+        return userOptional.orElse(null);
     }
 
     private ServiceAnswer createResponse(ServiceMessage serviceMessage, Object data) {

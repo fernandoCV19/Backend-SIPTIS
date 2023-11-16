@@ -54,10 +54,10 @@ public interface SiptisUserRepository extends JpaRepository<SiptisUser, Long> {
             " FROM siptis_user su, user_information ui,  siptis_user_role sur, role role" +
             " WHERE su.id = ui.user_id AND sur.siptis_user_id = su.id " +
             " AND sur.role_id = role.id AND role.name LIKE :roleName" +
-            " AND ( LOWER( ui.names ) LIKE LOWER( CONCAT( '%', :search_name, '%')) " +
-            " OR LOWER( ui.lastnames ) LIKE LOWER( CONCAT( '%', :search_name, '%') ))" +
+            " AND ( LOWER( ui.names ) LIKE LOWER( CONCAT( '%', :searchName, '%')) " +
+            " OR LOWER( ui.lastnames ) LIKE LOWER( CONCAT( '%', :searchName, '%') ))" +
             " ORDER BY ui.lastnames ASC", nativeQuery = true)
-    Page<UserListItemDTO> searchUserList(String search_name, String roleName, Pageable pageable);
+    Page<UserListItemDTO> searchUserList(String searchName, String roleName, Pageable pageable);
 
 
     @Query(value = "SELECT DISTINCT su.id, ui.names, ui.lastnames, su.email" +
@@ -66,11 +66,11 @@ public interface SiptisUserRepository extends JpaRepository<SiptisUser, Long> {
             " LEFT JOIN siptis_user_role sur ON sur.siptis_user_id = su.id " +
             " LEFT JOIN role role ON sur.role_id = role.id " +
             " WHERE (role.name IS NULL OR role.name NOT IN ('ADMIN', 'STUDENT')) " +
-            " AND ( LOWER( ui.names ) LIKE LOWER( CONCAT( '%', :search_name, '%')) " +
-            " OR LOWER( ui.lastnames ) LIKE LOWER( CONCAT( '%', :search_name, '%') )) " +
+            " AND ( LOWER( ui.names ) LIKE LOWER( CONCAT( '%', :searchName, '%')) " +
+            " OR LOWER( ui.lastnames ) LIKE LOWER( CONCAT( '%', :searchName, '%') )) " +
             " ORDER BY ui.lastnames ASC"
             , nativeQuery = true)
-    Page<UserListItemDTO> searchNormalUserList(String search_name, Pageable pageable);
+    Page<UserListItemDTO> searchNormalUserList(String searchName, Pageable pageable);
 
 
     @Query(value = "SELECT su.id, su.email " +

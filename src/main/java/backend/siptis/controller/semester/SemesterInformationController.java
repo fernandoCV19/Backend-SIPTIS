@@ -66,7 +66,6 @@ public class SemesterInformationController {
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> editSemester(
             @Valid @RequestBody EditSemesterInfoDTO dto) {
-        // Long semesterId = Long.valueOf(id);
         ServiceAnswer answerService = semesterService.editSemester(dto);
         return createResponse(answerService);
     }

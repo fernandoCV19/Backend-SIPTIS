@@ -52,10 +52,10 @@ public interface UserInformationService {
             return siptisUser.getId();
         }
 
-        public ArrayList<Long> getProjects() {
+        public List<Long> getProjects() {
             if (siptisUser.getProjects() != null)
                 return siptisUser.getProjects();
-            return new ArrayList<Long>();
+            return new ArrayList<>();
         }
 
         @Override

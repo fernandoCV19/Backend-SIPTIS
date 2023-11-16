@@ -16,7 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping(ControllerConstants.Document.BASE_PATH)
@@ -48,7 +48,7 @@ public class DocumentController {
     @PostMapping("/create-report")
     ResponseEntity<?> createReport(@RequestHeader(name = "Authorization") String token, @RequestBody ReportDocumentDTO reportDocumentDTO) {
         Long userId = siptisUserServiceTokenOperations.getIdFromToken(token);
-        ArrayList<?> projects = siptisUserServiceTokenOperations.getProjectsFromToken(token);
+        List<?> projects = siptisUserServiceTokenOperations.getProjectsFromToken(token);
         int projectId = (int) projects.get(0);
         return createResponseEntity(documentGeneratorService.generateReport(reportDocumentDTO, userId, (long) projectId));
     }
@@ -80,7 +80,7 @@ public class DocumentController {
     @PostMapping("/create-documentary-record")
     ResponseEntity<?> createDocumentaryRecord(@RequestHeader(name = "Authorization") String token, @RequestBody DocumentaryRecordDto documentaryRecordDto) {
         Long userId = siptisUserServiceTokenOperations.getIdFromToken(token);
-        ArrayList<?> projects = siptisUserServiceTokenOperations.getProjectsFromToken(token);
+        List<?> projects = siptisUserServiceTokenOperations.getProjectsFromToken(token);
         int projectId = (int) projects.get(0);
         return createResponseEntity(documentGeneratorService.generateDocumentaryRecord(documentaryRecordDto, userId, (long) projectId));
     }
