@@ -67,7 +67,7 @@ public class ProjectTribunalServiceReviewADefense {
         if (count > 2) {
             project.setPhase(PhaseName.POST_DEFENSE_PHASE.toString());
         }
-        if(count != 0) {
+        if (count != 0) {
             newProjectDefensePoint = newProjectDefensePoint / count;
         }
         project.setTotalDefensePoints(newProjectDefensePoint);

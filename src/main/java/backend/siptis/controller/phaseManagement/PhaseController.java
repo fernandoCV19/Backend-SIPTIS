@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(ControllerConstants.Phase.BASE_PATH)
 @CrossOrigin
 public class PhaseController {
+    private static final String phaseFound = "Phase found";
     private final PhaseService phaseService;
     private final SiptisUserServiceTokenOperations siptisUserServiceTokenOperations;
-    private static final String phaseFound = "Phase found";
 
     @GetMapping("")
     public ResponseEntity<?> findAll() {
