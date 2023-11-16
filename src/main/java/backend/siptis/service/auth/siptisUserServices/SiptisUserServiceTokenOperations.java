@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Transactional
@@ -28,7 +28,7 @@ public class SiptisUserServiceTokenOperations {
         return JWTokenUtils.getId(token);
     }
 
-    public ArrayList<?> getProjectsFromToken(String token) {
+    public List<?> getProjectsFromToken(String token) {
         token = token.replace("Bearer ", "");
         return JWTokenUtils.getProjects(token);
     }

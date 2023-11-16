@@ -17,12 +17,13 @@ import org.springframework.web.bind.annotation.*;
 public class PhaseController {
     private final PhaseService phaseService;
     private final SiptisUserServiceTokenOperations siptisUserServiceTokenOperations;
+    private final String phaseFound = "Phase found";
 
     @GetMapping("")
     public ResponseEntity<?> findAll() {
         return new ResponseEntity<>(ControllerAnswer.builder()
                 .data(phaseService.findAllPhases())
-                .message("Phase found").build(), null, 200);
+                .message(phaseFound).build(), null, 200);
     }
 
     @GetMapping("/{idPhase}")
@@ -31,7 +32,7 @@ public class PhaseController {
 
         return new ResponseEntity<>(ControllerAnswer.builder()
                 .data(phaseService.findPhaseByUserId(id))
-                .message("Phase found").build(), null, 200);
+                .message(phaseFound).build(), null, 200);
     }
 
     @GetMapping("/modality/{idModality}")
@@ -40,7 +41,7 @@ public class PhaseController {
 
         return new ResponseEntity<>(ControllerAnswer.builder()
                 .data(phaseService.findPhaseByModalityId(id))
-                .message("Phase found").build(), null, 200);
+                .message(phaseFound).build(), null, 200);
     }
 
     @GetMapping("/user")
@@ -48,7 +49,7 @@ public class PhaseController {
         Long idL = siptisUserServiceTokenOperations.getIdFromToken(token);
         return new ResponseEntity<>(ControllerAnswer.builder()
                 .data(createResponse(phaseService.getPhasesByUserId(idL)))
-                .message("Phase found").build(), null, 200);
+                .message(phaseFound).build(), null, 200);
 
     }
 

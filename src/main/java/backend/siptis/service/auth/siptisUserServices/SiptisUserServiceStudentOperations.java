@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -82,7 +83,8 @@ public class SiptisUserServiceStudentOperations {
     }
 
     private SiptisUser findUserById(long id) {
-        return siptisUserRepository.findById(id).get();
+        Optional<SiptisUser> res = siptisUserRepository.findById(id);
+        return res.orElse(null);
     }
 
     private ServiceAnswer createResponse(ServiceMessage serviceMessage, Object data) {

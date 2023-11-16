@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -57,14 +58,15 @@ public class SiptisUserServiceAdminOperations {
     }
 
     public ServiceAnswer adminEditUserInformation(Long id, AdminEditUserInformationDTO dto) {
-        if (!siptisUserServiceExistValidation.existsUserById(id))
+        Optional<SiptisUser> userOptional = siptisUserRepository.findById(id);
+        if (userOptional.isEmpty())
             return createResponse(ServiceMessage.ID_DOES_NOT_EXIST, null);
         ServiceAnswer answer;
-        SiptisUser user = siptisUserRepository.findById(id).get();
+        SiptisUser user = userOptional.get();
 
-        if (!user.getEmail().equals(dto.getEmail()))
-            if (siptisUserServiceExistValidation.existsUserByEmail(dto.getEmail()))
-                return createResponse(ServiceMessage.EMAIL_ALREADY_EXIST, null);
+        if (!user.getEmail().equals(dto.getEmail()) && (siptisUserServiceExistValidation.existsUserByEmail(dto.getEmail()))) {
+            return createResponse(ServiceMessage.EMAIL_ALREADY_EXIST, null);
+        }
         UserInformation userInformation = user.getUserInformation();
         if (userInformation == null)
             return createResponse(ServiceMessage.ERROR, null);

@@ -231,9 +231,10 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
     @Override
     public ServiceAnswer teacherTribunalRequest(LetterGenerationRequestDTO dto) throws IOException {
         LetterTool letterTool = new LetterTool();
-        if (!projectRepository.existsById(dto.getProjectId()))
+        Optional<Project> projectOptional = projectRepository.findById(dto.getProjectId());
+        if (projectOptional.isEmpty())
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
-        Project project = projectRepository.findById(dto.getProjectId()).get();
+        Project project = projectOptional.get();
         String projectName = project.getName();
         Collection<ProjectStudent> students = project.getStudents();
         ProjectTeacher teacher = projectTeacherRepository.findByTeacherIdAndProjectId(dto.getUserId(), dto.getProjectId());
@@ -273,9 +274,10 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
     @Override
     public ServiceAnswer tutorTribunalRequest(LetterGenerationRequestDTO dto) throws IOException {
         LetterTool letterTool = new LetterTool();
-        if (!projectRepository.existsById(dto.getProjectId()))
+        Optional<Project> projectOptional = projectRepository.findById(dto.getProjectId());
+        if (projectOptional.isEmpty())
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
-        Project project = projectRepository.findById(dto.getProjectId()).get();
+        Project project = projectOptional.get();
         String projectName = project.getName();
         ProjectTutor tutor = projectTutorRepository.findByTutorIdAndProjectId(dto.getUserId(), dto.getProjectId());
         if (tutor == null)
@@ -318,9 +320,10 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
     @Override
     public ServiceAnswer supervisorTribunalRequest(LetterGenerationRequestDTO dto) throws IOException {
         LetterTool letterTool = new LetterTool();
-        if (!projectRepository.existsById(dto.getProjectId()))
+        Optional<Project> projectOptional = projectRepository.findById(dto.getProjectId());
+        if (projectOptional.isEmpty())
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
-        Project project = projectRepository.findById(dto.getProjectId()).get();
+        Project project = projectOptional.get();
         String projectName = project.getName();
         ProjectSupervisor supervisor = projectSupervisorRepository.findBySupervisorIdAndProjectId(dto.getUserId(), dto.getProjectId());
         if (supervisor == null)
@@ -362,9 +365,10 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
     @Override
     public ServiceAnswer studentTribunalRequest(LetterGenerationRequestDTO dto) throws IOException {
         LetterTool letterTool = new LetterTool();
-        if (!projectRepository.existsById(dto.getProjectId()))
+        Optional<Project> projectOptional = projectRepository.findById(dto.getProjectId());
+        if (projectOptional.isEmpty())
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
-        Project project = projectRepository.findById(dto.getProjectId()).get();
+        Project project = projectOptional.get();
         String projectName = project.getName();
         ProjectStudent projectStudent = projectStudentRepository.findByStudentIdAndProjectId(dto.getUserId(), dto.getProjectId());
         if (projectStudent == null)
@@ -399,9 +403,10 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
     @Override
     public ServiceAnswer generateTribunalApproval(LetterGenerationRequestDTO dto) throws IOException {
         LetterTool letterTool = new LetterTool();
-        if (!projectRepository.existsById(dto.getProjectId()))
+        Optional<Project> projectOptional = projectRepository.findById(dto.getProjectId());
+        if (projectOptional.isEmpty())
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
-        Project project = projectRepository.findById(dto.getProjectId()).get();
+        Project project = projectOptional.get();
         String projectName = project.getName();
         Collection<ProjectStudent> students = project.getStudents();
         String key = "";

@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.Set;
 
 @Transactional
@@ -22,9 +23,10 @@ public class SiptisUserServiceDelete {
     private final RoleRepository roleRepository;
 
     public ServiceAnswer deleteUser(Long id) {
-        if (!siptisUserRepository.existsById(id))
+        Optional<SiptisUser> userOptional = siptisUserRepository.findById(id);
+        if (userOptional.isEmpty())
             return createResponse(ServiceMessage.ID_DOES_NOT_EXIST, null);
-        SiptisUser user = siptisUserRepository.findById(id).get();
+        SiptisUser user = userOptional.get();
         ServiceAnswer answer = deleteValidations(user);
         if (answer != null) {
             return answer;

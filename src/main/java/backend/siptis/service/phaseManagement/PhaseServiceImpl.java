@@ -79,7 +79,6 @@ public class PhaseServiceImpl implements PhaseService {
     public PhaseVO entityToVO(Phase phase) {
         PhaseVO phaseVO = new PhaseVO();
         BeanUtils.copyProperties(phase, phaseVO);
-        System.out.print(phaseVO);
         return phaseVO;
     }
 }

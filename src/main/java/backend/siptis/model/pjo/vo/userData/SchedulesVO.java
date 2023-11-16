@@ -25,7 +25,7 @@ public class SchedulesVO {
         this.name = studentUser.getUserInformation().getNames() + " " + studentUser.getUserInformation().getLastNames();
         this.schedules = studentUser.getAvailableSchedules()
                 .stream()
-                .map((schedule) -> schedule.getDay() + ":" + schedule.getHourStart() + " - " + schedule.getHourFinish())
+                .map(schedule -> schedule.getDay() + ":" + schedule.getHourStart() + " - " + schedule.getHourFinish())
                 .toList();
     }
 
@@ -35,7 +35,7 @@ public class SchedulesVO {
         this.name = tribunalUser.getUserInformation().getNames() + " " + tribunalUser.getUserInformation().getLastNames();
         this.schedules = tribunalUser.getAvailableSchedules()
                 .stream()
-                .map((schedule) -> schedule.getDay() + ":" + schedule.getHourStart() + " - " + schedule.getHourFinish())
+                .map(schedule -> schedule.getDay() + ":" + schedule.getHourStart() + " - " + schedule.getHourFinish())
                 .toList();
     }
 }

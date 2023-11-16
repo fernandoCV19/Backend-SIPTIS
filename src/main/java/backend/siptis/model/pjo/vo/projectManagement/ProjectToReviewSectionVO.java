@@ -21,7 +21,7 @@ public class ProjectToReviewSectionVO {
     private Boolean reviewed;
 
     public ProjectToReviewSectionVO(Project project, Boolean studentChanges, Integer numberOfDays, Boolean reviewed) {
-        students = project.getStudents().stream().map((studentProject) -> studentProject.getStudent().getUserInformation().getNames() + " " + studentProject.getStudent().getUserInformation().getLastNames()).toList();
+        students = project.getStudents().stream().map(studentProject -> studentProject.getStudent().getUserInformation().getNames() + " " + studentProject.getStudent().getUserInformation().getLastNames()).toList();
         projectName = project.getName();
         modality = project.getModality().getName();
         projectKey = project.getProjectPath();

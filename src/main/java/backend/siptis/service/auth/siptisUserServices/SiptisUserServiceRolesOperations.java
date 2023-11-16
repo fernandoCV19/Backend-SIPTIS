@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @RequiredArgsConstructor
@@ -26,9 +27,10 @@ public class SiptisUserServiceRolesOperations {
     private final RoleRepository roleRepository;
 
     public ServiceAnswer getRolesById(Long id) {
-        if (!siptisUserServiceExistValidation.existsUserById(id))
+        Optional<SiptisUser> userOptional = siptisUserRepository.findById(id);
+        if (userOptional.isEmpty())
             return createResponse(ServiceMessage.NOT_FOUND, null);
-        SiptisUser user = siptisUserRepository.findById(id).get();
+        SiptisUser user = userOptional.get();
         Set<Role> roles = user.getRoles();
         Set<String> directorRoles = roleService.directorRoles();
         if (roles == null)
@@ -41,9 +43,10 @@ public class SiptisUserServiceRolesOperations {
     }
 
     public ServiceAnswer updateRoles(Long id, RolesListDTO dto) {
-        if (!siptisUserServiceExistValidation.existsUserById(id))
+        Optional<SiptisUser> userOptional = siptisUserRepository.findById(id);
+        if (userOptional.isEmpty())
             return createResponse(ServiceMessage.NOT_FOUND, null);
-        SiptisUser user = siptisUserRepository.findById(id).get();
+        SiptisUser user = userOptional.get();
         Set<Role> newRoles = new HashSet<>();
         Set<Role> userRoles = user.getRoles();
         Set<String> notAssignableRoles = roleService.notAssignableRoles();

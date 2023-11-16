@@ -1,6 +1,6 @@
 package backend.siptis.auth.security;
 
-import backend.siptis.model.pjo.dto.ResponseDTO;
+import backend.siptis.model.pjo.dto.userDataDTO.ResponseDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

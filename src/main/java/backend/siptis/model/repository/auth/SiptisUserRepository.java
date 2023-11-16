@@ -57,7 +57,7 @@ public interface SiptisUserRepository extends JpaRepository<SiptisUser, Long> {
             " AND ( LOWER( ui.names ) LIKE LOWER( CONCAT( '%', :search_name, '%')) " +
             " OR LOWER( ui.lastnames ) LIKE LOWER( CONCAT( '%', :search_name, '%') ))" +
             " ORDER BY ui.lastnames ASC", nativeQuery = true)
-    Page<UserListItemDTO> searchUserList(String search_name, String roleName, Pageable pageable);
+    Page<UserListItemDTO> searchUserList(String searchName, String roleName, Pageable pageable);
 
 
     @Query(value = "SELECT DISTINCT su.id, ui.names, ui.lastnames, su.email" +
@@ -70,7 +70,7 @@ public interface SiptisUserRepository extends JpaRepository<SiptisUser, Long> {
             " OR LOWER( ui.lastnames ) LIKE LOWER( CONCAT( '%', :search_name, '%') )) " +
             " ORDER BY ui.lastnames ASC"
             , nativeQuery = true)
-    Page<UserListItemDTO> searchNormalUserList(String search_name, Pageable pageable);
+    Page<UserListItemDTO> searchNormalUserList(String searchName, Pageable pageable);
 
 
     @Query(value = "SELECT su.id, su.email " +

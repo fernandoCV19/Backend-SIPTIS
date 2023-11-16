@@ -3,7 +3,7 @@ package backend.siptis.controller.notifications;
 import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.model.pjo.dto.TokenPasswordDTO;
+import backend.siptis.model.pjo.dto.userDataDTO.TokenPasswordDTO;
 import backend.siptis.service.notifications.EmailServiceImpl;
 import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
 import jakarta.mail.MessagingException;
@@ -24,14 +24,12 @@ public class EmailController {
 
     @GetMapping("")
     public String sendNotification() throws MessagingException, IOException {
-        System.out.print("hola");
         emailServiceImpl.sendSpecificEmail("dilanantezana@gmail.com", "hola como estas");
-
         return "ok";
     }
 
     @GetMapping("/askemail/{email}")
-    public ResponseEntity<?> sendEmailTest(@PathVariable String email) throws MessagingException, IOException {
+    public ResponseEntity<?> sendEmailTest(@PathVariable String email) throws MessagingException {
         ServiceAnswer answer = emailServiceImpl.sendRecoverPasswordEmail(email);
 
         return crearResponseEntityRegistrar(answer);

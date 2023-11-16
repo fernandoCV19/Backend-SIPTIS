@@ -29,13 +29,13 @@ public class ProjectInformationDTO {
     public ProjectInformationDTO(Project project) {
         this.projectName = project.getName();
         this.period = project.getPeriod();
-        Modality modality = project.getModality();
-        if (modality != null) {
-            this.modality = modality.getName();
+        Modality projectModality = project.getModality();
+        if (projectModality != null) {
+            this.modality = projectModality.getName();
         }
-        State state = project.getState();
-        if (state != null) {
-            this.state = state.getName();
+        State projectState = project.getState();
+        if (projectState != null) {
+            this.state = projectState.getName();
         }
         this.phase = project.getPhase();
         this.students = project.getProjectStudents();

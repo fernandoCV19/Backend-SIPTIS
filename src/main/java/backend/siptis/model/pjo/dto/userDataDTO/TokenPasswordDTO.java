@@ -1,4 +1,4 @@
-package backend.siptis.model.pjo.dto;
+package backend.siptis.model.pjo.dto.userDataDTO;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;

@@ -9,6 +9,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -42,10 +44,11 @@ public class AreaServiceImpl implements AreaService {
     }
 
     private ServiceAnswer validateDeleteArea(Long id) {
-        if (!areaRepository.existsAreaById(id))
+        Optional<Area> areaOptional = areaRepository.findById(id.intValue());
+        if (areaOptional.isEmpty())
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.AREA_NOT_FOUND).data(null).build();
-        Area area = areaRepository.findById(id.intValue()).get();
-        if (area.getProjects().size() > 0)
+        Area area = areaOptional.get();
+        if (!area.getProjects().isEmpty())
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.CANNOT_DELETE_AREA).data(null).build();
         return null;
     }

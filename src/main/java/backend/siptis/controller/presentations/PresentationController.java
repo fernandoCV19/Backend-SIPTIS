@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping(ControllerConstants.Presentation.BASE_PATH)
@@ -26,7 +26,7 @@ public class PresentationController {
 
     @PostMapping("/create")
     ResponseEntity<?> create(@RequestHeader(name = "Authorization") String token, @RequestParam PhaseName phase) {
-        ArrayList<?> projects = siptisUserServiceTokenOperations.getProjectsFromToken(token);
+        List<?> projects = siptisUserServiceTokenOperations.getProjectsFromToken(token);
         int projectId = (int) projects.get(0);
         ServiceAnswer serviceAnswer = presentationService.createPresentation((long) projectId, phase);
         return createResponseEntity(serviceAnswer);

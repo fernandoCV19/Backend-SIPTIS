@@ -135,7 +135,7 @@ public class SiptisUser implements UserDetails {
         return password;
     }
 
-    public ArrayList<Long> getProjects() {
+    public List<Long> getProjects() {
         Collection<ProjectStudent> projects = getStudents();
         ArrayList<Long> ids = new ArrayList<>();
         if (projects == null)

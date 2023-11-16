@@ -46,12 +46,12 @@ public class UserAreaServiceImpl implements UserAreaService {
     }
 
     private ServiceAnswer validateDeleteUserArea(Long id) {
-
-        if (!userAreaRepository.existsUserAreaById(id)) {
+        Optional<UserArea> areaOptional = userAreaRepository.findById(id.intValue());
+        if (areaOptional.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.AREA_NOT_FOUND).build();
         }
-        UserArea area = userAreaRepository.findById(id.intValue()).get();
-        if (area.getSiptisUsers().size() > 0) {
+        UserArea area = areaOptional.get();
+        if (!area.getSiptisUsers().isEmpty()) {
             return ServiceAnswer.builder()
                     .serviceMessage(ServiceMessage.CANNOT_DELETE_AREA).build();
         }

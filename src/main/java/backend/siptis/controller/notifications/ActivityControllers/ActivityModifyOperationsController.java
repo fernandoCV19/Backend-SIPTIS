@@ -34,7 +34,6 @@ public class ActivityModifyOperationsController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateActivity(@PathVariable int id, @RequestBody ActivityDTO activityDTO) {
-        System.out.println(activityDTO);
         return createResponse(activityServiceModifyOperations.update(activityDTO, id));
     }
 

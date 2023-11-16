@@ -1,6 +1,8 @@
 package backend.siptis.model.pjo.vo.projectManagement;
 
+import backend.siptis.model.entity.projectManagement.Area;
 import backend.siptis.model.entity.projectManagement.Project;
+import backend.siptis.model.entity.projectManagement.SubArea;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -46,11 +48,11 @@ public class ProjectToHomePageVO {
         moreInfo = "";
         areas = project.getAreas()
                 .stream()
-                .map(aux -> aux.getName())
+                .map(Area::getName)
                 .toList();
         subAreas = project.getSubAreas()
                 .stream()
-                .map(aux -> aux.getName())
+                .map(SubArea::getName)
                 .toList();
         this.accepted = accepted;
         this.reviewed = reviewed;

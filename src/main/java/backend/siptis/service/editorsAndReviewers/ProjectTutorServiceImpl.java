@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -103,7 +102,7 @@ public class ProjectTutorServiceImpl implements ProjectTutorService {
         List<ProjectToHomePageVO> data = listaProyectos
                 .stream()
                 .map(aux -> new ProjectToHomePageVO(aux.getProject(), aux.getAccepted(), aux.getReviewed()))
-                .collect(Collectors.toList());
+                .toList();
 
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(data).build();
     }

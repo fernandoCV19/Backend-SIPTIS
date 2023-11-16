@@ -59,8 +59,6 @@ public class GeneralActivityServiceFindOperations {
         Page<GeneralActivity> pageFound = generalActivityRepository.findAll(pageable);
         List<GeneralActivity> generalList = generalActivityRepository.findAll();
 
-        List<GeneralActivity> activityList = pageFound.getContent();
-
         List<GeneralActivity> activitiesRes = new ArrayList<>();
         for (GeneralActivity activity : generalList) {
             if (isAfter(activity.getActivityDate())) {

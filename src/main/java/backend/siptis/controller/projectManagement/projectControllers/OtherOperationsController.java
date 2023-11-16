@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping(ControllerConstants.Project.BASE_PATH)
@@ -35,7 +35,7 @@ public class OtherOperationsController {
 
     @GetMapping("/presentations")
     public ResponseEntity<?> getPresentations(@RequestHeader(name = "Authorization") String token) {
-        ArrayList<?> projects = siptisUserServiceTokenOperations.getProjectsFromToken(token);
+        List<?> projects = siptisUserServiceTokenOperations.getProjectsFromToken(token);
         int projectId = (int) projects.get(0);
         ServiceAnswer serviceAnswer = projectServiceOtherOperations.getPresentations((long) projectId);
         HttpStatus httpStatus = HttpStatus.OK;

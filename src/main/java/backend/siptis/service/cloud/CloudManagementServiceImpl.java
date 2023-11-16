@@ -3,7 +3,6 @@ package backend.siptis.service.cloud;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,10 +18,9 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class CloudManagementServiceImpl implements CloudManagementService {
-    private final static String BUCKET = "siptiscloudbucket";
 
-    @Autowired
-    private AmazonS3 s3Client;
+    private static final String BUCKET = "siptiscloudbucket";
+    private final AmazonS3 s3Client;
 
     @Override
     public String putObject(MultipartFile multipartFile, String carpeta) {
@@ -57,7 +55,6 @@ public class CloudManagementServiceImpl implements CloudManagementService {
     public ByteArrayOutputStream getObject(String key) {
         try {
             S3Object s3Object = s3Client.getObject(BUCKET, key);
-            // ObjectMetadata metadata = s3Object.getObjectMetadata();
 
             InputStream is = s3Object.getObjectContent();
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -98,7 +95,7 @@ public class CloudManagementServiceImpl implements CloudManagementService {
 
         for (; ; ) {
             List<S3ObjectSummary> summaries = objects.getObjectSummaries();
-            if (summaries.size() < 1) {
+            if (summaries.isEmpty()) {
                 break;
             }
 

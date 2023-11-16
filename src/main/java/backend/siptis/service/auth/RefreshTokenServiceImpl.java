@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -16,21 +17,21 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class RefreshTokenServiceImpl implements RefreshTokenService {
 
-    private static final long REFRESH_TOKEN_EXPIRE_TIME_DURATION = 24 * 60 * 60 * 1000;
+    private static final long REFRESH_TOKEN_EXPIRE_TIME_DURATION = (24 * 60 * 60 * 1000L);
 
     private final RefreshTokenRepository refreshTokenRepository;
     private final SiptisUserRepository siptisUserRepository;
 
     @Override
     public RefreshToken findByToken(String token) {
-        if (!refreshTokenRepository.existsByToken(token))
-            return null;
-        return refreshTokenRepository.findByToken(token).get();
+        Optional<RefreshToken> res = refreshTokenRepository.findByToken(token);
+        return res.orElse(null);
     }
 
     @Override
     public RefreshToken createRefreshToken(UserInformationService.UserDetailImp userDI) {
-        return createRefreshToken(siptisUserRepository.findById(userDI.getId()).get());
+        Optional<SiptisUser> user = siptisUserRepository.findById(userDI.getId());
+        return user.map(this::createRefreshToken).orElse(null);
     }
 
     @Override

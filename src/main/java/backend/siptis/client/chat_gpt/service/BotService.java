@@ -15,9 +15,7 @@ public class BotService {
     public String getCompletion(CompletionRequest request) {
         try {
             ResponseEntity<?> response = client.getCompletion(request);
-            //LinkedHashMap userResponse = (LinkedHashMap) ((LinkedHashMap<?, ?>) response.getBody()).get("content");
-
-            return null;
+            return response.toString();
         } catch (FeignException feignException) {
             return null;
         }
