@@ -1,14 +1,11 @@
 package backend.siptis.controller.bot;
 
-
-import backend.siptis.model.pjo.dto.bot.BotResponse;
-import backend.siptis.model.pjo.dto.bot.Message;
-import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
 import backend.siptis.client.chat_gpt.api.CompletionRequest;
 import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.service.bot.ChatBotService;
+import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

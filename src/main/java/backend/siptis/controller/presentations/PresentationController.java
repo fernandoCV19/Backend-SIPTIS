@@ -12,9 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping(ControllerConstants.Presentation.BASE_PATH)
@@ -29,12 +28,11 @@ public class PresentationController {
     ResponseEntity<?> create(@RequestHeader(name = "Authorization") String token,
                              @RequestPart("bluebook") @Nullable MultipartFile bluebook,
                              @RequestPart("project") @Nullable MultipartFile project) {
-        ArrayList<?> projects = userAuthService.getProjectsFromToken(token);
+        List<?> projects = siptisUserServiceTokenOperations.getProjectsFromToken(token);
         int projectId = (int) projects.get(0);
         ServiceAnswer serviceAnswer = presentationService.createPresentation((long) projectId, bluebook, project);
         return createResponseEntity(serviceAnswer);
     }
-
 
     @GetMapping("/reviews/{presentationId}")
     ResponseEntity<?> getReviewsFromPresentation(@PathVariable("presentationId") Long presentationId) {

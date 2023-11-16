@@ -7,8 +7,8 @@ import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.pjo.vo.projectManagement.InfoToReviewAProjectVO;
 import backend.siptis.model.pjo.vo.projectManagement.ReviewShortInfoVO;
 import backend.siptis.model.repository.presentations.PresentationRepository;
+import backend.siptis.model.repository.presentations.ReviewRepository;
 import backend.siptis.model.repository.projectManagement.ProjectRepository;
-import backend.siptis.model.repository.projectManagement.ReviewRepository;
 import backend.siptis.service.cloud.CloudManagementService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +32,7 @@ public class PresentationServiceImpl implements PresentationService {
     private final ReviewRepository reviewRepository;
 
     @Override
-   public ServiceAnswer createPresentation(Long projectId, MultipartFile bluebookFile, MultipartFile projectFile) {
+    public ServiceAnswer createPresentation(Long projectId, MultipartFile bluebookFile, MultipartFile projectFile) {
         Optional<Presentation> pendingPresentation = presentationRepository.findByProjectIdAndReviewed(projectId, false);
         if (pendingPresentation.isPresent()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PENDING_PRESENTATION).data(null).build();
@@ -87,7 +86,7 @@ public class PresentationServiceImpl implements PresentationService {
                     jsonMap.put("reviewer", reviewerInfo);
                     return jsonMap;
                 })
-                .collect(Collectors.toList());
+                .toList();
 
         if (reviews.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_REVIEWS).data(null).build();
@@ -98,7 +97,7 @@ public class PresentationServiceImpl implements PresentationService {
     @Override
     public ServiceAnswer deletePresentation(Long presentationId) {
         Optional<Presentation> optionalPresentation = presentationRepository.findById(presentationId);
-        if (!optionalPresentation.isPresent()) {
+        if (optionalPresentation.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
         }
         Presentation presentation = optionalPresentation.get();
@@ -143,16 +142,4 @@ public class PresentationServiceImpl implements PresentationService {
         InfoToReviewAProjectVO data = new InfoToReviewAProjectVO(projectOptional.get(), reviews);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(data).build();
     }
-
-    private String correctFileContext(String context) {
-        if (context.equals("libro-azul")) {
-            return "Libro-Azul/";
-        }
-        if (context.equals("trabajo-grado")) {
-            return "Trabajos-Grado/";
-        }
-        return "Unknown";
-    }
-
-
 }
