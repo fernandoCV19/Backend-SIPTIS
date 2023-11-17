@@ -302,7 +302,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
 
             String directorName = siptisUserServiceCareerDirectorOperations.getCareerDirectorName(careerName);
             if (directorName == null)
-                ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
+                ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_CURRENT_DIRECTOR).data(null).build();
             String filename = letterTool.generateTutorTribunalRequest(
                     tutorName, studentName, directorName, careerName, projectName, student.getCi());
             key = nube.uploadLetterToCloud(filename, projectName);
@@ -348,7 +348,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
 
             String directorName = siptisUserServiceCareerDirectorOperations.getCareerDirectorName(careerName);
             if (directorName == null)
-                ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
+                ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_CURRENT_DIRECTOR).data(null).build();
             String filename = letterTool.generateSupervisorTribunalRequest(
                     supervisorName, studentName, directorName, careerName, projectName, student.getCi());
             key = nube.uploadLetterToCloud(filename, projectName);
@@ -388,7 +388,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
         String careerName = career.iterator().next().getName();
         String directorName = siptisUserServiceCareerDirectorOperations.getCareerDirectorName(careerName);
         if (directorName == null)
-            ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
+            ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_CURRENT_DIRECTOR).data(null).build();
         String filename = letterTool.generateStudentTribunalRequest(studentName, directorName, careerName, projectName, studentCi);
         key = nube.uploadLetterToCloud(filename, projectName);
         Optional<Document> oDocument = documentRepository.findDocumentByPath(key);
@@ -432,7 +432,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
             String careerName = career.iterator().next().getName();
             String directorName = siptisUserServiceCareerDirectorOperations.getCareerDirectorName(careerName);
             if (directorName == null)
-                ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
+                ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_CURRENT_DIRECTOR).data(null).build();
 
             String studentName = projectStudent.getStudent().getFullName();
             String filename = letterTool.generateTribunalApproval(
