@@ -44,3 +44,16 @@ logging:
       amazonaws:
         util:
           EC2MetadataUtils: error
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: basic
+
+application:
+  name: SIPTIS
+  gateway:
+    chatAPI: http://localhost:3000/
