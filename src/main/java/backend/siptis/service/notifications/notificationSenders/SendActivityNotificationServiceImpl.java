@@ -11,7 +11,8 @@ import org.thymeleaf.context.Context;
 public class SendActivityNotificationServiceImpl implements SendActivityNotificationService {
     private final TemplateEngine templateEngine;
     private final EmailFactory emailFactory;
-    public void sendNotification(String titleActivity, String [] usersEmail, String activityDate) {
+
+    public void sendNotification(String titleActivity, String[] usersEmail, String activityDate) {
         emailFactory.setEmailArray(usersEmail);
         String subject = "Notificacion de las actividades proximas";
         emailFactory.setSubject(subject);

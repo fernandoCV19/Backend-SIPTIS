@@ -25,7 +25,7 @@ public class EmailFactory {
     private String text;
 
     @Setter
-    private String [] emailArray;
+    private String[] emailArray;
 
     @Setter
     private Boolean isHtml;

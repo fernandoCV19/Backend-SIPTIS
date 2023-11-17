@@ -19,6 +19,7 @@ public class GeneralActivityNotificationSenderServiceImpl implements GeneralActi
     private final SiptisUserServiceGeneralUserOperations siptisUserServiceGeneralUserOperations;
     private final SendActivityNotificationServiceImpl sender;
     private final EmailFactory emailFactory;
+
     @Override
     @Scheduled(cron = "0 0 8 * * *")
     public void sendGeneralActivities() throws MessagingException, IOException {
@@ -26,7 +27,7 @@ public class GeneralActivityNotificationSenderServiceImpl implements GeneralActi
         int actualDay = LocalDateTime.now().getDayOfMonth();
 
         List<GeneralActivityVO> generalActivityVOList = generalActivityServiceFindOperations.findAllVO();
-        List<SiptisUser> siptisUserList = (List)siptisUserServiceGeneralUserOperations.getAllUsers().getData();
+        List<SiptisUser> siptisUserList = (List) siptisUserServiceGeneralUserOperations.getAllUsers().getData();
 
         for (GeneralActivityVO vo : generalActivityVOList) {
             int activityMonth = vo.getActivityDate().getDate();
@@ -36,7 +37,8 @@ public class GeneralActivityNotificationSenderServiceImpl implements GeneralActi
             }
         }
     }
-    private String[] getEmails (List<SiptisUser> userList) {
+
+    private String[] getEmails(List<SiptisUser> userList) {
         String[] emails = new String[userList.size()];
         for (int i = 0; i < userList.size(); i++) {
             emails[i] = userList.get(i).getEmail();
