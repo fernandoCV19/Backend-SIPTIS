@@ -12,9 +12,9 @@ public interface SemesterInformationRepository extends JpaRepository<SemesterInf
 
     Optional<SemesterInformation> findFirstByInProgressTrueOrderByEndDateDesc();
 
-    @Query(value = "SELECT si.period " +
-            "FROM semester_information si " +
-            "WHERE si.in_progress = true ORDER BY end_date DESC LIMIT 1", nativeQuery = true)
+    @Query(value = "SELECT si.period_ " +
+            "FROM semester_information_ si " +
+            "WHERE si.in_progress_ = true ORDER BY end_date_ DESC LIMIT 1", nativeQuery = true)
     String getCurrentPeriod();
 
     Optional<SemesterInformation> findFirstByInProgressTrueAndIdOrderByEndDateDesc(Long id);

@@ -1,1 +1,1 @@
-INSERT INTO modality_ (id, name) VALUES (15, 'TESIS');
+INSERT INTO modality_ (id_, name_) VALUES (19, 'TESIS');
