@@ -20,21 +20,21 @@ public interface UserInformationRepository extends JpaRepository<UserInformation
 
     Optional<UserInformation> findById(Long id);
 
-    @Query(value = "SELECT CONCAT(ui.names,' ',ui.lastnames)" +
-            "FROM user_information ui " +
-            "WHERE ui.user_id IN (" +
-            "    SELECT pt.user_id " +
-            "    FROM project_teacher pt " +
-            "    WHERE pt.project_id = :idProject" +
+    @Query(value = "SELECT CONCAT(ui.names_,' ',ui.last_names_)" +
+            "FROM user_information_ ui " +
+            "WHERE ui.user_id_ IN (" +
+            "    SELECT pt.user_id_ " +
+            "    FROM project_teacher_ pt " +
+            "    WHERE pt.project_id_ = :idProject" +
             ")", nativeQuery = true)
     List<String> getTeachersNames(Long idProject);
 
-    @Query(value = "SELECT CONCAT(ui.names,' ',ui.lastnames)" +
-            "FROM user_information ui " +
-            "WHERE ui.user_id IN (" +
-            "    SELECT pt.user_id " +
-            "    FROM project_tutor pt " +
-            "    WHERE pt.project_id = :idProject" +
+    @Query(value = "SELECT CONCAT(ui.names_,' ',ui.last_names_)" +
+            "FROM user_information_ ui " +
+            "WHERE ui.user_id_ IN (" +
+            "    SELECT pt.user_id_ " +
+            "    FROM project_tutor_ pt " +
+            "    WHERE pt.project_id_ = :idProject" +
             ")", nativeQuery = true)
     List<String> getTutorsNames(Long idProject);
 }

@@ -4,7 +4,7 @@ import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.userDataDTO.TokenPasswordDTO;
-import backend.siptis.service.notifications.EmailServiceImpl;
+import backend.siptis.service.notifications.recoverPassword.RecoverPasswordEmailService;
 import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +20,8 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class EmailController {
 
-    private final EmailServiceImpl emailServiceImpl;
-
+    private final RecoverPasswordEmailService emailServiceImpl;
+/*
     @GetMapping("")
     public String sendNotification() throws MessagingException, IOException {
         emailServiceImpl.sendSpecificEmail("dilanantezana@gmail.com", "hola como estas");
@@ -56,5 +56,5 @@ public class EmailController {
 
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(data).message(messageService.toString()).build();
         return new ResponseEntity<>(controllerAnswer, httpStatus);
-    }
+    }*/
 }

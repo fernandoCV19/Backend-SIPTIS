@@ -11,8 +11,8 @@ import java.util.List;
 public interface RoleRepository extends JpaRepository<Role, Long> {
 
     @Query(value = "SELECT * " +
-            "FROM role role " +
-            "WHERE role.name NOT LIKE 'ADMIN' AND role.name " +
+            "FROM role_ role " +
+            "WHERE role.name_ NOT LIKE 'ADMIN' AND role.name_ " +
             " NOT IN ('STUDENT', 'ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR') ", nativeQuery = true)
     List<Role> getAllowedRoles();
 

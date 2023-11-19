@@ -50,51 +50,51 @@ public interface SiptisUserRepository extends JpaRepository<SiptisUser, Long> {
             "WHERE ps.student.id = :id AND ps.project.id = p.id")
     Optional<Project> findProjectById(Long id);
 
-    @Query(value = "SELECT su.id, ui.names, ui.lastnames, su.email, ui.codsis, role.name " +
-            " FROM siptis_user su, user_information ui,  siptis_user_role sur, role role" +
-            " WHERE su.id = ui.user_id AND sur.siptis_user_id = su.id " +
-            " AND sur.role_id = role.id AND role.name LIKE :roleName" +
-            " AND ( LOWER( ui.names ) LIKE LOWER( CONCAT( '%', :searchName, '%')) " +
-            " OR LOWER( ui.lastnames ) LIKE LOWER( CONCAT( '%', :searchName, '%') ))" +
-            " ORDER BY ui.lastnames ASC", nativeQuery = true)
+    @Query(value = "SELECT su.id_, ui.names_, ui.last_names_, su.email_, ui.cod_sis_, role.name_ " +
+            " FROM siptis_user_ su, user_information_ ui,  siptis_user_role_ sur, role_ role" +
+            " WHERE su.id_ = ui.user_id_ AND sur.siptis_user_id_ = su.id_ " +
+            " AND sur.role_id_ = role.id_ AND role.name_ LIKE :roleName" +
+            " AND ( LOWER( ui.names_ ) LIKE LOWER( CONCAT( '%', :searchName, '%')) " +
+            " OR LOWER( ui.last_names_ ) LIKE LOWER( CONCAT( '%', :searchName, '%') ))" +
+            " ORDER BY ui.last_names_ ASC", nativeQuery = true)
     Page<UserListItemDTO> searchUserList(String searchName, String roleName, Pageable pageable);
 
 
-    @Query(value = "SELECT DISTINCT su.id, ui.names, ui.lastnames, su.email" +
-            " FROM user_information ui" +
-            " LEFT JOIN  siptis_user su ON su.id = ui.user_id" +
-            " LEFT JOIN siptis_user_role sur ON sur.siptis_user_id = su.id " +
-            " LEFT JOIN role role ON sur.role_id = role.id " +
-            " WHERE (role.name IS NULL OR role.name NOT IN ('ADMIN', 'STUDENT')) " +
-            " AND ( LOWER( ui.names ) LIKE LOWER( CONCAT( '%', :searchName, '%')) " +
-            " OR LOWER( ui.lastnames ) LIKE LOWER( CONCAT( '%', :searchName, '%') )) " +
-            " ORDER BY ui.lastnames ASC"
+    @Query(value = "SELECT DISTINCT su.id_, ui.names_, ui.last_names_, su.email_" +
+            " FROM user_information_ ui" +
+            " LEFT JOIN  siptis_user_ su ON su.id_ = ui.user_id_" +
+            " LEFT JOIN siptis_user_role_ sur ON sur.siptis_user_id_ = su.id_ " +
+            " LEFT JOIN role_ role ON sur.role_id_ = role.id_ " +
+            " WHERE (role.name_ IS NULL OR role.name_ NOT IN ('ADMIN', 'STUDENT')) " +
+            " AND ( LOWER( ui.names_ ) LIKE LOWER( CONCAT( '%', :searchName, '%')) " +
+            " OR LOWER( ui.last_names_ ) LIKE LOWER( CONCAT( '%', :searchName, '%') )) " +
+            " ORDER BY ui.last_names_ ASC"
             , nativeQuery = true)
     Page<UserListItemDTO> searchNormalUserList(String searchName, Pageable pageable);
 
 
-    @Query(value = "SELECT su.id, su.email " +
-            " FROM siptis_user su, siptis_user_role sur, role role" +
-            " WHERE sur.siptis_user_id = su.id " +
-            " AND sur.role_id = role.id AND role.name = 'ADMIN'" +
-            " AND su.email LIKE LOWER( CONCAT( '%', :userEmail ,'%')) ", nativeQuery = true)
+    @Query(value = "SELECT su.id_, su.email_ " +
+            " FROM siptis_user_ su, siptis_user_role_ sur, role_ role" +
+            " WHERE sur.siptis_user_id_ = su.id_ " +
+            " AND sur.role_id_ = role.id_ AND role.name_ = 'ADMIN'" +
+            " AND su.email_ LIKE LOWER( CONCAT( '%', :userEmail ,'%')) ", nativeQuery = true)
     Page<UserListItemDTO> searchAdminList(String userEmail, Pageable pageable);
 
     @Query(value = "SELECT " +
-            "COUNT(DISTINCT CASE WHEN uc.id = :id THEN su.id END) AS careerStudents, " +
-            "COUNT(DISTINCT CASE WHEN uc.id <> :id THEN su.id END) AS otherStudents  " +
-            " FROM siptis_user su " +
+            "COUNT(DISTINCT CASE WHEN uc.id_ = :id THEN su.id_ END) AS careerStudents, " +
+            "COUNT(DISTINCT CASE WHEN uc.id_ <> :id THEN su.id_ END) AS otherStudents  " +
+            " FROM siptis_user_ su " +
             " LEFT JOIN " +
-            " siptis_user_career suc ON suc.siptisuser_id = su.id" +
+            " siptis_user_career_ suc ON suc.siptis_user_id_ = su.id_" +
             " LEFT JOIN " +
-            " user_career uc ON uc.id = suc.career_id ", nativeQuery = true)
+            " user_career_ uc ON uc.id_ = suc.career_id_ ", nativeQuery = true)
     List<StudentsByCareerDTO> getNumberOfStudentsInCareer(Long id);
 
-    @Query(value = "SELECT SUBSTRING (info.codsis, 1, 4) AS userYear, COUNT(siptis_user.id) AS cant " +
-            " FROM siptis_user siptis_user, siptis_user_career suc, " +
-            " user_information info " +
-            " WHERE info.user_id = siptis_user.id AND siptis_user.id =  suc.siptisuser_id" +
-            " AND suc.career_id = :careerId " +
+    @Query(value = "SELECT SUBSTRING (info.cod_sis_, 1, 4) AS userYear, COUNT(siptis_user.id_) AS cant " +
+            " FROM siptis_user_ siptis_user, siptis_user_career_ suc, " +
+            " user_information_ info " +
+            " WHERE info.user_id_ = siptis_user.id_ AND siptis_user.id_ =  suc.siptis_user_id_" +
+            " AND suc.career_id_ = :careerId " +
             " GROUP BY (userYear) ORDER BY userYear ASC ", nativeQuery = true)
     List<Object> getNumberOfStudentsByYearAndCareer(Long careerId);
 }

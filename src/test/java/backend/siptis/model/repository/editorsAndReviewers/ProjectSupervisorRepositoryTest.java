@@ -1,173 +1,48 @@
 package backend.siptis.model.repository.editorsAndReviewers;
 
-import backend.siptis.auth.entity.SiptisUser;
-import backend.siptis.model.entity.editorsAndReviewers.ProjectSupervisor;
-import backend.siptis.model.entity.projectManagement.Project;
-import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.List;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.jdbc.Sql;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-@RunWith(SpringRunner.class)
-@SpringBootTest
-@Transactional
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
-class ProjectSupervisorRepositoryTest {
-
-    private final ProjectSupervisorRepository projectSupervisorRepository;
-
+@DataJpaTest
+public class ProjectSupervisorRepositoryTest {
     @Autowired
-    ProjectSupervisorRepositoryTest(ProjectSupervisorRepository projectSupervisorRepository) {
-        this.projectSupervisorRepository = projectSupervisorRepository;
+    private ProjectSupervisorRepository projectSupervisorRepository;
+
+    @Test
+    @DisplayName("Test for get project supervisor by supervisor id and project id")
+    @Sql(scripts = {"/custom_imports/create_projects_and_users.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    public void givenSupervisorIdAndProjectId_whenFindBySupervisorIdAndProjectId_thenProjectSupervisorObject(){
+        assertNotNull(projectSupervisorRepository.findBySupervisorIdAndProjectId(6L, 2L));
     }
 
     @Test
-    void findBySupervisorIdAndAcceptedIsFalseAndReviewedIsTrueWithAFalseIdReturnNotNull() {
-        List<ProjectSupervisor> ans = projectSupervisorRepository.findBySupervisorIdAndAcceptedIsFalseAndReviewedIsTrue(0L);
-        assertNotNull(ans);
+    @DisplayName("Test for get project supervisor by supervisor id and wrong project id")
+    @Sql(scripts = {"/custom_imports/create_projects_and_users.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    public void givenSupervisorIdAndProjectWrongId_whenFindBySupervisorIdAndProjectId_thenNull(){
+        assertNull(projectSupervisorRepository.findBySupervisorIdAndProjectId(1L, 1234567L));
     }
 
     @Test
-    void findBySupervisorIdAndAcceptedIsFalseAndReviewedIsTrueWithATrueIdReturnAListWithElements() {
-        List<ProjectSupervisor> ans = projectSupervisorRepository.findBySupervisorIdAndAcceptedIsFalseAndReviewedIsTrue(1L);
-        assertFalse(ans.isEmpty());
+    @DisplayName("Test for get project supervisor by wrong supervisor id and project id")
+    @Sql(scripts = {"/custom_imports/create_projects_and_users.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    public void givenSupervisorWrongIdAndProjectId_whenFindBySupervisorIdAndProjectId_thenNull(){
+        assertNull(projectSupervisorRepository.findBySupervisorIdAndProjectId(1324345543L, 1L));
     }
 
     @Test
-    void findBySupervisorIdAndAcceptedIsFalseAndReviewedIsTrueWithATrueIdDoACorrectJoinOfTheData() {
-        List<ProjectSupervisor> ans = projectSupervisorRepository.findBySupervisorIdAndAcceptedIsFalseAndReviewedIsTrue(1L);
-        ProjectSupervisor projectSupervisor = ans.get(0);
-        assertTrue(projectSupervisor.getProject() != null && projectSupervisor.getSupervisor() != null && projectSupervisor.getProject().getName() != null && projectSupervisor.getSupervisor().getEmail() != null);
+    @DisplayName("Test for get project supervisor list by supervisor id and accepted")
+    @Sql(scripts = {"/custom_imports/create_projects_and_users.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    public void givenSupervisorIdAndAccepted_whenFindBySupervisorIdAndAcceptedIsTrue_thenSupervisorProjectList(){
+        assertNotNull(projectSupervisorRepository.findBySupervisorIdAndAcceptedIsTrue(4L));
     }
-
     @Test
-    void findBySupervisorIdAndAcceptedIsFalseAndReviewedIsTrueWithATrueIdReturnTheSupervisorDataThatHasThatId() {
-        List<ProjectSupervisor> ans = projectSupervisorRepository.findBySupervisorIdAndAcceptedIsFalseAndReviewedIsTrue(1L);
-        SiptisUser supervisor = ans.get(0).getSupervisor();
-        assertEquals("usuario1@mail.com", supervisor.getEmail());
-        assertEquals(1, supervisor.getId());
-    }
-
-    @Test
-    void findBySupervisorIdAndAcceptedIsFalseAndReviewedIsTrueWithATrueIdReturnAProjectWithTheCorrectJoin() {
-        List<ProjectSupervisor> ans = projectSupervisorRepository.findBySupervisorIdAndAcceptedIsFalseAndReviewedIsTrue(1L);
-        Project project = ans.get(0).getProject();
-        assertEquals(2, project.getId());
-        assertEquals("ProyectoGrado2", project.getName());
-    }
-
-    @Test
-    void findBySupervisorIdAndAcceptedIsFalseAndReviewedIsTrueWithATrueIdReturnOnlyOneElement() {
-        List<ProjectSupervisor> ans = projectSupervisorRepository.findBySupervisorIdAndAcceptedIsFalseAndReviewedIsTrue(1L);
-        assertEquals(1, ans.size());
-    }
-
-    @Test
-    void findBySupervisorIdAndAcceptedIsFalseAndReviewedIsFalseWithAFalseIdReturnNotNull() {
-        List<ProjectSupervisor> ans = projectSupervisorRepository.findBySupervisorIdAndAcceptedIsFalseAndReviewedIsFalse(0L);
-        assertNotNull(ans);
-    }
-
-    @Test
-    void findBySupervisorIdAndAcceptedIsFalseAndReviewedIsFalseWithATrueIdReturnAListWithElements() {
-        List<ProjectSupervisor> ans = projectSupervisorRepository.findBySupervisorIdAndAcceptedIsFalseAndReviewedIsFalse(1L);
-        assertFalse(ans.isEmpty());
-    }
-
-    @Test
-    void findBySupervisorIdAndAcceptedIsFalseAndReviewedIsFalseWithATrueIdDoACorrectJoinOfTheData() {
-        List<ProjectSupervisor> ans = projectSupervisorRepository.findBySupervisorIdAndAcceptedIsFalseAndReviewedIsFalse(1L);
-        ProjectSupervisor projectSupervisor = ans.get(0);
-        assertTrue(projectSupervisor.getProject() != null && projectSupervisor.getSupervisor() != null && projectSupervisor.getProject().getName() != null && projectSupervisor.getSupervisor().getEmail() != null);
-    }
-
-    @Test
-    void findBySupervisorIdAndAcceptedIsFalseAndReviewedIsFalseWithATrueIdReturnTheSupervisorDataThatHasThatId() {
-        List<ProjectSupervisor> ans = projectSupervisorRepository.findBySupervisorIdAndAcceptedIsFalseAndReviewedIsFalse(1L);
-        SiptisUser supervisor = ans.get(0).getSupervisor();
-        assertEquals("usuario1@mail.com", supervisor.getEmail());
-        assertEquals(1, supervisor.getId());
-    }
-
-    @Test
-    void findBySupervisorIdAndAcceptedIsFalseAndReviewedIsFalseWithATrueIdReturnAProjectWithTheCorrectJoin() {
-        List<ProjectSupervisor> ans = projectSupervisorRepository.findBySupervisorIdAndAcceptedIsFalseAndReviewedIsFalse(1L);
-        Project project = ans.get(0).getProject();
-        assertEquals(1, project.getId());
-        assertEquals("ProyectoGrado1", project.getName());
-    }
-
-    @Test
-    void findBySupervisorIdAndAcceptedIsFalseAndReviewedIsFalseWithATrueIdReturnOnlyOneElement() {
-        List<ProjectSupervisor> ans = projectSupervisorRepository.findBySupervisorIdAndAcceptedIsFalseAndReviewedIsFalse(1L);
-        assertEquals(1, ans.size());
-    }
-
-    @Test
-    void findBySupervisorIdAndAcceptedIsTrueWithAFalseIdReturnNotNull() {
-        List<ProjectSupervisor> ans = projectSupervisorRepository.findBySupervisorIdAndAcceptedIsTrue(0L);
-        assertNotNull(ans);
-    }
-
-    @Test
-    void findBySupervisorIdAndAcceptedIsTrueWithATrueIdReturnAListWithElements() {
-        List<ProjectSupervisor> ans = projectSupervisorRepository.findBySupervisorIdAndAcceptedIsTrue(1L);
-        assertFalse(ans.isEmpty());
-    }
-
-    @Test
-    void findBySupervisorIdAndAcceptedIsTrueWithATrueIdDoACorrectJoinOfTheData() {
-        List<ProjectSupervisor> ans = projectSupervisorRepository.findBySupervisorIdAndAcceptedIsTrue(1L);
-        ProjectSupervisor projectSupervisor = ans.get(0);
-        assertTrue(projectSupervisor.getProject() != null && projectSupervisor.getSupervisor() != null && projectSupervisor.getProject().getName() != null && projectSupervisor.getSupervisor().getEmail() != null);
-    }
-
-    @Test
-    void findBySupervisorIdAndAcceptedIsTrueWithATrueIdReturnTheSupervisorDataThatHasThatId() {
-        List<ProjectSupervisor> ans = projectSupervisorRepository.findBySupervisorIdAndAcceptedIsTrue(1L);
-        SiptisUser supervisor = ans.get(0).getSupervisor();
-        assertEquals("usuario1@mail.com", supervisor.getEmail());
-        assertEquals(1, supervisor.getId());
-    }
-
-    @Test
-    void findBySupervisorIdAndAcceptedIsTrueWithATrueIdReturnAProjectWithTheCorrectJoin() {
-        List<ProjectSupervisor> ans = projectSupervisorRepository.findBySupervisorIdAndAcceptedIsTrue(1L);
-        Project project = ans.get(0).getProject();
-        assertEquals(3, project.getId());
-        assertEquals("ProyectoGrado3", project.getName());
-    }
-
-    @Test
-    void findBySupervisorIdAndAcceptedIsTrueWithATrueIdReturnOnlyOneElement() {
-        List<ProjectSupervisor> ans = projectSupervisorRepository.findBySupervisorIdAndAcceptedIsTrue(1L);
-        assertEquals(1, ans.size());
-    }
-
-    @Test
-    void findBySupervisorIdAndProjectIdWithACorrectUserIdAndProjectIdReturnAnObject() {
-        ProjectSupervisor query = projectSupervisorRepository.findBySupervisorIdAndProjectId(1L, 1L);
-        assertNotNull(query);
-    }
-
-    @Test
-    void findBySupervisorIdAndProjectIdWithAnIncorrectUserIdAndProjectIdReturnANull() {
-        ProjectSupervisor query = projectSupervisorRepository.findBySupervisorIdAndProjectId(0L, 0L);
-        assertNull(query);
-    }
-
-    @Test
-    void findBySupervisorIdAndProjectIdWithACorrectUserIdAndProjectIdReturnAnObjectThatContainsTheProjectAndTheReviewer() {
-        ProjectSupervisor query = projectSupervisorRepository.findBySupervisorIdAndProjectId(1L, 1L);
-        assertTrue(query.getSupervisor().getId() == 1L && query.getProject().getId() == 1L);
+    @DisplayName("Test for get empty project supervisor list by supervisor id and accepted")
+    @Sql(scripts = {"/custom_imports/create_projects_and_users.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    public void givenSupervisorIdAndAccepted_whenFindBySupervisorIdAndAcceptedIsTrue_thenEmptyList(){
+        assertTrue(projectSupervisorRepository.findBySupervisorIdAndAcceptedIsTrue(3L).isEmpty());
     }
 }

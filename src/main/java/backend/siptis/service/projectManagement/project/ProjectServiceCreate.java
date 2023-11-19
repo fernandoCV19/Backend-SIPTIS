@@ -8,6 +8,7 @@ import backend.siptis.model.entity.editorsAndReviewers.ProjectSupervisor;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectTeacher;
 import backend.siptis.model.entity.editorsAndReviewers.ProjectTutor;
 import backend.siptis.model.entity.projectManagement.Area;
+import backend.siptis.model.entity.projectManagement.Modality;
 import backend.siptis.model.entity.projectManagement.Project;
 import backend.siptis.model.entity.projectManagement.SubArea;
 import backend.siptis.model.pjo.dto.projectManagement.NewProjectDTO;
@@ -50,7 +51,8 @@ public class ProjectServiceCreate {
         if (projectRepository.existsByName(dto.getName()))
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_NAME_ALREADY_EXIST).build();
 
-        if (!modalityRepository.existsById(dto.getModalityId()))
+        Optional<Modality> optionalModality = modalityRepository.findById(dto.getModalityId());
+        if (optionalModality.isEmpty())
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.MODALITY_DOES_NOT_EXIST).build();
 
         Project newProject = new Project();
@@ -88,7 +90,7 @@ public class ProjectServiceCreate {
         }
 
         ArrayList<ProjectSupervisor> supervisors = new ArrayList<>();
-        String modalityName = modalityRepository.findModalityById(dto.getModalityId()).getName();
+        String modalityName = optionalModality.get().getName();
         if (dto.getSupervisorsId() != null &&
                 (modalityName.equals(backend.siptis.commons.Modality.TRABAJO_DIRIGIDO.toString())
                         || modalityName.equals(backend.siptis.commons.Modality.ADSCRIPCION.toString()))) {

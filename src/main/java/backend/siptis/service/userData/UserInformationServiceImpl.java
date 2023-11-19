@@ -41,6 +41,8 @@ public class UserInformationServiceImpl implements UserInformationService {
 
     @Override
     public ServiceAnswer registerUserInformation(RegisterStudentDTO dto) {
+        if(dto == null)
+            return createAnswer(ServiceMessage.ERROR, null);
         dto.setCi(dto.getCi().trim());
         if (existUserByCi(dto.getCi()))
             return createAnswer(ServiceMessage.CI_ALREADY_EXIST, null);
@@ -62,6 +64,8 @@ public class UserInformationServiceImpl implements UserInformationService {
 
     @Override
     public ServiceAnswer registerUserInformation(RegisterUserDTO dto) {
+        if(dto == null)
+            return createAnswer(ServiceMessage.ERROR, null);
         dto.setCi(dto.getCi().trim());
         if (existUserByCi(dto.getCi()))
             return createAnswer(ServiceMessage.CI_ALREADY_EXIST, null);
@@ -78,6 +82,8 @@ public class UserInformationServiceImpl implements UserInformationService {
 
     @Override
     public ServiceAnswer userEditInformation(UserInformation userInformation, UserEditInformationDTO dto) {
+        if(userInformation == null)
+            return createAnswer(ServiceMessage.ERROR, null);
         userInformation.setCelNumber(dto.getCelNumber());
         userInformation.setBirthDate(dto.getBirthDate());
         return createAnswer(ServiceMessage.OK, userInformation);
@@ -85,6 +91,8 @@ public class UserInformationServiceImpl implements UserInformationService {
 
     @Override
     public ServiceAnswer adminEditUserInformation(UserInformation userInformation, AdminEditUserInformationDTO dto) {
+        if(userInformation == null)
+            return createAnswer(ServiceMessage.ERROR, null);
         dto.setCi(dto.getCi().trim());
         if (!userInformation.getCi().equals(dto.getCi()) && (existUserByCi(dto.getCi()))) {
             return createAnswer(ServiceMessage.CI_ALREADY_EXIST, null);
@@ -101,6 +109,8 @@ public class UserInformationServiceImpl implements UserInformationService {
 
     @Override
     public ServiceAnswer adminEditStudentInformation(UserInformation userInformation, AdminEditUserInformationDTO dto) {
+        if(userInformation == null)
+            return createAnswer(ServiceMessage.ERROR, null);
         dto.setCodSIS(dto.getCodSIS().trim());
         if (dto.getCodSIS() == null)
             return createAnswer(ServiceMessage.CODSIS_CANNOT_BE_NULL, null);
