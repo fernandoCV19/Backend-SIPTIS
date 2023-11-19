@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/siptis
     username: postgres
-    password: serrano123
+    password: postgres
     driver-class-name: org.postgresql.Driver
   servlet:
     multipart:
@@ -17,7 +17,7 @@ spring:
       enabled: false
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
