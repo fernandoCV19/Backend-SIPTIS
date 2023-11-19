@@ -43,12 +43,12 @@ public final class PhaseManagementConstants {
 
         public static class DescriptionPhaseSort {
             public static final String NAME = "description_phase_short_";
-            public static final int MAX_SIZE = 1000;
+            public static final int MAX_SIZE = 100000;
         }
 
         public static class DescriptionPhaseLong {
             public static final String NAME = "description_phase_long_";
-            public static final int MAX_SIZE = 5000;
+            public static final int MAX_SIZE = 100000;
         }
 
         public static class NumberPhase {
