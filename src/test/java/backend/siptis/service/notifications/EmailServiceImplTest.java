@@ -23,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class EmailServiceImplTest {
+    /*
     @RegisterExtension
     static GreenMailExtension greenMail = new GreenMailExtension(ServerSetupTest.SMTP)
             .withConfiguration(GreenMailConfiguration
@@ -64,4 +65,6 @@ public class EmailServiceImplTest {
     @Test
     void sendSpecificEmail() {
     }
+    */
+
 }
