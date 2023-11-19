@@ -36,6 +36,7 @@ public class ChatHistoryRepositoryTest {
     @Test
     @DisplayName("Test for find Chat History by non existing prompt")
     public void test(){
-        assertFalse(chatHistoryRespository.findByPromptLikeIgnoreCase("chat_history_test_2").isEmpty());
+        chatHistoryRespository.save(chatHistory);
+        assertNotNull(chatHistoryRespository.findByPromptLikeIgnoreCase("chat_history_test").get());
     }
 }

@@ -9,6 +9,7 @@ INSERT INTO modality_ (id_, name_) VALUES (2, 'PROYECTO DE GRADO');
 INSERT INTO modality_ (id_, name_) VALUES (3, 'ADSCRIPCION');
 INSERT INTO modality_ (id_, name_) VALUES (4, 'TRABAJO DIRIGIDO');
 
+
 --Roles
 INSERT INTO role_ (id_, name_) VALUES (1, 'ADMIN');
 INSERT INTO role_ (id_, name_) VALUES (2, 'STUDENT');
