@@ -44,3 +44,24 @@ logging:
       amazonaws:
         util:
           EC2MetadataUtils: error
+
+openai:
+  api:
+    url: https://api.openai.com/v1/chat/completions
+    key: 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
+  model: gpt-3.5-turbo
+
+
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: basic
+
+application:
+  name: SIPTIS
+  gateway:
+    chatAPI: http://localhost:3000/
