@@ -55,9 +55,11 @@ public class ReviewServiceImpl implements ReviewService {
             String newKey = cloudManagementService.putObject(multipartFile, "Reviews/");
             Review newReview = new Review(newKey, commentary, userOptional.get(), lastPresentation, LocalDateTime.now());
             Optional<Review> lastPossibleReview = lastPresentation.getReviews().stream().filter(review -> Objects.equals(review.getSiptisUser().getId(), userId)).findFirst();
-            if (lastPossibleReview.isEmpty()) {
+            if (!lastPossibleReview.isEmpty()) {
                 newReview.setId(lastPossibleReview.get().getId());
             }
+            lastPresentation.setReviewed(true);
+            presentationRepository.save(lastPresentation);
             reviewRepository.save(newReview);
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("REVIEW SAVED").build();
         } catch (Exception e) {

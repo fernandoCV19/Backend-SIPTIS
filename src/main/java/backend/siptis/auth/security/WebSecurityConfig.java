@@ -75,7 +75,7 @@ public class WebSecurityConfig {
                         "/area/**", "/subarea/**",
                         "/semester/**",
                         "/supervisor/**",
-
+                        "/review/**",
                         "/phase/**",
                         "/wpp",
                         "/defense/**")
