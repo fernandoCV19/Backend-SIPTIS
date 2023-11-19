@@ -46,5 +46,61 @@ public class ProjectRepositoryTest {
         assertEquals(1L, projects.getTotalElements());
     }
 
+    @Test
+    @DisplayName("Test for find list of projects with defense by name")
+    @Sql(scripts = {"/custom_imports/projectTest.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    public void givenProjects_whenFindAllByNameWithDefense_thenProjectList(){
+        Page<Project> projects = projectRepository.findAllByNameWithDefense(pageable, "Name1");
+        assertNotNull(projects);
+        assertEquals(1L, projects.getTotalElements());
+    }
+    @Test
+    @DisplayName("Test for find empty list of projects with defense by wrong name")
+    @Sql(scripts = {"/custom_imports/projectTest.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    public void givenProjectsAndWrongName_whenFindAllByNameWithDefense_thenEmpty(){
+        Page<Project> projects = projectRepository.findAllByNameWithDefense(pageable, "Wrong Name");
+        assertTrue(projects.isEmpty());
+    }
+
+    @Test
+    @DisplayName("Test for find list of projects with defense by modality")
+    @Sql(scripts = {"/custom_imports/projectTest.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    public void givenProjects_whenFindAllByModalityWithDefense_thenProjectList(){
+        Page<Project> projects = projectRepository.findAllByModalityWithDefense(pageable, "TESIS");
+        assertNotNull(projects);
+        assertEquals(1L, projects.getTotalElements());
+    }
+    @Test
+    @DisplayName("Test for find list of projects with defense by area")
+    @Sql(scripts = {"/custom_imports/projectTest.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    public void givenProjects_whenFindAllByAreaWithDefense_thenProjectList(){
+        Page<Project> projects = projectRepository.findAllByAreaWithDefense(pageable, "AREA1");
+        assertNotNull(projects);
+        assertEquals(1L, projects.getTotalElements());
+    }
+
+    @Test
+    @DisplayName("Test for find list of projects with defense by area")
+    @Sql(scripts = {"/custom_imports/projectTest.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    public void givenProjects_whenFindAllBySubAreaWithDefense_thenProjectList(){
+        Page<Project> projects = projectRepository.findAllBySubAreaWithDefense(pageable, "SUB_AREA1");
+        assertNotNull(projects);
+        assertEquals(1L, projects.getTotalElements());
+    }
+    @Test
+    @DisplayName("Test for find list of projects with defense by area")
+    @Sql(scripts = {"/custom_imports/projectTest.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    public void givenProjects_whenFindAllBySubAreaWithDefense_thenEmpty(){
+        Page<Project> projects = projectRepository.findAllBySubAreaWithDefense(pageable, "SUB_AREA56");
+        assertTrue(projects.isEmpty());
+    }
+
+    @Test
+    @DisplayName("Test for find list of projects with defense by area")
+    @Sql(scripts = {"/custom_imports/projectTest.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    public void givenProjects_whenStandardFilter_then(){
+        Page<Project> projects = projectRepository.standardFilter(pageable, "Perfil4","2-2023");
+        assertTrue(projects.isEmpty());
+    }
 
 }

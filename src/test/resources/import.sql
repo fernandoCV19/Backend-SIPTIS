@@ -35,5 +35,5 @@ INSERT INTO role_ (id_, name_) VALUES (8, 'SIS_DIRECTOR');
 INSERT INTO user_career_ (id_, name_) VALUES (1, 'INFORMATICA');
 INSERT INTO user_career_ (id_, name_) VALUES (2, 'SISTEMAS');
 
-INSERT INTO user_area_ (id_, name_) VALUES (1, 'USER AREA 1');
-INSERT INTO user_area_ (id_, name_) VALUES (2, 'USER AREA 2');
+-- INSERT INTO user_area_ (id_, name_) VALUES (1, 'USER AREA 1');
+-- INSERT INTO user_area_ (id_, name_) VALUES (2, 'USER AREA 2');

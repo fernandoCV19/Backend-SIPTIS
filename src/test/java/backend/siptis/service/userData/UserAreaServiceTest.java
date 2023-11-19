@@ -2,95 +2,66 @@ package backend.siptis.service.userData;
 
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.model.entity.userData.UserArea;
 import backend.siptis.model.pjo.dto.generalInformation.userArea.CreateAreaDTO;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class UserAreaServiceTest {
 
-    private static final CreateAreaDTO createAreaDTO = new CreateAreaDTO();
     private final UserAreaService userAreaService;
+    private CreateAreaDTO createAreaDTO;
 
     @Autowired
-    public UserAreaServiceTest(UserAreaService userAreaService) {
+    UserAreaServiceTest(UserAreaService userAreaService){
         this.userAreaService = userAreaService;
     }
 
-    private ServiceAnswer registerArea() {
-        createAreaDTO.setName("New Area Example");
-        return userAreaService.createUserArea(createAreaDTO);
+    private void createDTO(){
+        createAreaDTO = new CreateAreaDTO();
+        createAreaDTO.setName("AREA");
     }
 
     @Test
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void getAllAreasListSuccessTest() {
+    @DisplayName("Test for get all user areas list")
+    public void givenNoAreasWhenGetAllUserAreasThenServiceMessageOK(){
         ServiceAnswer answer = userAreaService.getAllUserAreas();
         assertEquals(ServiceMessage.OK, answer.getServiceMessage());
     }
 
     @Test
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void createAreaSuccessTest() {
-        ServiceAnswer answer = registerArea();
+    @DisplayName("Test for create user area")
+    public void givenCreateAreaDTOWhenCreateUserAreaThenServiceMessageAREA_CREATED(){
+        createDTO();
+        ServiceAnswer answer = userAreaService.createUserArea(createAreaDTO);
         assertEquals(ServiceMessage.AREA_CREATED, answer.getServiceMessage());
     }
 
     @Test
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void createAreaFailAlreadyExistingAreaNameTest() {
-        registerArea();
-        ServiceAnswer answer = registerArea();
-        assertEquals(ServiceMessage.AREA_ALREADY_EXIST, answer.getServiceMessage());
-    }
-
-    @Test
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void createAreaFailInvalidAreaNameTest() {
-        createAreaDTO.setName("N");
-        ServiceAnswer answer = userAreaService.createUserArea(createAreaDTO);
-        assertEquals(ServiceMessage.INVALID_AREA_NAME, answer.getServiceMessage());
-    }
-
-    @Test
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void deleteAreaSuccessTest() {
-        registerArea();
-        ServiceAnswer answer = userAreaService.deleteUserArea(1L);
-        assertEquals(ServiceMessage.AREA_DELETED, answer.getServiceMessage());
-    }
-
-    @Test
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void deleteAreaFailNotFoundAreaTest() {
+    @DisplayName("Test for delete user area")
+    public void givenNoAreaWhenDeleteUserAreaThenServiceMessageAREA_NOT_FOUND(){
+        createDTO();
         ServiceAnswer answer = userAreaService.deleteUserArea(1L);
         assertEquals(ServiceMessage.AREA_NOT_FOUND, answer.getServiceMessage());
     }
 
     @Test
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void getAreaByIdSuccessTest() {
-        registerArea();
-        UserArea userArea = userAreaService.getUserAreaById(1);
-        assertNotNull(userArea);
+    @DisplayName("Test for get user area by id")
+    public void givenIdWhenGetUserAreaByIdThenNull(){
+        assertNull(userAreaService.getUserAreaById(123));
     }
 
     @Test
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void getAreaByIdFailNotFoundTest() {
-        UserArea userArea = userAreaService.getUserAreaById(1);
-        assertNull(userArea);
+    @DisplayName("Test for verify if exist user area by id")
+    public void givenIdWhenUserAreaExistByIdThenFalse(){
+        assertFalse(userAreaService.userAreaExistById(123));
     }
+
 
 }

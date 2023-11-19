@@ -12,9 +12,9 @@ INSERT INTO area_(id_, name_)
 VALUES (2, 'AREA2');
 
 INSERT INTO sub_area_(id_, name_)
-VALUES (1, 'SUB AREA1');
+VALUES (1, 'SUB_AREA1');
 INSERT INTO sub_area_(id_, name_)
-VALUES (2, 'SUB AREA2');
+VALUES (2, 'SUB_AREA2');
 
 INSERT INTO siptis_user_(id_, email_, password_)
 VALUES (1, 'estudiante1@gmail.com', '12345678');
@@ -100,7 +100,20 @@ VALUES (3, true , true , 3, 24);
 INSERT INTO project_teacher_ (id_, accepted_, reviewed_, project_id_, user_id_)
 VALUES (4, true , true , 4, 34);
 
+INSERT INTO project_area_ (project_id_, area_id_) VALUES (1,1);
+INSERT INTO project_area_ (project_id_, area_id_) VALUES (2,1);
+INSERT INTO project_area_ (project_id_, area_id_) VALUES (3,1);
+INSERT INTO project_area_ (project_id_, area_id_) VALUES (4,1);
+
+INSERT INTO project_sub_area_ (project_id_, sub_area_id_) VALUES (1,1);
+INSERT INTO project_sub_area_ (project_id_, sub_area_id_) VALUES (2,1);
+INSERT INTO project_sub_area_ (project_id_, sub_area_id_) VALUES (3,1);
+INSERT INTO project_sub_area_ (project_id_, sub_area_id_) VALUES (4,1);
+
+
 INSERT INTO place_to_defense_ (id_, capacity_, location_, name_)
 VALUES (1,1,'location',1);
 INSERT INTO defense_(id_, date_, end_time_, start_time_, substitute_name_, place_to_defense_id_, project_id_)
 VALUES (1, null, null, null, null, 1, 1)
+
+
