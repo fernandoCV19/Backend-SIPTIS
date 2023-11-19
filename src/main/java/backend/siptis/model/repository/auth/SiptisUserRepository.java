@@ -76,7 +76,7 @@ public interface SiptisUserRepository extends JpaRepository<SiptisUser, Long> {
     @Query(value = "SELECT su.id_, su.email_ " +
             " FROM siptis_user_ su, siptis_user_role_ sur, role_ role" +
             " WHERE sur.siptis_user_id_ = su.id_ " +
-            " AND sur.role_id = role.id_ AND role.name_ = 'ADMIN'" +
+            " AND sur.role_id_ = role.id_ AND role.name_ = 'ADMIN'" +
             " AND su.email_ LIKE LOWER( CONCAT( '%', :userEmail ,'%')) ", nativeQuery = true)
     Page<UserListItemDTO> searchAdminList(String userEmail, Pageable pageable);
 
@@ -85,7 +85,7 @@ public interface SiptisUserRepository extends JpaRepository<SiptisUser, Long> {
             "COUNT(DISTINCT CASE WHEN uc.id_ <> :id THEN su.id_ END) AS otherStudents  " +
             " FROM siptis_user_ su " +
             " LEFT JOIN " +
-            " siptis_user_career_ suc ON suc.siptisuser_id_ = su.id_" +
+            " siptis_user_career_ suc ON suc.siptis_user_id_ = su.id_" +
             " LEFT JOIN " +
             " user_career_ uc ON uc.id_ = suc.career_id_ ", nativeQuery = true)
     List<StudentsByCareerDTO> getNumberOfStudentsInCareer(Long id);
@@ -93,8 +93,8 @@ public interface SiptisUserRepository extends JpaRepository<SiptisUser, Long> {
     @Query(value = "SELECT SUBSTRING (info.cod_sis_, 1, 4) AS userYear, COUNT(siptis_user.id_) AS cant " +
             " FROM siptis_user_ siptis_user, siptis_user_career_ suc, " +
             " user_information_ info " +
-            " WHERE info.user_id_ = siptis_user.id_ AND siptis_user.id_ =  suc.siptisuser_id_" +
+            " WHERE info.user_id_ = siptis_user.id_ AND siptis_user.id_ =  suc.siptis_user_id_" +
             " AND suc.career_id_ = :careerId " +
-            " GROUP BY (userYear_) ORDER BY userYear_ ASC ", nativeQuery = true)
+            " GROUP BY (userYear) ORDER BY userYear ASC ", nativeQuery = true)
     List<Object> getNumberOfStudentsByYearAndCareer(Long careerId);
 }
