@@ -88,7 +88,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
             " FROM project_ project, siptis_user_career_ siptis_user_career," +
             " project_student_ project_student " +
             " WHERE project.id_ = project_student.project_id_ AND " +
-            " project_student.user_id_ =  siptis_user_career.siptisuser_id_ " +
+            " project_student.user_id_ =  siptis_user_career.siptis_user_id_ " +
             "AND siptis_user_career.career_id_ = :idCareer GROUP BY (project.id_) " +
             " ) result" +
             " RIGHT JOIN modality_ modality ON result.modalityId = modality.id_ " +
@@ -100,7 +100,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
             " FROM project_ project, siptis_user_career_ siptis_user_career," +
             " project_student_ project_student " +
             " WHERE project.id_ = project_student.project_id_ AND " +
-            " project_student.user_id_ =  siptis_user_career.siptisuser_id_ " +
+            " project_student.user_id_ =  siptis_user_career.siptis_user_id_ " +
             "AND siptis_user_career.career_id_ = :idCareer GROUP BY (project.id_) " +
             " ) result" +
             " RIGHT JOIN project_area_ pa ON pa.project_id_ = result.projectId " +
@@ -113,7 +113,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
             " FROM project_ project, siptis_user_career_ siptis_user_career," +
             " project_student_ project_student " +
             " WHERE project.id_ = project_student.project_id_ AND " +
-            " project_student.user_id_ =  siptis_user_career.siptisuser_id_ " +
+            " project_student.user_id_ =  siptis_user_career.siptis_user_id_ " +
             "AND siptis_user_career.career_id_ = :idCareer GROUP BY (project.id_) " +
             " ) result" +
             " RIGHT JOIN project_area_ pa ON pa.project_id_ = result.projectId " +
@@ -127,7 +127,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
             " FROM project_ p " +
             " LEFT JOIN project_student_ ps ON ps.project_id_ = p.id_ " +
             " LEFT JOIN siptis_user_ su ON ps.user_id_ = su.id_ " +
-            " LEFT JOIN siptis_user_career_ suc ON suc.siptisuser_id_ = su.id_" +
+            " LEFT JOIN siptis_user_career_ suc ON suc.siptis_user_id_ = su.id_" +
             " LEFT JOIN " +
             " user_career_ uc ON uc.id_ = suc.career_id_ ", nativeQuery = true)
     List<ProjectByCareerDTO> getProjectsByCareer(long idCareer);
@@ -135,8 +135,8 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     @Query(value = "SELECT SUBSTRING(project.period_, 3, 6) AS projectYear, COUNT(project.id_) AS cant " +
             " FROM project_ project, project_student_ ps, siptis_user_ su, siptis_user_career_ suc " +
             " WHERE project.id_ = ps.project_id_ AND ps.user_id_ = su.id_ " +
-            " AND suc.siptisuser_id_ = su.id_ AND suc.career_id_ = :idCareer " +
-            " GROUP BY (projectYear_) ", nativeQuery = true)
+            " AND suc.siptis_user_id_ = su.id_ AND suc.career_id_ = :idCareer " +
+            " GROUP BY (projectYear) ", nativeQuery = true)
     List<Object> getNumberProjectsByPeriodAndCareer(Long idCareer);
 
 }
