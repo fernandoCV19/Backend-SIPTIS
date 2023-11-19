@@ -20,12 +20,24 @@ spring:
     pathmatch:
       matching-strategy: ANT_PATH_MATCHER
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: siptis.umss@gmail.com
+    password: ftryberzfpkddfvj
+    properties.mail:
+      smtp:
+        auth: true
+        ssl.trust: smtp.gmail.com
+        starttls.enable: true
+      debug: true
 
 security:
   jwt:
     token:
       secret-key: $2a$12$JTfIoPcl28jeEFio3aHBa.rcqtBUgvykiKYgKxvikVzzxVAt82CEu
       expire-length: 3600000
+
 
 
 cloud:
@@ -44,6 +56,14 @@ logging:
       amazonaws:
         util:
           EC2MetadataUtils: error
+
+openai:
+  api:
+    url: https://api.openai.com/v1/chat/completions
+    key: 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
+  model: gpt-3.5-turbo
+
+
 
 feign:
   client:
