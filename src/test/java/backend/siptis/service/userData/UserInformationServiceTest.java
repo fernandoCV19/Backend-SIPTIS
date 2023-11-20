@@ -14,12 +14,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class UserInformationServiceTest {
-
-    private UserInformationService userInformationService;
     @Autowired
-    UserInformationServiceTest(UserInformationService userInformationService){
-        this.userInformationService = userInformationService;
-    }
+    private UserInformationService userInformationService;
 
     @Test
     @DisplayName("Test for find by id")

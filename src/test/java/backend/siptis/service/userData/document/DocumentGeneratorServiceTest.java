@@ -15,13 +15,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class DocumentGeneratorServiceTest {
+    @Autowired
     private DocumentGeneratorService documentGeneratorService;
     private LetterGenerationRequestDTO letterGenerationRequestDTO;
-
-    @Autowired
-    DocumentGeneratorServiceTest(DocumentGeneratorService documentGeneratorService){
-        this.documentGeneratorService = documentGeneratorService;
-    }
 
     private void createLetterGenerationRequestDTO(){
         letterGenerationRequestDTO = new LetterGenerationRequestDTO();

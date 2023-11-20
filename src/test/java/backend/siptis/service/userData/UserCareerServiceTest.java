@@ -12,13 +12,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class UserCareerServiceTest {
-
-    private final UserCareerService userCareerService;
-
     @Autowired
-    UserCareerServiceTest(UserCareerService userCareerService){
-        this.userCareerService = userCareerService;
-    }
+    private UserCareerService userCareerService;
 
     @Test
     @DisplayName("Test for get non existing career by name")

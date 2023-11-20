@@ -15,13 +15,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class ScheduleServiceTest {
-
-    private final ScheduleService scheduleService;
-
     @Autowired
-    ScheduleServiceTest(ScheduleService scheduleService){
-        this.scheduleService = scheduleService;
-    }
+    private ScheduleService scheduleService;
+
 
     @Test
     @DisplayName("Test for get all schedules of a non existing project")

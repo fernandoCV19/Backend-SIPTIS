@@ -15,13 +15,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class UserAreaServiceTest {
 
-    private final UserAreaService userAreaService;
-    private CreateAreaDTO createAreaDTO;
-
     @Autowired
-    UserAreaServiceTest(UserAreaService userAreaService){
-        this.userAreaService = userAreaService;
-    }
+    private UserAreaService userAreaService;
+    private CreateAreaDTO createAreaDTO;
 
     private void createDTO(){
         createAreaDTO = new CreateAreaDTO();
