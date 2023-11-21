@@ -10,21 +10,21 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 @DataJpaTest
-public class DefenseRepositoryTest {
+class DefenseRepositoryTest {
 
     @Autowired
     private DefenseRepository defenseRepository;
     private Defense defense;
 
     @BeforeEach
-    public void createDefense(){
+    void createDefense(){
         defense = new Defense();
         defense.setSubstituteName("defense test");
     }
 
     @Test
     @DisplayName("Test for find defense by id")
-    public void givenDefenseId_whenFindById_thenDefenseObject(){
+    void givenDefenseId_whenFindById_thenDefenseObject(){
         defenseRepository.save(defense);
         assertFalse(defenseRepository.findById(defense.getId()).isEmpty());
     }

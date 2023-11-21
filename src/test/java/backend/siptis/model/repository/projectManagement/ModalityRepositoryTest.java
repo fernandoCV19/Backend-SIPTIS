@@ -11,27 +11,27 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 @DataJpaTest
-public class ModalityRepositoryTest {
+class ModalityRepositoryTest {
 
     @Autowired
     private ModalityRepository modalityRepository;
     private Modality modality;
 
     @BeforeEach
-    public void createPlaceToDefense(){
+    void createPlaceToDefense(){
         modality = new Modality();
         modality.setName("Modality Name");
     }
 
     @Test
     @DisplayName("Test for find modality by id")
-    public void givenModalityId_whenFindById_thenmodalityObject(){
+    void givenModalityId_whenFindById_thenmodalityObject(){
         assertFalse(modalityRepository.findById(1L).isEmpty());
     }
 
     @Test
     @DisplayName("Test for find modality object by id")
-    public void givenModalityId_whenFindModalityById_thenModalityObject(){
+    void givenModalityId_whenFindModalityById_thenModalityObject(){
         assertNotNull(modalityRepository.findModalityById(1L));
     }
 

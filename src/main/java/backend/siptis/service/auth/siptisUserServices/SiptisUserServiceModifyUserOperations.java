@@ -87,6 +87,8 @@ public class SiptisUserServiceModifyUserOperations {
     }
 
     public ServiceAnswer registerUser(String email, String password) {
+        if (email.equals(""))
+            return createResponse(ServiceMessage.ERROR, null);
         email = email.trim();
         if (siptisUserServiceExistValidation.existsUserByEmail(email))
             return createResponse(ServiceMessage.EMAIL_ALREADY_EXIST, null);

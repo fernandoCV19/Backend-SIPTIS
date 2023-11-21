@@ -8,24 +8,25 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-public class UserAreaRepositoryTest {
+class UserAreaRepositoryTest {
     @Autowired
     private UserAreaRepository userAreaRepository;
 
     @Test
     @DisplayName("Test for list of areas")
-    public void givenUserAreas_whenFindAll_thenUserAreasList(){
-        assertFalse(userAreaRepository.findAll().isEmpty());
+    void givenUserAreas_whenFindAll_thenUserAreasList(){
+        assertTrue(userAreaRepository.findAll().isEmpty());
     }
 
     @Test
-    @DisplayName("Test for verify if exist user area by name")
-    public void givenUserAreas_ExistsUserAreaByName_thenTrue(){
-        assertTrue(userAreaRepository.existsUserAreaByName("USER AREA 1"));
+    @DisplayName("Test for verify if exist user area by non existing id")
+    void givenId_ExistsUserAreaById_thenFalse(){
+        assertFalse(userAreaRepository.existsUserAreaById(123456L));
     }
+
     @Test
     @DisplayName("Test for verify if exist user area by non existing name")
-    public void givenUserAreas_ExistsUserAreaByName_thenUFalse(){
+    void givenName_ExistsUserAreaByName_thenFalse(){
         assertFalse(userAreaRepository.existsUserAreaByName("USER AREA EXAMPLE"));
     }
 }

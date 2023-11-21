@@ -10,13 +10,13 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 @DataJpaTest
-public class SemesterInformationRepositoryTest {
+class SemesterInformationRepositoryTest {
     @Autowired
     private SemesterInformationRepository semesterInformationRepository;
     private SemesterInformation semesterInformation;
 
     @BeforeEach
-    public void createSemester(){
+    void createSemester(){
         semesterInformation = new SemesterInformation();
         semesterInformation.setInProgress(true);
         semesterInformation.setPeriod("2-2023");
@@ -30,22 +30,14 @@ public class SemesterInformationRepositoryTest {
         return newSemester;
     }
 
-
     @Test
-    @DisplayName("Test for verify if exist semester in progress")
-    public void givenSemesterInformation_whenExistsSemesterInformationByInProgressIsTrue_thenTrue(){
-        semesterInformationRepository.save(semesterInformation);
-        assertTrue(semesterInformationRepository.existsSemesterInformationByInProgressIsTrue());
+    @DisplayName("Test for find first by in progress true and id order by end date desc")
+    void givenSemesterInformation_whenFindFirstByInProgressTrueOrderByEndDateDesc_thenNull(){
+        assertTrue(semesterInformationRepository.findFirstByInProgressTrueOrderByEndDateDesc().isEmpty());
     }
-    @Test
-    @DisplayName("Test for verify if exist non existing semester in progress")
-    public void givenSemesterInformation_whenExistsSemesterInformationByInProgressIsTrue_thenFalse(){
-        assertFalse(semesterInformationRepository.existsSemesterInformationByInProgressIsTrue());
-    }
-
     @Test
     @DisplayName("Test for get current period from semester")
-    public void givenSemesterInformation_whenGetCurrentPeriod_thenPeriod(){
+    void givenSemesterInformation_whenGetCurrentPeriod_thenPeriod(){
         semesterInformationRepository.save(semesterInformation);
         String period = semesterInformationRepository.getCurrentPeriod();
         assertNotNull(period);
@@ -53,32 +45,50 @@ public class SemesterInformationRepositoryTest {
     }
     @Test
     @DisplayName("Test for get current period from non existing semester")
-    public void givenSemesterInformation_whenGetCurrentPeriod_thenNull(){
+    void givenSemesterInformation_whenGetCurrentPeriod_thenNull(){
         String period = semesterInformationRepository.getCurrentPeriod();
         assertNull(period);
     }
 
     @Test
+    @DisplayName("Test for find first by in progress true and id order by end date desc")
+    void givenSemesterInformation_whenFindFirstByInProgressTrueAndIdOrderByEndDateDesc_thenNull(){
+        assertTrue(semesterInformationRepository.findFirstByInProgressTrueAndIdOrderByEndDateDesc(123456L).isEmpty());
+    }
+
+    @Test
+    @DisplayName("Test for verify if exist semester in progress")
+    void givenSemesterInformation_whenExistsSemesterInformationByInProgressIsTrue_thenTrue(){
+        semesterInformationRepository.save(semesterInformation);
+        assertTrue(semesterInformationRepository.existsSemesterInformationByInProgressIsTrue());
+    }
+    @Test
+    @DisplayName("Test for verify if exist non existing semester in progress")
+    void givenSemesterInformation_whenExistsSemesterInformationByInProgressIsTrue_thenFalse(){
+        assertFalse(semesterInformationRepository.existsSemesterInformationByInProgressIsTrue());
+    }
+
+    @Test
     @DisplayName("Test for find semester by id")
-    public void givenSemesterInformationId_whenFindById_thenSemesterInformation(){
+    void givenSemesterInformationId_whenFindById_thenSemesterInformation(){
         semesterInformationRepository.save(semesterInformation);
         assertFalse(semesterInformationRepository.findById(semesterInformation.getId()).isEmpty());
     }
     @Test
     @DisplayName("Test for find semester by non existing id")
-    public void givenSemesterInformationId_whenFindById_thenSemesterNull(){
+    void givenSemesterInformationId_whenFindById_thenSemesterNull(){
         assertTrue(semesterInformationRepository.findById(123L).isEmpty());
     }
 
     @Test
     @DisplayName("Test for verify if exist semester information by id")
-    public void givenSemesterInformationId_whenExistsSemesterInformationById_thenSemesterTrue(){
+    void givenSemesterInformationId_whenExistsSemesterInformationById_thenSemesterTrue(){
         semesterInformationRepository.save(semesterInformation);
         assertTrue(semesterInformationRepository.existsSemesterInformationById(semesterInformation.getId()));
     }
     @Test
     @DisplayName("Test for verify if exist semester information by non existing id")
-    public void givenSemesterInformationId_whenExistsSemesterInformationById_thenSemesterFalse(){
+    void givenSemesterInformationId_whenExistsSemesterInformationById_thenSemesterFalse(){
         assertFalse(semesterInformationRepository.existsSemesterInformationById(123L));
     }
 

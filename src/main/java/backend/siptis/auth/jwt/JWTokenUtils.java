@@ -19,8 +19,8 @@ import java.util.Date;
 @Component
 public class JWTokenUtils {
 
-    private static long EXPIRE_TIME_DURATION;
-    private static String ACCESS_TOKEN_SECRET;
+    private static long expireTimeDuration;
+    private static String accessTokenSecret;
 
     private static SiptisUserRepository siptisUserRepository;
 
@@ -29,14 +29,14 @@ public class JWTokenUtils {
     }
 
     public static String createToken(UserInformationService.UserDetailImp userDI) {
-        Date expirationDate = new Date(System.currentTimeMillis() + EXPIRE_TIME_DURATION);
+        Date expirationDate = new Date(System.currentTimeMillis() + expireTimeDuration);
 
         return Jwts.builder().setSubject(userDI.getUsername())
                 .setExpiration(expirationDate)
                 .claim("id", userDI.getId())
                 .claim("projects", userDI.getProjects())
                 .claim("roles", userDI.getRoles())
-                .signWith(Keys.hmacShaKeyFor(ACCESS_TOKEN_SECRET.getBytes()))
+                .signWith(Keys.hmacShaKeyFor(accessTokenSecret.getBytes()))
                 .compact();
     }
 
@@ -64,7 +64,7 @@ public class JWTokenUtils {
 
     public static Claims getClaims(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(ACCESS_TOKEN_SECRET.getBytes())
+                .setSigningKey(accessTokenSecret.getBytes())
                 .build().parseClaimsJws(token).getBody();
     }
 
@@ -84,7 +84,7 @@ public class JWTokenUtils {
     public static boolean validateJwtToken(String authToken) {
         try {
             Jwts.parserBuilder()
-                    .setSigningKey(ACCESS_TOKEN_SECRET.getBytes())
+                    .setSigningKey(accessTokenSecret.getBytes())
                     .build().parseClaimsJws(authToken).getBody();
             return true;
         } catch (IllegalArgumentException e) {
@@ -100,12 +100,12 @@ public class JWTokenUtils {
 
     @Value("${security.jwt.token.secret-key}")
     private void setAccessToken(String key) {
-        ACCESS_TOKEN_SECRET = key;
+        accessTokenSecret = key;
     }
 
     @Value("${security.jwt.token.expire-length}")
     private void setExpireTime(String time) {
-        EXPIRE_TIME_DURATION = Long.parseLong(time);
+        expireTimeDuration = Long.parseLong(time);
     }
 
 

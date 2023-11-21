@@ -20,7 +20,7 @@ import java.io.IOException;
 
 @Component
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
-
+    private static final String CONTENT_TYPE = "application/json;charset=UTF-8";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -44,7 +44,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             ResponseDTO dto = new ResponseDTO();
             dto.setData("");
             dto.setMessage("EXPIRED_JWT");
-            response.setContentType("application/json;charset=UTF-8");
+            response.setContentType(CONTENT_TYPE);
             response.setStatus(401);
             response.getWriter().write(mapper.writeValueAsString(dto));
         } catch (MalformedJwtException ex) {
@@ -52,7 +52,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             ResponseDTO dto = new ResponseDTO();
             dto.setData("");
             dto.setMessage("MALFORMED_JWT");
-            response.setContentType("application/json;charset=UTF-8");
+            response.setContentType(CONTENT_TYPE);
             response.setStatus(401);
             response.getWriter().write(mapper.writeValueAsString(dto));
         } catch (UnsupportedJwtException ex) {
@@ -60,7 +60,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             ResponseDTO dto = new ResponseDTO();
             dto.setData("");
             dto.setMessage("UNSUPPORTED_JWT");
-            response.setContentType("application/json;charset=UTF-8");
+            response.setContentType(CONTENT_TYPE);
             response.setStatus(401);
             response.getWriter().write(mapper.writeValueAsString(dto));
         } catch (IllegalArgumentException ex) {
@@ -68,7 +68,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             ResponseDTO dto = new ResponseDTO();
             dto.setData("");
             dto.setMessage("ILLEGAL_ARGUMENT_JWT");
-            response.setContentType("application/json;charset=UTF-8");
+            response.setContentType(CONTENT_TYPE);
             response.setStatus(401);
             response.getWriter().write(mapper.writeValueAsString(dto));
         } catch (SignatureException ex) {
@@ -76,7 +76,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             ResponseDTO dto = new ResponseDTO();
             dto.setData("");
             dto.setMessage("SIGNATURE_EXCEPTION_JWT");
-            response.setContentType("application/json;charset=UTF-8");
+            response.setContentType(CONTENT_TYPE);
             response.setStatus(401);
             response.getWriter().write(mapper.writeValueAsString(dto));
         } catch (UserNotFoundException ex) {
@@ -84,7 +84,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             ResponseDTO dto = new ResponseDTO();
             dto.setData("");
             dto.setMessage("USER_NOT_FOUND");
-            response.setContentType("application/json;charset=UTF-8");
+            response.setContentType(CONTENT_TYPE);
             response.setStatus(401);
             response.getWriter().write(mapper.writeValueAsString(dto));
         }
