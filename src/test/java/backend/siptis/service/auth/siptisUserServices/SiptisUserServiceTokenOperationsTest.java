@@ -1,5 +1,6 @@
 package backend.siptis.service.auth.siptisUserServices;
 
+import backend.siptis.commons.ServiceMessage;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,7 @@ public class SiptisUserServiceTokenOperationsTest {
     private String token = "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJleHAiOjE2OTgzMjcyMzgsImlkIjoxLCJwcm9qZWN0cyI6W10sInJvbGVzIjoiW0FETUlOXSJ9.X0DQBTIXmRUJipiRzLg3Gs9DfiVUcGibOX2K04k3ry7Clfl2KWk87fCF3KtQd7Zx\n";
     @Test
     @DisplayName("test get id from token")
-    public void givenExpiredTokenWhenGetIdFromTokenThenExceptio(){
+    public void givenExpiredTokenWhenGetIdFromTokenThenException(){
         try{
             assertNull(siptisUserServiceTokenOperations.getIdFromToken(token));
         }catch (Exception e){
@@ -30,5 +31,21 @@ public class SiptisUserServiceTokenOperationsTest {
             assertNull(siptisUserServiceTokenOperations.getProjectsFromToken(token));
         }catch (Exception e){ }
     }
+    @Test
+    @DisplayName("test update expired token")
+    public void givenBadRefreshTokenWhenUpdateTokenThenServiceMessageNOT_FOUND(){
+        assertEquals(ServiceMessage.NOT_FOUND,siptisUserServiceTokenOperations.updateToken("123").getServiceMessage());
+    }
+    @Test
+    @DisplayName("test verify if exist token password")
+    public void givenBadTokenPasswordWhenExistsTokenPasswordThenServiceMessageOK(){
+        assertEquals(ServiceMessage.OK,siptisUserServiceTokenOperations.existsTokenPassword("123").getServiceMessage());
+    }
+    @Test
+    @DisplayName("test find by token password")
+    public void givenBadTokenPasswordWhenFindByTokenPasswordThenServiceMessageOK(){
+        assertNull(siptisUserServiceTokenOperations.findByTokenPassword("123"));
+    }
+
 
 }

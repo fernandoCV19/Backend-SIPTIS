@@ -37,6 +37,7 @@ public class SiptisUserServiceModifyUserOperationsTest {
 
     @Test
     @DisplayName("test register user")
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Sql(scripts = {"/custom_imports/create_users.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     public void givenRegisterUserDTOWhenRegisterUserThenServiceMessageEMAIL_ALREADY_EXIST(){
         createRegisterUserDTO();

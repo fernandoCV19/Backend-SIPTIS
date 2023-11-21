@@ -23,23 +23,23 @@ public class RoleServiceTest {
 
     @Test
     @DisplayName("test for get allowed roles")
-    public void GivenRolesWhenGetAllowedRolesThenServiceMessageOk(){
+    public void givenRolesWhenGetAllowedRolesThenServiceMessageOk(){
         assertEquals(ServiceMessage.OK,roleService.getAllowedRoles().getServiceMessage());
     }
     @Test
     @DisplayName("test for get allowed roles")
-    public void GivenRoleNameWhenGetRoleByNameThenServiceMessageERROR(){
+    public void givenRoleNameWhenGetRoleByNameThenServiceMessageERROR(){
         assertEquals(ServiceMessage.ERROR,roleService.getRoleByName("wrong name").getServiceMessage());
     }
     @Test
     @DisplayName("test for get not assignable roles")
-    public void GivenRolesWhenGetNotAssignableRolesThenServiceMessageOk(){
+    public void givenRolesWhenGetNotAssignableRolesThenServiceMessageOk(){
         Set<String> list = roleService.notAssignableRoles();
         assertFalse(list.isEmpty());
     }
     @Test
     @DisplayName("test for get director roles")
-    public void GivenRolesWhenGetDirectorRolesThenServiceMessageOk(){
+    public void givenRolesWhenGetDirectorRolesThenServiceMessageOk(){
         Set<String> list = roleService.directorRoles();
         assertFalse(list.isEmpty());
     }
