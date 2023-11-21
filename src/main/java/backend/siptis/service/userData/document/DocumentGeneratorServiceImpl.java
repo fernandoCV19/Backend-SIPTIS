@@ -153,7 +153,6 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
         try {
             location = blueprintRetrieve("CertificadoSolvencia.pdf");
         } catch (IOException e) {
-            System.err.println(e.getMessage());
         }
 
         SolvencyTool solvencyTool = new SolvencyTool(location);

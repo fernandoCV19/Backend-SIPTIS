@@ -45,4 +45,14 @@ class ProjectTutorRepositoryTest {
     void givenTutorIdAndAccepted_whenFindByTutorIdAndAcceptedIsTrue_thenEmptyList(){
         assertTrue(projectTutorRepository.findByTutorIdAndAcceptedIsTrue(3L).isEmpty());
     }
+    @Test
+    @DisplayName("Test for find by tutor id and accepted is false and reviewed is false ")
+    void givenTutorIdAndAccepted_whenFindByTutorIdAndAcceptedIsFalseAndReviewedIsFalse_thenEmptyList(){
+        assertTrue(projectTutorRepository.findByTutorIdAndAcceptedIsFalseAndReviewedIsFalse(3L).isEmpty());
+    }
+    @Test
+    @DisplayName("Test for find by tutor id and accepted is false and reviewed is true ")
+    void givenTutorIdAndAccepted_whenFindByTutorIdAndAcceptedIsFalseAndReviewedIsTrue_thenEmptyList(){
+        assertTrue(projectTutorRepository.findByTutorIdAndAcceptedIsFalseAndReviewedIsTrue(3L).isEmpty());
+    }
 }
