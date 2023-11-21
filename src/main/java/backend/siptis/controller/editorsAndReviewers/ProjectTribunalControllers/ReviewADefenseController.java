@@ -20,13 +20,16 @@ public class ReviewADefenseController {
     private final ProjectTribunalServiceReviewADefense projectTribunalServiceReviewADefense;
 
     @PostMapping("/reviewDefense")
-    public ResponseEntity<?> reviewDefense(@RequestBody ReviewADefenseDTO reviewADefenseDTO) {
+    public ResponseEntity<ControllerAnswer> reviewDefense(@RequestBody ReviewADefenseDTO reviewADefenseDTO) {
         ServiceAnswer serviceAnswer = projectTribunalServiceReviewADefense.reviewADefense(reviewADefenseDTO);
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         if (serviceAnswer.getServiceMessage().equals(ServiceMessage.OK)) {
             httpStatus = HttpStatus.OK;
         }
-        ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
+        ControllerAnswer controllerAnswer = ControllerAnswer
+                .builder()
+                .data(serviceAnswer.getData())
+                .message(serviceAnswer.getServiceMessage().toString()).build();
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
 }

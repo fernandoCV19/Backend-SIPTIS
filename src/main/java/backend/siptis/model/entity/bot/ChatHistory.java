@@ -27,6 +27,4 @@ public class ChatHistory {
 
     @Column(name = ChatHistoryTable.Completion.NAME)
     private String completion;
-
-
 }
