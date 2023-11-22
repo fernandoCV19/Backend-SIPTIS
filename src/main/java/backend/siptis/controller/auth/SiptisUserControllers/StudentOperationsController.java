@@ -54,7 +54,7 @@ public class StudentOperationsController {
     }
 
     @GetMapping("/userCareer/{userId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<?> getCareer(@PathVariable int userId) {
         Long id = Long.valueOf(userId);
         ServiceAnswer answerService =

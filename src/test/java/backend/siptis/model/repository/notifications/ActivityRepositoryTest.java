@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
@@ -32,11 +33,10 @@ class ActivityRepositoryTest {
         assertEquals(0, activities.size());
     }
 
-    /*
+/*
     @Test
     @DisplayName("Test for get empty activity Page list from project id")
     void givenPageableAndWrongProjectId_whenFindByProjectId_thenEmptyActivityList(){
         assertTrue(activityRepository.findByProjectId(123345L, Pageable.ofSize(4)).isEmpty());
-    }
-     */
+    }*/
 }

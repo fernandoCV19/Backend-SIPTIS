@@ -34,28 +34,28 @@ public class SemesterInformationController {
     private final SemesterInformationService semesterService;
 
     @GetMapping("/checkActiveSemester")
-    //@PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<?> checkActiveSemester() {
         ServiceAnswer answerService = semesterService.existActiveSemester();
         return createResponse(answerService);
     }
 
     @GetMapping("/getActiveSemesterInformation")
-    //@PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<?> getActiveSemester() {
         ServiceAnswer answerService = semesterService.getCurrentSemester();
         return createResponse(answerService);
     }
 
     @GetMapping("/getCurrentSemesterPeriod")
-    //@PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<?> getcurrentSemesterPeriod() {
         ServiceAnswer answerService = semesterService.getCurrentPeriod();
         return createResponse(answerService);
     }
 
     @PostMapping("/startSemester")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<?> createSemester(
             @Valid @RequestBody SemesterInformationDTO dto) {
         ServiceAnswer answerService = semesterService.startSemester(dto);
@@ -63,7 +63,7 @@ public class SemesterInformationController {
     }
 
     @PutMapping("/editSemester")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<?> editSemester(
             @Valid @RequestBody EditSemesterInfoDTO dto) {
         ServiceAnswer answerService = semesterService.editSemester(dto);
@@ -71,7 +71,7 @@ public class SemesterInformationController {
     }
 
     @PutMapping("/closeSemester/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<?> closeSemester(@PathVariable int id) {
         Long semesterId = Long.valueOf(id);
         ServiceAnswer answerService = semesterService.closeSemester(semesterId);

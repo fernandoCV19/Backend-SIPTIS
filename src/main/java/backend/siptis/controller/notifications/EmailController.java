@@ -5,6 +5,8 @@ import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.userDataDTO.TokenPasswordDTO;
 import backend.siptis.service.notifications.recoverPassword.RecoverPasswordEmailService;
+import backend.siptis.service.notifications.recoverPassword.SendRecoverPasswordEmailService;
+import backend.siptis.service.notifications.recoverPassword.SendRecoverPasswordEmailServiceImpl;
 import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
@@ -21,10 +23,11 @@ import java.io.IOException;
 public class EmailController {
 
     private final RecoverPasswordEmailService emailServiceImpl;
+    private final SendRecoverPasswordEmailService sendRecoverPasswordEmailService;
 
     @GetMapping("/askemail/{email}")
     public ResponseEntity<?> sendEmailTest(@PathVariable String email) throws MessagingException, IOException {
-        ServiceAnswer answer = emailServiceImpl.sendRecoverPasswordEmail(email);
+        ServiceAnswer answer = sendRecoverPasswordEmailService.sendRecoverPasswordEmail(email);
         return crearResponseEntityRegistrar(answer);
     }
 

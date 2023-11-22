@@ -57,7 +57,7 @@ public class ModifyUserOperationsController {
     }
 
     @PutMapping("/updateAreas/{userId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<?> updateAreas(@PathVariable int userId, @RequestBody UserSelectedAreasDTO dto) {
         Long id = Long.valueOf(userId);
         ServiceAnswer answer = siptisUserServiceModifyUserOperations.updateAreas(id, dto);

@@ -60,19 +60,19 @@ public class DocumentController {
     }
 
     @PostMapping("/create-tribunal-approval")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     ResponseEntity<?> createTribunalApproval(@RequestBody LetterGenerationRequestDTO dto) throws IOException {
         return createResponseEntity(documentGeneratorService.generateTribunalApproval(dto));
     }
 
     @PostMapping("/create-teacher-approval-letter")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     ResponseEntity<?> createTeacherTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) throws IOException {
         return createResponseEntity(documentGeneratorService.teacherTribunalRequest(dto));
     }
 
     @PostMapping("/create-student-tribunal-request")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     ResponseEntity<?> createStudentTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) throws IOException {
         return createResponseEntity(documentGeneratorService.studentTribunalRequest(dto));
     }
@@ -86,13 +86,13 @@ public class DocumentController {
     }
 
     @PostMapping("/create-tutor-approval-letter")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     ResponseEntity<?> createTutorTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) throws IOException {
         return createResponseEntity(documentGeneratorService.tutorTribunalRequest(dto));
     }
 
     @PostMapping("/create-supervisor-approval-letter")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     ResponseEntity<?> createSupervisorTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) throws IOException {
         return createResponseEntity(documentGeneratorService.supervisorTribunalRequest(dto));
     }

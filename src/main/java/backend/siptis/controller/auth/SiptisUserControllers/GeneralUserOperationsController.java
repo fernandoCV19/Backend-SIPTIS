@@ -29,7 +29,7 @@ public class GeneralUserOperationsController {
             List.of(ServiceMessage.OK, ServiceMessage.SUCCESSFUL_REGISTER, ServiceMessage.USER_DELETED));
 
     @GetMapping("/personalInformation/{userId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<?> getInfoById(@PathVariable int userId) {
         Long id = Long.valueOf(userId);
         ServiceAnswer answerService = siptisUserServiceGeneralUserOperations.getUserPersonalInformation(id);
@@ -52,7 +52,7 @@ public class GeneralUserOperationsController {
     }
 
     @GetMapping("/userAreas/{userId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<?> getAreasById(@PathVariable int userId) {
         Long id = Long.valueOf(userId);
         ServiceAnswer answerService = siptisUserServiceGeneralUserOperations.getUserAreasById(id);
@@ -60,42 +60,42 @@ public class GeneralUserOperationsController {
     }
 
     @GetMapping("/list/students")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<?> getStudentList(String search, Pageable pageable) {
         ServiceAnswer answerService = siptisUserServiceGeneralUserOperations.getUserList(search, "STUDENT", pageable);
         return createResponseEntity(answerService);
     }
 
     @GetMapping("/list/teachers")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<?> getTeacherList(String search, Pageable pageable) {
         ServiceAnswer answerService = siptisUserServiceGeneralUserOperations.getUserList(search, "TEACHER", pageable);
         return createResponseEntity(answerService);
     }
 
     @GetMapping("/list/tribunals")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<?> getTribunalsList(String search, Pageable pageable) {
         ServiceAnswer answerService = siptisUserServiceGeneralUserOperations.getUserList(search, "TRIBUNAL", pageable);
         return createResponseEntity(answerService);
     }
 
     @GetMapping("/list/generalUsers")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<?> getNormalUserList(String search, Pageable pageable) {
         ServiceAnswer answerService = siptisUserServiceGeneralUserOperations.getNormalUserList(search, pageable);
         return createResponseEntity(answerService);
     }
 
     @GetMapping("/list/potentialTutors")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<?> getPotentialTutors(String search, Pageable pageable) {
         ServiceAnswer answerService = siptisUserServiceGeneralUserOperations.getUserList(search, "TUTOR", pageable);
         return createResponseEntity(answerService);
     }
 
     @GetMapping("/list/potentialSupervisors")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<?> getPotentialSupervisors(String search, Pageable pageable) {
         ServiceAnswer answerService = siptisUserServiceGeneralUserOperations.getUserList(search, "SUPERVISOR", pageable);
         return createResponseEntity(answerService);

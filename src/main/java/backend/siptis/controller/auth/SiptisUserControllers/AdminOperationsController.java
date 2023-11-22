@@ -37,7 +37,7 @@ public class AdminOperationsController {
     }
 
     @GetMapping("/list/admins")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'STUDENT')")
     public ResponseEntity<?> getAdminList(String search, Pageable pageable) {
         ServiceAnswer answerService =
                 siptisUserServiceAdminOperations.getAdminUserList(search, pageable);
@@ -45,6 +45,7 @@ public class AdminOperationsController {
     }
 
     @PutMapping("/editUserInformation/{userId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> editUser(
             @PathVariable int userId,
             @Valid @RequestBody AdminEditUserInformationDTO dto) {
