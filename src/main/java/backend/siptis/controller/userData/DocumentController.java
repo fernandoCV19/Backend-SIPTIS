@@ -29,24 +29,24 @@ public class DocumentController {
 
 
     @GetMapping("/")
-    ResponseEntity<?> getDocumentsFromUser(@RequestHeader(name = "Authorization") String token) {
+    ResponseEntity<ControllerAnswer> getDocumentsFromUser(@RequestHeader(name = "Authorization") String token) {
         Long userId = siptisUserServiceTokenOperations.getIdFromToken(token);
         return createResponseEntity(documentGeneratorService.getAllDocumentsFromUser(userId));
     }
 
     @GetMapping("/project/{id}")
-    ResponseEntity<?> getDocumentsFromProject(@PathVariable("id") long userId) {
+    ResponseEntity<ControllerAnswer> getDocumentsFromProject(@PathVariable("id") long userId) {
         return createResponseEntity(documentGeneratorService.getAllDocumentsFromProject(userId));
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<?> deleteDocument(@PathVariable("id") long documentId) {
+    ResponseEntity<ControllerAnswer> deleteDocument(@PathVariable("id") long documentId) {
         return createResponseEntity(documentGeneratorService.deleteDocument(documentId));
     }
 
 
     @PostMapping("/create-report")
-    ResponseEntity<?> createReport(@RequestHeader(name = "Authorization") String token, @RequestBody ReportDocumentDTO reportDocumentDTO) {
+    ResponseEntity<ControllerAnswer> createReport(@RequestHeader(name = "Authorization") String token, @RequestBody ReportDocumentDTO reportDocumentDTO) {
         Long userId = siptisUserServiceTokenOperations.getIdFromToken(token);
         List<?> projects = siptisUserServiceTokenOperations.getProjectsFromToken(token);
         int projectId = (int) projects.get(0);
@@ -54,31 +54,31 @@ public class DocumentController {
     }
 
     @GetMapping("/create-solvency")
-    ResponseEntity<?> createSolvency(@RequestHeader(name = "Authorization") String token) {
+    ResponseEntity<ControllerAnswer> createSolvency(@RequestHeader(name = "Authorization") String token) {
         Long userId = siptisUserServiceTokenOperations.getIdFromToken(token);
         return createResponseEntity(documentGeneratorService.generateSolvency(userId));
     }
 
     @PostMapping("/create-tribunal-approval")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
-    ResponseEntity<?> createTribunalApproval(@RequestBody LetterGenerationRequestDTO dto) throws IOException {
+    ResponseEntity<ControllerAnswer> createTribunalApproval(@RequestBody LetterGenerationRequestDTO dto) throws IOException {
         return createResponseEntity(documentGeneratorService.generateTribunalApproval(dto));
     }
 
     @PostMapping("/create-teacher-approval-letter")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
-    ResponseEntity<?> createTeacherTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) throws IOException {
+    ResponseEntity<ControllerAnswer> createTeacherTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) throws IOException {
         return createResponseEntity(documentGeneratorService.teacherTribunalRequest(dto));
     }
 
     @PostMapping("/create-student-tribunal-request")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
-    ResponseEntity<?> createStudentTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) throws IOException {
+    ResponseEntity<ControllerAnswer> createStudentTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) throws IOException {
         return createResponseEntity(documentGeneratorService.studentTribunalRequest(dto));
     }
 
     @PostMapping("/create-documentary-record")
-    ResponseEntity<?> createDocumentaryRecord(@RequestHeader(name = "Authorization") String token, @RequestBody DocumentaryRecordDto documentaryRecordDto) {
+    ResponseEntity<ControllerAnswer> createDocumentaryRecord(@RequestHeader(name = "Authorization") String token, @RequestBody DocumentaryRecordDto documentaryRecordDto) {
         Long userId = siptisUserServiceTokenOperations.getIdFromToken(token);
         List<?> projects = siptisUserServiceTokenOperations.getProjectsFromToken(token);
         int projectId = (int) projects.get(0);
@@ -87,17 +87,17 @@ public class DocumentController {
 
     @PostMapping("/create-tutor-approval-letter")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
-    ResponseEntity<?> createTutorTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) throws IOException {
+    ResponseEntity<ControllerAnswer> createTutorTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) throws IOException {
         return createResponseEntity(documentGeneratorService.tutorTribunalRequest(dto));
     }
 
     @PostMapping("/create-supervisor-approval-letter")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
-    ResponseEntity<?> createSupervisorTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) throws IOException {
+    ResponseEntity<ControllerAnswer> createSupervisorTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) throws IOException {
         return createResponseEntity(documentGeneratorService.supervisorTribunalRequest(dto));
     }
 
-    private ResponseEntity<?> createResponseEntity(ServiceAnswer serviceAnswer) {
+    private ResponseEntity<ControllerAnswer> createResponseEntity(ServiceAnswer serviceAnswer) {
         Object data = serviceAnswer.getData();
         ServiceMessage mensajeServicio = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.OK;

@@ -20,7 +20,7 @@ public class ModifyProjectTribunalsController {
     private final ProjectTribunalServiceModifyProjectTribunals projectTribunalServiceModifyProjectTribunals;
 
     @DeleteMapping("/removeTribunals/{id}")
-    public ResponseEntity<?> removeTribunalsFromAProject(@PathVariable("id") Long projectId) {
+    public ResponseEntity<ControllerAnswer> removeTribunalsFromAProject(@PathVariable("id") Long projectId) {
         ServiceAnswer serviceAnswer = projectTribunalServiceModifyProjectTribunals.removeTribunals(projectId);
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         if (serviceAnswer.getServiceMessage().equals(ServiceMessage.OK)) {
@@ -31,7 +31,7 @@ public class ModifyProjectTribunalsController {
     }
 
     @PostMapping("/assignTribunals")
-    public ResponseEntity<?> assignTribunal(@RequestBody AssignTribunalsDTO assignTribunalsDTO) {
+    public ResponseEntity<ControllerAnswer> assignTribunal(@RequestBody AssignTribunalsDTO assignTribunalsDTO) {
         ServiceAnswer serviceAnswer = projectTribunalServiceModifyProjectTribunals.assignTribunals(assignTribunalsDTO);
         HttpStatus httpStatus = HttpStatus.OK;
         if (serviceAnswer.getServiceMessage() != ServiceMessage.OK) {

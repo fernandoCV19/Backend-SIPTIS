@@ -31,14 +31,14 @@ public class StudentOperationsController {
 
     @PostMapping("/register/student")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<?> registerStudent(@Valid @RequestBody RegisterStudentDTO dto) {
+    public ResponseEntity<ControllerAnswer> registerStudent(@Valid @RequestBody RegisterStudentDTO dto) {
         ServiceAnswer student = siptisUserServiceStudentOperations.registerStudent(dto);
         return createResponseEntity(student);
     }
 
 
     @GetMapping("/studentsInCareer/{careerId}")
-    public ResponseEntity<?> getStudentsInCareer(@PathVariable Long careerId) {
+    public ResponseEntity<ControllerAnswer> getStudentsInCareer(@PathVariable Long careerId) {
         ServiceAnswer answerService =
                 siptisUserServiceStudentOperations.getNumberStudentsCareer(careerId);
         return createResponseEntity(answerService);
@@ -46,7 +46,7 @@ public class StudentOperationsController {
 
     @GetMapping("/userCareer")
     @PreAuthorize("hasAuthority('STUDENT')")
-    public ResponseEntity<?> getCareer(@RequestHeader(name = "Authorization") String token) {
+    public ResponseEntity<ControllerAnswer> getCareer(@RequestHeader(name = "Authorization") String token) {
         Long id = siptisUserServiceTokenOperations.getIdFromToken(token);
         ServiceAnswer answerService =
                 siptisUserServiceStudentOperations.getStudentCareerById(id);
@@ -55,7 +55,7 @@ public class StudentOperationsController {
 
     @GetMapping("/userCareer/{userId}")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
-    public ResponseEntity<?> getCareer(@PathVariable int userId) {
+    public ResponseEntity<ControllerAnswer> getCareer(@PathVariable int userId) {
         Long id = Long.valueOf(userId);
         ServiceAnswer answerService =
                 siptisUserServiceStudentOperations.getStudentCareerById(id);
@@ -63,13 +63,13 @@ public class StudentOperationsController {
     }
 
     @GetMapping("/studentsByYear/{careerId}")
-    public ResponseEntity<?> getNumberOfStudentsByYearAndCareer(@PathVariable Long careerId) {
+    public ResponseEntity<ControllerAnswer> getNumberOfStudentsByYearAndCareer(@PathVariable Long careerId) {
         ServiceAnswer answerService =
                 siptisUserServiceStudentOperations.getNumberOfStudentsByYearAndCareer(careerId);
         return createResponseEntity(answerService);
     }
 
-    private ResponseEntity<?> createResponseEntity(ServiceAnswer serviceAnswer) {
+    private ResponseEntity<ControllerAnswer> createResponseEntity(ServiceAnswer serviceAnswer) {
         Object data = serviceAnswer.getData();
         ServiceMessage messageService = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;

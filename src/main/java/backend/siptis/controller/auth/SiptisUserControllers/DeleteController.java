@@ -27,7 +27,7 @@ public class DeleteController {
 
     @DeleteMapping("/delete/{userId}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    ResponseEntity<?> deleteUser(@PathVariable int userId) {
+    ResponseEntity<ControllerAnswer> deleteUser(@PathVariable int userId) {
         Long id = Long.valueOf(userId);
         ServiceAnswer answer = siptisUserServiceDelete.deleteUser(id);
         return createResponseEntity(answer);
@@ -35,7 +35,7 @@ public class DeleteController {
 
     @DeleteMapping("/removeDirector/{career}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    ResponseEntity<?> removeDirector(@PathVariable String career) {
+    ResponseEntity<ControllerAnswer> removeDirector(@PathVariable String career) {
         String directorRole = "SIS_DIRECTOR";
         if (career.equals("informatica")) {
             directorRole = "INF_DIRECTOR";
@@ -44,7 +44,7 @@ public class DeleteController {
         return createResponseEntity(answer);
     }
 
-    private ResponseEntity<?> createResponseEntity(ServiceAnswer serviceAnswer) {
+    private ResponseEntity<ControllerAnswer> createResponseEntity(ServiceAnswer serviceAnswer) {
         Object data = serviceAnswer.getData();
         ServiceMessage messageService = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;

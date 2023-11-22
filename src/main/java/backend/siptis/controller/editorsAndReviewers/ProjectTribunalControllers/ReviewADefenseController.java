@@ -20,7 +20,7 @@ public class ReviewADefenseController {
     private final ProjectTribunalServiceReviewADefense projectTribunalServiceReviewADefense;
 
     @PostMapping("/reviewDefense")
-    public ResponseEntity<?> reviewDefense(@RequestBody ReviewADefenseDTO reviewADefenseDTO) {
+    public ResponseEntity<ControllerAnswer> reviewDefense(@RequestBody ReviewADefenseDTO reviewADefenseDTO) {
         ServiceAnswer serviceAnswer = projectTribunalServiceReviewADefense.reviewADefense(reviewADefenseDTO);
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         if (serviceAnswer.getServiceMessage().equals(ServiceMessage.OK)) {

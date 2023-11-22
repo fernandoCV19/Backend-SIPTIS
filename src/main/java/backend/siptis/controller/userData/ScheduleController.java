@@ -25,7 +25,7 @@ public class ScheduleController {
     private final ScheduleService scheduleService;
 
     @GetMapping("/all/{id}")
-    public ResponseEntity<?> getAllSchedulesFromAProject(@PathVariable Long id) {
+    public ResponseEntity<ControllerAnswer> getAllSchedulesFromAProject(@PathVariable Long id) {
         ServiceAnswer serviceAnswer = scheduleService.getAllSchedulesFromAProject(id);
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         if (serviceAnswer.getServiceMessage().equals(ServiceMessage.OK)) {

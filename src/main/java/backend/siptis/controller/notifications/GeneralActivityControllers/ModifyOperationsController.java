@@ -20,21 +20,21 @@ public class ModifyOperationsController {
     private final GeneralActivityServiceModifyOperations generalActivityServiceModifyOperations;
 
     @PostMapping("/create")
-    public ResponseEntity<?> persistGeneralActivity(@RequestBody GeneralActivityDTO generalActivityDTO) {
+    public ResponseEntity<ControllerAnswer> persistGeneralActivity(@RequestBody GeneralActivityDTO generalActivityDTO) {
         return createResponse(generalActivityServiceModifyOperations.persistGeneralActivity(generalActivityDTO));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateGeneralActivity(@RequestBody GeneralActivityDTO generalActivityDTO, @PathVariable long id) {
+    public ResponseEntity<ControllerAnswer> updateGeneralActivity(@RequestBody GeneralActivityDTO generalActivityDTO, @PathVariable long id) {
         return createResponse(generalActivityServiceModifyOperations.update(generalActivityDTO, id));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteGeneralActivity(@PathVariable long id) {
+    public ResponseEntity<ControllerAnswer> deleteGeneralActivity(@PathVariable long id) {
         return createResponse(generalActivityServiceModifyOperations.delete(id));
     }
 
-    private ResponseEntity<?> createResponse(ServiceAnswer serviceAnswer) {
+    private ResponseEntity<ControllerAnswer> createResponse(ServiceAnswer serviceAnswer) {
         ServiceMessage serviceMessage = serviceAnswer.getServiceMessage();
         if (serviceMessage == ServiceMessage.NOT_FOUND)
             return new ResponseEntity<>(

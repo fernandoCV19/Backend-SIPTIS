@@ -26,12 +26,12 @@ public class EmailController {
     private final SendRecoverPasswordEmailService sendRecoverPasswordEmailService;
 
     @GetMapping("/askemail/{email}")
-    public ResponseEntity<?> sendEmailTest(@PathVariable String email) throws MessagingException, IOException {
+    public ResponseEntity<ControllerAnswer> sendEmailTest(@PathVariable String email) throws MessagingException, IOException {
         ServiceAnswer answer = sendRecoverPasswordEmailService.sendRecoverPasswordEmail(email);
         return crearResponseEntityRegistrar(answer);
     }
 
-    private ResponseEntity<?> crearResponseEntityRegistrar(ServiceAnswer serviceAnswer) {
+    private ResponseEntity<ControllerAnswer> crearResponseEntityRegistrar(ServiceAnswer serviceAnswer) {
         Object data = serviceAnswer.getData();
         ServiceMessage messageService = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
@@ -55,19 +55,19 @@ public class EmailController {
     }
 
     @GetMapping("/askemail/{email}")
-    public ResponseEntity<?> sendEmailTest(@PathVariable String email) throws MessagingException {
+    public ResponseEntity<ControllerAnswer> sendEmailTest(@PathVariable String email) throws MessagingException {
         ServiceAnswer answer = emailServiceImpl.sendRecoverPasswordEmail(email);
 
         return crearResponseEntityRegistrar(answer);
     }
 
     @PostMapping("/changePassword")
-    public ResponseEntity<?> changePassword(@RequestBody TokenPasswordDTO dto) {
+    public ResponseEntity<ControllerAnswer> changePassword(@RequestBody TokenPasswordDTO dto) {
         ServiceAnswer answer = emailServiceImpl.changePassword(dto);
         return crearResponseEntityRegistrar(answer);
     }
 
-    private ResponseEntity<?> crearResponseEntityRegistrar(ServiceAnswer serviceAnswer) {
+    private ResponseEntity<ControllerAnswer> crearResponseEntityRegistrar(ServiceAnswer serviceAnswer) {
         Object data = serviceAnswer.getData();
         ServiceMessage messageService = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;

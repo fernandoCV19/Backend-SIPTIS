@@ -33,13 +33,13 @@ public class ModifyUserOperationsController {
 
     @PostMapping("/register/general")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterUserDTO dto) {
+    public ResponseEntity<ControllerAnswer> registerUser(@Valid @RequestBody RegisterUserDTO dto) {
         ServiceAnswer user = siptisUserServiceModifyUserOperations.registerUser(dto);
         return createResponseEntity(user);
     }
 
     @PutMapping("/editInformation")
-    public ResponseEntity<?> editInformation(
+    public ResponseEntity<ControllerAnswer> editInformation(
             @RequestHeader(name = "Authorization") String token,
             @Valid @RequestBody UserEditInformationDTO dto) {
 
@@ -49,7 +49,7 @@ public class ModifyUserOperationsController {
     }
 
     @PutMapping("/updateAreas")
-    public ResponseEntity<?> updateAreas(
+    public ResponseEntity<ControllerAnswer> updateAreas(
             @RequestHeader(name = "Authorization") String token, @RequestBody UserSelectedAreasDTO dto) {
         Long id = siptisUserServiceTokenOperations.getIdFromToken(token);
         ServiceAnswer answer = siptisUserServiceModifyUserOperations.updateAreas(id, dto);
@@ -58,13 +58,13 @@ public class ModifyUserOperationsController {
 
     @PutMapping("/updateAreas/{userId}")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
-    public ResponseEntity<?> updateAreas(@PathVariable int userId, @RequestBody UserSelectedAreasDTO dto) {
+    public ResponseEntity<ControllerAnswer> updateAreas(@PathVariable int userId, @RequestBody UserSelectedAreasDTO dto) {
         Long id = Long.valueOf(userId);
         ServiceAnswer answer = siptisUserServiceModifyUserOperations.updateAreas(id, dto);
         return createResponseEntity(answer);
     }
 
-    private ResponseEntity<?> createResponseEntity(ServiceAnswer serviceAnswer) {
+    private ResponseEntity<ControllerAnswer> createResponseEntity(ServiceAnswer serviceAnswer) {
         Object data = serviceAnswer.getData();
         ServiceMessage messageService = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;

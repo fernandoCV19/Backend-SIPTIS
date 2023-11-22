@@ -26,7 +26,7 @@ public class CareerDirectorOperationsController {
 
     @GetMapping("/directorInformation/{career}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    ResponseEntity<?> getDirectorInfo(@PathVariable String career) {
+    ResponseEntity<ControllerAnswer> getDirectorInfo(@PathVariable String career) {
         String directorRole = "SIS_DIRECTOR";
         if (career.equals("informatica")) {
             directorRole = "INF_DIRECTOR";
@@ -38,7 +38,7 @@ public class CareerDirectorOperationsController {
 
     @PostMapping("/register/director/{career}/{userId}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    ResponseEntity<?> registerCareerDirector(@PathVariable String career, @PathVariable int userId) {
+    ResponseEntity<ControllerAnswer> registerCareerDirector(@PathVariable String career, @PathVariable int userId) {
         Long id = Long.valueOf(userId);
         String directorRole = "SIS_DIRECTOR";
         if (career.equals("informatica")) {
@@ -48,7 +48,7 @@ public class CareerDirectorOperationsController {
         return createResponseEntity(answer);
     }
 
-    private ResponseEntity<?> createResponseEntity(ServiceAnswer serviceAnswer) {
+    private ResponseEntity<ControllerAnswer> createResponseEntity(ServiceAnswer serviceAnswer) {
         Object data = serviceAnswer.getData();
         ServiceMessage messageService = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;

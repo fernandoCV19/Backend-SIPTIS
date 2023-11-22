@@ -21,7 +21,7 @@ public class FindOperationsController {
     private final GeneralActivityServiceFindOperations generalActivityServiceFindOperations;
 
     @GetMapping()
-    public ResponseEntity<?> findAllGeneralActivity(Pageable pageable) {
+    public ResponseEntity<ControllerAnswer> findAllGeneralActivity(Pageable pageable) {
         return new ResponseEntity<>(
                 ControllerAnswer.builder()
                         .data(generalActivityServiceFindOperations.findAll(pageable))

@@ -27,13 +27,13 @@ public class TokenOperationsController {
     private final SiptisUserServiceTokenOperations siptisUserServiceTokenOperations;
 
     @PostMapping("/refreshtoken")
-    public ResponseEntity<?> refreshtoken(@RequestBody RefreshTokenDTO request) {
+    public ResponseEntity<ControllerAnswer> refreshtoken(@RequestBody RefreshTokenDTO request) {
         String refreshToken = request.getRefreshToken();
         ServiceAnswer answer = siptisUserServiceTokenOperations.updateToken(refreshToken);
         return createResponseEntity(answer);
     }
 
-    private ResponseEntity<?> createResponseEntity(ServiceAnswer serviceAnswer) {
+    private ResponseEntity<ControllerAnswer> createResponseEntity(ServiceAnswer serviceAnswer) {
         Object data = serviceAnswer.getData();
         ServiceMessage messageService = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;

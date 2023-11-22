@@ -1,5 +1,6 @@
 package backend.siptis.controller.cloud;
 
+import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.service.cloud.FileManagerService;
 import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
@@ -21,7 +22,7 @@ public class CloudController {
     private final FileManagerService fileDownloaderService;
 
     @GetMapping("/download-file/{folder}/{file}")
-    ResponseEntity<?> downloadFile(@PathVariable String folder, @PathVariable String file) {
+    ResponseEntity<byte[]> downloadFile(@PathVariable String folder, @PathVariable String file) {
         String key = folder + "/" + file;
         ServiceAnswer respuestaServicio = fileDownloaderService.downloadFileFromCloud(key);
         ByteArrayOutputStream downloadInputStream = (ByteArrayOutputStream) respuestaServicio.getData();

@@ -19,30 +19,30 @@ public class GetProjectsController {
     private final ProjectTribunalServiceGetProjects projectTribunalServiceGetProjects;
 
     @GetMapping("/notReviewedProjects/{id}")
-    public ResponseEntity<?> getProjectsWithoutReview(@PathVariable("id") Long id) {
+    public ResponseEntity<ControllerAnswer> getProjectsWithoutReview(@PathVariable("id") Long id) {
         ServiceAnswer serviceAnswer = projectTribunalServiceGetProjects.getAllProjectsNotAcceptedNotReviewedByTribunalId(id);
         return createResponseEntity(serviceAnswer);
     }
 
     @GetMapping("/reviewedProjects/{id}")
-    public ResponseEntity<?> getReviewedProjects(@PathVariable("id") Long id) {
+    public ResponseEntity<ControllerAnswer> getReviewedProjects(@PathVariable("id") Long id) {
         ServiceAnswer serviceAnswer = projectTribunalServiceGetProjects.getAllProjectsNotAcceptedReviewedByTribunalId(id);
         return createResponseEntity(serviceAnswer);
     }
 
     @GetMapping("/acceptedProjects/{id}")
-    public ResponseEntity<?> getProjectsReadyToDefense(@PathVariable("id") Long id) {
+    public ResponseEntity<ControllerAnswer> getProjectsReadyToDefense(@PathVariable("id") Long id) {
         ServiceAnswer serviceAnswer = projectTribunalServiceGetProjects.getAllProjectsAcceptedWithoutDefensePointsByTribunalId(id);
         return createResponseEntity(serviceAnswer);
     }
 
     @GetMapping("/defendedProjects/{id}")
-    public ResponseEntity<?> getdefendedProjects(@PathVariable("id") Long id) {
+    public ResponseEntity<ControllerAnswer> getdefendedProjects(@PathVariable("id") Long id) {
         ServiceAnswer serviceAnswer = projectTribunalServiceGetProjects.getAllProjectsDefendedByTribunalId(id);
         return createResponseEntity(serviceAnswer);
     }
 
-    private ResponseEntity<?> createResponseEntity(ServiceAnswer serviceAnswer) {
+    private ResponseEntity<ControllerAnswer> createResponseEntity(ServiceAnswer serviceAnswer) {
         Object data = serviceAnswer.getData();
         ServiceMessage serviceMessage = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.OK;

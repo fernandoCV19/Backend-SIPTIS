@@ -30,7 +30,7 @@ public class RolesOperationsController {
     private final SiptisUserServiceRolesOperations siptisUserServiceRolesOperations;
 
     @GetMapping("/roles")
-    public ResponseEntity<?> getRoles(@RequestHeader(name = "Authorization") String token) {
+    public ResponseEntity<ControllerAnswer> getRoles(@RequestHeader(name = "Authorization") String token) {
         Long id = siptisUserServiceTokenOperations.getIdFromToken(token);
         ServiceAnswer answerService = siptisUserServiceRolesOperations.getRolesById(id);
         return createResponseEntity(answerService);
@@ -38,14 +38,14 @@ public class RolesOperationsController {
 
     @GetMapping("/roles/{userId}")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
-    public ResponseEntity<?> getRolesById(@PathVariable int userId) {
+    public ResponseEntity<ControllerAnswer> getRolesById(@PathVariable int userId) {
         Long id = Long.valueOf(userId);
         ServiceAnswer answerService = siptisUserServiceRolesOperations.getRolesById(id);
         return createResponseEntity(answerService);
     }
 
     @PutMapping("/updateRoles")
-    public ResponseEntity<?> updateRoles(@RequestHeader(name = "Authorization") String token, @Valid @RequestBody RolesListDTO dto) {
+    public ResponseEntity<ControllerAnswer> updateRoles(@RequestHeader(name = "Authorization") String token, @Valid @RequestBody RolesListDTO dto) {
         Long id = siptisUserServiceTokenOperations.getIdFromToken(token);
         ServiceAnswer answerService = siptisUserServiceRolesOperations.updateRoles(id, dto);
         return createResponseEntity(answerService);
@@ -53,13 +53,13 @@ public class RolesOperationsController {
 
     @PutMapping("/updateRoles/{userId}")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
-    public ResponseEntity<?> updateRoles(@PathVariable int userId, @Valid @RequestBody RolesListDTO dto) {
+    public ResponseEntity<ControllerAnswer> updateRoles(@PathVariable int userId, @Valid @RequestBody RolesListDTO dto) {
         Long id = Long.valueOf(userId);
         ServiceAnswer answerService = siptisUserServiceRolesOperations.updateRoles(id, dto);
         return createResponseEntity(answerService);
     }
 
-    private ResponseEntity<?> createResponseEntity(ServiceAnswer serviceAnswer) {
+    private ResponseEntity<ControllerAnswer> createResponseEntity(ServiceAnswer serviceAnswer) {
         Object data = serviceAnswer.getData();
         ServiceMessage messageService = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;

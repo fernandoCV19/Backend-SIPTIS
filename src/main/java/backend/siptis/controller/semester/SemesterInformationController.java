@@ -35,28 +35,28 @@ public class SemesterInformationController {
 
     @GetMapping("/checkActiveSemester")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
-    public ResponseEntity<?> checkActiveSemester() {
+    public ResponseEntity<ControllerAnswer> checkActiveSemester() {
         ServiceAnswer answerService = semesterService.existActiveSemester();
         return createResponse(answerService);
     }
 
     @GetMapping("/getActiveSemesterInformation")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
-    public ResponseEntity<?> getActiveSemester() {
+    public ResponseEntity<ControllerAnswer> getActiveSemester() {
         ServiceAnswer answerService = semesterService.getCurrentSemester();
         return createResponse(answerService);
     }
 
     @GetMapping("/getCurrentSemesterPeriod")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
-    public ResponseEntity<?> getcurrentSemesterPeriod() {
+    public ResponseEntity<ControllerAnswer> getcurrentSemesterPeriod() {
         ServiceAnswer answerService = semesterService.getCurrentPeriod();
         return createResponse(answerService);
     }
 
     @PostMapping("/startSemester")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
-    public ResponseEntity<?> createSemester(
+    public ResponseEntity<ControllerAnswer> createSemester(
             @Valid @RequestBody SemesterInformationDTO dto) {
         ServiceAnswer answerService = semesterService.startSemester(dto);
         return createResponse(answerService);
@@ -64,7 +64,7 @@ public class SemesterInformationController {
 
     @PutMapping("/editSemester")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
-    public ResponseEntity<?> editSemester(
+    public ResponseEntity<ControllerAnswer> editSemester(
             @Valid @RequestBody EditSemesterInfoDTO dto) {
         ServiceAnswer answerService = semesterService.editSemester(dto);
         return createResponse(answerService);
@@ -72,14 +72,14 @@ public class SemesterInformationController {
 
     @PutMapping("/closeSemester/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
-    public ResponseEntity<?> closeSemester(@PathVariable int id) {
+    public ResponseEntity<ControllerAnswer> closeSemester(@PathVariable int id) {
         Long semesterId = Long.valueOf(id);
         ServiceAnswer answerService = semesterService.closeSemester(semesterId);
         return createResponse(answerService);
     }
 
 
-    private ResponseEntity<?> createResponse(ServiceAnswer serviceAnswer) {
+    private ResponseEntity<ControllerAnswer> createResponse(ServiceAnswer serviceAnswer) {
         Object data = serviceAnswer.getData();
         ServiceMessage messageService = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.NOT_FOUND;

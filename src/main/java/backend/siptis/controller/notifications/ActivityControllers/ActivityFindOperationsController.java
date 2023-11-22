@@ -19,7 +19,7 @@ public class ActivityFindOperationsController {
     private final ActivityServiceFindOperations activityServiceFindOperations;
 
     @GetMapping()
-    public ResponseEntity<?> findAll() {
+    public ResponseEntity<ControllerAnswer> findAll() {
         return new ResponseEntity<>(
                 ControllerAnswer.builder()
                         .data(activityServiceFindOperations.findAllVO())

@@ -19,7 +19,7 @@ public class AcceptProjectController {
     private final ProjectTribunalServiceAcceptProject tribunalServiceAcceptProject;
 
     @GetMapping("/acceptProject/{idProject}/{idReviewer}")
-    public ResponseEntity<?> acceptProject(@PathVariable("idProject") Long idProject, @PathVariable("idReviewer") Long idReviewer) {
+    public ResponseEntity<ControllerAnswer> acceptProject(@PathVariable("idProject") Long idProject, @PathVariable("idReviewer") Long idReviewer) {
         ServiceAnswer serviceAnswer = tribunalServiceAcceptProject.acceptProject(idReviewer, idProject);
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         if (serviceAnswer.getServiceMessage().equals(ServiceMessage.OK)) {

@@ -30,7 +30,7 @@ public class UserAreaController {
 
 
     @GetMapping("/getAreas")
-    public ResponseEntity<?> getAllAreas() {
+    public ResponseEntity<ControllerAnswer> getAllAreas() {
         ServiceAnswer answerService = userAreaService.getAllUserAreas();
         return createResponseEntity(answerService);
     }
@@ -38,20 +38,20 @@ public class UserAreaController {
 
     @PostMapping("/createArea")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<?> createArea(@RequestBody CreateAreaDTO dto) {
+    public ResponseEntity<ControllerAnswer> createArea(@RequestBody CreateAreaDTO dto) {
         ServiceAnswer answerService = userAreaService.createUserArea(dto);
         return createResponseEntity(answerService);
     }
 
     @DeleteMapping("/deleteArea/{userId}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<?> deleteArea(@PathVariable int userId) {
+    public ResponseEntity<ControllerAnswer> deleteArea(@PathVariable int userId) {
         Long id = Long.valueOf(userId);
         ServiceAnswer answerService = userAreaService.deleteUserArea(id);
         return createResponseEntity(answerService);
     }
 
-    private ResponseEntity<?> createResponseEntity(ServiceAnswer serviceAnswer) {
+    private ResponseEntity<ControllerAnswer> createResponseEntity(ServiceAnswer serviceAnswer) {
         Object data = serviceAnswer.getData();
         ServiceMessage messageService = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;

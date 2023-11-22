@@ -23,7 +23,7 @@ public class ActivityModifyOperationsController {
     private final SiptisUserServiceGeneralUserOperations siptisUserServiceGeneralUserOperations;
 
     @PostMapping("/create")
-    public ResponseEntity<?> saveActivity(@RequestHeader(name = "Authorization") String token,
+    public ResponseEntity<ControllerAnswer> saveActivity(@RequestHeader(name = "Authorization") String token,
                                           @RequestBody ActivityDTO activityDTO) {
 
         Long idL = siptisUserServiceTokenOperations.getIdFromToken(token);
@@ -33,16 +33,16 @@ public class ActivityModifyOperationsController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateActivity(@PathVariable int id, @RequestBody ActivityDTO activityDTO) {
+    public ResponseEntity<ControllerAnswer> updateActivity(@PathVariable int id, @RequestBody ActivityDTO activityDTO) {
         return createResponse(activityServiceModifyOperations.update(activityDTO, id));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteActivity(@PathVariable int id) {
+    public ResponseEntity<ControllerAnswer> deleteActivity(@PathVariable int id) {
         return createResponse(activityServiceModifyOperations.delete(id));
     }
 
-    private ResponseEntity<?> createResponse(ServiceAnswer serviceAnswer) {
+    private ResponseEntity<ControllerAnswer> createResponse(ServiceAnswer serviceAnswer) {
         ServiceMessage serviceMessage = serviceAnswer.getServiceMessage();
         if (serviceMessage == ServiceMessage.NOT_FOUND)
             return new ResponseEntity<>(

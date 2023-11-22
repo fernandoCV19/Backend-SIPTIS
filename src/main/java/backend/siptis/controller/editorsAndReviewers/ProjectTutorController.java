@@ -19,25 +19,25 @@ public class ProjectTutorController {
     private final ProjectTutorService projectTutorService;
 
     @GetMapping("/notReviewedProjects/{id}")
-    public ResponseEntity<?> getProjectsWithoutReview(@PathVariable("id") Long id) {
+    public ResponseEntity<ControllerAnswer> getProjectsWithoutReview(@PathVariable("id") Long id) {
         ServiceAnswer serviceAnswer = projectTutorService.getAllProjectsNotAcceptedNotReviewedByTutorId(id);
         return createResponseEntity(serviceAnswer);
     }
 
     @GetMapping("/reviewedProjects/{id}")
-    public ResponseEntity<?> getReviewedProjects(@PathVariable("id") Long id) {
+    public ResponseEntity<ControllerAnswer> getReviewedProjects(@PathVariable("id") Long id) {
         ServiceAnswer serviceAnswer = projectTutorService.getAllProjectsNotAcceptedReviewedByTutorId(id);
         return createResponseEntity(serviceAnswer);
     }
 
     @GetMapping("/acceptedProjects/{id}")
-    public ResponseEntity<?> getAcceptedProjects(@PathVariable("id") Long id) {
+    public ResponseEntity<ControllerAnswer> getAcceptedProjects(@PathVariable("id") Long id) {
         ServiceAnswer serviceAnswer = projectTutorService.getAllProjectsAcceptedByTutorId(id);
         return createResponseEntity(serviceAnswer);
     }
 
     @GetMapping("/acceptProject/{idProject}/{idReviewer}")
-    public ResponseEntity<?> acceptProject(@PathVariable("idProject") Long idProject, @PathVariable("idReviewer") Long idReviewer) {
+    public ResponseEntity<ControllerAnswer> acceptProject(@PathVariable("idProject") Long idProject, @PathVariable("idReviewer") Long idReviewer) {
         ServiceAnswer serviceAnswer = projectTutorService.acceptProject(idReviewer, idProject);
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         if (serviceAnswer.getServiceMessage().equals(ServiceMessage.OK)) {
@@ -47,7 +47,7 @@ public class ProjectTutorController {
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
 
-    private ResponseEntity<?> createResponseEntity(ServiceAnswer serviceAnswer) {
+    private ResponseEntity<ControllerAnswer> createResponseEntity(ServiceAnswer serviceAnswer) {
         Object data = serviceAnswer.getData();
         ServiceMessage serviceMessage = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.OK;

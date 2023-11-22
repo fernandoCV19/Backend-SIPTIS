@@ -22,12 +22,12 @@ public class RoleController {
     private final RoleService roleService;
 
     @GetMapping("/allowedRoles")
-    public ResponseEntity<?> getAllowedRoles() {
+    public ResponseEntity<ControllerAnswer> getAllowedRoles() {
         ServiceAnswer answerService = roleService.getAllowedRoles();
         return createResponseEntity(answerService);
     }
 
-    private ResponseEntity<?> createResponseEntity(ServiceAnswer serviceAnswer) {
+    private ResponseEntity<ControllerAnswer> createResponseEntity(ServiceAnswer serviceAnswer) {
         Object data = serviceAnswer.getData();
         ServiceMessage messageService = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
