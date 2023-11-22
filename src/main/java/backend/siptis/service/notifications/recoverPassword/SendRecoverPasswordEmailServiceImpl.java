@@ -4,5 +4,6 @@ public class SendRecoverPasswordEmailServiceImpl implements SendRecoverPasswordE
     @Override
     public void sendRecoverPasswordEmail(String email, String token) {
         // TODO Este metodo arma el html y lo envia con el email factory
+
     }
 }

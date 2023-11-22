@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
-public class RefreshTokenServiceTest {
+class RefreshTokenServiceTest {
     @Autowired
     private RefreshTokenService refreshTokenService;
     private RefreshToken refreshToken;
@@ -30,24 +30,24 @@ public class RefreshTokenServiceTest {
     }
     @Test
     @DisplayName("test for get allowed roles")
-    public void givenTokenWhenFindByTokenThenRefreshToken(){
+    void givenTokenWhenFindByTokenThenRefreshToken(){
         assertNull(refreshTokenService.findByToken(""));
     }
 
     @Test
     @DisplayName("test for create refresh token with siptis user")
     @Sql(scripts = {"/custom_imports/refresh_token_service_test.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    public void givenNullWhenCreateRefreshTokenBySiptisUserThenRefreshToken(){
+    void givenNullWhenCreateRefreshTokenBySiptisUserThenRefreshToken(){
         assertNull(refreshTokenService.createRefreshToken( (SiptisUser) null));
     }
     @Test
     @DisplayName("test for get create refresh token with user detail")
-    public void givenNullWhenCreateRefreshTokenByUserDetailImpThenRefreshToken(){
+    void givenNullWhenCreateRefreshTokenByUserDetailImpThenRefreshToken(){
         assertNull(refreshTokenService.createRefreshToken( (UserInformationService.UserDetailImp) null));
     }
     @Test
     @DisplayName("test for verify expiration date refresh token")
-    public void givenRefreshTokenWhenVerifyExpirationDateThenTrue(){
+    void givenRefreshTokenWhenVerifyExpirationDateThenTrue(){
         startToken();
         assertFalse(refreshTokenService.verifyValidExpirationDate(refreshToken));
     }

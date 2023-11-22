@@ -22,15 +22,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 @Transactional
 @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-public class SemesterInformationServiceTest {
+class SemesterInformationServiceTest {
     private static final SemesterInformationDTO dto = new SemesterInformationDTO();
     private static final EditSemesterInfoDTO editDto = new EditSemesterInfoDTO();
-    private final SemesterInformationService semesterInformationService;
-
     @Autowired
-    public SemesterInformationServiceTest(SemesterInformationService semesterInformationService) {
-        this.semesterInformationService = semesterInformationService;
-    }
+    private SemesterInformationService semesterInformationService;
 
     private ServiceAnswer startSemester() {
         dto.setStartDate(LocalDate.of(2023, 04, 11));
@@ -50,7 +46,7 @@ public class SemesterInformationServiceTest {
     @Test
     @Rollback
     @DisplayName("Test for create semester")
-    public void givenSemesterInformationDTOWhenCreateSemesterThenServiceMessageSEMESTER_STARTED() {
+    void givenSemesterInformationDTOWhenCreateSemesterThenServiceMessageSEMESTER_STARTED() {
         ServiceAnswer answer = startSemester();
         assertEquals(ServiceMessage.SEMESTER_STARTED, answer.getServiceMessage());
     }
@@ -58,7 +54,7 @@ public class SemesterInformationServiceTest {
     @Test
     @Rollback
     @DisplayName("Test for create semester with invalid dates")
-    public void givenInvalidDatesWhenCreateSemesterThenServiceAnswerERROR_SEMESTER_DATES() {
+    void givenInvalidDatesWhenCreateSemesterThenServiceAnswerERROR_SEMESTER_DATES() {
         dto.setStartDate(LocalDate.of(2023, 04, 11));
         dto.setEndDate(LocalDate.of(2023, 04, 11));
         dto.setPeriod("1-2023");
@@ -68,7 +64,8 @@ public class SemesterInformationServiceTest {
 
     @Test
     @Rollback
-    public void createSemesterFailSemesterAlreadyExistTest() {
+    @DisplayName("Test for create semester fail")
+    void givenSemesterDTO_whenCreateSemester_thenServiceMessageSEMESTER_ALREADY_EXIST() {
         startSemester();
         ServiceAnswer answer = semesterInformationService.startSemester(dto);
         assertEquals(ServiceMessage.SEMESTER_ALREADY_EXIST, answer.getServiceMessage());
@@ -76,7 +73,8 @@ public class SemesterInformationServiceTest {
 
     @Test
     @Rollback
-    public void editSemesterInformationFailInvalidDatesTest() {
+    @DisplayName("Test for edit semester with wrong dates")
+    void givenEditSemesterDTO_whenEditSemesterInformation_thenServiceMessageERROR_SEMESTER_DATES() {
         startSemester();
         editSemester();
         editDto.setStartDate(LocalDate.of(2024, 05, 20));
@@ -86,7 +84,7 @@ public class SemesterInformationServiceTest {
 
     @Test
     @Rollback
-    public void editSemesterInformationFailNoCurrentSemesterTest() {
+    void givenEditSemesterDTO_whenEditSemesterInformation_thenServiceMessageNO_CURRENT_SEMESTER() {
         editSemester();
         ServiceAnswer answer = editSemester();
         assertEquals(ServiceMessage.NO_CURRENT_SEMESTER, answer.getServiceMessage());
@@ -94,7 +92,7 @@ public class SemesterInformationServiceTest {
 
     @Test
     @Rollback
-    public void editSemesterInformationFailWrongIdTest() {
+    void givenEditSemesterDTO_whenEditSemesterInformationthenServiceMessageID_DOES_NOT_EXIST() {
         startSemester();
         editSemester();
         editDto.setId(123L);
@@ -104,7 +102,7 @@ public class SemesterInformationServiceTest {
 
     @Test
     @Rollback
-    public void existActiveSemesterSuccessTest() {
+    void givenSemesterInformation_whenExistActiveSemesterthenServiceMessageSEMESTER_INFORMATION() {
         startSemester();
         ServiceAnswer answer = semesterInformationService.existActiveSemester();
         assertEquals(ServiceMessage.SEMESTER_INFORMATION, answer.getServiceMessage());
@@ -112,14 +110,14 @@ public class SemesterInformationServiceTest {
 
     @Test
     @Rollback
-    public void existActiveSemesterFailTest() {
+    void givenSemester_whenExistActiveSemester_thenServiceMessageSEMESTER_INFORMATION() {
         ServiceAnswer answer = semesterInformationService.existActiveSemester();
         assertEquals(ServiceMessage.SEMESTER_INFORMATION, answer.getServiceMessage());
     }
 
     @Test
     @Rollback
-    public void getCurrentSemesterInformationSuccessTest() {
+    void getCurrentSemesterInformationSuccessTest() {
         startSemester();
         ServiceAnswer answer = semesterInformationService.getCurrentSemester();
         assertEquals(ServiceMessage.SEMESTER_INFORMATION, answer.getServiceMessage());
@@ -127,14 +125,14 @@ public class SemesterInformationServiceTest {
 
     @Test
     @Rollback
-    public void getCurrentSemesterInformationFailNoCurrentSemesterTest() {
+    void getCurrentSemesterInformationFailNoCurrentSemesterTest() {
         ServiceAnswer answer = semesterInformationService.getCurrentSemester();
         assertEquals(ServiceMessage.NO_CURRENT_SEMESTER, answer.getServiceMessage());
     }
 
     @Test
     @Rollback
-    public void getCurrentPeriodSuccessTest() {
+    void givenSemesterInformation_whenGetCurrentPeriod_thenServiceMessageSEMESTER_INFORMATION() {
         startSemester();
         ServiceAnswer answer = semesterInformationService.getCurrentPeriod();
         assertEquals(ServiceMessage.SEMESTER_INFORMATION, answer.getServiceMessage());
@@ -142,14 +140,14 @@ public class SemesterInformationServiceTest {
 
     @Test
     @Rollback
-    public void getCurrentPeriodFailNoCurrentSemesterTest() {
+    void getCurrentPeriodFailNoCurrentSemesterTest() {
         ServiceAnswer answer = semesterInformationService.getCurrentPeriod();
         assertEquals(ServiceMessage.NO_CURRENT_SEMESTER, answer.getServiceMessage());
     }
 
     @Test
     @Rollback
-    public void closeSemesterSuccessTest() {
+    void closeSemesterSuccessTest() {
         startSemester();
         ServiceAnswer answer = semesterInformationService.closeSemester(1L);
         assertEquals(ServiceMessage.NO_CURRENT_SEMESTER, answer.getServiceMessage());
@@ -157,7 +155,7 @@ public class SemesterInformationServiceTest {
 
     @Test
     @Rollback
-    public void closeSemesterFailNoCurrentSemesterTest() {
+    void closeSemesterFailNoCurrentSemesterTest() {
         ServiceAnswer answer = semesterInformationService.closeSemester(1L);
         assertEquals(ServiceMessage.NO_CURRENT_SEMESTER, answer.getServiceMessage());
     }

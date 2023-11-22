@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
-public class RoleServiceTest {
+class RoleServiceTest {
     private RoleService roleService;
 
     @Autowired
@@ -23,23 +23,23 @@ public class RoleServiceTest {
 
     @Test
     @DisplayName("test for get allowed roles")
-    public void givenRolesWhenGetAllowedRolesThenServiceMessageOk(){
+    void givenRolesWhenGetAllowedRolesThenServiceMessageOk(){
         assertEquals(ServiceMessage.OK,roleService.getAllowedRoles().getServiceMessage());
     }
     @Test
     @DisplayName("test for get allowed roles")
-    public void givenRoleNameWhenGetRoleByNameThenServiceMessageERROR(){
+    void givenRoleNameWhenGetRoleByNameThenServiceMessageERROR(){
         assertEquals(ServiceMessage.ERROR,roleService.getRoleByName("wrong name").getServiceMessage());
     }
     @Test
     @DisplayName("test for get not assignable roles")
-    public void givenRolesWhenGetNotAssignableRolesThenServiceMessageOk(){
+    void givenRolesWhenGetNotAssignableRolesThenServiceMessageOk(){
         Set<String> list = roleService.notAssignableRoles();
         assertFalse(list.isEmpty());
     }
     @Test
     @DisplayName("test for get director roles")
-    public void givenRolesWhenGetDirectorRolesThenServiceMessageOk(){
+    void givenRolesWhenGetDirectorRolesThenServiceMessageOk(){
         Set<String> list = roleService.directorRoles();
         assertFalse(list.isEmpty());
     }

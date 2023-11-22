@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
-public class SiptisUserServiceAdminOperationsTest {
+class SiptisUserServiceAdminOperationsTest {
     @Autowired
     private SiptisUserServiceAdminOperations siptisUserServiceAdminOperations;
     private RegisterAdminDTO registerAdminDTO;
@@ -28,7 +28,7 @@ public class SiptisUserServiceAdminOperationsTest {
 
     @Test
     @Sql(scripts = {"/custom_imports/create_users.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    public void givenWhenRegisterAdmin(){
+    void given_WhenRegisterAdmin_ThenServiceMessageEMAIL_ALREADY_EXIST(){
         startAdminDTO();
         ServiceAnswer answer = siptisUserServiceAdminOperations.registerAdmin(registerAdminDTO);
         assertEquals(ServiceMessage.EMAIL_ALREADY_EXIST, answer.getServiceMessage());
@@ -36,19 +36,19 @@ public class SiptisUserServiceAdminOperationsTest {
 
     @Test
     @DisplayName("test get admin user list")
-    public void givenSiptisUsersWhenGetAdminUserListThenServiceMessageOk(){
+    void given_SiptisUsers_WhenGetAdminUserList_ThenServiceMessageOk(){
         ServiceAnswer answer = siptisUserServiceAdminOperations.getAdminUserList("",Pageable.ofSize(10));
         assertEquals(ServiceMessage.OK, answer.getServiceMessage());
     }
     @Test
     @DisplayName("test admin edit user")
-    public void givenWrongUserIdWhenEditUserInformationThenServiceMessageID_DOES_NOT_EXIST(){
+    void givenWrongUserId_WhenEditUserInformation_ThenServiceMessageID_DOES_NOT_EXIST(){
         ServiceAnswer answer = siptisUserServiceAdminOperations.adminEditUserInformation(123456L,null);
         assertEquals(ServiceMessage.ID_DOES_NOT_EXIST, answer.getServiceMessage());
     }
     @Test
     @DisplayName("test get possible tribunals list")
-    public void givenSiptisUsersWhenGetPossibleTribunalsThenServiceMessageOk(){
+    void givenSiptisUsers_WhenGetPossibleTribunals_ThenServiceMessageOk(){
         ServiceAnswer answer = siptisUserServiceAdminOperations.getPossibleTribunals();
         assertEquals(ServiceMessage.OK, answer.getServiceMessage());
     }

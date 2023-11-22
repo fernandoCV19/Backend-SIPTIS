@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
-public class SiptisUserServiceModifyUserOperationsTest {
+class SiptisUserServiceModifyUserOperationsTest {
     @Autowired
     private SiptisUserServiceModifyUserOperations siptisUserServiceModifyUserOperations;
     private RegisterUserDTO registerUserDTO;
@@ -26,13 +26,13 @@ public class SiptisUserServiceModifyUserOperationsTest {
 
     @Test
     @DisplayName("test update user areas")
-    public void givenWrongUserIdWhenUpdateAreasThenServiceMessageID_DOES_NOT_EXIST(){
+    void givenWrongUserIdWhenUpdateAreasThenServiceMessageID_DOES_NOT_EXIST(){
         assertEquals(ServiceMessage.ID_DOES_NOT_EXIST, siptisUserServiceModifyUserOperations.updateAreas(123123l, null).getServiceMessage());
     }
 
     @Test
     @DisplayName("test user edit personal information")
-    public void givenWrongUserIdWhenEditPersonalInformationThenServiceMessageNOT_FOUND(){
+    void givenWrongUserIdWhenEditPersonalInformationThenServiceMessageNOT_FOUND(){
         assertEquals(ServiceMessage.NOT_FOUND, siptisUserServiceModifyUserOperations.userEditPersonalInformation(123123L, null).getServiceMessage());
     }
 
@@ -40,7 +40,7 @@ public class SiptisUserServiceModifyUserOperationsTest {
     @Test
     @DisplayName("test register user ony credentials")
     @Sql(scripts = {"/custom_imports/create_users.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    public void givenBadEmailWhenRegisterUserThenServiceMessageEMAIL_ALREADY_EXIST(){
+    void givenBadEmailWhenRegisterUserThenServiceMessageEMAIL_ALREADY_EXIST(){
         createRegisterUserDTO();
         assertEquals(ServiceMessage.EMAIL_ALREADY_EXIST, siptisUserServiceModifyUserOperations.registerUser("estudiante1@gmail.com", "").getServiceMessage());
     }
@@ -48,7 +48,7 @@ public class SiptisUserServiceModifyUserOperationsTest {
     @Test
     @DisplayName("test register user")
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void givenRegisterUserDTOWhenRegisterUserThenServiceMessageEMAIL_ALREADY_EXIST(){
+    void givenRegisterUserDTOWhenRegisterUserThenServiceMessageEMAIL_ALREADY_EXIST(){
         createRegisterUserDTO();
         registerUserDTO.setEmail("");
         assertEquals(ServiceMessage.ERROR, siptisUserServiceModifyUserOperations.registerUser(registerUserDTO).getServiceMessage());

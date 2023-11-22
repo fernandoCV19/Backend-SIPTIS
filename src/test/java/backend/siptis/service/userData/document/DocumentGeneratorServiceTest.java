@@ -13,8 +13,7 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
-public class DocumentGeneratorServiceTest {
+class DocumentGeneratorServiceTest {
     @Autowired
     private DocumentGeneratorService documentGeneratorService;
     private LetterGenerationRequestDTO letterGenerationRequestDTO;
@@ -26,61 +25,61 @@ public class DocumentGeneratorServiceTest {
     }
     @Test
     @DisplayName("Test get all documents from user")
-    public void givenBadUserIdWhenGetAllDocumentsFromUserThenServiceMessageNOT_FOUND(){
+    void givenBadUserId_WhenGetAllDocumentsFromUser_ThenServiceMessageNOT_FOUND(){
         assertEquals(ServiceMessage.NOT_FOUND, documentGeneratorService.getAllDocumentsFromUser(123L).getServiceMessage());
     }
     @Test
     @DisplayName("Test get all documents from project")
-    public void givenBadIdProjectWhenGetAllDocumentsFromProjectThenServiceMessageNOT_FOUND(){
+    void givenBadIdProject_WhenGetAllDocumentsFromProject_ThenServiceMessageNOT_FOUND(){
         assertEquals(ServiceMessage.NOT_FOUND, documentGeneratorService.getAllDocumentsFromProject(123L).getServiceMessage());
     }
     @Test
     @DisplayName("Test delete document")
-    public void givenBadIdDocumentWhenDeleteDocumentThenServiceMessageNOT_FOUND(){
+    void givenBadIdDocument_WhenDeleteDocument_ThenServiceMessageNOT_FOUND(){
         assertEquals(ServiceMessage.NOT_FOUND, documentGeneratorService.deleteDocument(123L).getServiceMessage());
     }
     @Test
     @DisplayName("Test generate report ")
-    public void givenBadProjectIdWhenGenerateReportThenServiceMessageError(){
+    void givenBadProjectId_WhenGenerateReport_ThenServiceMessageError(){
         assertEquals(ServiceMessage.ERROR, documentGeneratorService.generateReport(null, 123L, 123l).getServiceMessage());
     }
     @Test
     @DisplayName("Test generate documentary record ")
-    public void givenBadProjectIdWhenGenerateDocumentaryRecordThenServiceMessageError(){
+    void givenBadProjectId_WhenGenerateDocumentaryRecord_ThenServiceMessageError(){
         assertEquals(ServiceMessage.ERROR, documentGeneratorService.generateDocumentaryRecord(null, 123L, 123l).getServiceMessage());
     }
     @Test
     @DisplayName("Test generate solvency ")
-    public void givenBadUserIdWhenGenerateSolvencyThenServiceMessageNOT_FOUND(){
+    void givenBadUserId_WhenGenerateSolvency_ThenServiceMessageNOT_FOUND(){
         assertEquals(ServiceMessage.NOT_FOUND, documentGeneratorService.generateSolvency( 123l).getServiceMessage());
     }
     @Test
     @DisplayName("Test generate teacher tribunal request ")
-    public void givenLetterGenerationRequestDTOWhenGenerateTeacherTribunalRequestThenServiceMessageNOT_FOUND() throws IOException {
+    void givenLetterGenerationRequestDTO_WhenGenerateTeacherTribunalRequest_ThenServiceMessageNOT_FOUND() throws IOException {
         createLetterGenerationRequestDTO();
         assertEquals(ServiceMessage.NOT_FOUND, documentGeneratorService.teacherTribunalRequest( letterGenerationRequestDTO).getServiceMessage());
     }
     @Test
     @DisplayName("Test generate tutor tribunal request ")
-    public void givenLetterGenerationRequestDTOWhenGenerateTutorTribunalRequestThenServiceMessageNOT_FOUND() throws IOException {
+    void givenLetterGenerationRequestDTO_WhenGenerateTutorTribunalRequest_ThenServiceMessageNOT_FOUND() throws IOException {
         createLetterGenerationRequestDTO();
         assertEquals(ServiceMessage.NOT_FOUND, documentGeneratorService.tutorTribunalRequest( letterGenerationRequestDTO).getServiceMessage());
     }
     @Test
     @DisplayName("Test generate supervisor tribunal request ")
-    public void givenLetterGenerationRequestDTOWhenGenerateSupervisorTribunalRequestThenServiceMessageNOT_FOUND() throws IOException {
+    void givenLetterGenerationRequestDTO_WhenGenerateSupervisorTribunalRequest_ThenServiceMessageNOT_FOUND() throws IOException {
         createLetterGenerationRequestDTO();
         assertEquals(ServiceMessage.NOT_FOUND, documentGeneratorService.supervisorTribunalRequest( letterGenerationRequestDTO).getServiceMessage());
     }
     @Test
     @DisplayName("Test generate student tribunal request ")
-    public void givenLetterGenerationRequestDTOWhenGenerateStudentTribunalRequestThenServiceMessageNOT_FOUND() throws IOException {
+    void givenLetterGenerationRequestDTO_WhenGenerateStudentTribunalRequest_ThenServiceMessageNOT_FOUND() throws IOException {
         createLetterGenerationRequestDTO();
         assertEquals(ServiceMessage.NOT_FOUND, documentGeneratorService.studentTribunalRequest( letterGenerationRequestDTO).getServiceMessage());
     }
     @Test
     @DisplayName("Test generate  tribunal approval ")
-    public void givenLetterGenerationRequestDTOWhenGenerateTribunalApprovalThenServiceMessageNOT_FOUND() throws IOException {
+    void givenLetterGenerationRequestDTO_WhenGenerateTribunalApproval_ThenServiceMessageNOT_FOUND() throws IOException {
         createLetterGenerationRequestDTO();
         assertEquals(ServiceMessage.NOT_FOUND, documentGeneratorService.generateTribunalApproval( letterGenerationRequestDTO).getServiceMessage());
     }

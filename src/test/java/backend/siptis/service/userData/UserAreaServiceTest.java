@@ -12,8 +12,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
-public class UserAreaServiceTest {
+class UserAreaServiceTest {
 
     @Autowired
     private UserAreaService userAreaService;
@@ -26,14 +25,14 @@ public class UserAreaServiceTest {
 
     @Test
     @DisplayName("Test for get all user areas list")
-    public void givenNoAreasWhenGetAllUserAreasThenServiceMessageOK(){
+    void givenNoAreasWhenGetAllUserAreasThenServiceMessageOK(){
         ServiceAnswer answer = userAreaService.getAllUserAreas();
         assertEquals(ServiceMessage.OK, answer.getServiceMessage());
     }
 
     @Test
     @DisplayName("Test for create user area")
-    public void givenCreateAreaDTOWhenCreateUserAreaThenServiceMessageAREA_CREATED(){
+    void givenCreateAreaDTOWhenCreateUserAreaThenServiceMessageAREA_CREATED(){
         createDTO();
         ServiceAnswer answer = userAreaService.createUserArea(createAreaDTO);
         assertEquals(ServiceMessage.AREA_CREATED, answer.getServiceMessage());
@@ -41,7 +40,7 @@ public class UserAreaServiceTest {
 
     @Test
     @DisplayName("Test for delete user area")
-    public void givenNoAreaWhenDeleteUserAreaThenServiceMessageAREA_NOT_FOUND(){
+    void givenNoArea_WhenDeleteUserArea_ThenServiceMessageAREA_NOT_FOUND(){
         createDTO();
         ServiceAnswer answer = userAreaService.deleteUserArea(1L);
         assertEquals(ServiceMessage.AREA_NOT_FOUND, answer.getServiceMessage());
@@ -49,13 +48,13 @@ public class UserAreaServiceTest {
 
     @Test
     @DisplayName("Test for get user area by id")
-    public void givenIdWhenGetUserAreaByIdThenNull(){
+    void givenId_WhenGetUserAreaById_ThenNull(){
         assertNull(userAreaService.getUserAreaById(123));
     }
 
     @Test
     @DisplayName("Test for verify if exist user area by id")
-    public void givenIdWhenUserAreaExistByIdThenFalse(){
+    void givenId_WhenUserAreaExistById_ThenFalse(){
         assertFalse(userAreaService.userAreaExistById(123));
     }
 

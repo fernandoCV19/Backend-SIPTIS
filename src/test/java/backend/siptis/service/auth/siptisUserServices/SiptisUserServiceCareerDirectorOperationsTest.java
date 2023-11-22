@@ -13,27 +13,27 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
-public class SiptisUserServiceCareerDirectorOperationsTest {
+class SiptisUserServiceCareerDirectorOperationsTest {
     @Autowired
     private SiptisUserServiceCareerDirectorOperations siptisUserServiceCareerDirectorOperations;
 
     @Test
     @DisplayName("test register user as career director")
-    public void givenWrongRoleAndUserIDWhenRegisterUserAsCareerDirectorThenServiceMessageError(){
+    void givenWrongRoleAndUserIDWhenRegisterUserAsCareerDirectorThenServiceMessageError(){
         ServiceAnswer answer = siptisUserServiceCareerDirectorOperations.registerUserAsCareerDirector(123L, "wrong role");
         assertEquals(ServiceMessage.ERROR, answer.getServiceMessage());
     }
 
     @Test
     @DisplayName("test get director personal information")
-    public void givenWrongRoleWhenGetDirectorPersonalInformationThenServiceMessageError(){
+    void givenWrongRoleWhenGetDirectorPersonalInformationThenServiceMessageError(){
         ServiceAnswer answer = siptisUserServiceCareerDirectorOperations.getDirectorPersonalInformation( "wrong role");
         assertEquals(ServiceMessage.NOT_FOUND, answer.getServiceMessage());
     }
 
     @Test
     @DisplayName("Test get Career director name")
-    public void givenWhenThenServiceMessage(){
+    void givenWhenThenServiceMessage(){
         String answer = siptisUserServiceCareerDirectorOperations.getCareerDirectorName( "wrong career");
         assertNull(answer);
     }

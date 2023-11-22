@@ -10,14 +10,13 @@ import org.springframework.test.annotation.DirtiesContext;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
-public class UserCareerServiceTest {
+class UserCareerServiceTest {
     @Autowired
     private UserCareerService userCareerService;
 
     @Test
     @DisplayName("Test for get non existing career by name")
-    public void givenNonExistingCareerNameWhenGetCareerByNameThenServiceMessageNotFound(){
+    void givenNonExistingCareerName_WhenGetCareerByName_ThenServiceMessageNotFound(){
         ServiceAnswer answer = userCareerService.getCareerByName("TESIS");
         assertEquals(ServiceMessage.NOT_FOUND, answer.getServiceMessage());
     }

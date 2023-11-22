@@ -14,7 +14,6 @@ public interface RecoverPasswordEmailService {
 
     String readFile(String filen) throws IOException;
 
-
     ServiceAnswer sendRecoverPasswordEmail(String email) throws MessagingException, IOException;
 
     ChangePasswordDTO createChangePasswordDTO(String email);

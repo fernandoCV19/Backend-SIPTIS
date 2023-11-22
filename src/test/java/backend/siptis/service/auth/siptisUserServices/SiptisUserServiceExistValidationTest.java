@@ -10,24 +10,24 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
-public class SiptisUserServiceExistValidationTest {
+class SiptisUserServiceExistValidationTest {
     @Autowired
     private SiptisUserServiceExistValidation siptisUserServiceExistValidation;
 
     @Test
     @DisplayName("test for check if exist user by id")
-    public void givenIdWhenExistByIdThenTrue(){
+    void givenIdWhenExistByIdThenTrue(){
         assertFalse(siptisUserServiceExistValidation.existsUserById(123456l));
     }
     @Test
     @DisplayName("test for check if exist user by email")
-    public void givenEmailWhenExistUserByEmailThenFalse(){
+    void givenEmailWhenExistUserByEmailThenFalse(){
         assertFalse(siptisUserServiceExistValidation.existsUserByEmail("fake email"));
     }
 
     @Test
     @DisplayName("test for check if exist director role")
-    public void givenDirectorRoleWhenExistCareerDirectorFalse(){
+    void givenDirectorRoleWhenExistCareerDirectorFalse(){
         assertFalse(siptisUserServiceExistValidation.existCareerDirector("fake email"));
     }
 }

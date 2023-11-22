@@ -21,6 +21,29 @@ import java.io.IOException;
 public class EmailController {
 
     private final RecoverPasswordEmailService emailServiceImpl;
+
+    @GetMapping("/askemail/{email}")
+    public ResponseEntity<?> sendEmailTest(@PathVariable String email) throws MessagingException, IOException {
+        ServiceAnswer answer = emailServiceImpl.sendRecoverPasswordEmail(email);
+        return crearResponseEntityRegistrar(answer);
+    }
+
+    private ResponseEntity<?> crearResponseEntityRegistrar(ServiceAnswer serviceAnswer) {
+        Object data = serviceAnswer.getData();
+        ServiceMessage messageService = serviceAnswer.getServiceMessage();
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+
+        if (messageService == ServiceMessage.OK) {
+            httpStatus = HttpStatus.OK;
+        }
+
+        if (messageService == ServiceMessage.NOT_FOUND || messageService == ServiceMessage.ERROR)
+            httpStatus = HttpStatus.NOT_FOUND;
+
+        ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(data).message(messageService.toString()).build();
+        return new ResponseEntity<>(controllerAnswer, httpStatus);
+    }
+
 /*
     @GetMapping("")
     public String sendNotification() throws MessagingException, IOException {

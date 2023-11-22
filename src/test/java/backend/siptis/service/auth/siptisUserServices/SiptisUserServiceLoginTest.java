@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
-public class SiptisUserServiceLoginTest {
+class SiptisUserServiceLoginTest {
     @Autowired
     private SiptisUserServiceLogIn serviceLogin;
     private LogInDTO logInDTO;
@@ -25,7 +25,7 @@ public class SiptisUserServiceLoginTest {
 
     @Test
     @DisplayName("test logIn")
-    public void givenLogInDTOWhenLoginThenServiceMessageERROR_BAD_CREDENTIALS(){
+    void givenLogInDTOWhenLoginThenServiceMessageERROR_BAD_CREDENTIALS(){
         createLoginDTO();
         assertEquals(ServiceMessage.ERROR_BAD_CREDENTIALS, serviceLogin.logIn(logInDTO).getServiceMessage());
     }

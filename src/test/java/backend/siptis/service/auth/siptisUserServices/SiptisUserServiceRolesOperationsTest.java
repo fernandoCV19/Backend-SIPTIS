@@ -11,18 +11,18 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
-public class SiptisUserServiceRolesOperationsTest {
+class SiptisUserServiceRolesOperationsTest {
     @Autowired
     private SiptisUserServiceRolesOperations siptisUserServiceRolesOperations;
 
     @Test
     @DisplayName("test get roles by id")
-    public void givenUserIdWhenGetRolesByIdThenServiceMessageNOT_FOUND(){
+    void givenUserIdWhenGetRolesByIdThenServiceMessageNOT_FOUND(){
         assertEquals(ServiceMessage.NOT_FOUND, siptisUserServiceRolesOperations.getRolesById(123123L).getServiceMessage());
     }
     @Test
     @DisplayName("test get update roles by id")
-    public void givenUserIdWhenUpdateRolesByIdThenServiceMessageNOT_FOUND(){
+    void givenUserIdWhenUpdateRolesByIdThenServiceMessageNOT_FOUND(){
         assertEquals(ServiceMessage.NOT_FOUND, siptisUserServiceRolesOperations.updateRoles(123123L, null).getServiceMessage());
     }
 }

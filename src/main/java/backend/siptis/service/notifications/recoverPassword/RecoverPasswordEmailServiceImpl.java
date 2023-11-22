@@ -31,7 +31,7 @@ import java.util.UUID;
 public class RecoverPasswordEmailServiceImpl implements RecoverPasswordEmailService {
     private final SiptisUserRepository siptisUserRepository;
     private final SiptisUserServiceTokenOperations siptisUserServiceTokenOperations;
-    // private JavaMailSender mailSender;
+    private JavaMailSender mailSender;
 
 
     @Override
@@ -64,7 +64,6 @@ public class RecoverPasswordEmailServiceImpl implements RecoverPasswordEmailServ
 
     @Override
     public ServiceAnswer sendRecoverPasswordEmail(String email) throws MessagingException {
-/*
         boolean checkUser = siptisUserRepository.existsByEmail(email);
         if (!checkUser) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.EMAIL_NOT_EXIST)
@@ -90,9 +89,7 @@ public class RecoverPasswordEmailServiceImpl implements RecoverPasswordEmailServ
         }
 
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
-                .data("Se ha enviado un correo a su cuenta.").build();*/
-        return null;
-
+                .data("Se ha enviado un correo a su cuenta.").build();
     }
 
     @Override

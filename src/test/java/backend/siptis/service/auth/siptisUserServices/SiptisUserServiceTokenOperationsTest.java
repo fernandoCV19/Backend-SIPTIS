@@ -12,13 +12,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
-public class SiptisUserServiceTokenOperationsTest {
+class SiptisUserServiceTokenOperationsTest {
     @Autowired
     private SiptisUserServiceTokenOperations siptisUserServiceTokenOperations;
     private String token = "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJleHAiOjE2OTgzMjcyMzgsImlkIjoxLCJwcm9qZWN0cyI6W10sInJvbGVzIjoiW0FETUlOXSJ9.X0DQBTIXmRUJipiRzLg3Gs9DfiVUcGibOX2K04k3ry7Clfl2KWk87fCF3KtQd7Zx\n";
     @Test
     @DisplayName("test get id from token")
-    public void givenExpiredTokenWhenGetIdFromTokenThenException(){
+    void givenExpiredTokenWhenGetIdFromTokenThenException(){
         try{
             assertNull(siptisUserServiceTokenOperations.getIdFromToken(token));
         }catch (Exception e){
@@ -26,24 +26,24 @@ public class SiptisUserServiceTokenOperationsTest {
     }
     @Test
     @DisplayName("test get projects from token")
-    public void givenExpiredTokenWhenGetProjectsFromTokenThenException(){
+    void givenExpiredTokenWhenGetProjectsFromTokenThenException(){
         try{
             assertNull(siptisUserServiceTokenOperations.getProjectsFromToken(token));
         }catch (Exception e){ }
     }
     @Test
     @DisplayName("test update expired token")
-    public void givenBadRefreshTokenWhenUpdateTokenThenServiceMessageNOT_FOUND(){
+    void givenBadRefreshTokenWhenUpdateTokenThenServiceMessageNOT_FOUND(){
         assertEquals(ServiceMessage.NOT_FOUND,siptisUserServiceTokenOperations.updateToken("123").getServiceMessage());
     }
     @Test
     @DisplayName("test verify if exist token password")
-    public void givenBadTokenPasswordWhenExistsTokenPasswordThenServiceMessageOK(){
+    void givenBadTokenPasswordWhenExistsTokenPasswordThenServiceMessageOK(){
         assertEquals(ServiceMessage.OK,siptisUserServiceTokenOperations.existsTokenPassword("123").getServiceMessage());
     }
     @Test
     @DisplayName("test find by token password")
-    public void givenBadTokenPasswordWhenFindByTokenPasswordThenServiceMessageOK(){
+    void givenBadTokenPasswordWhenFindByTokenPasswordThenServiceMessageOK(){
         assertNull(siptisUserServiceTokenOperations.findByTokenPassword("123"));
     }
 

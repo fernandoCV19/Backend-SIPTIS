@@ -13,15 +13,13 @@ import org.springframework.test.annotation.DirtiesContext;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
-public class ScheduleServiceTest {
+class ScheduleServiceTest {
     @Autowired
     private ScheduleService scheduleService;
 
-
     @Test
     @DisplayName("Test for get all schedules of a non existing project")
-    public void givenWrongProjectIdWhenGetAllSchedulesFromAProjectThenMessageID_DOES_NOT_EXIST(){
+    void givenWrongProjectId_WhenGetAllSchedulesFromAProject_ThenMessageID_DOES_NOT_EXIST(){
         ServiceAnswer answer = scheduleService.getAllSchedulesFromAProject(1l);
         assertEquals(ServiceMessage.ID_DOES_NOT_EXIST, answer.getServiceMessage());
     }
