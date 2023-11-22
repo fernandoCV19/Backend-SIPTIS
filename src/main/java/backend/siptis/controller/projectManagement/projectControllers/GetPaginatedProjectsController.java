@@ -5,11 +5,14 @@ import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.service.projectManagement.project.ProjectServiceGetPaginatedProjects;
 import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = ControllerConstants.Project.TAG_NAME, description = ControllerConstants.Project.TAG_DESCRIPTION)
 @RestController
 @RequestMapping(ControllerConstants.Project.BASE_PATH)
 @RequiredArgsConstructor
@@ -18,6 +21,7 @@ public class GetPaginatedProjectsController {
 
     private final ProjectServiceGetPaginatedProjects projectServiceGetPaginatedProjects;
 
+    @Operation(summary = "Get paginated projects")
     @GetMapping("/page")
     public ResponseEntity<?> getPaginatedProjects(
             @RequestParam(defaultValue = "0") int pageNumber,
@@ -28,6 +32,7 @@ public class GetPaginatedProjectsController {
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
 
+    @Operation(summary = "Get paginated projects by name")
     @GetMapping("/page/name")
     public ResponseEntity<?> getPaginatedProjectsByName(
             @RequestParam(defaultValue = "0") int pageNumber,
@@ -40,6 +45,7 @@ public class GetPaginatedProjectsController {
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
 
+    @Operation(summary = "Get paginated projects by modality")
     @GetMapping("/page/modality")
     public ResponseEntity<?> getPaginatedProjectsByModality(
             @RequestParam(defaultValue = "0") int pageNumber,
@@ -54,6 +60,7 @@ public class GetPaginatedProjectsController {
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
 
+    @Operation(summary = "Get paginated projects by area")
     @GetMapping("/page/area")
     public ResponseEntity<?> getPaginatedProjectsByArea(
             @RequestParam(defaultValue = "0") int pageNumber,
@@ -68,6 +75,7 @@ public class GetPaginatedProjectsController {
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
 
+    @Operation(summary = "Get paginated projects by subarea")
     @GetMapping("/page/subarea")
     public ResponseEntity<?> getPaginatedProjectsBySubArea(
             @RequestParam(defaultValue = "0") int pageNumber,

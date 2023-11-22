@@ -6,11 +6,14 @@ import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.projectManagement.DefenseDTO;
 import backend.siptis.service.defenseManagement.DefenseService;
 import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = ControllerConstants.Defense.TAG_NAME, description = ControllerConstants.Defense.TAG_DESCRIPTION)
 @RestController
 @RequestMapping(ControllerConstants.Defense.BASE_PATH)
 @CrossOrigin
@@ -19,6 +22,7 @@ public class DefenseController {
 
     private final DefenseService defenseService;
 
+    @Operation(summary = "Get all defenses by month")
     @GetMapping("/defensesByMonth/{month}")
     public ResponseEntity<?> getPlaceReservationsByMonth(@PathVariable("month") Integer month) {
         ServiceAnswer serviceAnswer = defenseService.getDefenseByMonth(month);
@@ -30,6 +34,7 @@ public class DefenseController {
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
 
+    @Operation(summary = "Create a new defense")
     @PostMapping("/createDefense")
     public ResponseEntity<?> createDefense(@RequestBody DefenseDTO defenseDTO) {
         ServiceAnswer serviceAnswer = defenseService.registerDefense(defenseDTO);
@@ -41,6 +46,7 @@ public class DefenseController {
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
 
+    @Operation(summary = "Remove a defense")
     @DeleteMapping("/removeDefense/{id}")
     public ResponseEntity<?> removeDefenseFromAProject(@PathVariable("id") Long projectId) {
         ServiceAnswer serviceAnswer = defenseService.removeDefense(projectId);

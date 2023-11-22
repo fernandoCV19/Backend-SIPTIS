@@ -5,6 +5,8 @@ import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.service.projectManagement.ModalityService;
 import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = ControllerConstants.Modality.TAG_NAME, description = ControllerConstants.Modality.TAG_DESCRIPTION)
 @RestController
 @RequestMapping(ControllerConstants.Modality.BASE_PATH)
 @CrossOrigin
@@ -21,6 +24,7 @@ public class ModalityController {
 
     private final ModalityService modalityService;
 
+    @Operation(summary = "Get all modalities")
     @GetMapping("")
     ResponseEntity<?> getAllModalities() {
         return createResponseEntity(modalityService.getAllModalities());

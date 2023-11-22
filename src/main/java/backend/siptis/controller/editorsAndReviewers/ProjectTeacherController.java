@@ -5,11 +5,14 @@ import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.service.editorsAndReviewers.ProjectTeacherService;
 import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = ControllerConstants.ProjectTeacher.TAG_NAME, description = ControllerConstants.ProjectTeacher.TAG_DESCRIPTION)
 @RestController
 @RequestMapping(ControllerConstants.ProjectTeacher.BASE_PATH)
 @RequiredArgsConstructor
@@ -18,24 +21,28 @@ public class ProjectTeacherController {
 
     private final ProjectTeacherService projectTeacherService;
 
+    @Operation(summary = "Get not accepted projects without teacher review")
     @GetMapping("/notReviewedProjects/{id}")
     public ResponseEntity<ControllerAnswer> getProjectsWithoutReview(@PathVariable("id") Long id) {
         ServiceAnswer serviceAnswer = projectTeacherService.getAllProjectsNotAcceptedNotReviewedByTeacherId(id);
         return createResponseEntity(serviceAnswer);
     }
 
+    @Operation(summary = "Get not accepted projects with teacher review")
     @GetMapping("/reviewedProjects/{id}")
     public ResponseEntity<ControllerAnswer> getReviewedProjects(@PathVariable("id") Long id) {
         ServiceAnswer serviceAnswer = projectTeacherService.getAllProjectsNotAcceptedReviewedByTeacherId(id);
         return createResponseEntity(serviceAnswer);
     }
 
+    @Operation(summary = "Get all accepted projects by teacher id")
     @GetMapping("/acceptedProjects/{id}")
     public ResponseEntity<ControllerAnswer> getAcceptedProjects(@PathVariable("id") Long id) {
         ServiceAnswer serviceAnswer = projectTeacherService.getAllProjectsAcceptedByTeacherId(id);
         return createResponseEntity(serviceAnswer);
     }
 
+    @Operation(summary = "Get all accepted projects by project id and teacher id")
     @GetMapping("/acceptProject/{idProject}/{idReviewer}")
     public ResponseEntity<ControllerAnswer> acceptProject(@PathVariable("idProject") Long idProject, @PathVariable("idReviewer") Long idReviewer) {
         ServiceAnswer serviceAnswer = projectTeacherService.acceptProject(idReviewer, idProject);
