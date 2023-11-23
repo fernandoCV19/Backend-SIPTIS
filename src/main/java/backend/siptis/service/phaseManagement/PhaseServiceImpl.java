@@ -40,16 +40,21 @@ public class PhaseServiceImpl implements PhaseService {
                     .serviceMessage(ServiceMessage.NOT_FOUND)
                     .build();
         }
-        ServiceAnswer.builder()
+        return ServiceAnswer.builder()
                 .serviceMessage(ServiceMessage.OK)
                 .data(phase)
                 .build();
-        return null;
+
     }
 
     @Override
     public ServiceAnswer getPhasesByUserId(Long id) {
         Long projectId = siptisUserServiceGeneralUserOperations.getProjectById(id);
+        if(projectId == null) {
+            return ServiceAnswer.builder()
+                    .serviceMessage(ServiceMessage.NOT_FOUND)
+                    .build();
+        }
         ServiceAnswer projectAnswer = projectServiceGetProjectInfo.getProjectById(projectId);
         if (projectAnswer.getServiceMessage() == ServiceMessage.PROJECT_ID_DOES_NOT_EXIST) {
             return ServiceAnswer.builder()
