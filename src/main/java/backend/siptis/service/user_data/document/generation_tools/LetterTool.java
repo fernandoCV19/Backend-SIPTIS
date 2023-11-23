@@ -5,15 +5,17 @@ import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfWriter;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.time.LocalDate;
 
 public class LetterTool {
 
-    String[] months =
+    private String[] months =
             {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
 
+    private final static String footerText = "Sin otro particular, saludo a Ud. cordialmente.\n";
     public LetterTool() {
     }
 
@@ -43,7 +45,7 @@ public class LetterTool {
             document.add(bodyContent);
 
             Paragraph bodyEnd = new Paragraph();
-            bodyEnd.add(new Phrase("Sin otro particular, saludo a Ud. cordialmente.\n", FontFactory.getFont(FontFactory.HELVETICA, 10)));
+            bodyEnd.add(new Phrase(footerText, FontFactory.getFont(FontFactory.HELVETICA, 10)));
             bodyEnd.setSpacingBefore(20);
             document.add(bodyEnd);
 
@@ -86,7 +88,7 @@ public class LetterTool {
             document.add(bodyContent);
 
             Paragraph bodyEnd = new Paragraph();
-            bodyEnd.add(new Phrase("Sin otro particular, saludo a Ud. cordialmente.\n", FontFactory.getFont(FontFactory.HELVETICA, 10)));
+            bodyEnd.add(new Phrase(footerText, FontFactory.getFont(FontFactory.HELVETICA, 10)));
             bodyEnd.setSpacingBefore(20);
             document.add(bodyEnd);
 
@@ -104,11 +106,11 @@ public class LetterTool {
         return fileName;
     }
 
-    public String generateTutorTribunalRequest(String tutor, String student, String directorName, String career, String projectName, String studentCi) {
+    public String generateTutorTribunalRequest(String tutor, String student, String directorName, String career, String projectName, String studentCi) throws FileNotFoundException {
         String fileName = projectName + "_" + student + "_" + tutor + "_CartaConformidadTutor.pdf";
         fileName = fileName.replaceAll(" ", "");
         Document document = new Document(PageSize.LETTER, 85, 85, 70, 70);
-        try {
+
             PdfWriter.getInstance(document, new FileOutputStream(fileName));
             document.open();
             createWithHeader(document, directorName, career, "REF: Informe de Proyecto Final concluido y solicitud de asignación de tribunales\n");
@@ -140,17 +142,16 @@ public class LetterTool {
             footer.add(new Phrase("Tutor " + "\n", FontFactory.getFont(FontFactory.HELVETICA, 10)));
             footer.setSpacingBefore(70);
             document.add(footer);
-        } catch (Exception e) {
-        }
+
         document.close();
         return fileName;
     }
 
-    public String generateSupervisorTribunalRequest(String tutor, String student, String directorName, String career, String projectName, String studentCi) {
+    public String generateSupervisorTribunalRequest(String tutor, String student, String directorName, String career, String projectName, String studentCi) throws FileNotFoundException {
         String fileName = projectName + "_" + student + "_" + tutor + "_CartaConformidadTutor.pdf";
         fileName = fileName.replaceAll(" ", "");
         Document document = new Document(PageSize.LETTER, 85, 85, 70, 70);
-        try {
+
             PdfWriter.getInstance(document, new FileOutputStream(fileName));
             document.open();
             createWithHeader(document, directorName, career, "REF: Informe de Proyecto Final concluido y solicitud de asignación de tribunales\n");
@@ -182,8 +183,7 @@ public class LetterTool {
             footer.add(new Phrase("Supervisor " + "\n", FontFactory.getFont(FontFactory.HELVETICA, 10)));
             footer.setSpacingBefore(70);
             document.add(footer);
-        } catch (Exception e) {
-        }
+
         document.close();
         return fileName;
     }
@@ -214,7 +214,7 @@ public class LetterTool {
             document.add(bodyContent);
 
             Paragraph bodyEnd = new Paragraph();
-            bodyEnd.add(new Phrase("Sin otro particular, saludo a Ud. cordialmente.\n", FontFactory.getFont(FontFactory.HELVETICA, 10)));
+            bodyEnd.add(new Phrase(footerText, FontFactory.getFont(FontFactory.HELVETICA, 10)));
             bodyEnd.setSpacingBefore(20);
             document.add(bodyEnd);
 

@@ -29,7 +29,7 @@ public class EmailController {
 
     @Operation(summary = "Ask email for send recover password link")
     @GetMapping("/askemail/{email}")
-    public ResponseEntity<ControllerAnswer> sendEmailTest(@PathVariable String email) throws MessagingException, IOException {
+    public ResponseEntity<ControllerAnswer> sendEmailTest(@PathVariable String email)  {
         ServiceAnswer answer = sendRecoverPasswordEmailService.sendRecoverPasswordEmail(email);
         return crearResponseEntityRegistrar(answer);
     }
@@ -56,40 +56,4 @@ public class EmailController {
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
 
-/* q
-    @GetMapping("")
-    public String sendNotification() throws MessagingException, IOException {
-        emailServiceImpl.sendSpecificEmail("dilanantezana@gmail.com", "hola como estas");
-        return "ok";
-    }
-
-    @GetMapping("/askemail/{email}")
-    public ResponseEntity<ControllerAnswer> sendEmailTest(@PathVariable String email) throws MessagingException {
-        ServiceAnswer answer = emailServiceImpl.sendRecoverPasswordEmail(email);
-
-        return crearResponseEntityRegistrar(answer);
-    }
-
-    @PostMapping("/changePassword")
-    public ResponseEntity<ControllerAnswer> changePassword(@RequestBody TokenPasswordDTO dto) {
-        ServiceAnswer answer = emailServiceImpl.changePassword(dto);
-        return crearResponseEntityRegistrar(answer);
-    }
-
-    private ResponseEntity<ControllerAnswer> crearResponseEntityRegistrar(ServiceAnswer serviceAnswer) {
-        Object data = serviceAnswer.getData();
-        ServiceMessage messageService = serviceAnswer.getServiceMessage();
-        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
-
-        if (messageService == ServiceMessage.OK) {
-            httpStatus = HttpStatus.OK;
-        }
-
-
-        if (messageService == ServiceMessage.NOT_FOUND || messageService == ServiceMessage.ERROR)
-            httpStatus = HttpStatus.NOT_FOUND;
-
-        ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(data).message(messageService.toString()).build();
-        return new ResponseEntity<>(controllerAnswer, httpStatus);
-    }*/
 }

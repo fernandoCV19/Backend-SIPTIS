@@ -46,7 +46,8 @@ public class SiptisUser implements UserDetails {
             joinColumns = @JoinColumn(name = SiptisUserTable.RolesRelation.JOIN_COLUMN),
             inverseJoinColumns = @JoinColumn(name = SiptisUserTable.RolesRelation.INVERSE_JOIN_COLUMN))
     @JsonManagedReference
-    private Set<Role> roles = new HashSet<>();
+    private Set<Role>
+            roles = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {
             CascadeType.PERSIST,
