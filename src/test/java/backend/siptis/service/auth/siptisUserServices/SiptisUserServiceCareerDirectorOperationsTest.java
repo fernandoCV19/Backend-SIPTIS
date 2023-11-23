@@ -19,22 +19,22 @@ class SiptisUserServiceCareerDirectorOperationsTest {
 
     @Test
     @DisplayName("test register user as career director")
-    void givenWrongRoleAndUserIDWhenRegisterUserAsCareerDirectorThenServiceMessageError(){
+    void givenWrongRoleAndUserIDWhenRegisterUserAsCareerDirectorThenServiceMessageError() {
         ServiceAnswer answer = siptisUserServiceCareerDirectorOperations.registerUserAsCareerDirector(123L, "wrong role");
         assertEquals(ServiceMessage.ERROR, answer.getServiceMessage());
     }
 
     @Test
     @DisplayName("test get director personal information")
-    void givenWrongRoleWhenGetDirectorPersonalInformationThenServiceMessageError(){
-        ServiceAnswer answer = siptisUserServiceCareerDirectorOperations.getDirectorPersonalInformation( "wrong role");
+    void givenWrongRoleWhenGetDirectorPersonalInformationThenServiceMessageError() {
+        ServiceAnswer answer = siptisUserServiceCareerDirectorOperations.getDirectorPersonalInformation("wrong role");
         assertEquals(ServiceMessage.NOT_FOUND, answer.getServiceMessage());
     }
 
     @Test
     @DisplayName("Test get Career director name")
-    void givenWhenThenServiceMessage(){
-        String answer = siptisUserServiceCareerDirectorOperations.getCareerDirectorName( "wrong career");
+    void givenWhenThenServiceMessage() {
+        String answer = siptisUserServiceCareerDirectorOperations.getCareerDirectorName("wrong career");
         assertNull(answer);
     }
 }

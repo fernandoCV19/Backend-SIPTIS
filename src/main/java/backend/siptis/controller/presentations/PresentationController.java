@@ -30,8 +30,8 @@ public class PresentationController {
     @Operation(summary = "Create new presentation")
     @PostMapping("/create")
     ResponseEntity<ControllerAnswer> create(@RequestHeader(name = "Authorization") String token,
-                             @RequestPart("bluebook") @Nullable MultipartFile bluebook,
-                             @RequestPart("project") @Nullable MultipartFile project) {
+                                            @RequestPart("bluebook") @Nullable MultipartFile bluebook,
+                                            @RequestPart("project") @Nullable MultipartFile project) {
         List<?> projects = siptisUserServiceTokenOperations.getProjectsFromToken(token);
         int projectId = (int) projects.get(0);
         ServiceAnswer serviceAnswer = presentationService.createPresentation((long) projectId, bluebook, project);

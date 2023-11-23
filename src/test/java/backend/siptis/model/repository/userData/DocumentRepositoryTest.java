@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.jdbc.Sql;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 @DataJpaTest
 class DocumentRepositoryTest {
 
@@ -18,7 +19,7 @@ class DocumentRepositoryTest {
     private Document document;
 
     @BeforeEach
-    void createPlaceToDefense(){
+    void createPlaceToDefense() {
         document = new Document();
         document.setPath("path");
         document.setSiptisUser(new SiptisUser());
@@ -28,21 +29,21 @@ class DocumentRepositoryTest {
     @Test
     @DisplayName("Test for find document by id")
     @Sql(scripts = {"/custom_imports/create_users.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    void givenDocumentId_whenFindById_thenDocumentObject(){
+    void givenDocumentId_whenFindById_thenDocumentObject() {
         assertFalse(documentRepository.findById(1L).isEmpty());
     }
 
     @Test
     @DisplayName("Test for find document by path")
     @Sql(scripts = {"/custom_imports/create_users.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    void givenDocumentPath_whenFindDocumentByPath_thenDocumentObject(){
+    void givenDocumentPath_whenFindDocumentByPath_thenDocumentObject() {
         assertNotNull(documentRepository.findDocumentByPath("PATH").get());
     }
 
     @Test
     @DisplayName("Test for find document by wrong path")
     @Sql(scripts = {"/custom_imports/create_users.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    void givenDocumentId_whenFindDocumentByWrongPath_thenDocumentObject(){
+    void givenDocumentId_whenFindDocumentByWrongPath_thenDocumentObject() {
         assertTrue(documentRepository.findDocumentByPath("123456").isEmpty());
     }
 }

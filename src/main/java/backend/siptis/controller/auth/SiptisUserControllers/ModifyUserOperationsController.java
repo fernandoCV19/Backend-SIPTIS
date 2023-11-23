@@ -33,6 +33,7 @@ public class ModifyUserOperationsController {
             List.of(ServiceMessage.OK, ServiceMessage.SUCCESSFUL_REGISTER, ServiceMessage.USER_DELETED));
     private final SiptisUserServiceModifyUserOperations siptisUserServiceModifyUserOperations;
     private final SiptisUserServiceTokenOperations siptisUserServiceTokenOperations;
+
     @Operation(summary = "Register general user")
     @PostMapping("/register/general")
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -40,6 +41,7 @@ public class ModifyUserOperationsController {
         ServiceAnswer user = siptisUserServiceModifyUserOperations.registerUser(dto);
         return createResponseEntity(user);
     }
+
     @Operation(summary = "Edit own information")
     @PutMapping("/editInformation")
     public ResponseEntity<ControllerAnswer> editInformation(
@@ -50,6 +52,7 @@ public class ModifyUserOperationsController {
         ServiceAnswer answer = siptisUserServiceModifyUserOperations.userEditPersonalInformation(id, dto);
         return createResponseEntity(answer);
     }
+
     @Operation(summary = "Edit own user areas")
     @PutMapping("/updateAreas")
     public ResponseEntity<ControllerAnswer> updateAreas(
@@ -58,6 +61,7 @@ public class ModifyUserOperationsController {
         ServiceAnswer answer = siptisUserServiceModifyUserOperations.updateAreas(id, dto);
         return createResponseEntity(answer);
     }
+
     @Operation(summary = "Edit user areas of other user")
     @PutMapping("/updateAreas/{userId}")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")

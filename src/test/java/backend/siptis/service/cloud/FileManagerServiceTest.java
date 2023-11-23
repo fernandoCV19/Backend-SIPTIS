@@ -12,16 +12,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 class FileManagerServiceTest {
-    private FileManagerService fileManagerService;
+    private final FileManagerService fileManagerService;
 
     @Autowired
-    FileManagerServiceTest(FileManagerService fileManagerService){
+    FileManagerServiceTest(FileManagerService fileManagerService) {
         this.fileManagerService = fileManagerService;
     }
 
     @Test
     @DisplayName("Test for download file from cloud")
-    void givenKeyWhenDownloadFileFromCloudThenServiceMessageNotFound(){
+    void givenKeyWhenDownloadFileFromCloudThenServiceMessageNotFound() {
         assertEquals(ServiceMessage.OK, fileManagerService.downloadFileFromCloud("Cartas/test.pdf").getServiceMessage());
     }
 }

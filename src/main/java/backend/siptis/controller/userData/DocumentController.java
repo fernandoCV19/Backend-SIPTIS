@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
+
 @Tag(name = ControllerConstants.Document.TAG_NAME, description = ControllerConstants.Document.TAG_DESCRIPTION)
 @RestController
 @RequestMapping(ControllerConstants.Document.BASE_PATH)
@@ -35,11 +36,13 @@ public class DocumentController {
         Long userId = siptisUserServiceTokenOperations.getIdFromToken(token);
         return createResponseEntity(documentGeneratorService.getAllDocumentsFromUser(userId));
     }
+
     @Operation(summary = "Get all documents belonging to a project's students ")
     @GetMapping("/project/{id}")
     ResponseEntity<ControllerAnswer> getDocumentsFromProject(@PathVariable("id") long id) {
         return createResponseEntity(documentGeneratorService.getAllDocumentsFromProject(id));
     }
+
     @Operation(summary = "Delete a document")
     @DeleteMapping("/{id}")
     ResponseEntity<ControllerAnswer> deleteDocument(@PathVariable("id") long documentId) {
@@ -61,18 +64,21 @@ public class DocumentController {
         Long userId = siptisUserServiceTokenOperations.getIdFromToken(token);
         return createResponseEntity(documentGeneratorService.generateSolvency(userId));
     }
+
     @Operation(summary = "Create tribunal approval letter")
     @PostMapping("/create-tribunal-approval")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     ResponseEntity<ControllerAnswer> createTribunalApproval(@RequestBody LetterGenerationRequestDTO dto) throws IOException {
         return createResponseEntity(documentGeneratorService.generateTribunalApproval(dto));
     }
+
     @Operation(summary = "Create teacher approval letter")
     @PostMapping("/create-teacher-approval-letter")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     ResponseEntity<ControllerAnswer> createTeacherTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) throws IOException {
         return createResponseEntity(documentGeneratorService.teacherTribunalRequest(dto));
     }
+
     @Operation(summary = "Create student's tribunal request letter")
     @PostMapping("/create-student-tribunal-request")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
@@ -95,6 +101,7 @@ public class DocumentController {
     ResponseEntity<ControllerAnswer> createTutorTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) throws IOException {
         return createResponseEntity(documentGeneratorService.tutorTribunalRequest(dto));
     }
+
     @Operation(summary = "Create supervisor approval letter")
     @PostMapping("/create-supervisor-approval-letter")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")

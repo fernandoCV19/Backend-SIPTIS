@@ -19,32 +19,35 @@ public class ActivityServiceFindOperationsTest {
     private ActivityServiceFindOperations activityServiceFindOperations;
     private Activity activity;
 
-    private void startActivity(){
+    private void startActivity() {
         activity = new Activity();
         activity.setActivityDate(new Date());
-        activity.setId(1233245l);
+        activity.setId(1233245L);
         activity.setActivityName("name");
         activity.setActivityDescription("");
     }
 
     @Test
     @DisplayName("Test find by id")
-    void givenId_whenFindById_thenServiceMessageNOT_FOUND(){
-        assertEquals(ServiceMessage.NOT_FOUND, activityServiceFindOperations.findById(1233453l).getServiceMessage());
+    void givenId_whenFindById_thenServiceMessageNOT_FOUND() {
+        assertEquals(ServiceMessage.NOT_FOUND, activityServiceFindOperations.findById(1233453L).getServiceMessage());
     }
+
     @Test
     @DisplayName("Test find all VO")
-    void givenId_whenFindByAllVO_thenServiceMessageNOT_FOUND(){
+    void givenId_whenFindByAllVO_thenServiceMessageNOT_FOUND() {
         assertNotNull(activityServiceFindOperations.findAllVO());
     }
+
     @Test
     @DisplayName("Test Pageable find all VO")
-    void givenPageable_whenFindByAllVO_thenNotNull(){
+    void givenPageable_whenFindByAllVO_thenNotNull() {
         assertNotNull(activityServiceFindOperations.findAllVO(Pageable.ofSize(12)));
     }
+
     @Test
     @DisplayName("Test entity to VO")
-    void givenActivity_whenEntityToVO_thenServiceMessageNOT_FOUND(){
+    void givenActivity_whenEntityToVO_thenServiceMessageNOT_FOUND() {
         startActivity();
         assertNotNull(activityServiceFindOperations.entityToVO(activity));
     }

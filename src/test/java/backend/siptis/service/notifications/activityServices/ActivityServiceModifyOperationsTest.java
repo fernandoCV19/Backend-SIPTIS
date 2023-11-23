@@ -20,39 +20,42 @@ class ActivityServiceModifyOperationsTest {
     private ActivityDTO activityDTO;
     private Activity activity;
 
-    private void startActivity(){
+    private void startActivity() {
         activity = new Activity();
         activity.setActivityDate(new Date());
-        activity.setId(1233245l);
+        activity.setId(1233245L);
         activity.setActivityName("name");
         activity.setActivityDescription("");
     }
 
-    private void startActivityDTO(){
+    private void startActivityDTO() {
         activityDTO = new ActivityDTO();
     }
 
     @Test
     @DisplayName("Test persist activity")
-    void givenId_whenPersistActivity_thenServiceMessageNOT_FOUND(){
+    void givenId_whenPersistActivity_thenServiceMessageNOT_FOUND() {
         startActivityDTO();
         assertEquals(ServiceMessage.NOT_FOUND, activityServiceModifyOperations.persistActivity(activityDTO).getServiceMessage());
     }
+
     @Test
     @DisplayName("Test persist activity")
-    void givenId_whenUpdate_thenServiceMessageNOT_FOUND(){
+    void givenId_whenUpdate_thenServiceMessageNOT_FOUND() {
         startActivityDTO();
-        assertEquals(ServiceMessage.NOT_FOUND, activityServiceModifyOperations.update(activityDTO, 1234l).getServiceMessage());
+        assertEquals(ServiceMessage.NOT_FOUND, activityServiceModifyOperations.update(activityDTO, 1234L).getServiceMessage());
     }
+
     @Test
     @DisplayName("Test delete activity")
-    void givenId_whenDelete_thenServiceMessageNOT_FOUND(){
+    void givenId_whenDelete_thenServiceMessageNOT_FOUND() {
         startActivityDTO();
-        assertEquals(ServiceMessage.NOT_FOUND, activityServiceModifyOperations.delete(1234l).getServiceMessage());
+        assertEquals(ServiceMessage.NOT_FOUND, activityServiceModifyOperations.delete(1234L).getServiceMessage());
     }
+
     @Test
     @DisplayName("Test entity to VO")
-    void givenActivity_whenEntityToVO_thenServiceMessageNOT_FOUND(){
+    void givenActivity_whenEntityToVO_thenServiceMessageNOT_FOUND() {
         startActivity();
         assertNotNull(activityServiceModifyOperations.entityToVO(activity));
     }

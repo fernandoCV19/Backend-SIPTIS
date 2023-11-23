@@ -18,7 +18,7 @@ public class SendRecoverPasswordEmailServiceTest {
 
     @Test
     @DisplayName("Test for send recover password email")
-    void givenTokenPasswordDTO_WhenSendRecoverPasswordEmail_ThenMessageEMAIL_NOT_EXIST(){
+    void givenTokenPasswordDTO_WhenSendRecoverPasswordEmail_ThenMessageEMAIL_NOT_EXIST() {
         ServiceAnswer answer = sendRecoverPasswordEmailService.sendRecoverPasswordEmail("wrong email");
         assertEquals(ServiceMessage.EMAIL_NOT_EXIST, answer.getServiceMessage());
     }

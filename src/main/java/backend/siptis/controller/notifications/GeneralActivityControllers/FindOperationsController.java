@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class FindOperationsController {
 
     private final GeneralActivityServiceFindOperations generalActivityServiceFindOperations;
+
     @Operation(summary = "Find all general activities")
     @GetMapping()
     public ResponseEntity<ControllerAnswer> findAllGeneralActivity(Pageable pageable) {

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 @Tag(name = ControllerConstants.UserArea.TAG_NAME, description = ControllerConstants.UserArea.TAG_DESCRIPTION)
 @RestController
 @RequestMapping(ControllerConstants.UserArea.BASE_PATH)
@@ -36,6 +37,7 @@ public class UserAreaController {
         ServiceAnswer answerService = userAreaService.getAllUserAreas();
         return createResponseEntity(answerService);
     }
+
     @Operation(summary = "create a new user area")
     @PostMapping("/createArea")
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -43,6 +45,7 @@ public class UserAreaController {
         ServiceAnswer answerService = userAreaService.createUserArea(dto);
         return createResponseEntity(answerService);
     }
+
     @Operation(summary = "delete user area")
     @DeleteMapping("/deleteArea/{userId}")
     @PreAuthorize("hasAuthority('ADMIN')")

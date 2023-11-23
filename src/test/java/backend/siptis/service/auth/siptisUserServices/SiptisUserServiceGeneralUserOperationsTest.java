@@ -8,7 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.DirtiesContext;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
@@ -18,37 +19,43 @@ class SiptisUserServiceGeneralUserOperationsTest {
 
     @Test
     @DisplayName("test get project by non existing user id")
-    void givenUserIDWhenGetProjectByIdThenNullServiceMessage(){
+    void givenUserIDWhenGetProjectByIdThenNullServiceMessage() {
         assertNull(siptisUserServiceGeneralUserOperations.getProjectById(123L));
     }
+
     @Test
     @DisplayName("test get all users")
-    void givenSiptisUsersWhenGetAllUsersThenServiceMessageOK(){
+    void givenSiptisUsersWhenGetAllUsersThenServiceMessageOK() {
         assertEquals(ServiceMessage.NOT_FOUND, siptisUserServiceGeneralUserOperations.getAllUsers().getServiceMessage());
     }
+
     @Test
     @DisplayName("test get user personal information")
-    void givenBadUserIdWhenGetUserPersonalInformationThenServiceMessageNOT_FOUND(){
-        assertEquals(ServiceMessage.NOT_FOUND,siptisUserServiceGeneralUserOperations.getUserPersonalInformation(123123L).getServiceMessage());
+    void givenBadUserIdWhenGetUserPersonalInformationThenServiceMessageNOT_FOUND() {
+        assertEquals(ServiceMessage.NOT_FOUND, siptisUserServiceGeneralUserOperations.getUserPersonalInformation(123123L).getServiceMessage());
     }
+
     @Test
     @DisplayName("test get user areas by id")
-    void givenUserIdWhenGetUserAreasByIdThenServiceMessageNOT_FOUND(){
-        assertEquals(ServiceMessage.NOT_FOUND,siptisUserServiceGeneralUserOperations.getUserAreasById(123123L).getServiceMessage());
+    void givenUserIdWhenGetUserAreasByIdThenServiceMessageNOT_FOUND() {
+        assertEquals(ServiceMessage.NOT_FOUND, siptisUserServiceGeneralUserOperations.getUserAreasById(123123L).getServiceMessage());
     }
+
     @Test
     @DisplayName("test get user list")
-    void givenUserIdWhenGetUserListThenServiceMessageOK(){
-        assertEquals(ServiceMessage.OK,siptisUserServiceGeneralUserOperations.getUserList("", "ADMIN",Pageable.ofSize(12)).getServiceMessage());
+    void givenUserIdWhenGetUserListThenServiceMessageOK() {
+        assertEquals(ServiceMessage.OK, siptisUserServiceGeneralUserOperations.getUserList("", "ADMIN", Pageable.ofSize(12)).getServiceMessage());
     }
+
     @Test
     @DisplayName("test get normal user list")
-    void givenUserIdWhenGetNormalUserListThenServiceMessageOK(){
-        assertEquals(ServiceMessage.OK,siptisUserServiceGeneralUserOperations.getNormalUserList("",Pageable.ofSize(12)).getServiceMessage());
+    void givenUserIdWhenGetNormalUserListThenServiceMessageOK() {
+        assertEquals(ServiceMessage.OK, siptisUserServiceGeneralUserOperations.getNormalUserList("", Pageable.ofSize(12)).getServiceMessage());
     }
+
     @Test
     @DisplayName("test get personal activities")
-    void givenUserIdWhenGetPersonalActivitiesThenServiceMessage(){
-        assertEquals(ServiceMessage.OK,siptisUserServiceGeneralUserOperations.getPersonalActivities(123123L,Pageable.ofSize(12)).getServiceMessage());
+    void givenUserIdWhenGetPersonalActivitiesThenServiceMessage() {
+        assertEquals(ServiceMessage.OK, siptisUserServiceGeneralUserOperations.getPersonalActivities(123123L, Pageable.ofSize(12)).getServiceMessage());
     }
 }

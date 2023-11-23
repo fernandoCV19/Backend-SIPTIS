@@ -7,7 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 @DataJpaTest
@@ -18,20 +19,20 @@ class ModalityRepositoryTest {
     private Modality modality;
 
     @BeforeEach
-    void createPlaceToDefense(){
+    void createPlaceToDefense() {
         modality = new Modality();
         modality.setName("Modality Name");
     }
 
     @Test
     @DisplayName("Test for find modality by id")
-    void givenModalityId_whenFindById_thenmodalityObject(){
+    void givenModalityId_whenFindById_thenmodalityObject() {
         assertFalse(modalityRepository.findById(1L).isEmpty());
     }
 
     @Test
     @DisplayName("Test for find modality object by id")
-    void givenModalityId_whenFindModalityById_thenModalityObject(){
+    void givenModalityId_whenFindModalityById_thenModalityObject() {
         assertNotNull(modalityRepository.findModalityById(1L));
     }
 

@@ -58,7 +58,7 @@ public class SiptisUserServiceTokenOperations {
 
     public SiptisUser findByTokenPassword(String tokenPassword) {
         Optional<SiptisUser> oUser = siptisUserRepository.findByTokenPassword(tokenPassword);
-        if(oUser.isEmpty())
+        if (oUser.isEmpty())
             return null;
         return oUser.get();
     }

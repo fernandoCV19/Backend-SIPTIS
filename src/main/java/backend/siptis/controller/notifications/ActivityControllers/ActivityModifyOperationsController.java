@@ -28,7 +28,7 @@ public class ActivityModifyOperationsController {
     @Operation(summary = "Create activity")
     @PostMapping("/create")
     public ResponseEntity<ControllerAnswer> saveActivity(@RequestHeader(name = "Authorization") String token,
-                                          @RequestBody ActivityDTO activityDTO) {
+                                                         @RequestBody ActivityDTO activityDTO) {
 
         Long idL = siptisUserServiceTokenOperations.getIdFromToken(token);
         Long idP = siptisUserServiceGeneralUserOperations.getProjectById(idL);
@@ -41,6 +41,7 @@ public class ActivityModifyOperationsController {
     public ResponseEntity<ControllerAnswer> updateActivity(@PathVariable int id, @RequestBody ActivityDTO activityDTO) {
         return createResponse(activityServiceModifyOperations.update(activityDTO, id));
     }
+
     @Operation(summary = "Delete activity")
     @DeleteMapping("/{id}")
     public ResponseEntity<ControllerAnswer> deleteActivity(@PathVariable int id) {

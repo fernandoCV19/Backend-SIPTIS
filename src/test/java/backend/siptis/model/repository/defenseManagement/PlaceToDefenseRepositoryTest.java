@@ -1,4 +1,5 @@
 package backend.siptis.model.repository.defenseManagement;
+
 import backend.siptis.model.entity.defenseManagement.PlaceToDefense;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -6,7 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 @DataJpaTest
 class PlaceToDefenseRepositoryTest {
 
@@ -15,14 +17,14 @@ class PlaceToDefenseRepositoryTest {
     private PlaceToDefense placeToDefense;
 
     @BeforeEach
-    void createPlaceToDefense(){
+    void createPlaceToDefense() {
         placeToDefense = new PlaceToDefense();
         placeToDefense.setName("place to defense test");
     }
 
     @Test
     @DisplayName("Test for find place to defense by id")
-    void givenPlaceToDefenseId_whenFindById_thenPlaceToDefenseObject(){
+    void givenPlaceToDefenseId_whenFindById_thenPlaceToDefenseObject() {
         placeToDefenseRepository.save(placeToDefense);
         assertFalse(placeToDefenseRepository.findById(placeToDefense.getId()).isEmpty());
     }

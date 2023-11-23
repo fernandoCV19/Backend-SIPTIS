@@ -14,8 +14,8 @@ class ReviewerRepositoryTest {
 
     @Test
     @DisplayName("test find top presentation project id and siptis user id order by date desc")
-    void givenWhenFindTopByPresentationProjectIdAndSiptisUserIdOrderByDateDescThenNull(){
-        assertNull(reviewRepository.findTopByPresentationProjectIdAndSiptisUserIdOrderByDateDesc(12345l, 12345l));
+    void givenWhenFindTopByPresentationProjectIdAndSiptisUserIdOrderByDateDescThenNull() {
+        assertNull(reviewRepository.findTopByPresentationProjectIdAndSiptisUserIdOrderByDateDesc(12345L, 12345L));
     }
 
 }

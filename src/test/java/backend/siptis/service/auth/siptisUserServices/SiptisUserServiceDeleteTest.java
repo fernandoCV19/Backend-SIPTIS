@@ -8,7 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
@@ -19,21 +20,21 @@ class SiptisUserServiceDeleteTest {
 
     @Test
     @DisplayName("test for delete user by id")
-    void givenUserIdWhenDeleteUserThenServiceMessageID_DOES_NOT_EXIST(){
+    void givenUserIdWhenDeleteUserThenServiceMessageID_DOES_NOT_EXIST() {
         ServiceAnswer answer = siptisUserServiceDelete.deleteUser(123L);
         assertEquals(ServiceMessage.ID_DOES_NOT_EXIST, answer.getServiceMessage());
     }
 
     @Test
     @DisplayName("test for remove director role")
-    void givenDierectorRoleWhenRemoveDirectorRoleThenServiceMessageNOT_FOUND(){
+    void givenDierectorRoleWhenRemoveDirectorRoleThenServiceMessageNOT_FOUND() {
         ServiceAnswer answer = siptisUserServiceDelete.removeDirectorRole("wrong role");
         assertEquals(ServiceMessage.NOT_FOUND, answer.getServiceMessage());
     }
 
     @Test
     @DisplayName("Test for verify if exist director")
-    void givenWhenThenServiceMessage(){
+    void givenWhenThenServiceMessage() {
         assertFalse(siptisUserServiceDelete.existCareerDirector("wrong role"));
     }
 }

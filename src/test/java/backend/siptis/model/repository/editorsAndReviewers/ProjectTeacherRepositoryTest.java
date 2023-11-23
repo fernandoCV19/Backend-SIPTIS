@@ -5,7 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 @DataJpaTest
 class ProjectTeacherRepositoryTest {
     @Autowired
@@ -13,22 +15,25 @@ class ProjectTeacherRepositoryTest {
 
     @Test
     @DisplayName("test for get list of project teacher find by teacher id not accepted and reviewed ")
-    void givenBadId_whenFindByTeacherIdAndAcceptedIsFalseAndReviewedIsTrue_thenEmpty(){
-        assertTrue(projectTeacherRepository.findByTeacherIdAndAcceptedIsFalseAndReviewedIsTrue(123l).isEmpty());
+    void givenBadId_whenFindByTeacherIdAndAcceptedIsFalseAndReviewedIsTrue_thenEmpty() {
+        assertTrue(projectTeacherRepository.findByTeacherIdAndAcceptedIsFalseAndReviewedIsTrue(123L).isEmpty());
     }
+
     @Test
     @DisplayName("test for get list of project teacher find by teacher id not accepted and not reviewed ")
-    void givenBadId_whenFindByTeacherIdAndAcceptedIsFalseAndReviewedIsFalse_thenEmpty(){
-        assertTrue(projectTeacherRepository.findByTeacherIdAndAcceptedIsFalseAndReviewedIsFalse(123l).isEmpty());
+    void givenBadId_whenFindByTeacherIdAndAcceptedIsFalseAndReviewedIsFalse_thenEmpty() {
+        assertTrue(projectTeacherRepository.findByTeacherIdAndAcceptedIsFalseAndReviewedIsFalse(123L).isEmpty());
     }
+
     @Test
     @DisplayName("test for get list of project teacher find by teacher id  accepted  ")
-    void givenBadId_whenFindByTeacherIdAndAcceptedIsTrue_thenEmpty(){
-        assertTrue(projectTeacherRepository.findByTeacherIdAndAcceptedIsTrue(123l).isEmpty());
+    void givenBadId_whenFindByTeacherIdAndAcceptedIsTrue_thenEmpty() {
+        assertTrue(projectTeacherRepository.findByTeacherIdAndAcceptedIsTrue(123L).isEmpty());
     }
+
     @Test
     @DisplayName("test for get list of project teacher find by teacher id  accepted  ")
-    void givenBadIds_whenFindByTeacherIdAndProjectId_thenNull(){
-        assertNull(projectTeacherRepository.findByTeacherIdAndProjectId(123l, 123l));
+    void givenBadIds_whenFindByTeacherIdAndProjectId_thenNull() {
+        assertNull(projectTeacherRepository.findByTeacherIdAndProjectId(123L, 123L));
     }
 }

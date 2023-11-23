@@ -7,8 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
-import static org.junit.jupiter.api.Assertions.*;
 @DataJpaTest
 class DefenseRepositoryTest {
 
@@ -17,14 +17,14 @@ class DefenseRepositoryTest {
     private Defense defense;
 
     @BeforeEach
-    void createDefense(){
+    void createDefense() {
         defense = new Defense();
         defense.setSubstituteName("defense test");
     }
 
     @Test
     @DisplayName("Test for find defense by id")
-    void givenDefenseId_whenFindById_thenDefenseObject(){
+    void givenDefenseId_whenFindById_thenDefenseObject() {
         defenseRepository.save(defense);
         assertFalse(defenseRepository.findById(defense.getId()).isEmpty());
     }

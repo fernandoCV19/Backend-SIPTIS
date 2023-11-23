@@ -10,11 +10,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.jdbc.Sql;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
@@ -23,31 +23,34 @@ class RefreshTokenServiceTest {
     private RefreshTokenService refreshTokenService;
     private RefreshToken refreshToken;
 
-    private void startToken(){
+    private void startToken() {
         refreshToken = new RefreshToken();
-        LocalDate date  = LocalDate.of(2022,7,7);
+        LocalDate date = LocalDate.of(2022, 7, 7);
         refreshToken.setExpireDate(date.atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
+
     @Test
     @DisplayName("test for get allowed roles")
-    void givenTokenWhenFindByTokenThenRefreshToken(){
+    void givenTokenWhenFindByTokenThenRefreshToken() {
         assertNull(refreshTokenService.findByToken(""));
     }
 
     @Test
     @DisplayName("test for create refresh token with siptis user")
     @Sql(scripts = {"/custom_imports/refresh_token_service_test.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    void givenNullWhenCreateRefreshTokenBySiptisUserThenRefreshToken(){
-        assertNull(refreshTokenService.createRefreshToken( (SiptisUser) null));
+    void givenNullWhenCreateRefreshTokenBySiptisUserThenRefreshToken() {
+        assertNull(refreshTokenService.createRefreshToken((SiptisUser) null));
     }
+
     @Test
     @DisplayName("test for get create refresh token with user detail")
-    void givenNullWhenCreateRefreshTokenByUserDetailImpThenRefreshToken(){
-        assertNull(refreshTokenService.createRefreshToken( (UserInformationService.UserDetailImp) null));
+    void givenNullWhenCreateRefreshTokenByUserDetailImpThenRefreshToken() {
+        assertNull(refreshTokenService.createRefreshToken((UserInformationService.UserDetailImp) null));
     }
+
     @Test
     @DisplayName("test for verify expiration date refresh token")
-    void givenRefreshTokenWhenVerifyExpirationDateThenTrue(){
+    void givenRefreshTokenWhenVerifyExpirationDateThenTrue() {
         startToken();
         assertFalse(refreshTokenService.verifyValidExpirationDate(refreshToken));
     }

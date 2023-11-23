@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
-
 @Tag(name = ControllerConstants.PlaceToDefense.TAG_NAME, description = ControllerConstants.PlaceToDefense.TAG_DESCRIPTION)
 @RestController
 @RequestMapping(ControllerConstants.PlaceToDefense.BASE_PATH)

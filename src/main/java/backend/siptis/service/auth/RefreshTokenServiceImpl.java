@@ -30,7 +30,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
     @Override
     public RefreshToken createRefreshToken(UserInformationService.UserDetailImp userDI) {
-        if(userDI == null)
+        if (userDI == null)
             return null;
         Optional<SiptisUser> user = siptisUserRepository.findById(userDI.getId());
         return user.map(this::createRefreshToken).orElse(null);
@@ -38,7 +38,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
     @Override
     public RefreshToken createRefreshToken(SiptisUser user) {
-        if(user == null)
+        if (user == null)
             return null;
         RefreshToken token = new RefreshToken();
         if (refreshTokenRepository.existsBySiptisUser(user))

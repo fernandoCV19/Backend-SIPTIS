@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 @Tag(name = ControllerConstants.SiptisUser.TAG_NAME, description = ControllerConstants.SiptisUser.TAG_DESCRIPTION)
 @RestController
 @RequestMapping(ControllerConstants.SiptisUser.BASE_PATH)
@@ -30,6 +31,7 @@ public class StudentOperationsController {
             List.of(ServiceMessage.OK, ServiceMessage.SUCCESSFUL_REGISTER, ServiceMessage.USER_DELETED));
     private final SiptisUserServiceStudentOperations siptisUserServiceStudentOperations;
     private final SiptisUserServiceTokenOperations siptisUserServiceTokenOperations;
+
     @Operation(summary = "Register user with STUDENT role")
     @PostMapping("/register/student")
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -45,6 +47,7 @@ public class StudentOperationsController {
                 siptisUserServiceStudentOperations.getNumberStudentsCareer(careerId);
         return createResponseEntity(answerService);
     }
+
     @Operation(summary = "get own career")
     @GetMapping("/userCareer")
     @PreAuthorize("hasAuthority('STUDENT')")
@@ -54,6 +57,7 @@ public class StudentOperationsController {
                 siptisUserServiceStudentOperations.getStudentCareerById(id);
         return createResponseEntity(answerService);
     }
+
     @Operation(summary = "get career from other user")
     @GetMapping("/userCareer/{userId}")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
@@ -63,6 +67,7 @@ public class StudentOperationsController {
                 siptisUserServiceStudentOperations.getStudentCareerById(id);
         return createResponseEntity(answerService);
     }
+
     @Operation(summary = "get number of students by year and career")
     @GetMapping("/studentsByYear/{careerId}")
     public ResponseEntity<ControllerAnswer> getNumberOfStudentsByYearAndCareer(@PathVariable Long careerId) {

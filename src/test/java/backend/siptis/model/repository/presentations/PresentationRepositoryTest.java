@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
 @DataJpaTest
 class PresentationRepositoryTest {
     @Autowired
@@ -15,28 +16,32 @@ class PresentationRepositoryTest {
 
     @Test
     @DisplayName("test find by id")
-    void givenIdWhenFindByIdThenEmpty(){
-        assertTrue(presentationRepository.findById(123123l).isEmpty());
+    void givenIdWhenFindByIdThenEmpty() {
+        assertTrue(presentationRepository.findById(123123L).isEmpty());
     }
+
     @Test
     @DisplayName("test find top by project id and reviewed ")
-    void givenIdWhenFindTopByProjectIdAndReviewedThenEmpty(){
-        assertTrue(presentationRepository.findTopByProjectIdAndReviewed(123123l, true).isEmpty());
+    void givenIdWhenFindTopByProjectIdAndReviewedThenEmpty() {
+        assertTrue(presentationRepository.findTopByProjectIdAndReviewed(123123L, true).isEmpty());
     }
+
     @Test
     @DisplayName("test find by project id and reviewed ")
-    void givenIdWhenFindByProjectIdAndReviewedThenEmpty(){
-        assertTrue(presentationRepository.findByProjectIdAndReviewed(123123l, true).isEmpty());
+    void givenIdWhenFindByProjectIdAndReviewedThenEmpty() {
+        assertTrue(presentationRepository.findByProjectIdAndReviewed(123123L, true).isEmpty());
     }
+
     @Test
     @DisplayName("test find top by project id order by date desc")
-    void givenIdWhenFindTopByProjectIdOrderByDateDescThenEmpty(){
-        assertNull(presentationRepository.findTopByProjectIdOrderByDateDesc(123123l));
+    void givenIdWhenFindTopByProjectIdOrderByDateDescThenEmpty() {
+        assertNull(presentationRepository.findTopByProjectIdOrderByDateDesc(123123L));
     }
+
     @Test
     @DisplayName("test delete by id")
-    void givenIdWhenDeleteByIdThenEmpty(){
+    void givenIdWhenDeleteByIdThenEmpty() {
         presentationRepository.save(new Presentation());
-        presentationRepository.deleteById(1l);
+        presentationRepository.deleteById(1L);
     }
 }

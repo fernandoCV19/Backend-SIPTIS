@@ -19,37 +19,41 @@ class GeneralActivityServiceFindOperationsTest {
     private GeneralActivityServiceFindOperations generalActivityServiceFindOperations;
     private GeneralActivity activity;
 
-    private void startActivity(){
+    private void startActivity() {
         activity = new GeneralActivity();
         activity.setActivityDate(new Date());
-        activity.setId(1233245l);
+        activity.setId(1233245L);
         activity.setActivityName("name");
         activity.setActivityDescription("");
     }
 
     @Test
     @DisplayName("test find by id")
-    void givenId_WhenFindById_ThenServiceMessageNOT_FOUND(){
-        assertEquals(ServiceMessage.NOT_FOUND, generalActivityServiceFindOperations.findById(1233453l).getServiceMessage());
+    void givenId_WhenFindById_ThenServiceMessageNOT_FOUND() {
+        assertEquals(ServiceMessage.NOT_FOUND, generalActivityServiceFindOperations.findById(1233453L).getServiceMessage());
     }
+
     @Test
     @DisplayName("test find all VO")
-    void givenVO_WhenFindAllVO_ThenServiceMessageNOT_FOUND(){
+    void givenVO_WhenFindAllVO_ThenServiceMessageNOT_FOUND() {
         assertNotNull(generalActivityServiceFindOperations.findAllVO());
     }
+
     @Test
     @DisplayName("test find all Pageable VO")
-    void givenPageable_WhenFindAllVO_ThenServiceMessageNOT_FOUND(){
+    void givenPageable_WhenFindAllVO_ThenServiceMessageNOT_FOUND() {
         assertNotNull(generalActivityServiceFindOperations.findAllVO(Pageable.ofSize(12)));
     }
+
     @Test
     @DisplayName("test find all Pageable")
-    void givenPageable_WhenFindAll_ThenServiceMessageNOT_FOUND(){
+    void givenPageable_WhenFindAll_ThenServiceMessageNOT_FOUND() {
         assertNotNull(generalActivityServiceFindOperations.findAll(Pageable.ofSize(12)));
     }
+
     @Test
     @DisplayName("Test entity to VO")
-    void givenActivity_whenEntityToVO_thenServiceMessageNOT_FOUND(){
+    void givenActivity_whenEntityToVO_thenServiceMessageNOT_FOUND() {
         startActivity();
         assertNotNull(generalActivityServiceFindOperations.entityToVO(activity));
     }

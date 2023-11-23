@@ -24,7 +24,7 @@ public class JWTokenUtils {
     private static SiptisUserRepository siptisUserRepository;
 
     public JWTokenUtils(SiptisUserRepository siptisUserRepository) {
-        this.siptisUserRepository = siptisUserRepository;
+        JWTokenUtils.siptisUserRepository = siptisUserRepository;
     }
 
     public static String createToken(UserInformationService.UserDetailImp userDI) {

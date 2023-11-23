@@ -25,7 +25,7 @@ public class SendRecoverPasswordEmailServiceImpl implements SendRecoverPasswordE
 
     @Override
     public ServiceAnswer sendRecoverPasswordEmail(String email) {
-        Optional<SiptisUser> oUser =  siptisUserRepository.findOneByEmail(email);
+        Optional<SiptisUser> oUser = siptisUserRepository.findOneByEmail(email);
         if (oUser.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.EMAIL_NOT_EXIST)
                     .data(null).build();

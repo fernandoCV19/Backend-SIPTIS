@@ -17,44 +17,48 @@ class AreaRepositoryTest {
     private Area area;
 
     @BeforeEach
-    void startArea(){
+    void startArea() {
         area = new Area();
         area.setName("AREA_1");
     }
 
     @Test
     @DisplayName("Test for list of areas")
-    void givenAreas_whenFindAll_thenAreasList(){
+    void givenAreas_whenFindAll_thenAreasList() {
         areaRepository.save(area);
         assertFalse(areaRepository.findAll().isEmpty());
     }
+
     @Test
     @DisplayName("Test for verify if exist area by id")
-    void givenAreaId_ExistsByAreaId_thenFalse(){
+    void givenAreaId_ExistsByAreaId_thenFalse() {
         areaRepository.save(area);
         assertFalse(areaRepository.existsAreaById(123456L));
     }
+
     @Test
     @DisplayName("Test for verify if exist area by name")
-    void givenAreaName_ExistsByAreaName_thenTrue(){
+    void givenAreaName_ExistsByAreaName_thenTrue() {
         areaRepository.save(area);
         assertTrue(areaRepository.existsAreaByName(area.getName()));
     }
+
     @Test
     @DisplayName("Test for verify if exist subarea by non existing name")
-    void givenAreaName_ExistsByAreaName_thenFalse(){
+    void givenAreaName_ExistsByAreaName_thenFalse() {
         assertFalse(areaRepository.existsAreaByName("SUB AREA EXAMPLE"));
     }
 
     @Test
     @DisplayName("Test for find area by name")
-    void givenSubAreaId_ExistsById_thenUserCareerObject(){
+    void givenSubAreaId_ExistsById_thenUserCareerObject() {
         areaRepository.save(area);
         assertNotNull(areaRepository.findById(area.getId()).get());
     }
+
     @Test
     @DisplayName("Test for find area by non existing name")
-    void givenSubAreaId_ExistsById_thenNull(){
+    void givenSubAreaId_ExistsById_thenNull() {
         assertTrue(areaRepository.findById(12345667809L).isEmpty());
     }
 

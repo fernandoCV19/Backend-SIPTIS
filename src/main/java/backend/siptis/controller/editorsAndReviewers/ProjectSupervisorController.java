@@ -12,7 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@Tag(name  = ControllerConstants.ProjectSupervisor.TAG_NAME, description = ControllerConstants.ProjectSupervisor.TAG_DESCRIPTION)
+@Tag(name = ControllerConstants.ProjectSupervisor.TAG_NAME, description = ControllerConstants.ProjectSupervisor.TAG_DESCRIPTION)
 @RestController
 @RequestMapping(ControllerConstants.ProjectSupervisor.BASE_PATH)
 @RequiredArgsConstructor

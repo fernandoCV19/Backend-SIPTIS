@@ -21,16 +21,19 @@ import org.springframework.web.bind.annotation.*;
 public class ModifyOperationsController {
 
     private final GeneralActivityServiceModifyOperations generalActivityServiceModifyOperations;
+
     @Operation(summary = "Create general activity")
     @PostMapping("/create")
     public ResponseEntity<ControllerAnswer> persistGeneralActivity(@RequestBody GeneralActivityDTO generalActivityDTO) {
         return createResponse(generalActivityServiceModifyOperations.persistGeneralActivity(generalActivityDTO));
     }
+
     @Operation(summary = "Update general activity")
     @PutMapping("/{id}")
     public ResponseEntity<ControllerAnswer> updateGeneralActivity(@RequestBody GeneralActivityDTO generalActivityDTO, @PathVariable long id) {
         return createResponse(generalActivityServiceModifyOperations.update(generalActivityDTO, id));
     }
+
     @Operation(summary = "Delete general activity")
     @DeleteMapping("/{id}")
     public ResponseEntity<ControllerAnswer> deleteGeneralActivity(@PathVariable long id) {

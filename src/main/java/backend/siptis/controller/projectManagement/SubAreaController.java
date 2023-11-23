@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 @Tag(name = ControllerConstants.Subarea.TAG_NAME, description = ControllerConstants.Subarea.TAG_DESCRIPTION)
 @RestController
 @RequestMapping(ControllerConstants.Subarea.BASE_PATH)

@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
@@ -16,18 +16,19 @@ class SiptisUserServiceExistValidationTest {
 
     @Test
     @DisplayName("test for check if exist user by id")
-    void givenIdWhenExistByIdThenTrue(){
-        assertFalse(siptisUserServiceExistValidation.existsUserById(123456l));
+    void givenIdWhenExistByIdThenTrue() {
+        assertFalse(siptisUserServiceExistValidation.existsUserById(123456L));
     }
+
     @Test
     @DisplayName("test for check if exist user by email")
-    void givenEmailWhenExistUserByEmailThenFalse(){
+    void givenEmailWhenExistUserByEmailThenFalse() {
         assertFalse(siptisUserServiceExistValidation.existsUserByEmail("fake email"));
     }
 
     @Test
     @DisplayName("test for check if exist director role")
-    void givenDirectorRoleWhenExistCareerDirectorFalse(){
+    void givenDirectorRoleWhenExistCareerDirectorFalse() {
         assertFalse(siptisUserServiceExistValidation.existCareerDirector("fake email"));
     }
 }

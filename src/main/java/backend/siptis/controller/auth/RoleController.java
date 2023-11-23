@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RoleController {
 
     private final RoleService roleService;
+
     @Operation(summary = "Get allowed roles")
     @GetMapping("/allowedRoles")
     public ResponseEntity<ControllerAnswer> getAllowedRoles() {

@@ -18,22 +18,25 @@ class RefreshTokenRepositoryTest {
 
     @Test
     @DisplayName("Test for exist by Token")
-    void givenBadToken_whenExistByToken_thenFalse(){
+    void givenBadToken_whenExistByToken_thenFalse() {
         assertFalse(refreshTokenRepository.existsByToken("bad token"));
     }
+
     @Test
     @DisplayName("Test for exist by Siptis User")
-    void givenBadSiptisUser_whenExistBySiptisUser_thenFalse(){
+    void givenBadSiptisUser_whenExistBySiptisUser_thenFalse() {
         assertFalse(refreshTokenRepository.existsBySiptisUser(siptisUser));
     }
+
     @Test
     @DisplayName("Test for find by Siptis User")
-    void givenBadSiptisUser_whenFindBySiptisUser_thenNull(){
+    void givenBadSiptisUser_whenFindBySiptisUser_thenNull() {
         assertNull(refreshTokenRepository.findBySiptisUser(siptisUser));
     }
+
     @Test
     @DisplayName("Test for find by token")
-    void givenBadToken_whenFindByToken_thenNull(){
+    void givenBadToken_whenFindByToken_thenNull() {
         assertTrue(refreshTokenRepository.findByToken("bad token").isEmpty());
     }
 }

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 @Tag(name = ControllerConstants.SiptisUser.TAG_NAME, description = ControllerConstants.SiptisUser.TAG_DESCRIPTION)
 @RestController
 @RequestMapping(ControllerConstants.SiptisUser.BASE_PATH)
@@ -30,6 +31,7 @@ public class RolesOperationsController {
             List.of(ServiceMessage.OK, ServiceMessage.SUCCESSFUL_REGISTER, ServiceMessage.USER_DELETED));
     private final SiptisUserServiceTokenOperations siptisUserServiceTokenOperations;
     private final SiptisUserServiceRolesOperations siptisUserServiceRolesOperations;
+
     @Operation(summary = "get own roles")
     @GetMapping("/roles")
     public ResponseEntity<ControllerAnswer> getRoles(@RequestHeader(name = "Authorization") String token) {
@@ -37,6 +39,7 @@ public class RolesOperationsController {
         ServiceAnswer answerService = siptisUserServiceRolesOperations.getRolesById(id);
         return createResponseEntity(answerService);
     }
+
     @Operation(summary = "get roles from other user")
     @GetMapping("/roles/{userId}")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
@@ -45,6 +48,7 @@ public class RolesOperationsController {
         ServiceAnswer answerService = siptisUserServiceRolesOperations.getRolesById(id);
         return createResponseEntity(answerService);
     }
+
     @Operation(summary = "update roles from other user")
     @PutMapping("/updateRoles/{userId}")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")

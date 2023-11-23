@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 @Tag(name = ControllerConstants.Schedule.TAG_NAME, description = ControllerConstants.Schedule.TAG_DESCRIPTION)
 @Controller
 @RequestMapping(ControllerConstants.Schedule.BASE_PATH)
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ScheduleController {
 
     private final ScheduleService scheduleService;
+
     @Operation(summary = "Get all schedules from a project")
     @GetMapping("/all/{id}")
     public ResponseEntity<ControllerAnswer> getAllSchedulesFromAProject(@PathVariable Long id) {

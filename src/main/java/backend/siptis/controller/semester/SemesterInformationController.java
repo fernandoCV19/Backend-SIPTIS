@@ -77,6 +77,7 @@ public class SemesterInformationController {
         ServiceAnswer answerService = semesterService.editSemester(dto);
         return createResponse(answerService);
     }
+
     @Operation(summary = "Close semester in progress")
     @PutMapping("/closeSemester/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")

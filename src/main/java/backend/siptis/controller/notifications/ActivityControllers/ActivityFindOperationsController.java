@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ActivityFindOperationsController {
 
     private final ActivityServiceFindOperations activityServiceFindOperations;
+
     @Operation(summary = "Find all activities")
     @GetMapping()
     public ResponseEntity<ControllerAnswer> findAll() {

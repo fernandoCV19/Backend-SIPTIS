@@ -29,7 +29,7 @@ public class GetNumberOfProjectsController {
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
 
-     @Operation (summary = "Get number of projects by area and career id")
+    @Operation(summary = "Get number of projects by area and career id")
     @GetMapping("/areaAndCareer/{careerId}")
     public ResponseEntity<?> getNumberOfProjectsByAreaAndCareer(@PathVariable Long careerId) {
         ServiceAnswer serviceAnswer = projectServiceGetNumberOfProjects.getNumberOfProjectsByAreaAndCareer(careerId);
