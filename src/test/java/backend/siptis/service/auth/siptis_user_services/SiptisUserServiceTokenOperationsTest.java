@@ -13,9 +13,9 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 class SiptisUserServiceTokenOperationsTest {
+    private final String token = "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJleHAiOjE2OTgzMjcyMzgsImlkIjoxLCJwcm9qZWN0cyI6W10sInJvbGVzIjoiW0FETUlOXSJ9.X0DQBTIXmRUJipiRzLg3Gs9DfiVUcGibOX2K04k3ry7Clfl2KWk87fCF3KtQd7Zx\n";
     @Autowired
     private SiptisUserServiceTokenOperations siptisUserServiceTokenOperations;
-    private final String token = "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJleHAiOjE2OTgzMjcyMzgsImlkIjoxLCJwcm9qZWN0cyI6W10sInJvbGVzIjoiW0FETUlOXSJ9.X0DQBTIXmRUJipiRzLg3Gs9DfiVUcGibOX2K04k3ry7Clfl2KWk87fCF3KtQd7Zx\n";
 
     @Test
     @DisplayName("test get id from token")

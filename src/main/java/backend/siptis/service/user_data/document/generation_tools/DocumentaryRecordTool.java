@@ -1,4 +1,4 @@
-package backend.siptis.service.user_data.document.generationTools;
+package backend.siptis.service.user_data.document.generation_tools;
 
 import backend.siptis.commons.Modality;
 import backend.siptis.model.pjo.dto.document.DocumentaryRecordDto;

@@ -1,4 +1,4 @@
-package backend.siptis.controller.editors_and_reviewers.ProjectTribunalControllers;
+package backend.siptis.controller.editors_and_reviewers.project_tribunal_controllers;
 
 import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;

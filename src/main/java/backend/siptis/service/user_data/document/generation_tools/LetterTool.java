@@ -1,4 +1,4 @@
-package backend.siptis.service.user_data.document.generationTools;
+package backend.siptis.service.user_data.document.generation_tools;
 
 
 import com.lowagie.text.*;

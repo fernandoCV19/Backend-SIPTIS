@@ -16,9 +16,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 class ProjectRepositoryTest {
+    private final Pageable pageable = PageRequest.of(1, 10);
     @Autowired
     private ProjectRepository projectRepository;
-    private final Pageable pageable = PageRequest.of(1, 10);
 
     @Test
     @DisplayName("Test for project")

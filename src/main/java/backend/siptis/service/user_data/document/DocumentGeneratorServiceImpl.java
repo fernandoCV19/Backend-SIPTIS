@@ -19,10 +19,10 @@ import backend.siptis.model.repository.user_data.DocumentRepository;
 import backend.siptis.model.repository.user_data.UserInformationRepository;
 import backend.siptis.service.auth.siptis_user_services.SiptisUserServiceCareerDirectorOperations;
 import backend.siptis.service.cloud.CloudManagementService;
-import backend.siptis.service.user_data.document.generationTools.DocumentaryRecordTool;
-import backend.siptis.service.user_data.document.generationTools.LetterTool;
-import backend.siptis.service.user_data.document.generationTools.ReportTool;
-import backend.siptis.service.user_data.document.generationTools.SolvencyTool;
+import backend.siptis.service.user_data.document.generation_tools.DocumentaryRecordTool;
+import backend.siptis.service.user_data.document.generation_tools.LetterTool;
+import backend.siptis.service.user_data.document.generation_tools.ReportTool;
+import backend.siptis.service.user_data.document.generation_tools.SolvencyTool;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -153,6 +153,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
         try {
             location = blueprintRetrieve("CertificadoSolvencia.pdf");
         } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
         SolvencyTool solvencyTool = new SolvencyTool(location);

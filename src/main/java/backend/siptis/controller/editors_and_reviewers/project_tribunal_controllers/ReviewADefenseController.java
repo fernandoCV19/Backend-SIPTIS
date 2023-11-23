@@ -1,9 +1,10 @@
-package backend.siptis.controller.editors_and_reviewers.ProjectTribunalControllers;
+package backend.siptis.controller.editors_and_reviewers.project_tribunal_controllers;
 
 import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.service.editors_and_reviewers.project_tribunal_services.ProjectTribunalServiceAcceptProject;
+import backend.siptis.model.pjo.dto.editors_and_reviewers.ReviewADefenseDTO;
+import backend.siptis.service.editors_and_reviewers.project_tribunal_services.ProjectTribunalServiceReviewADefense;
 import backend.siptis.utils.constant.controller_constans.ControllerConstants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -17,19 +18,22 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(ControllerConstants.ProjecTribunal.BASE_PATH)
 @RequiredArgsConstructor
 @CrossOrigin
-public class AcceptProjectController {
+public class ReviewADefenseController {
 
-    private final ProjectTribunalServiceAcceptProject tribunalServiceAcceptProject;
+    private final ProjectTribunalServiceReviewADefense projectTribunalServiceReviewADefense;
 
-    @Operation(summary = "Accept a project")
-    @GetMapping("/acceptProject/{idProject}/{idReviewer}")
-    public ResponseEntity<ControllerAnswer> acceptProject(@PathVariable("idProject") Long idProject, @PathVariable("idReviewer") Long idReviewer) {
-        ServiceAnswer serviceAnswer = tribunalServiceAcceptProject.acceptProject(idReviewer, idProject);
+    @Operation(summary = "Review a defense given")
+    @PostMapping("/reviewDefense")
+    public ResponseEntity<ControllerAnswer> reviewDefense(@RequestBody ReviewADefenseDTO reviewADefenseDTO) {
+        ServiceAnswer serviceAnswer = projectTribunalServiceReviewADefense.reviewADefense(reviewADefenseDTO);
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         if (serviceAnswer.getServiceMessage().equals(ServiceMessage.OK)) {
             httpStatus = HttpStatus.OK;
         }
-        ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
+        ControllerAnswer controllerAnswer = ControllerAnswer
+                .builder()
+                .data(serviceAnswer.getData())
+                .message(serviceAnswer.getServiceMessage().toString()).build();
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
 }
