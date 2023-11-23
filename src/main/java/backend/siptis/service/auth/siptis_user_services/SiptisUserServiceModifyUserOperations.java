@@ -99,12 +99,6 @@ public class SiptisUserServiceModifyUserOperations {
         String userPassword = encoder.encode(password);
         return createResponse(ServiceMessage.OK, new SiptisUser(email, userPassword));
     }
-
-    private SiptisUser findUserById(long id) {
-        Optional<SiptisUser> userOptional = siptisUserRepository.findById(id);
-        return userOptional.orElse(null);
-    }
-
     private ServiceAnswer createResponse(ServiceMessage serviceMessage, Object data) {
         return ServiceAnswer.builder().serviceMessage(
                 serviceMessage).data(data

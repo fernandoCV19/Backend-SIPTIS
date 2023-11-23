@@ -85,10 +85,10 @@ public class JWTokenUtils {
                     .setSigningKey(accessTokenSecret.getBytes())
                     .build().parseClaimsJws(authToken).getBody();
             return true;
-        } catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException e) {
 
-        }
-        return false;
+            }
+            return false;
     }
 
     public static UsernamePasswordAuthenticationToken getAuthentication(String token) {
@@ -98,12 +98,12 @@ public class JWTokenUtils {
     }
 
     @Value("${security.jwt.token.secret-key}")
-    private static void setAccessToken(String key) {
+    private void setAccessToken(String key) {
         accessTokenSecret = key;
     }
 
     @Value("${security.jwt.token.expire-length}")
-    private static void setExpireTime(String time) {
+    private void setExpireTime(String time) {
         expireTimeDuration = Long.parseLong(time);
     }
 

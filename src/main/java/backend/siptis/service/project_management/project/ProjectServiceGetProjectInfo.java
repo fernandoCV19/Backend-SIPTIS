@@ -74,10 +74,10 @@ public class ProjectServiceGetProjectInfo {
     }
 
     public ServiceAnswer getProjectInfo(Long id) {
-        if (!projectRepository.existsById(id))
+        Optional<Project> oProject = projectRepository.findById(id);
+        if (oProject.isEmpty())
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ID_DOES_NOT_EXIST).build();
-
-        Project project = projectRepository.findById(id).get();
+        Project project = oProject.get();
         ProjectInformationDTO dto = new ProjectInformationDTO(project);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(dto).build();
     }
