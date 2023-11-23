@@ -1,6 +1,5 @@
 package backend.siptis.auth.security;
 
-import backend.siptis.auth.jwt.JWTAuthenticationFilter;
 import backend.siptis.auth.jwt.JWTAuthorizationFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +13,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -22,51 +22,95 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @AllArgsConstructor
 public class WebSecurityConfig {
+    private static final String[] AUTH_WHITELIST = {
+            "/api/v1/auth/**",
+            "/v3/api-docs.yml",
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
+            "/swagger-ui.html"
+    };
     private UserDetailsService userDetailsService;
     private JWTAuthorizationFilter jwtAuthorizationFilter;
-
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager manager)
             throws Exception {
-        JWTAuthenticationFilter jwtAuthenticationFilter = new JWTAuthenticationFilter();
-        jwtAuthenticationFilter.setAuthenticationManager(manager);
-        //jwtAuthenticationFilter.setFilterProcessesUrl("/login");
 
         return http.cors().and()
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/user/register/student", "/user/register/admin", "/user/test", "/supervisor/**", "/tribunal/**", "/teacher/**", "/tutor/**", "/project/**", "/email",
-                        "/general-activity", "/general-activity/create", "/general-activity/*", "/user/test", "/user/login", "/user/todos", "/user/editUser/*",
-                        "/user/information/*", "/email/send", "/project/**", "/presentation/**")
+                .requestMatchers("/user/register/student", "/user/register/admin", "/user/test", "/user/information/*",
+                        "/user/register/teacher", "/user/editTeacher/*",
+                        "/user/login", "/user/todos", "/user/editUser/*",
+                        "/user/register/student", "/user/register/admin", "/user/personal-activities/*",
+                        "/user/buscarUser/**", "/user/personalInformation",
+                        "/user/updateAreas/**", "/user/refreshtoken", "/user/**",
+                        "/user/updateAreas/**",
+                        "/user/project/**",
+                        "/user/project/*",
+                        "/schedule/**",
+                        "/schedule/*",
+
+                        "/role/**",
+
+                        "/document/**",
+                        "/document/**", "/document",
+
+                        "/tribunal/**", "/teacher/**", "/tutor/**",
+
+                        "/project/**", "/presentation/**", "/placesToDefense/**",
+
+                        "/supervisor/**",
+                        "/siptis/**", "/stadistics/**",
+
+                        "/email",
+                        "/email/send",
+                        "/email/changePassword", "/email/askemail/*",
+                        "/email/prueba/*",
+
+                        "/general-activity", "/general-activity/create", "/general-activity/*",
+
+                        "/activity", "/activity/create", "/activity/*",
+
+                        "/cloud/**",
+                        "/modality/**",
+
+                        "/bot/**",
+
+                        "/userArea/**",
+                        "/area/**", "/subarea/**",
+                        "/semester/**",
+                        "/supervisor/**",
+                        "/review/**",
+                        "/phase/**",
+                        "/wpp",
+                        "/defense/**")
                 .permitAll()
+                .requestMatchers(AUTH_WHITELIST).permitAll()
                 .anyRequest().authenticated()
+                .and().exceptionHandling().authenticationEntryPoint(authenticationEntryPoint())
                 .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().addFilter(jwtAuthenticationFilter)
+                .and()
                 .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
 
     @Bean
-    AuthenticationManager authenticationManager(HttpSecurity http,
-                                                PasswordEncoder passwordEncoder) throws Exception {
+    AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
         return http.getSharedObject(AuthenticationManagerBuilder.class)
                 .userDetailsService(userDetailsService).passwordEncoder(passwordEncoder())
                 .and().build();
     }
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-
-    public static void main(String[] args) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String password = passwordEncoder.encode("mavl");
-        System.out.println(password);
+    @Bean
+    public AuthenticationEntryPoint authenticationEntryPoint() {
+        return new CustomAuthenticationEntryPoint();
     }
 }

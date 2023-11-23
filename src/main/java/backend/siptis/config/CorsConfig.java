@@ -10,55 +10,37 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class CorsConfig {
 
     @Bean
-    public WebMvcConfigurer corsConfigurer(){
+    public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
 
-                String localUI = "http://127.0.0.1:5173/";
+                String localUI = "http://localhost:5173";
 
                 registry.addMapping("/login")
                         .allowedOrigins(localUI)
                         .allowedMethods("*")
                         .exposedHeaders("*");
 
-                registry.addMapping("/user/login")
-                        .allowedOrigins(localUI)
-                        .allowedMethods("*")
-                        .exposedHeaders("*");
-
-                registry.addMapping("/user/register/admin")
-                        .allowedOrigins(localUI)
-                        .allowedMethods("*")
-                        .exposedHeaders("*");
-
-                registry.addMapping("/user/register/student")
-                        .allowedOrigins(localUI)
-                        .allowedMethods("*")
-                        .exposedHeaders("*");
-
-                registry.addMapping("/user/test")
-                        .allowedOrigins(localUI)
-                        .allowedMethods("*")
-                        .exposedHeaders("*");
-
-                registry.addMapping("/user/todos")
+                registry.addMapping("/email/askemail/*")
                         .allowedOrigins(localUI)
                         .allowedMethods("*");
 
-                registry.addMapping("/user/information/*")
+                registry.addMapping("/email/changePassword")
                         .allowedOrigins(localUI)
                         .allowedMethods("*");
 
-                registry.addMapping("/user/information")
-                        .allowedOrigins(localUI)
+                registry.addMapping("/v3/api-docs/**")
+                        .allowedOrigins("*")
                         .allowedMethods("*");
 
-                registry.addMapping("/user/editUser/*")
-                        .allowedOrigins(localUI)
+                registry.addMapping("/swagger-ui/**")
+                        .allowedOrigins("*")
                         .allowedMethods("*");
 
-
+                registry.addMapping("/swagger-ui.html")
+                        .allowedOrigins("*")
+                        .allowedMethods("*");
             }
         };
     }
