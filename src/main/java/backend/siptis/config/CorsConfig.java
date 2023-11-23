@@ -10,29 +10,36 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class CorsConfig {
 
     @Bean
-    public WebMvcConfigurer corsConfigurer(){
+    public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
 
+                String localUI = "http://localhost:5173";
 
                 registry.addMapping("/login")
-                        .allowedOrigins("http://localhost:3000/")
+                        .allowedOrigins(localUI)
                         .allowedMethods("*")
                         .exposedHeaders("*");
 
-                registry.addMapping("/user/register/admin")
-                        .allowedOrigins("http://localhost:3000/")
-                        .allowedMethods("*")
-                        .exposedHeaders("*");
+                registry.addMapping("/email/askemail/*")
+                        .allowedOrigins(localUI)
+                        .allowedMethods("*");
 
-                registry.addMapping("/user/test")
-                        .allowedOrigins("http://localhost:3000/")
-                        .allowedMethods("*")
-                        .exposedHeaders("*");
+                registry.addMapping("/email/changePassword")
+                        .allowedOrigins(localUI)
+                        .allowedMethods("*");
 
-                registry.addMapping("/todos")
-                        .allowedOrigins("http://localhost:3000/")
+                registry.addMapping("/v3/api-docs/**")
+                        .allowedOrigins("*")
+                        .allowedMethods("*");
+
+                registry.addMapping("/swagger-ui/**")
+                        .allowedOrigins("*")
+                        .allowedMethods("*");
+
+                registry.addMapping("/swagger-ui.html")
+                        .allowedOrigins("*")
                         .allowedMethods("*");
             }
         };

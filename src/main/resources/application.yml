@@ -4,7 +4,17 @@ spring:
     username: postgres
     password: 123
     driver-class-name: org.postgresql.Driver
-
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 50MB
+      max-request-size: 50MB
+  output:
+    ansi:
+      enabled: always
+  devtools:
+    livereload:
+      enabled: false
   jpa:
     hibernate:
       ddl-auto: update
@@ -15,18 +25,30 @@ spring:
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: siptis.umss@gmail.com
+    password: ftryberzfpkddfvj
+    properties.mail:
+      smtp:
+        auth: true
+        ssl.trust: smtp.gmail.com
+        starttls.enable: true
+      debug: true
+
 server:
   port: 9090
 
 cloud:
-    aws:
-      region:
-        static: sa-east-1
-      stack:
-        auto: false
-      credentials:
-        access-key: AKIA4O3PHN4JLLTTCSW5
-        secret-key: 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
+  aws:
+    region:
+      static: sa-east-1
+    stack:
+      auto: false
+    credentials:
+      access-key: AKIA4O3PHN4JMSTAYYPK
+      secret-key: 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
 
 logging:
   level:
@@ -34,3 +56,39 @@ logging:
       amazonaws:
         util:
           EC2MetadataUtils: error
+    org:
+      springframework:
+        web:
+          client:
+            RestTemplate: DEBUG
+
+openai:
+  api:
+    url: https://api.openai.com/v1/chat/completions
+    key: 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
+  model: gpt-3.5-turbo
+
+security:
+  jwt:
+    token:
+      secret-key: $2a$12$JTfIoPcl28jeEFio3aHBa.rcqtBUgvykiKYgKxvikVzzxVAt82CEu
+      expire-length: 3600000 # hora.
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: basic
+
+application:
+  name: SIPTIS
+  gateway:
+    chatAPI: http://localhost:3000/
+
+springdoc:
+  api-docs:
+    path: "/v3/api-docs"
+  swagger-ui:
+    path: "/swagger-ui.html"
