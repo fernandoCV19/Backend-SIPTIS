@@ -6,7 +6,7 @@ import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.semester.EditSemesterInfoDTO;
 import backend.siptis.model.pjo.dto.semester.SemesterInformationDTO;
 import backend.siptis.service.semester.SemesterInformationService;
-import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
+import backend.siptis.utils.constant.controller_constans.ControllerConstants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

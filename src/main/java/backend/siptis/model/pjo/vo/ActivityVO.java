@@ -1,6 +1,6 @@
 package backend.siptis.model.pjo.vo;
 
-import backend.siptis.model.entity.projectManagement.Project;
+import backend.siptis.model.entity.project_management.Project;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

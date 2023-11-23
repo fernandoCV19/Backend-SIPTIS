@@ -1,7 +1,7 @@
 package backend.siptis.auth.jwt;
 
 import backend.siptis.exception.UserNotFoundException;
-import backend.siptis.model.pjo.dto.userDataDTO.ResponseDTO;
+import backend.siptis.model.pjo.dto.user_data.ResponseDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;

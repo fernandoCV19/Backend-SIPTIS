@@ -1,6 +1,6 @@
 package backend.siptis.model.entity.notifications;
 
-import backend.siptis.utils.constant.entityConstants.NotificationsConstants.GeneralActivityTable;
+import backend.siptis.utils.constant.entity_constants.NotificationsConstants.GeneralActivityTable;
 import jakarta.persistence.*;
 import lombok.*;
 

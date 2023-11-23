@@ -4,7 +4,7 @@ import backend.siptis.auth.entity.Role;
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.exception.UserNotFoundException;
 import backend.siptis.model.repository.auth.SiptisUserRepository;
-import backend.siptis.service.userData.UserInformationService;
+import backend.siptis.service.user_data.UserInformationService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;

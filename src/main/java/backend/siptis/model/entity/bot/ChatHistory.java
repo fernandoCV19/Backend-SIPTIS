@@ -1,6 +1,6 @@
 package backend.siptis.model.entity.bot;
 
-import backend.siptis.utils.constant.entityConstants.BotConstants.ChatHistoryTable;
+import backend.siptis.utils.constant.entity_constants.BotConstants.ChatHistoryTable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

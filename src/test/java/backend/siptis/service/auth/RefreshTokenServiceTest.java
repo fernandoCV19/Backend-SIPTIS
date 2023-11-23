@@ -2,7 +2,7 @@ package backend.siptis.service.auth;
 
 import backend.siptis.auth.entity.RefreshToken;
 import backend.siptis.auth.entity.SiptisUser;
-import backend.siptis.service.userData.UserInformationService;
+import backend.siptis.service.user_data.UserInformationService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

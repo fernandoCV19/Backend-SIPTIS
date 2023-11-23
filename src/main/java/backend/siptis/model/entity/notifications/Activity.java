@@ -1,7 +1,7 @@
 package backend.siptis.model.entity.notifications;
 
-import backend.siptis.model.entity.projectManagement.Project;
-import backend.siptis.utils.constant.entityConstants.NotificationsConstants.ActivityTable;
+import backend.siptis.model.entity.project_management.Project;
+import backend.siptis.utils.constant.entity_constants.NotificationsConstants.ActivityTable;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

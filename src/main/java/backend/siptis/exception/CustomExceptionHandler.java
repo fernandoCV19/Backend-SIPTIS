@@ -1,6 +1,6 @@
 package backend.siptis.exception;
 
-import backend.siptis.model.pjo.dto.userDataDTO.ResponseDTO;
+import backend.siptis.model.pjo.dto.user_data.ResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;

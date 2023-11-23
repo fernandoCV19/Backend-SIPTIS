@@ -4,7 +4,7 @@ import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.service.auth.RoleService;
-import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
+import backend.siptis.utils.constant.controller_constans.ControllerConstants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

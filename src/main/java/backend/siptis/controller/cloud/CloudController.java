@@ -2,7 +2,7 @@ package backend.siptis.controller.cloud;
 
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.service.cloud.FileManagerService;
-import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
+import backend.siptis.utils.constant.controller_constans.ControllerConstants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

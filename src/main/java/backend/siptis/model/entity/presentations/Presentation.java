@@ -1,7 +1,7 @@
 package backend.siptis.model.entity.presentations;
 
-import backend.siptis.model.entity.projectManagement.Project;
-import backend.siptis.utils.constant.entityConstants.PresentationsConstants.PresentationTable;
+import backend.siptis.model.entity.project_management.Project;
+import backend.siptis.utils.constant.entity_constants.PresentationsConstants.PresentationTable;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;

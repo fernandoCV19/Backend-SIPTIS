@@ -1,6 +1,6 @@
 package backend.siptis.auth.entity;
 
-import backend.siptis.utils.constant.entityConstants.AuthConstants.RoleTable;
+import backend.siptis.utils.constant.entity_constants.AuthConstants.RoleTable;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -2,9 +2,9 @@ package backend.siptis.model.repository.auth;
 
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.model.entity.notifications.Activity;
-import backend.siptis.model.entity.projectManagement.Project;
-import backend.siptis.model.pjo.dto.stadisticsDTO.StudentsByCareerDTO;
-import backend.siptis.model.pjo.dto.userDataDTO.UserListItemDTO;
+import backend.siptis.model.entity.project_management.Project;
+import backend.siptis.model.pjo.dto.stadistics.StudentsByCareerDTO;
+import backend.siptis.model.pjo.dto.user_data.UserListItemDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

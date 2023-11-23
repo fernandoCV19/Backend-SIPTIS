@@ -4,7 +4,7 @@ import backend.siptis.auth.entity.RefreshToken;
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.model.repository.auth.RefreshTokenRepository;
 import backend.siptis.model.repository.auth.SiptisUserRepository;
-import backend.siptis.service.userData.UserInformationService;
+import backend.siptis.service.user_data.UserInformationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

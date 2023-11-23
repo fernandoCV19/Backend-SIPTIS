@@ -1,6 +1,6 @@
 package backend.siptis.model.entity.semester;
 
-import backend.siptis.utils.constant.entityConstants.SemesterConstants.SemesterInformationTable;
+import backend.siptis.utils.constant.entity_constants.SemesterConstants.SemesterInformationTable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

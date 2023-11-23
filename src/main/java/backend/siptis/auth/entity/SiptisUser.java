@@ -1,9 +1,9 @@
 package backend.siptis.auth.entity;
 
-import backend.siptis.model.entity.editorsAndReviewers.*;
+import backend.siptis.model.entity.editors_and_reviewers.*;
 import backend.siptis.model.entity.presentations.Review;
-import backend.siptis.model.entity.userData.*;
-import backend.siptis.utils.constant.entityConstants.AuthConstants.SiptisUserTable;
+import backend.siptis.model.entity.user_data.*;
+import backend.siptis.utils.constant.entity_constants.AuthConstants.SiptisUserTable;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;

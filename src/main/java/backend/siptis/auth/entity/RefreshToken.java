@@ -1,6 +1,6 @@
 package backend.siptis.auth.entity;
 
-import backend.siptis.utils.constant.entityConstants.AuthConstants.RefreshTokenTable;
+import backend.siptis.utils.constant.entity_constants.AuthConstants.RefreshTokenTable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
