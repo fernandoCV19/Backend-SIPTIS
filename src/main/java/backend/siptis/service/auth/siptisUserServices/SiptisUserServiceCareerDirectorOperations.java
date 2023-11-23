@@ -45,9 +45,10 @@ public class SiptisUserServiceCareerDirectorOperations {
     }
 
     public ServiceAnswer getDirectorPersonalInformation(String directorRole) {
-        if (!siptisUserServiceExistValidation.existCareerDirector(directorRole))
+        Optional<SiptisUser> oUser = siptisUserRepository.findOneByRolesName(directorRole);
+        if (oUser.isEmpty())
             return createResponse(ServiceMessage.NOT_FOUND, null);
-        SiptisUser user = siptisUserRepository.findOneByRolesName(directorRole).get();
+        SiptisUser user = oUser.get();
         return createResponse(ServiceMessage.OK, new UserInformationDTO(user));
     }
 
@@ -58,7 +59,10 @@ public class SiptisUserServiceCareerDirectorOperations {
                 roleName = Roles.INF_DIRECTOR.toString();
             if (career.equals(backend.siptis.commons.UserCareer.SISTEMAS.toString()))
                 roleName = Roles.SIS_DIRECTOR.toString();
-            SiptisUser user = siptisUserRepository.findOneByRolesName(roleName).get();
+            Optional<SiptisUser> oUser = siptisUserRepository.findOneByRolesName(roleName);
+            if (oUser.isEmpty())
+                return null;
+            SiptisUser user = oUser.get();
             UserInformation information = user.getUserInformation();
             return information.getNames() + " " + information.getLastNames();
         } catch (Exception e) {

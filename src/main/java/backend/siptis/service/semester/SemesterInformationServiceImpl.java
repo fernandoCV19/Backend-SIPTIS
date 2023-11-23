@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -49,9 +50,11 @@ public class SemesterInformationServiceImpl implements SemesterInformationServic
             return createResponse(ServiceMessage.NO_CURRENT_SEMESTER, null);
         if (!repository.existsById(dto.getId()))
             return createResponse(ServiceMessage.ID_DOES_NOT_EXIST, null);
-        SemesterInformation semesterInformation = repository.findFirstByInProgressTrueAndIdOrderByEndDateDesc(dto.getId()).get();
-        if (semesterInformation == null)
+
+        Optional<SemesterInformation> oSemesterInformation = repository.findFirstByInProgressTrueAndIdOrderByEndDateDesc(dto.getId());
+        if (oSemesterInformation.isEmpty())
             return createResponse(ServiceMessage.NO_CURRENT_SEMESTER, null);
+        SemesterInformation semesterInformation = oSemesterInformation.get();
         semesterInformation.setStartDate(dto.getStartDate());
         semesterInformation.setEndDate(dto.getEndDate());
         semesterInformation.setPeriod(dto.getPeriod());
@@ -69,9 +72,10 @@ public class SemesterInformationServiceImpl implements SemesterInformationServic
 
     @Override
     public ServiceAnswer getCurrentSemester() {
-        if (!repository.existsSemesterInformationByInProgressIsTrue())
+        Optional<SemesterInformation> oSemesterInformation = repository.findFirstByInProgressTrueOrderByEndDateDesc();
+        if (oSemesterInformation.isEmpty())
             return createResponse(ServiceMessage.NO_CURRENT_SEMESTER, null);
-        SemesterInformation semester = repository.findFirstByInProgressTrueOrderByEndDateDesc().get();
+        SemesterInformation semester = oSemesterInformation.get();
         ResponseSemesterInfoDTO dto = new ResponseSemesterInfoDTO();
         dto.setId(semester.getId());
         dto.setEndDate(semester.getEndDateString());
@@ -82,19 +86,20 @@ public class SemesterInformationServiceImpl implements SemesterInformationServic
 
     @Override
     public ServiceAnswer getCurrentPeriod() {
-        if (!repository.existsSemesterInformationByInProgressIsTrue())
+        Optional<SemesterInformation> oSemesterInformation = repository.findFirstByInProgressTrueOrderByEndDateDesc();
+        if (oSemesterInformation.isEmpty())
             return createResponse(ServiceMessage.NO_CURRENT_SEMESTER, null);
-        SemesterInformation semester = repository.findFirstByInProgressTrueOrderByEndDateDesc().get();
+        SemesterInformation semester = oSemesterInformation.get();
         return createResponse(ServiceMessage.SEMESTER_INFORMATION, semester.getPeriod());
 
     }
 
     @Override
     public ServiceAnswer closeSemester(Long id) {
-        if (!repository.existsSemesterInformationById(id)) {
+        Optional<SemesterInformation> oSemester = repository.findById(id);
+        if (oSemester.isEmpty())
             return createResponse(ServiceMessage.NO_CURRENT_SEMESTER, null);
-        }
-        SemesterInformation semester = repository.findById(id).get();
+        SemesterInformation semester = oSemester.get();
         if (!semester.isInProgress()) {
             return createResponse(ServiceMessage.NO_CURRENT_SEMESTER, null);
         }

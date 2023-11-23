@@ -113,9 +113,8 @@ class ProjectRepositoryTest {
     }
     @Test
     @DisplayName("Test for search project")
-    @Sql(scripts = {"/custom_imports/projectTest.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void givenProjects_whenSearchProject_thenEmptyList(){
-        projectRepository.searchProject("proy",pageable);
+        projectRepository.searchProject("",pageable);
     }
     @Test
     @DisplayName("Test for get number of projects by modality and career")

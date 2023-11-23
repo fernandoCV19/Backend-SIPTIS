@@ -13,19 +13,18 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Component
 public class JWTokenUtils {
 
     private static long expireTimeDuration;
     private static String accessTokenSecret;
-
     private static SiptisUserRepository siptisUserRepository;
 
     public JWTokenUtils(SiptisUserRepository siptisUserRepository) {
-        JWTokenUtils.siptisUserRepository = siptisUserRepository;
+        this.siptisUserRepository = siptisUserRepository;
     }
 
     public static String createToken(UserInformationService.UserDetailImp userDI) {
@@ -71,14 +70,13 @@ public class JWTokenUtils {
     public static Long getId(String token) {
         Claims claims = getClaims(token);
         Integer jwtId = (Integer) claims.get("id");
-        Long id = Long.valueOf(jwtId);
-        return id;
+        return Long.valueOf(jwtId);
     }
 
-    public static ArrayList<?> getProjects(String token) {
+    public static List<?> getProjects(String token) {
         Claims claims = getClaims(token);
 
-        return (ArrayList<?>) claims.get("projects");
+        return (List<?>) claims.get("projects");
     }
 
     public static boolean validateJwtToken(String authToken) {
@@ -88,6 +86,7 @@ public class JWTokenUtils {
                     .build().parseClaimsJws(authToken).getBody();
             return true;
         } catch (IllegalArgumentException e) {
+
         }
         return false;
     }
@@ -99,12 +98,12 @@ public class JWTokenUtils {
     }
 
     @Value("${security.jwt.token.secret-key}")
-    private void setAccessToken(String key) {
+    private static void setAccessToken(String key) {
         accessTokenSecret = key;
     }
 
     @Value("${security.jwt.token.expire-length}")
-    private void setExpireTime(String time) {
+    private static void setExpireTime(String time) {
         expireTimeDuration = Long.parseLong(time);
     }
 

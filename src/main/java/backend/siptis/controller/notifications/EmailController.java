@@ -8,6 +8,8 @@ import backend.siptis.service.notifications.recoverPassword.RecoverPasswordEmail
 import backend.siptis.service.notifications.recoverPassword.SendRecoverPasswordEmailService;
 import backend.siptis.service.notifications.recoverPassword.SendRecoverPasswordEmailServiceImpl;
 import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
+@Tag(name = ControllerConstants.Email.TAG_NAME, description = ControllerConstants.Email.TAG_DESCRIPTION)
 @RestController
 @CrossOrigin
 @RequestMapping(ControllerConstants.Email.BASE_PATH)
@@ -25,9 +28,16 @@ public class EmailController {
     private final RecoverPasswordEmailService emailServiceImpl;
     private final SendRecoverPasswordEmailService sendRecoverPasswordEmailService;
 
+    @Operation(summary = "Ask email for send recover password link")
     @GetMapping("/askemail/{email}")
     public ResponseEntity<ControllerAnswer> sendEmailTest(@PathVariable String email) throws MessagingException, IOException {
         ServiceAnswer answer = sendRecoverPasswordEmailService.sendRecoverPasswordEmail(email);
+        return crearResponseEntityRegistrar(answer);
+    }
+
+    @PostMapping("/changePassword")
+    public ResponseEntity<ControllerAnswer> changePassword(@RequestBody TokenPasswordDTO dto) {
+        ServiceAnswer answer = emailServiceImpl.changePassword(dto);
         return crearResponseEntityRegistrar(answer);
     }
 
@@ -47,7 +57,7 @@ public class EmailController {
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
 
-/*
+/* q
     @GetMapping("")
     public String sendNotification() throws MessagingException, IOException {
         emailServiceImpl.sendSpecificEmail("dilanantezana@gmail.com", "hola como estas");

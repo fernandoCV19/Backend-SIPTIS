@@ -33,10 +33,10 @@ class ActivityRepositoryTest {
         assertEquals(0, activities.size());
     }
 
-/*
+
     @Test
     @DisplayName("Test for get empty activity Page list from project id")
     void givenPageableAndWrongProjectId_whenFindByProjectId_thenEmptyActivityList(){
         assertTrue(activityRepository.findByProjectId(123345L, Pageable.ofSize(4)).isEmpty());
-    }*/
+    }
 }

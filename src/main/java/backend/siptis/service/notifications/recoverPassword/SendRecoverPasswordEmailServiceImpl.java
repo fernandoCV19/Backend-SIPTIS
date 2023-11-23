@@ -25,7 +25,6 @@ public class SendRecoverPasswordEmailServiceImpl implements SendRecoverPasswordE
 
     @Override
     public ServiceAnswer sendRecoverPasswordEmail(String email) {
-        // TODO Este metodo arma el html y lo envia con el email factory
         Optional<SiptisUser> oUser =  siptisUserRepository.findOneByEmail(email);
         if (oUser.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.EMAIL_NOT_EXIST)
@@ -33,13 +32,16 @@ public class SendRecoverPasswordEmailServiceImpl implements SendRecoverPasswordE
         }
         ChangePasswordDTO dto = createChangePasswordDTO(email);
         emailFactory.setToMail(email);
-        String subject = "Notificacion de las actividades proximas";
+        String subject = "Recuperar contraseña";
         emailFactory.setSubject(subject);
         emailFactory.setText(buildHtmlTemplate(dto.getTokenPassword()));
         emailFactory.setIsHtml(Boolean.TRUE);
         emailFactory.send();
+        SiptisUser user = oUser.get();
+        user.setTokenPassword(dto.getTokenPassword());
+        siptisUserRepository.save(user);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK)
-                .data("Se ha enviado un correo a su cuenta.").build();
+                .data(null).build();
     }
 
     private String buildHtmlTemplate(String token) {

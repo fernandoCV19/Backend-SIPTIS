@@ -7,6 +7,8 @@ import backend.siptis.model.pjo.dto.userDataDTO.RolesListDTO;
 import backend.siptis.service.auth.siptisUserServices.SiptisUserServiceRolesOperations;
 import backend.siptis.service.auth.siptisUserServices.SiptisUserServiceTokenOperations;
 import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
+@Tag(name = ControllerConstants.SiptisUser.TAG_NAME, description = ControllerConstants.SiptisUser.TAG_DESCRIPTION)
 @RestController
 @RequestMapping(ControllerConstants.SiptisUser.BASE_PATH)
 @RequiredArgsConstructor
@@ -28,14 +30,14 @@ public class RolesOperationsController {
             List.of(ServiceMessage.OK, ServiceMessage.SUCCESSFUL_REGISTER, ServiceMessage.USER_DELETED));
     private final SiptisUserServiceTokenOperations siptisUserServiceTokenOperations;
     private final SiptisUserServiceRolesOperations siptisUserServiceRolesOperations;
-
+    @Operation(summary = "get own roles")
     @GetMapping("/roles")
     public ResponseEntity<ControllerAnswer> getRoles(@RequestHeader(name = "Authorization") String token) {
         Long id = siptisUserServiceTokenOperations.getIdFromToken(token);
         ServiceAnswer answerService = siptisUserServiceRolesOperations.getRolesById(id);
         return createResponseEntity(answerService);
     }
-
+    @Operation(summary = "get roles from other user")
     @GetMapping("/roles/{userId}")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<ControllerAnswer> getRolesById(@PathVariable int userId) {
@@ -43,14 +45,7 @@ public class RolesOperationsController {
         ServiceAnswer answerService = siptisUserServiceRolesOperations.getRolesById(id);
         return createResponseEntity(answerService);
     }
-
-    @PutMapping("/updateRoles")
-    public ResponseEntity<ControllerAnswer> updateRoles(@RequestHeader(name = "Authorization") String token, @Valid @RequestBody RolesListDTO dto) {
-        Long id = siptisUserServiceTokenOperations.getIdFromToken(token);
-        ServiceAnswer answerService = siptisUserServiceRolesOperations.updateRoles(id, dto);
-        return createResponseEntity(answerService);
-    }
-
+    @Operation(summary = "update roles from other user")
     @PutMapping("/updateRoles/{userId}")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<ControllerAnswer> updateRoles(@PathVariable int userId, @Valid @RequestBody RolesListDTO dto) {

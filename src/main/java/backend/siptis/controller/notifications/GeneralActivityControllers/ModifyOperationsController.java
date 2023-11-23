@@ -7,10 +7,13 @@ import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.notifications.GeneralActivityDTO;
 import backend.siptis.service.notifications.generalActivityServices.GeneralActivityServiceModifyOperations;
 import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = ControllerConstants.Activity.TAG_NAME, description = ControllerConstants.GeneralActivity.TAG_DESCRIPTION)
 @RestController
 @RequestMapping(ControllerConstants.GeneralActivity.BASE_PATH)
 @CrossOrigin
@@ -18,17 +21,17 @@ import org.springframework.web.bind.annotation.*;
 public class ModifyOperationsController {
 
     private final GeneralActivityServiceModifyOperations generalActivityServiceModifyOperations;
-
+    @Operation(summary = "Create general activity")
     @PostMapping("/create")
     public ResponseEntity<ControllerAnswer> persistGeneralActivity(@RequestBody GeneralActivityDTO generalActivityDTO) {
         return createResponse(generalActivityServiceModifyOperations.persistGeneralActivity(generalActivityDTO));
     }
-
+    @Operation(summary = "Update general activity")
     @PutMapping("/{id}")
     public ResponseEntity<ControllerAnswer> updateGeneralActivity(@RequestBody GeneralActivityDTO generalActivityDTO, @PathVariable long id) {
         return createResponse(generalActivityServiceModifyOperations.update(generalActivityDTO, id));
     }
-
+    @Operation(summary = "Delete general activity")
     @DeleteMapping("/{id}")
     public ResponseEntity<ControllerAnswer> deleteGeneralActivity(@PathVariable long id) {
         return createResponse(generalActivityServiceModifyOperations.delete(id));

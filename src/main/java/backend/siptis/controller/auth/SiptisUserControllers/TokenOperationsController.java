@@ -7,6 +7,8 @@ import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.authentication.RefreshTokenDTO;
 import backend.siptis.service.auth.siptisUserServices.SiptisUserServiceTokenOperations;
 import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Tag(name = ControllerConstants.SiptisUser.TAG_NAME, description = ControllerConstants.SiptisUser.TAG_DESCRIPTION)
 @RestController
 @RequestMapping(ControllerConstants.SiptisUser.BASE_PATH)
 @RequiredArgsConstructor
@@ -26,6 +29,7 @@ public class TokenOperationsController {
             List.of(ServiceMessage.OK, ServiceMessage.SUCCESSFUL_REGISTER, ServiceMessage.USER_DELETED));
     private final SiptisUserServiceTokenOperations siptisUserServiceTokenOperations;
 
+    @Operation(summary = "Refresh token")
     @PostMapping("/refreshtoken")
     public ResponseEntity<ControllerAnswer> refreshtoken(@RequestBody RefreshTokenDTO request) {
         String refreshToken = request.getRefreshToken();

@@ -5,6 +5,8 @@ import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.service.auth.siptisUserServices.SiptisUserServiceCareerDirectorOperations;
 import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
+@Tag(name = ControllerConstants.SiptisUser.TAG_NAME, description = ControllerConstants.SiptisUser.TAG_DESCRIPTION)
 @RestController
 @RequestMapping(ControllerConstants.SiptisUser.BASE_PATH)
 @RequiredArgsConstructor
@@ -23,7 +25,7 @@ public class CareerDirectorOperationsController {
     private final Set<ServiceMessage> okResponse = new HashSet<>(
             List.of(ServiceMessage.OK, ServiceMessage.SUCCESSFUL_REGISTER, ServiceMessage.USER_DELETED));
     private final SiptisUserServiceCareerDirectorOperations siptisUserServiceCareerDirectorOperations;
-
+    @Operation(summary = "Get information of user with career director role")
     @GetMapping("/directorInformation/{career}")
     @PreAuthorize("hasAuthority('ADMIN')")
     ResponseEntity<ControllerAnswer> getDirectorInfo(@PathVariable String career) {
@@ -35,7 +37,7 @@ public class CareerDirectorOperationsController {
         return createResponseEntity(answer);
     }
 
-
+    @Operation(summary = "Register user as career director")
     @PostMapping("/register/director/{career}/{userId}")
     @PreAuthorize("hasAuthority('ADMIN')")
     ResponseEntity<ControllerAnswer> registerCareerDirector(@PathVariable String career, @PathVariable int userId) {

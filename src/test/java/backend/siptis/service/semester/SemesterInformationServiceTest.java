@@ -18,10 +18,9 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(SpringRunner.class)
+
 @SpringBootTest
 @Transactional
-@DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
 class SemesterInformationServiceTest {
     private static final SemesterInformationDTO dto = new SemesterInformationDTO();
     private static final EditSemesterInfoDTO editDto = new EditSemesterInfoDTO();

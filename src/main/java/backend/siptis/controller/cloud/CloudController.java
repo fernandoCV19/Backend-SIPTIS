@@ -1,9 +1,10 @@
 package backend.siptis.controller.cloud;
 
-import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.service.cloud.FileManagerService;
 import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayOutputStream;
 
-
+@Tag(name = ControllerConstants.Cloud.TAG_NAME, description = ControllerConstants.Cloud.TAG_DESCRIPTION)
 @RestController
 @RequestMapping(ControllerConstants.Cloud.BASE_PATH)
 @CrossOrigin
@@ -21,6 +22,7 @@ public class CloudController {
 
     private final FileManagerService fileDownloaderService;
 
+    @Operation(summary = "Download file from cloud")
     @GetMapping("/download-file/{folder}/{file}")
     ResponseEntity<byte[]> downloadFile(@PathVariable String folder, @PathVariable String file) {
         String key = folder + "/" + file;

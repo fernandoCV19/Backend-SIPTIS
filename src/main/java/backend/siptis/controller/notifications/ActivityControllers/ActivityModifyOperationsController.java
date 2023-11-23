@@ -8,10 +8,13 @@ import backend.siptis.service.auth.siptisUserServices.SiptisUserServiceGeneralUs
 import backend.siptis.service.auth.siptisUserServices.SiptisUserServiceTokenOperations;
 import backend.siptis.service.notifications.activityServices.ActivityServiceModifyOperations;
 import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = ControllerConstants.Activity.TAG_NAME, description = ControllerConstants.Activity.TAG_DESCRIPTION)
 @RestController
 @RequestMapping(ControllerConstants.Activity.BASE_PATH)
 @AllArgsConstructor
@@ -22,6 +25,7 @@ public class ActivityModifyOperationsController {
     private final SiptisUserServiceTokenOperations siptisUserServiceTokenOperations;
     private final SiptisUserServiceGeneralUserOperations siptisUserServiceGeneralUserOperations;
 
+    @Operation(summary = "Create activity")
     @PostMapping("/create")
     public ResponseEntity<ControllerAnswer> saveActivity(@RequestHeader(name = "Authorization") String token,
                                           @RequestBody ActivityDTO activityDTO) {
@@ -32,11 +36,12 @@ public class ActivityModifyOperationsController {
         return createResponse(activityServiceModifyOperations.persistActivity(activityDTO));
     }
 
+    @Operation(summary = "Update activity")
     @PutMapping("/{id}")
     public ResponseEntity<ControllerAnswer> updateActivity(@PathVariable int id, @RequestBody ActivityDTO activityDTO) {
         return createResponse(activityServiceModifyOperations.update(activityDTO, id));
     }
-
+    @Operation(summary = "Delete activity")
     @DeleteMapping("/{id}")
     public ResponseEntity<ControllerAnswer> deleteActivity(@PathVariable int id) {
         return createResponse(activityServiceModifyOperations.delete(id));

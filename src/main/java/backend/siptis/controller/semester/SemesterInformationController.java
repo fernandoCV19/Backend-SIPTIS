@@ -7,6 +7,8 @@ import backend.siptis.model.pjo.dto.semester.EditSemesterInfoDTO;
 import backend.siptis.model.pjo.dto.semester.SemesterInformationDTO;
 import backend.siptis.service.semester.SemesterInformationService;
 import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Tag(name = ControllerConstants.SemesterInformation.TAG_NAME, description = ControllerConstants.SemesterInformation.TAG_DESCRIPTION)
 @RestController
 @RequestMapping(ControllerConstants.SemesterInformation.BASE_PATH)
 @AllArgsConstructor
@@ -33,6 +36,7 @@ public class SemesterInformationController {
 
     private final SemesterInformationService semesterService;
 
+    @Operation(summary = "verify if exist semester in progress")
     @GetMapping("/checkActiveSemester")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<ControllerAnswer> checkActiveSemester() {
@@ -40,6 +44,7 @@ public class SemesterInformationController {
         return createResponse(answerService);
     }
 
+    @Operation(summary = "Get information of semester in progress ")
     @GetMapping("/getActiveSemesterInformation")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<ControllerAnswer> getActiveSemester() {
@@ -47,6 +52,7 @@ public class SemesterInformationController {
         return createResponse(answerService);
     }
 
+    @Operation(summary = "Get period of semester in progress")
     @GetMapping("/getCurrentSemesterPeriod")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<ControllerAnswer> getcurrentSemesterPeriod() {
@@ -54,6 +60,7 @@ public class SemesterInformationController {
         return createResponse(answerService);
     }
 
+    @Operation(summary = "Start a new semester")
     @PostMapping("/startSemester")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<ControllerAnswer> createSemester(
@@ -62,6 +69,7 @@ public class SemesterInformationController {
         return createResponse(answerService);
     }
 
+    @Operation(summary = "Edit information of semester in progress")
     @PutMapping("/editSemester")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<ControllerAnswer> editSemester(
@@ -69,7 +77,7 @@ public class SemesterInformationController {
         ServiceAnswer answerService = semesterService.editSemester(dto);
         return createResponse(answerService);
     }
-
+    @Operation(summary = "Close semester in progress")
     @PutMapping("/closeSemester/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<ControllerAnswer> closeSemester(@PathVariable int id) {

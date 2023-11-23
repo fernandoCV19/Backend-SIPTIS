@@ -39,7 +39,7 @@ public class AdminOperationsController {
         ServiceAnswer admin = siptisUserServiceAdminOperations.registerAdmin(dto);
         return createResponseEntity(admin);
     }
-
+    @Operation(summary = "Get list of users with ADMIN role")
     @GetMapping("/list/admins")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'STUDENT')")
     public ResponseEntity<ControllerAnswer> getAdminList(String search, Pageable pageable) {
@@ -47,7 +47,7 @@ public class AdminOperationsController {
                 siptisUserServiceAdminOperations.getAdminUserList(search, pageable);
         return createResponseEntity(answerService);
     }
-
+    @Operation(summary = "Edit information of other user")
     @PutMapping("/editUserInformation/{userId}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ControllerAnswer> editUser(
@@ -57,7 +57,7 @@ public class AdminOperationsController {
         ServiceAnswer answer = siptisUserServiceAdminOperations.adminEditUserInformation(id, dto);
         return createResponseEntity(answer);
     }
-
+    @Operation(summary = "Get list of users with TRIBUNAL role")
     @GetMapping("/getTribunals")
     ResponseEntity<ControllerAnswer> getPossibleTribunals() {
         ServiceAnswer answer = siptisUserServiceAdminOperations.getPossibleTribunals();
