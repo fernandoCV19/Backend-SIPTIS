@@ -13,30 +13,29 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Component
 public class JWTokenUtils {
 
-    private static long EXPIRE_TIME_DURATION;
-    private static String ACCESS_TOKEN_SECRET;
-
+    private static long expireTimeDuration;
+    private static String accessTokenSecret;
     private static SiptisUserRepository siptisUserRepository;
 
     public JWTokenUtils(SiptisUserRepository siptisUserRepository) {
-        JWTokenUtils.siptisUserRepository = siptisUserRepository;
+        this.siptisUserRepository = siptisUserRepository;
     }
 
     public static String createToken(UserInformationService.UserDetailImp userDI) {
-        Date expirationDate = new Date(System.currentTimeMillis() + EXPIRE_TIME_DURATION);
+        Date expirationDate = new Date(System.currentTimeMillis() + expireTimeDuration);
 
         return Jwts.builder().setSubject(userDI.getUsername())
                 .setExpiration(expirationDate)
                 .claim("id", userDI.getId())
                 .claim("projects", userDI.getProjects())
                 .claim("roles", userDI.getRoles())
-                .signWith(Keys.hmacShaKeyFor(ACCESS_TOKEN_SECRET.getBytes()))
+                .signWith(Keys.hmacShaKeyFor(accessTokenSecret.getBytes()))
                 .compact();
     }
 
@@ -64,30 +63,30 @@ public class JWTokenUtils {
 
     public static Claims getClaims(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(ACCESS_TOKEN_SECRET.getBytes())
+                .setSigningKey(accessTokenSecret.getBytes())
                 .build().parseClaimsJws(token).getBody();
     }
 
     public static Long getId(String token) {
         Claims claims = getClaims(token);
         Integer jwtId = (Integer) claims.get("id");
-        Long id = Long.valueOf(jwtId);
-        return id;
+        return Long.valueOf(jwtId);
     }
 
-    public static ArrayList<?> getProjects(String token) {
+    public static List<?> getProjects(String token) {
         Claims claims = getClaims(token);
 
-        return (ArrayList<?>) claims.get("projects");
+        return (List<?>) claims.get("projects");
     }
 
     public static boolean validateJwtToken(String authToken) {
         try {
             Jwts.parserBuilder()
-                    .setSigningKey(ACCESS_TOKEN_SECRET.getBytes())
+                    .setSigningKey(accessTokenSecret.getBytes())
                     .build().parseClaimsJws(authToken).getBody();
             return true;
         } catch (IllegalArgumentException e) {
+
         }
         return false;
     }
@@ -99,13 +98,13 @@ public class JWTokenUtils {
     }
 
     @Value("${security.jwt.token.secret-key}")
-    private void setAccessToken(String key) {
-        ACCESS_TOKEN_SECRET = key;
+    private static void setAccessToken(String key) {
+        accessTokenSecret = key;
     }
 
     @Value("${security.jwt.token.expire-length}")
-    private void setExpireTime(String time) {
-        EXPIRE_TIME_DURATION = Long.parseLong(time);
+    private static void setExpireTime(String time) {
+        expireTimeDuration = Long.parseLong(time);
     }
 
 

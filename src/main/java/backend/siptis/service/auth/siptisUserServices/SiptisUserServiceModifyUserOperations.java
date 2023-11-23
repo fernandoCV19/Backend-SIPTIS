@@ -42,7 +42,10 @@ public class SiptisUserServiceModifyUserOperations {
                 return createResponse(ServiceMessage.NOT_FOUND, null);
             areas.add(userAreaService.getUserAreaById(areaId.intValue()));
         }
-        SiptisUser user = findUserById(id);
+        Optional<SiptisUser> oUser = siptisUserRepository.findById(id);
+        if (oUser.isEmpty())
+            return createResponse(ServiceMessage.NOT_FOUND, null);
+        SiptisUser user = oUser.get();
         user.setAreas(areas);
         siptisUserRepository.save(user);
         return createResponse(ServiceMessage.OK, user.getAreas());
@@ -87,6 +90,8 @@ public class SiptisUserServiceModifyUserOperations {
     }
 
     public ServiceAnswer registerUser(String email, String password) {
+        if (email.equals(""))
+            return createResponse(ServiceMessage.ERROR, null);
         email = email.trim();
         if (siptisUserServiceExistValidation.existsUserByEmail(email))
             return createResponse(ServiceMessage.EMAIL_ALREADY_EXIST, null);

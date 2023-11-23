@@ -9,6 +9,8 @@ import backend.siptis.model.pjo.dto.userDataDTO.UserSelectedAreasDTO;
 import backend.siptis.service.auth.siptisUserServices.SiptisUserServiceModifyUserOperations;
 import backend.siptis.service.auth.siptisUserServices.SiptisUserServiceTokenOperations;
 import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,6 +22,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Tag(name = ControllerConstants.SiptisUser.TAG_NAME, description = ControllerConstants.SiptisUser.TAG_DESCRIPTION)
 @RestController
 @RequestMapping(ControllerConstants.SiptisUser.BASE_PATH)
 @RequiredArgsConstructor
@@ -30,16 +33,16 @@ public class ModifyUserOperationsController {
             List.of(ServiceMessage.OK, ServiceMessage.SUCCESSFUL_REGISTER, ServiceMessage.USER_DELETED));
     private final SiptisUserServiceModifyUserOperations siptisUserServiceModifyUserOperations;
     private final SiptisUserServiceTokenOperations siptisUserServiceTokenOperations;
-
+    @Operation(summary = "Register general user")
     @PostMapping("/register/general")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterUserDTO dto) {
+    public ResponseEntity<ControllerAnswer> registerUser(@Valid @RequestBody RegisterUserDTO dto) {
         ServiceAnswer user = siptisUserServiceModifyUserOperations.registerUser(dto);
         return createResponseEntity(user);
     }
-
+    @Operation(summary = "Edit own information")
     @PutMapping("/editInformation")
-    public ResponseEntity<?> editInformation(
+    public ResponseEntity<ControllerAnswer> editInformation(
             @RequestHeader(name = "Authorization") String token,
             @Valid @RequestBody UserEditInformationDTO dto) {
 
@@ -47,24 +50,24 @@ public class ModifyUserOperationsController {
         ServiceAnswer answer = siptisUserServiceModifyUserOperations.userEditPersonalInformation(id, dto);
         return createResponseEntity(answer);
     }
-
+    @Operation(summary = "Edit own user areas")
     @PutMapping("/updateAreas")
-    public ResponseEntity<?> updateAreas(
+    public ResponseEntity<ControllerAnswer> updateAreas(
             @RequestHeader(name = "Authorization") String token, @RequestBody UserSelectedAreasDTO dto) {
         Long id = siptisUserServiceTokenOperations.getIdFromToken(token);
         ServiceAnswer answer = siptisUserServiceModifyUserOperations.updateAreas(id, dto);
         return createResponseEntity(answer);
     }
-
+    @Operation(summary = "Edit user areas of other user")
     @PutMapping("/updateAreas/{userId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<?> updateAreas(@PathVariable int userId, @RequestBody UserSelectedAreasDTO dto) {
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
+    public ResponseEntity<ControllerAnswer> updateAreas(@PathVariable int userId, @RequestBody UserSelectedAreasDTO dto) {
         Long id = Long.valueOf(userId);
         ServiceAnswer answer = siptisUserServiceModifyUserOperations.updateAreas(id, dto);
         return createResponseEntity(answer);
     }
 
-    private ResponseEntity<?> createResponseEntity(ServiceAnswer serviceAnswer) {
+    private ResponseEntity<ControllerAnswer> createResponseEntity(ServiceAnswer serviceAnswer) {
         Object data = serviceAnswer.getData();
         ServiceMessage messageService = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;

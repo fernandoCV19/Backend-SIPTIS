@@ -50,7 +50,8 @@ public interface SiptisUserRepository extends JpaRepository<SiptisUser, Long> {
             "WHERE ps.student.id = :id AND ps.project.id = p.id")
     Optional<Project> findProjectById(Long id);
 
-    @Query(value = "SELECT su.id_, ui.names_, ui.last_names_, su.email_, ui.cod_sis_, role.name_ " +
+    @Query(value = "SELECT su.id_ as id, ui.names_ as names, ui.last_names_ as lastNames, " +
+            "su.email_ as email, ui.cod_sis_ as codSIS, role.name_ as name " +
             " FROM siptis_user_ su, user_information_ ui,  siptis_user_role_ sur, role_ role" +
             " WHERE su.id_ = ui.user_id_ AND sur.siptis_user_id_ = su.id_ " +
             " AND sur.role_id_ = role.id_ AND role.name_ LIKE :roleName" +
@@ -60,7 +61,7 @@ public interface SiptisUserRepository extends JpaRepository<SiptisUser, Long> {
     Page<UserListItemDTO> searchUserList(String searchName, String roleName, Pageable pageable);
 
 
-    @Query(value = "SELECT DISTINCT su.id_, ui.names_, ui.last_names_, su.email_" +
+    @Query(value = "SELECT DISTINCT su.id_ as id, ui.names_ as names, ui.last_names_ as lastNames, su.email_ as email" +
             " FROM user_information_ ui" +
             " LEFT JOIN  siptis_user_ su ON su.id_ = ui.user_id_" +
             " LEFT JOIN siptis_user_role_ sur ON sur.siptis_user_id_ = su.id_ " +
@@ -73,7 +74,7 @@ public interface SiptisUserRepository extends JpaRepository<SiptisUser, Long> {
     Page<UserListItemDTO> searchNormalUserList(String searchName, Pageable pageable);
 
 
-    @Query(value = "SELECT su.id_, su.email_ " +
+    @Query(value = "SELECT su.id_ as id, su.email_ as email " +
             " FROM siptis_user_ su, siptis_user_role_ sur, role_ role" +
             " WHERE sur.siptis_user_id_ = su.id_ " +
             " AND sur.role_id_ = role.id_ AND role.name_ = 'ADMIN'" +

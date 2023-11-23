@@ -6,6 +6,8 @@ import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.notifications.LogInDTO;
 import backend.siptis.service.auth.siptisUserServices.SiptisUserServiceLogIn;
 import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Tag(name = ControllerConstants.SiptisUser.TAG_NAME, description = ControllerConstants.SiptisUser.TAG_DESCRIPTION)
 @RestController
 @RequestMapping(ControllerConstants.SiptisUser.BASE_PATH)
 @RequiredArgsConstructor
@@ -26,13 +29,14 @@ public class LoginController {
             List.of(ServiceMessage.OK, ServiceMessage.SUCCESSFUL_REGISTER, ServiceMessage.USER_DELETED));
     private final SiptisUserServiceLogIn siptisUserServiceLogIn;
 
+    @Operation(summary = "authenticates user credentials")
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody LogInDTO logInDTO) {
+    public ResponseEntity<ControllerAnswer> login(@Valid @RequestBody LogInDTO logInDTO) {
         ServiceAnswer answerService = siptisUserServiceLogIn.logIn(logInDTO);
         return createResponseEntity(answerService);
     }
 
-    private ResponseEntity<?> createResponseEntity(ServiceAnswer serviceAnswer) {
+    private ResponseEntity<ControllerAnswer> createResponseEntity(ServiceAnswer serviceAnswer) {
         Object data = serviceAnswer.getData();
         ServiceMessage messageService = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;

@@ -7,6 +7,8 @@ import backend.siptis.model.pjo.dto.userDataDTO.RegisterStudentDTO;
 import backend.siptis.service.auth.siptisUserServices.SiptisUserServiceStudentOperations;
 import backend.siptis.service.auth.siptisUserServices.SiptisUserServiceTokenOperations;
 import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
+@Tag(name = ControllerConstants.SiptisUser.TAG_NAME, description = ControllerConstants.SiptisUser.TAG_DESCRIPTION)
 @RestController
 @RequestMapping(ControllerConstants.SiptisUser.BASE_PATH)
 @RequiredArgsConstructor
@@ -28,48 +30,48 @@ public class StudentOperationsController {
             List.of(ServiceMessage.OK, ServiceMessage.SUCCESSFUL_REGISTER, ServiceMessage.USER_DELETED));
     private final SiptisUserServiceStudentOperations siptisUserServiceStudentOperations;
     private final SiptisUserServiceTokenOperations siptisUserServiceTokenOperations;
-
+    @Operation(summary = "Register user with STUDENT role")
     @PostMapping("/register/student")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<?> registerStudent(@Valid @RequestBody RegisterStudentDTO dto) {
+    public ResponseEntity<ControllerAnswer> registerStudent(@Valid @RequestBody RegisterStudentDTO dto) {
         ServiceAnswer student = siptisUserServiceStudentOperations.registerStudent(dto);
         return createResponseEntity(student);
     }
 
-
+    @Operation(summary = "get number of students in career")
     @GetMapping("/studentsInCareer/{careerId}")
-    public ResponseEntity<?> getStudentsInCareer(@PathVariable Long careerId) {
+    public ResponseEntity<ControllerAnswer> getStudentsInCareer(@PathVariable Long careerId) {
         ServiceAnswer answerService =
                 siptisUserServiceStudentOperations.getNumberStudentsCareer(careerId);
         return createResponseEntity(answerService);
     }
-
+    @Operation(summary = "get own career")
     @GetMapping("/userCareer")
     @PreAuthorize("hasAuthority('STUDENT')")
-    public ResponseEntity<?> getCareer(@RequestHeader(name = "Authorization") String token) {
+    public ResponseEntity<ControllerAnswer> getCareer(@RequestHeader(name = "Authorization") String token) {
         Long id = siptisUserServiceTokenOperations.getIdFromToken(token);
         ServiceAnswer answerService =
                 siptisUserServiceStudentOperations.getStudentCareerById(id);
         return createResponseEntity(answerService);
     }
-
+    @Operation(summary = "get career from other user")
     @GetMapping("/userCareer/{userId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<?> getCareer(@PathVariable int userId) {
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
+    public ResponseEntity<ControllerAnswer> getCareer(@PathVariable int userId) {
         Long id = Long.valueOf(userId);
         ServiceAnswer answerService =
                 siptisUserServiceStudentOperations.getStudentCareerById(id);
         return createResponseEntity(answerService);
     }
-
+    @Operation(summary = "get number of students by year and career")
     @GetMapping("/studentsByYear/{careerId}")
-    public ResponseEntity<?> getNumberOfStudentsByYearAndCareer(@PathVariable Long careerId) {
+    public ResponseEntity<ControllerAnswer> getNumberOfStudentsByYearAndCareer(@PathVariable Long careerId) {
         ServiceAnswer answerService =
                 siptisUserServiceStudentOperations.getNumberOfStudentsByYearAndCareer(careerId);
         return createResponseEntity(answerService);
     }
 
-    private ResponseEntity<?> createResponseEntity(ServiceAnswer serviceAnswer) {
+    private ResponseEntity<ControllerAnswer> createResponseEntity(ServiceAnswer serviceAnswer) {
         Object data = serviceAnswer.getData();
         ServiceMessage messageService = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;

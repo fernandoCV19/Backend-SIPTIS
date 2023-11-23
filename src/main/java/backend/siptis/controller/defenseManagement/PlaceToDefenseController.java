@@ -4,6 +4,8 @@ import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.service.defenseManagement.PlaceToDefenseService;
 import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
+
+@Tag(name = ControllerConstants.PlaceToDefense.TAG_NAME, description = ControllerConstants.PlaceToDefense.TAG_DESCRIPTION)
 @RestController
 @RequestMapping(ControllerConstants.PlaceToDefense.BASE_PATH)
 @RequiredArgsConstructor
@@ -21,6 +25,7 @@ public class PlaceToDefenseController {
 
     private final PlaceToDefenseService placeToDefenseService;
 
+    @Operation(summary = "Get all available places to defense")
     @GetMapping("/all")
     public ResponseEntity<?> getAllAvailablePlacesToDefense() {
         ServiceAnswer serviceAnswer = placeToDefenseService.getAvailablePlaces();
@@ -28,6 +33,7 @@ public class PlaceToDefenseController {
         return new ResponseEntity<>(controllerAnswer, HttpStatus.OK);
     }
 
+    @Operation(summary = "Get all reserved dates")
     @GetMapping("/reservedDates")
     public ResponseEntity<?> getReservedDates() {
         ServiceAnswer serviceAnswer = placeToDefenseService.getReservedDates();

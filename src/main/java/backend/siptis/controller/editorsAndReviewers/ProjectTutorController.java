@@ -5,11 +5,14 @@ import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.service.editorsAndReviewers.ProjectTutorService;
 import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = ControllerConstants.ProjectTutor.TAG_NAME, description = ControllerConstants.ProjectTutor.TAG_DESCRIPTION)
 @RestController
 @RequestMapping(ControllerConstants.ProjectTutor.BASE_PATH)
 @RequiredArgsConstructor
@@ -18,26 +21,31 @@ public class ProjectTutorController {
 
     private final ProjectTutorService projectTutorService;
 
+    @Operation(summary = "Get all projects without review y tutor id")
     @GetMapping("/notReviewedProjects/{id}")
-    public ResponseEntity<?> getProjectsWithoutReview(@PathVariable("id") Long id) {
+    public ResponseEntity<ControllerAnswer> getProjectsWithoutReview(@PathVariable("id") Long id) {
         ServiceAnswer serviceAnswer = projectTutorService.getAllProjectsNotAcceptedNotReviewedByTutorId(id);
         return createResponseEntity(serviceAnswer);
     }
 
+    @Operation(summary = "Get all projects with review y tutor id")
     @GetMapping("/reviewedProjects/{id}")
-    public ResponseEntity<?> getReviewedProjects(@PathVariable("id") Long id) {
+    public ResponseEntity<ControllerAnswer> getReviewedProjects(@PathVariable("id") Long id) {
         ServiceAnswer serviceAnswer = projectTutorService.getAllProjectsNotAcceptedReviewedByTutorId(id);
         return createResponseEntity(serviceAnswer);
     }
 
+    @Operation(summary = "Ge all accepted projects by tutor id")
     @GetMapping("/acceptedProjects/{id}")
-    public ResponseEntity<?> getAcceptedProjects(@PathVariable("id") Long id) {
+    public ResponseEntity<ControllerAnswer> getAcceptedProjects(@PathVariable("id") Long id) {
         ServiceAnswer serviceAnswer = projectTutorService.getAllProjectsAcceptedByTutorId(id);
         return createResponseEntity(serviceAnswer);
     }
 
+    // TODO
+    @Operation(summary = "Accept a project")
     @GetMapping("/acceptProject/{idProject}/{idReviewer}")
-    public ResponseEntity<?> acceptProject(@PathVariable("idProject") Long idProject, @PathVariable("idReviewer") Long idReviewer) {
+    public ResponseEntity<ControllerAnswer> acceptProject(@PathVariable("idProject") Long idProject, @PathVariable("idReviewer") Long idReviewer) {
         ServiceAnswer serviceAnswer = projectTutorService.acceptProject(idReviewer, idProject);
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         if (serviceAnswer.getServiceMessage().equals(ServiceMessage.OK)) {
@@ -47,7 +55,7 @@ public class ProjectTutorController {
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
 
-    private ResponseEntity<?> createResponseEntity(ServiceAnswer serviceAnswer) {
+    private ResponseEntity<ControllerAnswer> createResponseEntity(ServiceAnswer serviceAnswer) {
         Object data = serviceAnswer.getData();
         ServiceMessage serviceMessage = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.OK;

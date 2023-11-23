@@ -5,6 +5,8 @@ import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.service.auth.RoleService;
 import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = ControllerConstants.Role.TAG_NAME, description = ControllerConstants.Role.TAG_DESCRIPTION)
 @RestController
 @RequestMapping(ControllerConstants.Role.BASE_PATH)
 @RequiredArgsConstructor
@@ -20,14 +23,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class RoleController {
 
     private final RoleService roleService;
-
+    @Operation(summary = "Get allowed roles")
     @GetMapping("/allowedRoles")
-    public ResponseEntity<?> getAllowedRoles() {
+    public ResponseEntity<ControllerAnswer> getAllowedRoles() {
         ServiceAnswer answerService = roleService.getAllowedRoles();
         return createResponseEntity(answerService);
     }
 
-    private ResponseEntity<?> createResponseEntity(ServiceAnswer serviceAnswer) {
+    private ResponseEntity<ControllerAnswer> createResponseEntity(ServiceAnswer serviceAnswer) {
         Object data = serviceAnswer.getData();
         ServiceMessage messageService = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;

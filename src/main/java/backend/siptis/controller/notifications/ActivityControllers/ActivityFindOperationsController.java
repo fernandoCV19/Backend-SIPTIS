@@ -3,6 +3,8 @@ package backend.siptis.controller.notifications.ActivityControllers;
 import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.service.notifications.activityServices.ActivityServiceFindOperations;
 import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = ControllerConstants.Activity.TAG_NAME, description = ControllerConstants.Activity.TAG_DESCRIPTION)
 @RestController
 @RequestMapping(ControllerConstants.Activity.BASE_PATH)
 @AllArgsConstructor
@@ -17,9 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class ActivityFindOperationsController {
 
     private final ActivityServiceFindOperations activityServiceFindOperations;
-
+    @Operation(summary = "Find all activities")
     @GetMapping()
-    public ResponseEntity<?> findAll() {
+    public ResponseEntity<ControllerAnswer> findAll() {
         return new ResponseEntity<>(
                 ControllerAnswer.builder()
                         .data(activityServiceFindOperations.findAllVO())

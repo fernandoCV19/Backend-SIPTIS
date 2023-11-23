@@ -6,6 +6,8 @@ import backend.siptis.commons.ServiceMessage;
 import backend.siptis.service.auth.siptisUserServices.SiptisUserServiceTokenOperations;
 import backend.siptis.service.presentations.PresentationService;
 import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Nullable;
 import java.util.List;
 
+@Tag(name = ControllerConstants.Presentation.TAG_NAME, description = ControllerConstants.Presentation.TAG_DESCRIPTION)
 @RestController
 @RequestMapping(ControllerConstants.Presentation.BASE_PATH)
 @RequiredArgsConstructor
@@ -24,8 +27,9 @@ public class PresentationController {
     private final PresentationService presentationService;
     private final SiptisUserServiceTokenOperations siptisUserServiceTokenOperations;
 
+    @Operation(summary = "Create new presentation")
     @PostMapping("/create")
-    ResponseEntity<?> create(@RequestHeader(name = "Authorization") String token,
+    ResponseEntity<ControllerAnswer> create(@RequestHeader(name = "Authorization") String token,
                              @RequestPart("bluebook") @Nullable MultipartFile bluebook,
                              @RequestPart("project") @Nullable MultipartFile project) {
         List<?> projects = siptisUserServiceTokenOperations.getProjectsFromToken(token);
@@ -34,20 +38,23 @@ public class PresentationController {
         return createResponseEntity(serviceAnswer);
     }
 
+    @Operation(summary = "Get reviews from a presentation")
     @GetMapping("/reviews/{presentationId}")
-    ResponseEntity<?> getReviewsFromPresentation(@PathVariable("presentationId") Long presentationId) {
+    ResponseEntity<ControllerAnswer> getReviewsFromPresentation(@PathVariable("presentationId") Long presentationId) {
         ServiceAnswer serviceAnswer = presentationService.getReviewsFromAPresentation(presentationId);
         return createResponseEntity(serviceAnswer);
     }
 
+    @Operation(summary = "Delete a presentation")
     @DeleteMapping("/{presentationId}")
-    ResponseEntity<?> deletePresentation(@PathVariable("presentationId") Long presentationId) {
+    ResponseEntity<ControllerAnswer> deletePresentation(@PathVariable("presentationId") Long presentationId) {
         ServiceAnswer serviceAnswer = presentationService.deletePresentation(presentationId);
         return createResponseEntity(serviceAnswer);
     }
 
+    @Operation(summary = "Get last reviews from a presentation")
     @GetMapping("/getLastReviews/{id}")
-    ResponseEntity<?> getLastReviews(@PathVariable("id") Long projectId) {
+    ResponseEntity<ControllerAnswer> getLastReviews(@PathVariable("id") Long projectId) {
         ServiceAnswer serviceAnswer = presentationService.getReviewsFromLastPresentation(projectId);
         HttpStatus httpStatus = HttpStatus.OK;
         if (serviceAnswer.getServiceMessage() != ServiceMessage.OK) {
@@ -57,7 +64,7 @@ public class PresentationController {
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
 
-    private ResponseEntity<?> createResponseEntity(ServiceAnswer serviceAnswer) {
+    private ResponseEntity<ControllerAnswer> createResponseEntity(ServiceAnswer serviceAnswer) {
         Object data = serviceAnswer.getData();
         ServiceMessage serviceMessage = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.OK;

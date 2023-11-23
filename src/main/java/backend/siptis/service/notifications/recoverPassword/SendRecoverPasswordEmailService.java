@@ -1,5 +1,7 @@
 package backend.siptis.service.notifications.recoverPassword;
 
+import backend.siptis.commons.ServiceAnswer;
+
 public interface SendRecoverPasswordEmailService {
-    void sendRecoverPasswordEmail(String email, String token);
+    ServiceAnswer sendRecoverPasswordEmail(String email);
 }

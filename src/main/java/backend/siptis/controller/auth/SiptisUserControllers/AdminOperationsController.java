@@ -7,6 +7,8 @@ import backend.siptis.model.pjo.dto.userDataDTO.AdminEditUserInformationDTO;
 import backend.siptis.model.pjo.dto.userDataDTO.RegisterAdminDTO;
 import backend.siptis.service.auth.siptisUserServices.SiptisUserServiceAdminOperations;
 import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +21,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Tag(name = ControllerConstants.SiptisUser.TAG_NAME, description = ControllerConstants.SiptisUser.TAG_DESCRIPTION)
 @RestController
 @RequestMapping(ControllerConstants.SiptisUser.BASE_PATH)
 @RequiredArgsConstructor
@@ -29,37 +32,39 @@ public class AdminOperationsController {
             List.of(ServiceMessage.OK, ServiceMessage.SUCCESSFUL_REGISTER, ServiceMessage.USER_DELETED));
     private final SiptisUserServiceAdminOperations siptisUserServiceAdminOperations;
 
+    @Operation(summary = "Register a new user with ADMIN role")
     @PostMapping("/register/admin")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<?> registerAdmin(@Valid @RequestBody RegisterAdminDTO dto) {
+    public ResponseEntity<ControllerAnswer> registerAdmin(@Valid @RequestBody RegisterAdminDTO dto) {
         ServiceAnswer admin = siptisUserServiceAdminOperations.registerAdmin(dto);
         return createResponseEntity(admin);
     }
-
+    @Operation(summary = "Get list of users with ADMIN role")
     @GetMapping("/list/admins")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<?> getAdminList(String search, Pageable pageable) {
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'STUDENT')")
+    public ResponseEntity<ControllerAnswer> getAdminList(String search, Pageable pageable) {
         ServiceAnswer answerService =
                 siptisUserServiceAdminOperations.getAdminUserList(search, pageable);
         return createResponseEntity(answerService);
     }
-
+    @Operation(summary = "Edit information of other user")
     @PutMapping("/editUserInformation/{userId}")
-    public ResponseEntity<?> editUser(
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<ControllerAnswer> editUser(
             @PathVariable int userId,
             @Valid @RequestBody AdminEditUserInformationDTO dto) {
         Long id = Long.valueOf(userId);
         ServiceAnswer answer = siptisUserServiceAdminOperations.adminEditUserInformation(id, dto);
         return createResponseEntity(answer);
     }
-
+    @Operation(summary = "Get list of users with TRIBUNAL role")
     @GetMapping("/getTribunals")
-    ResponseEntity<?> getPossibleTribunals() {
+    ResponseEntity<ControllerAnswer> getPossibleTribunals() {
         ServiceAnswer answer = siptisUserServiceAdminOperations.getPossibleTribunals();
         return createResponseEntity(answer);
     }
 
-    private ResponseEntity<?> createResponseEntity(ServiceAnswer serviceAnswer) {
+    private ResponseEntity<ControllerAnswer> createResponseEntity(ServiceAnswer serviceAnswer) {
         Object data = serviceAnswer.getData();
         ServiceMessage messageService = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;

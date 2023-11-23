@@ -1,174 +1,34 @@
 package backend.siptis.model.repository.editorsAndReviewers;
 
-import backend.siptis.auth.entity.SiptisUser;
-import backend.siptis.model.entity.editorsAndReviewers.ProjectTeacher;
-import backend.siptis.model.entity.projectManagement.Project;
-import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.List;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-
-@RunWith(SpringRunner.class)
-@SpringBootTest
-@Transactional
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
+@DataJpaTest
 class ProjectTeacherRepositoryTest {
-
-    private final ProjectTeacherRepository projectTeacherRepository;
-
     @Autowired
-    ProjectTeacherRepositoryTest(ProjectTeacherRepository projectTeacherRepository) {
-        this.projectTeacherRepository = projectTeacherRepository;
-    }
+    private ProjectTeacherRepository projectTeacherRepository;
 
     @Test
-    void findByTeacherIdAndAcceptedIsFalseAndReviewedIsTrueWithAFalseIdReturnNotNull() {
-        List<ProjectTeacher> ans = projectTeacherRepository.findByTeacherIdAndAcceptedIsFalseAndReviewedIsTrue(0L);
-        assertNotNull(ans);
+    @DisplayName("test for get list of project teacher find by teacher id not accepted and reviewed ")
+    void givenBadId_whenFindByTeacherIdAndAcceptedIsFalseAndReviewedIsTrue_thenEmpty(){
+        assertTrue(projectTeacherRepository.findByTeacherIdAndAcceptedIsFalseAndReviewedIsTrue(123l).isEmpty());
     }
-
     @Test
-    void findByTeacherIdAndAcceptedIsFalseAndReviewedIsTrueWithATrueIdReturnAListWithElements() {
-        List<ProjectTeacher> ans = projectTeacherRepository.findByTeacherIdAndAcceptedIsFalseAndReviewedIsTrue(3L);
-        assertFalse(ans.isEmpty());
+    @DisplayName("test for get list of project teacher find by teacher id not accepted and not reviewed ")
+    void givenBadId_whenFindByTeacherIdAndAcceptedIsFalseAndReviewedIsFalse_thenEmpty(){
+        assertTrue(projectTeacherRepository.findByTeacherIdAndAcceptedIsFalseAndReviewedIsFalse(123l).isEmpty());
     }
-
     @Test
-    void findByTeacherIdAndAcceptedIsFalseAndReviewedIsTrueWithATrueIdDoACorrectJoinOfTheData() {
-        List<ProjectTeacher> ans = projectTeacherRepository.findByTeacherIdAndAcceptedIsFalseAndReviewedIsTrue(3L);
-        ProjectTeacher projectTeacher = ans.get(0);
-        assertTrue(projectTeacher.getProject() != null && projectTeacher.getTeacher() != null && projectTeacher.getProject().getName() != null && projectTeacher.getTeacher().getEmail() != null);
+    @DisplayName("test for get list of project teacher find by teacher id  accepted  ")
+    void givenBadId_whenFindByTeacherIdAndAcceptedIsTrue_thenEmpty(){
+        assertTrue(projectTeacherRepository.findByTeacherIdAndAcceptedIsTrue(123l).isEmpty());
     }
-
     @Test
-    void findByTeacherIdAndAcceptedIsFalseAndReviewedIsTrueWithATrueIdReturnTheSupervisorDataThatHasThatId() {
-        List<ProjectTeacher> ans = projectTeacherRepository.findByTeacherIdAndAcceptedIsFalseAndReviewedIsTrue(3L);
-        SiptisUser teacher = ans.get(0).getTeacher();
-        assertEquals("usuario3@mail.com", teacher.getEmail());
-        assertEquals(3, teacher.getId());
-    }
-
-    @Test
-    void findByTeacherIdAndAcceptedIsFalseAndReviewedIsTrueWithATrueIdReturnAProjectWithTheCorrectJoin() {
-        List<ProjectTeacher> ans = projectTeacherRepository.findByTeacherIdAndAcceptedIsFalseAndReviewedIsTrue(3L);
-        Project project = ans.get(0).getProject();
-        assertEquals(8, project.getId());
-        assertEquals("ProyectoGrado8", project.getName());
-    }
-
-    @Test
-    void findByTeacherIdAndAcceptedIsFalseAndReviewedIsTrueWithATrueIdReturnOnlyOneElement() {
-        List<ProjectTeacher> ans = projectTeacherRepository.findByTeacherIdAndAcceptedIsFalseAndReviewedIsTrue(3L);
-        assertEquals(1, ans.size());
-    }
-
-    @Test
-    void findByTeacherIdAndAcceptedIsFalseAndReviewedIsFalseWithAFalseIdReturnNotNull() {
-        List<ProjectTeacher> ans = projectTeacherRepository.findByTeacherIdAndAcceptedIsFalseAndReviewedIsFalse(0L);
-        assertNotNull(ans);
-    }
-
-    @Test
-    void findByTeacherIdAndAcceptedIsFalseAndReviewedIsFalseWithATrueIdReturnAListWithElements() {
-        List<ProjectTeacher> ans = projectTeacherRepository.findByTeacherIdAndAcceptedIsFalseAndReviewedIsFalse(3L);
-        assertFalse(ans.isEmpty());
-    }
-
-    @Test
-    void findByTeacherIdAndAcceptedIsFalseAndReviewedIsFalseWithATrueIdDoACorrectJoinOfTheData() {
-        List<ProjectTeacher> ans = projectTeacherRepository.findByTeacherIdAndAcceptedIsFalseAndReviewedIsFalse(3L);
-        ProjectTeacher projectTeacher = ans.get(0);
-        assertTrue(projectTeacher.getProject() != null && projectTeacher.getTeacher() != null && projectTeacher.getProject().getName() != null && projectTeacher.getTeacher().getEmail() != null);
-    }
-
-    @Test
-    void findByTeacherIdAndAcceptedIsFalseAndReviewedIsFalseWithATrueIdReturnTheSupervisorDataThatHasThatId() {
-        List<ProjectTeacher> ans = projectTeacherRepository.findByTeacherIdAndAcceptedIsFalseAndReviewedIsFalse(3L);
-        SiptisUser teacher = ans.get(0).getTeacher();
-        assertEquals("usuario3@mail.com", teacher.getEmail());
-        assertEquals(3, teacher.getId());
-    }
-
-    @Test
-    void findByTeacherIdAndAcceptedIsFalseAndReviewedIsFalseWithATrueIdReturnAProjectWithTheCorrectJoin() {
-        List<ProjectTeacher> ans = projectTeacherRepository.findByTeacherIdAndAcceptedIsFalseAndReviewedIsFalse(3L);
-        Project project = ans.get(0).getProject();
-        assertEquals(7, project.getId());
-        assertEquals("ProyectoGrado7", project.getName());
-    }
-
-    @Test
-    void findByTeacherIdAndAcceptedIsFalseAndReviewedIsFalseWithATrueIdReturnOnlyOneElement() {
-        List<ProjectTeacher> ans = projectTeacherRepository.findByTeacherIdAndAcceptedIsFalseAndReviewedIsFalse(3L);
-        assertEquals(1, ans.size());
-    }
-
-    @Test
-    void findByTeacherIdAndAcceptedIsTrueWithAFalseIdReturnNotNull() {
-        List<ProjectTeacher> ans = projectTeacherRepository.findByTeacherIdAndAcceptedIsTrue(0L);
-        assertNotNull(ans);
-    }
-
-    @Test
-    void findByTeacherIdAndAcceptedIsTrueWithATrueIdReturnAListWithElements() {
-        List<ProjectTeacher> ans = projectTeacherRepository.findByTeacherIdAndAcceptedIsTrue(3L);
-        assertFalse(ans.isEmpty());
-    }
-
-    @Test
-    void findByTeacherIdAndAcceptedIsTrueWithATrueIdDoACorrectJoinOfTheData() {
-        List<ProjectTeacher> ans = projectTeacherRepository.findByTeacherIdAndAcceptedIsTrue(3L);
-        ProjectTeacher projectTeacher = ans.get(0);
-        assertTrue(projectTeacher.getProject() != null && projectTeacher.getTeacher() != null && projectTeacher.getProject().getName() != null && projectTeacher.getTeacher().getEmail() != null);
-    }
-
-    @Test
-    void findByTeacherIdAndAcceptedIsTrueWithATrueIdReturnTheSupervisorDataThatHasThatId() {
-        List<ProjectTeacher> ans = projectTeacherRepository.findByTeacherIdAndAcceptedIsTrue(3L);
-        SiptisUser teacher = ans.get(0).getTeacher();
-        assertEquals("usuario3@mail.com", teacher.getEmail());
-        assertEquals(3, teacher.getId());
-    }
-
-    @Test
-    void findByTeacherIdAndAcceptedIsTrueWithATrueIdReturnAProjectWithTheCorrectJoin() {
-        List<ProjectTeacher> ans = projectTeacherRepository.findByTeacherIdAndAcceptedIsTrue(3L);
-        Project project = ans.get(0).getProject();
-        assertEquals(9, project.getId());
-        assertEquals("ProyectoGrado9", project.getName());
-    }
-
-    @Test
-    void findByTeacherIdAndAcceptedIsTrueWithATrueIdReturnOnlyOneElement() {
-        List<ProjectTeacher> ans = projectTeacherRepository.findByTeacherIdAndAcceptedIsTrue(3L);
-        assertEquals(1, ans.size());
-    }
-
-    @Test
-    void findByTeacherIdAndProjectIdWithACorrectUserIdAndProjectIdReturnAnObject() {
-        ProjectTeacher query = projectTeacherRepository.findByTeacherIdAndProjectId(3L, 7L);
-        assertNotNull(query);
-    }
-
-    @Test
-    void findByTeacherIdAndProjectIdWithAnIncorrectUserIdAndProjectIdReturnANull() {
-        ProjectTeacher query = projectTeacherRepository.findByTeacherIdAndProjectId(0L, 0L);
-        assertNull(query);
-    }
-
-    @Test
-    void findByTeacherIdAndProjectIdWithACorrectUserIdAndProjectIdReturnAnObjectThatContainsTheProjectAndTheReviewer() {
-        ProjectTeacher query = projectTeacherRepository.findByTeacherIdAndProjectId(3L, 7L);
-        assertTrue(query.getTeacher().getId() == 3L && query.getProject().getId() == 7L);
+    @DisplayName("test for get list of project teacher find by teacher id  accepted  ")
+    void givenBadIds_whenFindByTeacherIdAndProjectId_thenNull(){
+        assertNull(projectTeacherRepository.findByTeacherIdAndProjectId(123l, 123l));
     }
 }

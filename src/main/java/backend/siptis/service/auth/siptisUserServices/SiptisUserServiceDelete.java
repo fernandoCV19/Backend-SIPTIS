@@ -23,10 +23,10 @@ public class SiptisUserServiceDelete {
     private final RoleRepository roleRepository;
 
     public ServiceAnswer deleteUser(Long id) {
-        Optional<SiptisUser> userOptional = siptisUserRepository.findById(id);
-        if (userOptional.isEmpty())
+        Optional<SiptisUser> oUser = siptisUserRepository.findById(id);
+        if (oUser.isEmpty())
             return createResponse(ServiceMessage.ID_DOES_NOT_EXIST, null);
-        SiptisUser user = userOptional.get();
+        SiptisUser user = oUser.get();
         ServiceAnswer answer = deleteValidations(user);
         if (answer != null) {
             return answer;
@@ -36,9 +36,10 @@ public class SiptisUserServiceDelete {
     }
 
     public ServiceAnswer removeDirectorRole(String directorRole) {
-        if (!existCareerDirector(directorRole))
+        Optional<SiptisUser> oUser = siptisUserRepository.findOneByRolesName(directorRole);
+        if (oUser.isEmpty())
             return createResponse(ServiceMessage.NOT_FOUND, null);
-        SiptisUser user = siptisUserRepository.findOneByRolesName(directorRole).get();
+        SiptisUser user = oUser.get();
         Set<Role> roles = user.getRoles();
         Role role = roleRepository.findRoleByName(directorRole);
         roles.remove(role);
@@ -62,9 +63,6 @@ public class SiptisUserServiceDelete {
             return createResponse(ServiceMessage.ERROR_CANNOT_DELETE_USER, null);
         }
         if (user.getAvailableSchedules() != null && !user.getAvailableSchedules().isEmpty()) {
-            return createResponse(ServiceMessage.ERROR_CANNOT_DELETE_USER, null);
-        }
-        if (user.getDocuments() != null && !user.getDocuments().isEmpty()) {
             return createResponse(ServiceMessage.ERROR_CANNOT_DELETE_USER, null);
         }
         if (user.getReviews() != null && !user.getReviews().isEmpty()) {

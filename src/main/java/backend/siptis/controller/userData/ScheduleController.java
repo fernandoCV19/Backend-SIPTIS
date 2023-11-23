@@ -5,6 +5,8 @@ import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.service.userData.ScheduleService;
 import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+@Tag(name = ControllerConstants.Schedule.TAG_NAME, description = ControllerConstants.Schedule.TAG_DESCRIPTION)
 @Controller
 @RequestMapping(ControllerConstants.Schedule.BASE_PATH)
 @AllArgsConstructor
@@ -23,9 +25,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ScheduleController {
 
     private final ScheduleService scheduleService;
-
+    @Operation(summary = "Get all schedules from a project")
     @GetMapping("/all/{id}")
-    public ResponseEntity<?> getAllSchedulesFromAProject(@PathVariable Long id) {
+    public ResponseEntity<ControllerAnswer> getAllSchedulesFromAProject(@PathVariable Long id) {
         ServiceAnswer serviceAnswer = scheduleService.getAllSchedulesFromAProject(id);
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         if (serviceAnswer.getServiceMessage().equals(ServiceMessage.OK)) {

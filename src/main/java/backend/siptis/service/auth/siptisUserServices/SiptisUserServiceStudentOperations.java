@@ -77,14 +77,12 @@ public class SiptisUserServiceStudentOperations {
     public ServiceAnswer getStudentCareerById(Long id) {
         if (!siptisUserServiceExistValidation.existsUserById(id))
             return createResponse(ServiceMessage.NOT_FOUND, null);
-        SiptisUser user = findUserById(id);
+        Optional<SiptisUser> oUser = siptisUserRepository.findById(id);
+        if (oUser.isEmpty())
+            return createResponse(ServiceMessage.NOT_FOUND, null);
+        SiptisUser user = oUser.get();
         Set<UserCareer> career = user.getCareer();
         return createResponse(ServiceMessage.OK, career);
-    }
-
-    private SiptisUser findUserById(long id) {
-        Optional<SiptisUser> res = siptisUserRepository.findById(id);
-        return res.orElse(null);
     }
 
     private ServiceAnswer createResponse(ServiceMessage serviceMessage, Object data) {

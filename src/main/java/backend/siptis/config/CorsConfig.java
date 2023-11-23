@@ -29,6 +29,18 @@ public class CorsConfig {
                 registry.addMapping("/email/changePassword")
                         .allowedOrigins(localUI)
                         .allowedMethods("*");
+
+                registry.addMapping("/v3/api-docs/**")
+                        .allowedOrigins("*")
+                        .allowedMethods("*");
+
+                registry.addMapping("/swagger-ui/**")
+                        .allowedOrigins("*")
+                        .allowedMethods("*");
+
+                registry.addMapping("/swagger-ui.html")
+                        .allowedOrigins("*")
+                        .allowedMethods("*");
             }
         };
     }

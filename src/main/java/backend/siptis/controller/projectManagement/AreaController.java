@@ -6,6 +6,8 @@ import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.generalInformation.userArea.CreateAreaDTO;
 import backend.siptis.service.projectManagement.AreaService;
 import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +19,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Tag(name = ControllerConstants.Area.TAG_NAME, description = ControllerConstants.Area.TAG_DESCRIPTION)
 @RestController
 @RequestMapping(ControllerConstants.Area.BASE_PATH)
 @RequiredArgsConstructor
@@ -29,12 +32,14 @@ public class AreaController {
     private final Set<ServiceMessage> notFoundResponse = new HashSet<>(
             List.of(ServiceMessage.AREA_NOT_FOUND));
 
+    @Operation(summary = "Get all areas")
     @GetMapping("/getAreas")
     public ResponseEntity<?> getAllAreas() {
         ServiceAnswer answerService = areaService.getAllAreas();
         return createResponseEntity(answerService);
     }
 
+    @Operation(summary = "Create a new area")
     @PostMapping("/createArea")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> createArea(@Valid @RequestBody CreateAreaDTO dto) {
@@ -42,6 +47,7 @@ public class AreaController {
         return createResponseEntity(answerService);
     }
 
+    @Operation(summary = "Delete an area by id")
     @DeleteMapping("/deleteArea/{areaId}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> deleteArea(@PathVariable int areaId) {

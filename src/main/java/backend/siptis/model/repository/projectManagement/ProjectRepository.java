@@ -15,6 +15,15 @@ import java.util.List;
 
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Long> {
+
+    @Query(value = "SELECT  project.id_ AS id, project.name_ AS name, " +
+            "project.perfil_path_ AS perfil, modality.name_ AS modality," +
+            " modality.id_ AS modalityId  " +
+            " FROM project_ project, modality_ modality " +
+            " WHERE project.modality_id_ = modality.id_ " +
+            " AND LOWER( project.name_ ) LIKE LOWER( CONCAT( '%', :search, '%'))  ", nativeQuery = true)
+    Page<ProjectInfoDTO> searchProject(String search, Pageable pageable);
+
     @Query("SELECT sup.supervisor.id AS idUser FROM ProjectSupervisor sup WHERE sup.project.id = :projectId"
             + " UNION " +
             "SELECT tea.teacher.id AS idUser FROM ProjectTeacher tea WHERE tea.project.id = :projectId"
@@ -74,14 +83,6 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     Page<Project> advancedFilter(@Nullable String name, @Nullable String period, @Nullable String modality, @Nullable String areas, @Nullable String subAreas, @Nullable String student, @Nullable String tutor, Pageable pageable);
 
     boolean existsByName(String name);
-
-    @Query(value = "SELECT  project.id_ AS id, project.name_ AS name, " +
-            "project.perfil_path_ AS perfil, modality.name_ AS modality," +
-            " modality.id_ AS modalityId  " +
-            " FROM project_ project, modality_ modality " +
-            " WHERE project.modality_id_ = modality.id_ " +
-            " AND LOWER( project.name_ ) LIKE LOWER( CONCAT( '%', :search, '%'))  ", nativeQuery = true)
-    Page<ProjectInfoDTO> searchProject(String search, Pageable pageable);
 
     @Query(value = "SELECT modality.name_ AS modality, COUNT(projectId) AS number_projects FROM " +
             "( SELECT project.id_ AS projectId, project.modality_id_ AS modalityId " +

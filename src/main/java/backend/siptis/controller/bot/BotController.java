@@ -6,12 +6,14 @@ import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.service.bot.ChatBotService;
 import backend.siptis.utils.constant.controllerConstans.ControllerConstants;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
+@Tag(name = ControllerConstants.Bot.TAG_NAME, description = ControllerConstants.Bot.TAG_DESCRIPTION)
 @RestController
 @RequestMapping(ControllerConstants.Bot.BASE_PATH)
 @CrossOrigin
@@ -20,6 +22,7 @@ public class BotController {
 
     private final ChatBotService chatBotService;
 
+    @Operation(summary = "Chat with bot")
     @PostMapping("/chat")
     public ResponseEntity<?> chat(@RequestBody CompletionRequest request) {
         ServiceAnswer serviceAnswer = chatBotService.chat(request);

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Transactional
@@ -56,7 +57,10 @@ public class SiptisUserServiceTokenOperations {
     }
 
     public SiptisUser findByTokenPassword(String tokenPassword) {
-        return siptisUserRepository.findByTokenPassword(tokenPassword).get();
+        Optional<SiptisUser> oUser = siptisUserRepository.findByTokenPassword(tokenPassword);
+        if(oUser.isEmpty())
+            return null;
+        return oUser.get();
     }
 
     private ServiceAnswer createResponse(ServiceMessage serviceMessage, Object data) {
