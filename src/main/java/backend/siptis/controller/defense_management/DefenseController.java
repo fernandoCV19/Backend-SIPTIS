@@ -24,7 +24,7 @@ public class DefenseController {
 
     @Operation(summary = "Get all defenses by month")
     @GetMapping("/defensesByMonth/{month}")
-    public ResponseEntity<?> getPlaceReservationsByMonth(@PathVariable("month") Integer month) {
+    public ResponseEntity<ControllerAnswer> getPlaceReservationsByMonth(@PathVariable("month") Integer month) {
         ServiceAnswer serviceAnswer = defenseService.getDefenseByMonth(month);
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         if (serviceAnswer.getServiceMessage().equals(ServiceMessage.OK)) {
@@ -36,7 +36,7 @@ public class DefenseController {
 
     @Operation(summary = "Create a new defense")
     @PostMapping("/createDefense")
-    public ResponseEntity<?> createDefense(@RequestBody DefenseDTO defenseDTO) {
+    public ResponseEntity<ControllerAnswer> createDefense(@RequestBody DefenseDTO defenseDTO) {
         ServiceAnswer serviceAnswer = defenseService.registerDefense(defenseDTO);
         HttpStatus httpStatus = HttpStatus.OK;
         if (serviceAnswer.getServiceMessage() != ServiceMessage.OK) {
@@ -48,7 +48,7 @@ public class DefenseController {
 
     @Operation(summary = "Remove a defense")
     @DeleteMapping("/removeDefense/{id}")
-    public ResponseEntity<?> removeDefenseFromAProject(@PathVariable("id") Long projectId) {
+    public ResponseEntity<ControllerAnswer> removeDefenseFromAProject(@PathVariable("id") Long projectId) {
         ServiceAnswer serviceAnswer = defenseService.removeDefense(projectId);
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         if (serviceAnswer.getServiceMessage().equals(ServiceMessage.OK)) {

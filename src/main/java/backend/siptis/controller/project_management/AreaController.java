@@ -34,7 +34,7 @@ public class AreaController {
 
     @Operation(summary = "Get all areas")
     @GetMapping("/getAreas")
-    public ResponseEntity<?> getAllAreas() {
+    public ResponseEntity<ControllerAnswer> getAllAreas() {
         ServiceAnswer answerService = areaService.getAllAreas();
         return createResponseEntity(answerService);
     }
@@ -42,7 +42,7 @@ public class AreaController {
     @Operation(summary = "Create a new area")
     @PostMapping("/createArea")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<?> createArea(@Valid @RequestBody CreateAreaDTO dto) {
+    public ResponseEntity<ControllerAnswer> createArea(@Valid @RequestBody CreateAreaDTO dto) {
         ServiceAnswer answerService = areaService.createArea(dto);
         return createResponseEntity(answerService);
     }
@@ -50,13 +50,13 @@ public class AreaController {
     @Operation(summary = "Delete an area by id")
     @DeleteMapping("/deleteArea/{areaId}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<?> deleteArea(@PathVariable int areaId) {
+    public ResponseEntity<ControllerAnswer> deleteArea(@PathVariable int areaId) {
         Long id = Long.valueOf(areaId);
         ServiceAnswer answerService = areaService.deleteArea(id);
         return createResponseEntity(answerService);
     }
 
-    private ResponseEntity<?> createResponseEntity(ServiceAnswer serviceAnswer) {
+    private ResponseEntity<ControllerAnswer> createResponseEntity(ServiceAnswer serviceAnswer) {
         Object data = serviceAnswer.getData();
         ServiceMessage messageService = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;

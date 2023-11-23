@@ -27,7 +27,7 @@ public class OtherOperationsController {
 
     @Operation(summary = "Get project presentations by id")
     @GetMapping("/presentations/{id}")
-    public ResponseEntity<?> getPresentationsById(@PathVariable("id") Long projectId) {
+    public ResponseEntity<ControllerAnswer> getPresentationsById(@PathVariable("id") Long projectId) {
         ServiceAnswer serviceAnswer = projectServiceOtherOperations.getPresentations(projectId);
         HttpStatus httpStatus = HttpStatus.OK;
         if (serviceAnswer.getServiceMessage() != ServiceMessage.OK) {
@@ -39,7 +39,7 @@ public class OtherOperationsController {
 
     @Operation(summary = "Get project presentations")
     @GetMapping("/presentations")
-    public ResponseEntity<?> getPresentations(@RequestHeader(name = "Authorization") String token) {
+    public ResponseEntity<ControllerAnswer> getPresentations(@RequestHeader(name = "Authorization") String token) {
         List<?> projects = siptisUserServiceTokenOperations.getProjectsFromToken(token);
         int projectId = (int) projects.get(0);
         ServiceAnswer serviceAnswer = projectServiceOtherOperations.getPresentations((long) projectId);
@@ -53,7 +53,7 @@ public class OtherOperationsController {
 
     @Operation(summary = "Get involved people by project id")
     @GetMapping("/getInvolvedPeople/{projectId}")
-    public ResponseEntity<?> getInvolvedPeople(@PathVariable("projectId") Long projectId) {
+    public ResponseEntity<ControllerAnswer> getInvolvedPeople(@PathVariable("projectId") Long projectId) {
         ServiceAnswer serviceAnswer = projectServiceOtherOperations.getInvolvedPeople(projectId);
         HttpStatus httpStatus = HttpStatus.OK;
         if (serviceAnswer.getServiceMessage() != ServiceMessage.OK) {
@@ -65,7 +65,7 @@ public class OtherOperationsController {
 
     @Operation(summary = "Get schedules to assign defense by project id")
     @GetMapping("/schedulesToAssignDefense/{projectId}")
-    public ResponseEntity<?> getSchedulesToAssignDefense(@PathVariable("projectId") Long projectId) {
+    public ResponseEntity<ControllerAnswer> getSchedulesToAssignDefense(@PathVariable("projectId") Long projectId) {
         ServiceAnswer serviceAnswer = projectServiceOtherOperations.getSchedulesInfoToAssignADefense(projectId);
         HttpStatus httpStatus = HttpStatus.OK;
         if (serviceAnswer.getServiceMessage() != ServiceMessage.OK) {

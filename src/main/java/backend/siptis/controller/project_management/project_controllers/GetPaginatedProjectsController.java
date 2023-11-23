@@ -23,7 +23,7 @@ public class GetPaginatedProjectsController {
 
     @Operation(summary = "Get paginated projects")
     @GetMapping("/page")
-    public ResponseEntity<?> getPaginatedProjects(
+    public ResponseEntity<ControllerAnswer> getPaginatedProjects(
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "5") int pageSize) {
         ServiceAnswer serviceAnswer = projectServiceGetPaginatedProjects.getPaginatedCompletedProjects(pageNumber, pageSize);
@@ -34,7 +34,7 @@ public class GetPaginatedProjectsController {
 
     @Operation(summary = "Get paginated projects by name")
     @GetMapping("/page/name")
-    public ResponseEntity<?> getPaginatedProjectsByName(
+    public ResponseEntity<ControllerAnswer> getPaginatedProjectsByName(
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "5") int pageSize,
             @RequestParam(required = true) String name
@@ -47,7 +47,7 @@ public class GetPaginatedProjectsController {
 
     @Operation(summary = "Get paginated projects by modality")
     @GetMapping("/page/modality")
-    public ResponseEntity<?> getPaginatedProjectsByModality(
+    public ResponseEntity<ControllerAnswer> getPaginatedProjectsByModality(
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "5") int pageSize,
             @RequestParam(required = true) String modality
@@ -62,7 +62,7 @@ public class GetPaginatedProjectsController {
 
     @Operation(summary = "Get paginated projects by area")
     @GetMapping("/page/area")
-    public ResponseEntity<?> getPaginatedProjectsByArea(
+    public ResponseEntity<ControllerAnswer> getPaginatedProjectsByArea(
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "5") int pageSize,
             @RequestParam(required = true) String area
@@ -77,7 +77,7 @@ public class GetPaginatedProjectsController {
 
     @Operation(summary = "Get paginated projects by subarea")
     @GetMapping("/page/subarea")
-    public ResponseEntity<?> getPaginatedProjectsBySubArea(
+    public ResponseEntity<ControllerAnswer> getPaginatedProjectsBySubArea(
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "5") int pageSize,
             @RequestParam(required = true) String subarea

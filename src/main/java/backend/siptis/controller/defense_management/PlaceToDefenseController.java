@@ -26,7 +26,7 @@ public class PlaceToDefenseController {
 
     @Operation(summary = "Get all available places to defense")
     @GetMapping("/all")
-    public ResponseEntity<?> getAllAvailablePlacesToDefense() {
+    public ResponseEntity<ControllerAnswer> getAllAvailablePlacesToDefense() {
         ServiceAnswer serviceAnswer = placeToDefenseService.getAvailablePlaces();
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
         return new ResponseEntity<>(controllerAnswer, HttpStatus.OK);
@@ -34,7 +34,7 @@ public class PlaceToDefenseController {
 
     @Operation(summary = "Get all reserved dates")
     @GetMapping("/reservedDates")
-    public ResponseEntity<?> getReservedDates() {
+    public ResponseEntity<ControllerAnswer> getReservedDates() {
         ServiceAnswer serviceAnswer = placeToDefenseService.getReservedDates();
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
         return new ResponseEntity<>(controllerAnswer, HttpStatus.OK);

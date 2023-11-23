@@ -22,7 +22,7 @@ public class StandardFilterController {
 
     @Operation(summary = "Get projects with standard filters")
     @GetMapping("/standard-filter")
-    public ResponseEntity<?> getPaginatedProjectsByFilter(
+    public ResponseEntity<ControllerAnswer> getPaginatedProjectsByFilter(
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "6") int pageSize,
             @RequestParam(required = false) String name,

@@ -34,7 +34,7 @@ public class SubAreaController {
 
     @Operation(summary = "Get all sub areas")
     @GetMapping("/getSubAreas")
-    public ResponseEntity<?> getAllSubAreas() {
+    public ResponseEntity<ControllerAnswer> getAllSubAreas() {
         ServiceAnswer answerService = subAreaService.getAllSubAreas();
         return createResponseEntity(answerService);
     }
@@ -42,7 +42,7 @@ public class SubAreaController {
     @Operation(summary = "Create a new sub area")
     @PostMapping("/createSubArea")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<?> createSubArea(
+    public ResponseEntity<ControllerAnswer> createSubArea(
             @Valid @RequestBody CreateAreaDTO dto) {
         ServiceAnswer answerService = subAreaService.createSubArea(dto);
         return createResponseEntity(answerService);
@@ -51,13 +51,13 @@ public class SubAreaController {
     @Operation(summary = "Delete an sub area by id")
     @DeleteMapping("/deleteSubArea/{userId}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<?> deleteArea(@PathVariable int userId) {
+    public ResponseEntity<ControllerAnswer> deleteArea(@PathVariable int userId) {
         Long id = Long.valueOf(userId);
         ServiceAnswer answerService = subAreaService.deleteSubArea(id);
         return createResponseEntity(answerService);
     }
 
-    private ResponseEntity<?> createResponseEntity(ServiceAnswer serviceAnswer) {
+    private ResponseEntity<ControllerAnswer> createResponseEntity(ServiceAnswer serviceAnswer) {
         Object data = serviceAnswer.getData();
         ServiceMessage messageService = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;

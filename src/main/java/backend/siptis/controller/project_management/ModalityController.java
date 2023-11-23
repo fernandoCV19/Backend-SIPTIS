@@ -26,11 +26,11 @@ public class ModalityController {
 
     @Operation(summary = "Get all modalities")
     @GetMapping("")
-    ResponseEntity<?> getAllModalities() {
+    ResponseEntity<ControllerAnswer> getAllModalities() {
         return createResponseEntity(modalityService.getAllModalities());
     }
 
-    private ResponseEntity<?> createResponseEntity(ServiceAnswer serviceAnswer) {
+    private ResponseEntity<ControllerAnswer> createResponseEntity(ServiceAnswer serviceAnswer) {
         Object data = serviceAnswer.getData();
         ServiceMessage mensajeServicio = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.OK;

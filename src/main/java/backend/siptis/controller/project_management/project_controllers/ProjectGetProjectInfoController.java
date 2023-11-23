@@ -23,7 +23,7 @@ public class ProjectGetProjectInfoController {
 
     @Operation(summary = "Get project information by project id")
     @GetMapping("/information/{id}")
-    public ResponseEntity<?> getProjectInformation(@PathVariable("id") Long idProject) {
+    public ResponseEntity<ControllerAnswer> getProjectInformation(@PathVariable("id") Long idProject) {
         ServiceAnswer serviceAnswer = projectServiceGetProjectInfo.getProjectInfo(idProject);
         HttpStatus httpStatus = HttpStatus.OK;
         if (serviceAnswer.getServiceMessage() != ServiceMessage.OK && serviceAnswer.getServiceMessage() != ServiceMessage.THERE_IS_NO_PRESENTATION_YET) {
@@ -35,7 +35,7 @@ public class ProjectGetProjectInfoController {
 
     @Operation(summary = "Get project information by project id and reviewer id")
     @GetMapping("/getProjectInfoToReview/{projectId}/{reviewerId}")
-    public ResponseEntity<?> getProjectInfoToReview(@PathVariable("projectId") Long projectId, @PathVariable("reviewerId") Long reviewerId) {
+    public ResponseEntity<ControllerAnswer> getProjectInfoToReview(@PathVariable("projectId") Long projectId, @PathVariable("reviewerId") Long reviewerId) {
         ServiceAnswer serviceAnswer = projectServiceGetProjectInfo.getProjectInfoToReview(projectId, reviewerId);
         HttpStatus httpStatus = HttpStatus.OK;
         if (serviceAnswer.getServiceMessage() != ServiceMessage.OK && serviceAnswer.getServiceMessage() != ServiceMessage.THERE_IS_NO_PRESENTATION_YET) {
@@ -47,7 +47,7 @@ public class ProjectGetProjectInfoController {
 
     @Operation(summary = "Get all project information by project id")
     @GetMapping("/allInfo/{projectId}")
-    public ResponseEntity<?> getAllInfo(@PathVariable("projectId") Long projectId) {
+    public ResponseEntity<ControllerAnswer> getAllInfo(@PathVariable("projectId") Long projectId) {
         ServiceAnswer serviceAnswer = projectServiceGetProjectInfo.getAllProjectInfo(projectId);
         HttpStatus httpStatus = HttpStatus.OK;
         if (serviceAnswer.getServiceMessage() != ServiceMessage.OK) {
@@ -59,7 +59,7 @@ public class ProjectGetProjectInfoController {
 
     @Operation(summary = "Get project assign tribunals by project id")
     @GetMapping("/getInfoToAssignTribunals/{projectId}")
-    public ResponseEntity<?> getInfoToAssignTribunals(@PathVariable("projectId") Long projectId) {
+    public ResponseEntity<ControllerAnswer> getInfoToAssignTribunals(@PathVariable("projectId") Long projectId) {
         ServiceAnswer serviceAnswer = projectServiceGetProjectInfo.getProjectInfoToAssignTribunals(projectId);
         HttpStatus httpStatus = HttpStatus.OK;
         if (serviceAnswer.getServiceMessage() != ServiceMessage.OK) {

@@ -25,7 +25,7 @@ public class CreateController {
 
     @Operation(summary = "Creation of a new project")
     @PostMapping("/newProject")
-    public ResponseEntity<?> createProject(@Valid @RequestBody NewProjectDTO dto) {
+    public ResponseEntity<ControllerAnswer> createProject(@Valid @RequestBody NewProjectDTO dto) {
         ServiceAnswer serviceAnswer = projectServiceCreate.createProject(dto);
 
         HttpStatus httpStatus = HttpStatus.OK;

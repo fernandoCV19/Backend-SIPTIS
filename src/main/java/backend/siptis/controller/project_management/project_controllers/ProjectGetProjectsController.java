@@ -24,7 +24,7 @@ public class ProjectGetProjectsController {
 
     @Operation(summary = "Search paginated projets by name")
     @GetMapping("/projectList")
-    public ResponseEntity<?> searchProjects(String search, Pageable pageable) {
+    public ResponseEntity<ControllerAnswer> searchProjects(String search, Pageable pageable) {
         ServiceAnswer serviceAnswer = projectServiceGetProjects.getProjectsList(search, pageable);
         HttpStatus httpStatus = HttpStatus.OK;
         if (serviceAnswer.getServiceMessage() != ServiceMessage.OK) {
@@ -36,7 +36,7 @@ public class ProjectGetProjectsController {
 
     @Operation(summary = "Get all proyects")
     @GetMapping("/")
-    public ResponseEntity<?> getProyectos() {
+    public ResponseEntity<ControllerAnswer> getProyectos() {
         ServiceAnswer serviceAnswer = projectServiceGetProjects.getProjects();
         HttpStatus httpStatus = HttpStatus.OK;
         if (serviceAnswer.getServiceMessage() != ServiceMessage.OK) {
@@ -48,7 +48,7 @@ public class ProjectGetProjectsController {
 
     @Operation(summary = "Get projects to defense or defeneded by tribunal id")
     @GetMapping("/defenses/{tribunalID}")
-    public ResponseEntity<?> getProjectsToDefenseOrDefended(@PathVariable("tribunalID") Long tribunalID) {
+    public ResponseEntity<ControllerAnswer> getProjectsToDefenseOrDefended(@PathVariable("tribunalID") Long tribunalID) {
         ServiceAnswer serviceAnswer = projectServiceGetProjects.getProjectsToDefenseOrDefended(tribunalID);
         HttpStatus httpStatus = HttpStatus.OK;
         if (serviceAnswer.getServiceMessage() != ServiceMessage.OK) {
@@ -60,7 +60,7 @@ public class ProjectGetProjectsController {
 
     @Operation(summary = "Get projets all project on tribunal phase")
     @GetMapping("/withAndWithoutTribunals")
-    public ResponseEntity<?> getProjectsWithAndWithoutTribunals() {
+    public ResponseEntity<ControllerAnswer> getProjectsWithAndWithoutTribunals() {
         ServiceAnswer serviceAnswer = projectServiceGetProjects.getProjectsWithoutAndWithTribunals();
         HttpStatus httpStatus = HttpStatus.OK;
         if (serviceAnswer.getServiceMessage() != ServiceMessage.OK) {
@@ -72,7 +72,7 @@ public class ProjectGetProjectsController {
 
     @Operation(summary = "Get projects with and without defense place")
     @GetMapping("/withAndWithoutDefensePlace")
-    public ResponseEntity<?> getProjectsWithAndWithoutDefensePlace() {
+    public ResponseEntity<ControllerAnswer> getProjectsWithAndWithoutDefensePlace() {
         ServiceAnswer serviceAnswer = projectServiceGetProjects.getProjectsWithoutAndWithDefensePlace();
         HttpStatus httpStatus = HttpStatus.OK;
         if (serviceAnswer.getServiceMessage() != ServiceMessage.OK) {

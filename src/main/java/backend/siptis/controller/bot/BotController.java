@@ -24,12 +24,12 @@ public class BotController {
 
     @Operation(summary = "Chat with bot")
     @PostMapping("/chat")
-    public ResponseEntity<?> chat(@RequestBody CompletionRequest request) {
+    public ResponseEntity<ControllerAnswer> chat(@RequestBody CompletionRequest request) {
         ServiceAnswer serviceAnswer = chatBotService.chat(request);
         return createResponseEntity(serviceAnswer);
     }
 
-    private ResponseEntity<?> createResponseEntity(ServiceAnswer serviceAnswer) {
+    private ResponseEntity<ControllerAnswer> createResponseEntity(ServiceAnswer serviceAnswer) {
         ServiceMessage serviceMessage = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.OK;
 

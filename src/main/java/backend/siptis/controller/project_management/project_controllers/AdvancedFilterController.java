@@ -22,7 +22,7 @@ public class AdvancedFilterController {
 
     @Operation(summary = "Get projects with advanced filters")
     @GetMapping("/advanced-filter")
-    public ResponseEntity<?> getProjectsWithAdvancedFilters(
+    public ResponseEntity<ControllerAnswer> getProjectsWithAdvancedFilters(
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "6") int pageSize,
             @RequestParam(required = false) String name,
