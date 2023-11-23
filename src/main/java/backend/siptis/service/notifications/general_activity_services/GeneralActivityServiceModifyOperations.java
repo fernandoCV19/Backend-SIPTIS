@@ -42,8 +42,14 @@ public class GeneralActivityServiceModifyOperations {
             generalActivity.setActivityDescription(generalActivityDTO.getActivityDescription());
             generalActivity.setActivityDate(generalActivityDTO.getActivityDate());
             generalActivityRepository.save(generalActivity);
+            Optional<GeneralActivity> activityFound = generalActivityRepository.findById(id);
+            if(activityFound.isEmpty()){
+                return ServiceAnswer.builder()
+                        .serviceMessage(ServiceMessage.NOT_FOUND)
+                        .build();
+            }
 
-            generalActivity = generalActivityRepository.findById(id).get();
+            generalActivity = activityFound.get();
 
             return ServiceAnswer.builder()
                     .serviceMessage(ServiceMessage.OK)

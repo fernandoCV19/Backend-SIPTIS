@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -15,5 +15,5 @@ public class GeneralActivityVO {
     private long id;
     private String activityName;
     private String activityDescription;
-    private Date activityDate;
+    private LocalDate activityDate;
 }

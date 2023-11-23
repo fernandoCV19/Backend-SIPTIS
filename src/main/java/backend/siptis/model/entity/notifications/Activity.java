@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = ActivityTable.NAME)
@@ -32,7 +32,7 @@ public class Activity {
     private String activityDescription;
 
     @Column(name = ActivityTable.ActivityDate.NAME)
-    private Date activityDate;
+    private LocalDate activityDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = ActivityTable.JoinProject.NAME,

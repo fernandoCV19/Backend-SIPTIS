@@ -2,8 +2,8 @@ package backend.siptis.service.notifications;
 
 import jakarta.mail.internet.InternetAddress;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.mail.MailException;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 @Scope(value = "prototype")
 @Component
+@RequiredArgsConstructor
 public class EmailFactory {
     @Setter
     private String toMail;
@@ -39,8 +40,7 @@ public class EmailFactory {
     @Value("${application.name}")
     private String from;
 
-    @Autowired
-    private JavaMailSender mailSender;
+    private final JavaMailSender mailSender;
 
     public void send() {
         MimeMessagePreparator message = mimeMessage -> {
@@ -56,8 +56,6 @@ public class EmailFactory {
             response = "EMAIL SENT SUCCESSFULLY";
         } catch (MailException e) {
             e.printStackTrace();
-            /**TO DO: handler exception*/
-            // throw new MailFactoryException("EMAIL COULD NOT BE SENT");
         }
     }
 
@@ -75,8 +73,6 @@ public class EmailFactory {
             response = "EMAIL SENT SUCCESSFULLY";
         } catch (MailException e) {
             e.printStackTrace();
-            /**TO DO: handler exception*/
-            // throw new MailFactoryException("EMAIL COULD NOT BE SENT");
         }
     }
 }

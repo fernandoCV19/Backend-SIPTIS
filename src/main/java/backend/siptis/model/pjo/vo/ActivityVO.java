@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -15,6 +15,6 @@ import java.util.Date;
 public class ActivityVO {
     private String activityName;
     private String activityDescription;
-    private Date activityDate;
+    private LocalDate activityDate;
     private Project project;
 }
