@@ -5,6 +5,7 @@ import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.service.auth.siptis_user_services.SiptisUserServiceGeneralUserOperations;
 import backend.siptis.service.auth.siptis_user_services.SiptisUserServiceTokenOperations;
+import backend.siptis.service.project_management.project.ProjectServiceGetProjectInfo;
 import backend.siptis.utils.constant.controller_constans.ControllerConstants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -28,6 +29,7 @@ public class GeneralUserOperationsController {
 
     private final SiptisUserServiceGeneralUserOperations siptisUserServiceGeneralUserOperations;
     private final SiptisUserServiceTokenOperations siptisUserServiceTokenOperations;
+    private final ProjectServiceGetProjectInfo projectServiceGetProjectInfo;
     private final Set<ServiceMessage> okResponse = new HashSet<>(
             List.of(ServiceMessage.OK, ServiceMessage.SUCCESSFUL_REGISTER, ServiceMessage.USER_DELETED));
 
@@ -136,4 +138,23 @@ public class GeneralUserOperationsController {
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(data).message(messageService.toString()).build();
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
+    //TODO
+    @Operation(summary = "Get own personal project")
+    @GetMapping("/project")
+    public ResponseEntity<ControllerAnswer> getProjectByUserId(@RequestHeader(name = "Authorization") String token) {
+        Long idL = siptisUserServiceTokenOperations.getIdFromToken(token);
+        Long projectID = siptisUserServiceGeneralUserOperations.getProjectById(idL);
+        ServiceAnswer projectFound = projectServiceGetProjectInfo.getProjectById(projectID);
+
+        return createResponseEntity(projectFound);
+    }
+    /*
+    @GetMapping("/project")
+    public ResponseEntity<?> getProjectByUserId(@RequestHeader(name = "Authorization") String token) {
+        Long idL = siptisUserService.getIdFromToken(token);
+        Long projectID = siptisUserService.getProjectById(idL);
+        ServiceAnswer projectFound = projectService.getProjectById(projectID);
+        return crearResponseEntityRegistrar(projectFound);
+    }*/
+
 }

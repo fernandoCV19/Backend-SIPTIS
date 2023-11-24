@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -44,7 +45,7 @@ public interface SiptisUserRepository extends JpaRepository<SiptisUser, Long> {
 
     @Query("SELECT a FROM Activity a, ProjectStudent ps " +
             "WHERE ps.student.id = :id AND ps.project.id = a.project.id AND a.activityDate >= :now")
-    Page<Activity> findAllPersonalActivities(Long id, @Param("now") Date now, Pageable pageable);
+    Page<Activity> findAllPersonalActivities(Long id, @Param("now") LocalDate    now, Pageable pageable);
 
     @Query("SELECT p FROM Project p, ProjectStudent ps " +
             "WHERE ps.student.id = :id AND ps.project.id = p.id")

@@ -4,7 +4,7 @@ import backend.siptis.utils.constant.entity_constants.NotificationsConstants.Gen
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = GeneralActivityTable.NAME)
@@ -28,5 +28,5 @@ public class GeneralActivity {
     private String activityDescription;
 
     @Column(name = GeneralActivityTable.ActivityDate.NAME)
-    private Date activityDate;
+    private LocalDate activityDate;
 }

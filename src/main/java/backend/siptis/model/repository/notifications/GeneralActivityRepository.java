@@ -8,10 +8,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Repository
 public interface GeneralActivityRepository extends JpaRepository<GeneralActivity, Long> {
     @Query("SELECT ga FROM GeneralActivity ga WHERE ga.activityDate >=:now ")
-    Page<GeneralActivity> findAllAfterADate(@Param("now") Date now, Pageable pageable);
+    Page<GeneralActivity> findAllAfterADate(@Param("now") LocalDate now, Pageable pageable);
 }

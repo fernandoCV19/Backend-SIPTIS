@@ -30,8 +30,8 @@ public class GeneralActivityNotificationSenderServiceImpl implements GeneralActi
         List<SiptisUser> siptisUserList = (List) siptisUserServiceGeneralUserOperations.getAllUsers().getData();
 
         for (GeneralActivityVO vo : generalActivityVOList) {
-            int activityMonth = vo.getActivityDate().getDate();
-            int activityDay = vo.getActivityDate().getMonth();
+            int activityMonth = vo.getActivityDate().getMonthValue();
+            int activityDay = vo.getActivityDate().getDayOfMonth();
             if (activityMonth == actualMonth && (actualDay == activityDay - 1 || actualDay == activityDay)) {
                 sender.sendNotification(vo.getActivityName(), getEmails(siptisUserList), vo.getActivityDate().toString());
             }

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(ControllerConstants.Phase.BASE_PATH)
 @CrossOrigin
 public class PhaseController {
-    private static final String phaseFound = "Phase found";
+    private static final String PHASE_FOUND = "Phase found";
     private final PhaseService phaseService;
     private final SiptisUserServiceTokenOperations siptisUserServiceTokenOperations;
 
@@ -28,7 +28,7 @@ public class PhaseController {
     public ResponseEntity<ControllerAnswer> findAll() {
         return new ResponseEntity<>(ControllerAnswer.builder()
                 .data(phaseService.findAllPhases())
-                .message(phaseFound).build(), null, 200);
+                .message(PHASE_FOUND).build(), null, 200);
     }
 
     @Operation(summary = "Get a phase by id")
@@ -38,7 +38,7 @@ public class PhaseController {
 
         return new ResponseEntity<>(ControllerAnswer.builder()
                 .data(phaseService.findPhaseByUserId(id))
-                .message(phaseFound).build(), null, 200);
+                .message(PHASE_FOUND).build(), null, 200);
     }
 
     @Operation(summary = "Get phases by modality id")
@@ -48,7 +48,7 @@ public class PhaseController {
 
         return new ResponseEntity<>(ControllerAnswer.builder()
                 .data(phaseService.findPhaseByModalityId(id))
-                .message(phaseFound).build(), null, 200);
+                .message(PHASE_FOUND).build(), null, 200);
     }
 
     @Operation(summary = "Get all phases by user token")
@@ -57,7 +57,7 @@ public class PhaseController {
         Long idL = siptisUserServiceTokenOperations.getIdFromToken(token);
         return new ResponseEntity<>(ControllerAnswer.builder()
                 .data(createResponse(phaseService.getPhasesByUserId(idL)))
-                .message(phaseFound).build(), null, 200);
+                .message(PHASE_FOUND).build(), null, 200);
 
     }
 
