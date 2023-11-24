@@ -1,6 +1,8 @@
 package backend.siptis.service.projectManagement.project;
 
+import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
+import backend.siptis.service.project_management.project.ProjectServiceGetNumberOfProjects;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,31 +24,31 @@ class ProjectServiceGetNumberOfProjectsTest {
     }
     @Test
     void whenGetNumberOfProjectsByModalityAndCareerThenServiceMessageOk() {
-        ServiceMessage message = projectServiceGetNumberOfProjects.getNumberOfProjectsByModalityAndCareer(100L).getServiceMessage();
+        ServiceMessage message = projectServiceGetNumberOfProjects.getNumberOfProjectsByModalityAndCareer("INFOR MATICA").getServiceMessage();
         assertEquals(ServiceMessage.OK, message);
     }
 
     @Test
-    void whenGetNumberOfProjectsByAreaAndCareerThenServiceMessageOk() {
-        ServiceMessage message = projectServiceGetNumberOfProjects.getNumberOfProjectsByAreaAndCareer(100L).getServiceMessage();
-        assertEquals(ServiceMessage.OK, message);
+    void givenWrongCareerNamewhenGetNumberOfProjectsByAreaAndCareerThenServiceMessageERROR() {
+        ServiceMessage message = projectServiceGetNumberOfProjects.getNumberOfProjectsByAreaAndCareer("INFOR MATICA").getServiceMessage();
+        assertEquals(ServiceMessage.ERROR, message);
     }
 
     @Test
-    void whenGetNumberOfProjectsBySubAreaAndCareerServiceMessageOk() {
-        ServiceMessage message = projectServiceGetNumberOfProjects.getNumberOfProjectsBySubAreaAndCareer(100L).getServiceMessage();
-        assertEquals(ServiceMessage.OK, message);
+    void givenWrongCareerNamewhenGetNumberOfProjectsBySubAreaAndCareerServiceMessageERROR() {
+        ServiceMessage message = projectServiceGetNumberOfProjects.getNumberOfProjectsBySubAreaAndCareer("INFOR MATICA").getServiceMessage();
+        assertEquals(ServiceMessage.ERROR, message);
     }
 
     @Test
-    void whenGetNumberProjectsByPeriodAndCareerThenServiceMessageOk() {
-        ServiceMessage message = projectServiceGetNumberOfProjects.getNumberProjectsByPeriodAndCareer(100L).getServiceMessage();
-        assertEquals(ServiceMessage.OK, message);
+    void givenWrongCareerNamewhenGetNumberProjectsByPeriodAndCareerThenServiceMessageERROR() {
+        ServiceAnswer answer = projectServiceGetNumberOfProjects.getNumberProjectsByPeriodAndCareer("INFOR MATICA");
+        assertEquals(ServiceMessage.ERROR, answer.getServiceMessage());
     }
 
     @Test
-    void whenGetNumberProjectsByCareerThenServiceMessageOk() {
-        ServiceMessage message = projectServiceGetNumberOfProjects.getNumberProjectsByCareer(100L).getServiceMessage();
-        assertEquals(ServiceMessage.OK, message);
+    void givenWrongCareerNamewhenGetNumberProjectsByCareerThenServiceMessageERROR() {
+        ServiceMessage message = projectServiceGetNumberOfProjects.getNumberProjectsByCareer("INFOR MATICA").getServiceMessage();
+        assertEquals(ServiceMessage.ERROR, message);
     }
 }

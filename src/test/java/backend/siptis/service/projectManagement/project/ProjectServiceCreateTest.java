@@ -1,7 +1,8 @@
 package backend.siptis.service.projectManagement.project;
 
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.model.pjo.dto.projectManagement.NewProjectDTO;
+import backend.siptis.model.pjo.dto.project_management.NewProjectDTO;
+import backend.siptis.service.project_management.project.ProjectServiceCreate;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.junit.jupiter.api.BeforeEach;

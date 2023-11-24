@@ -1,9 +1,7 @@
 package backend.siptis.service.defense;
 
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.service.defenseManagement.PlaceToDefenseService;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
+import backend.siptis.service.defense_management.PlaceToDefenseService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

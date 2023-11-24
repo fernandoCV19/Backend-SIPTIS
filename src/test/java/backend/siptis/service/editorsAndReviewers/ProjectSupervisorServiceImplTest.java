@@ -1,10 +1,10 @@
 package backend.siptis.service.editorsAndReviewers;
 
 import backend.siptis.commons.ServiceMessage;
+import backend.siptis.service.editors_and_reviewers.ProjectSupervisorService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -2,9 +2,9 @@ package backend.siptis.service.defense;
 
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.model.pjo.dto.projectManagement.DefenseDTO;
-import backend.siptis.model.repository.defenseManagement.DefenseRepository;
-import backend.siptis.service.defenseManagement.DefenseService;
+import backend.siptis.model.pjo.dto.project_management.DefenseDTO;
+import backend.siptis.model.repository.defense_management.DefenseRepository;
+import backend.siptis.service.defense_management.DefenseService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

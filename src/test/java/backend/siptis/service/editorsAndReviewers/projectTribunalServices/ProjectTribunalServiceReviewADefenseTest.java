@@ -1,8 +1,8 @@
 package backend.siptis.service.editorsAndReviewers.projectTribunalServices;
 
-import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.model.pjo.dto.editorsAndReviewers.ReviewADefenseDTO;
+import backend.siptis.model.pjo.dto.editors_and_reviewers.ReviewADefenseDTO;
+import backend.siptis.service.editors_and_reviewers.project_tribunal_services.ProjectTribunalServiceReviewADefense;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
