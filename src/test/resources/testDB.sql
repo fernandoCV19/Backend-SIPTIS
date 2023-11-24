@@ -394,7 +394,7 @@ VALUES (100, FALSE, FALSE, 100, 120),
        (108, TRUE, FALSE, 108, 127),
        (109, FALSE, TRUE, 109, 128),
        (110, TRUE, FALSE, 110, 129),
-       (111, TRUE, FALSE, 111, 120),
+       (111, FALSE, TRUE, 111, 120),
        (112, FALSE, TRUE, 112, 121),
        (113, TRUE, FALSE, 113, 122),
        (114, FALSE, TRUE, 114, 123),
@@ -475,7 +475,7 @@ VALUES (101, TRUE, FALSE, 101, 131),
        (111, FALSE, TRUE, 111, 131),
        (112, TRUE, FALSE, 112, 132),
        (113, FALSE, TRUE, 113, 133),
-       (114, TRUE, FALSE, 114, 134),
+       (114, FALSE, FALSE, 114, 134),
        (115, FALSE, TRUE, 115, 135),
        (116, TRUE, FALSE, 116, 136),
        (117, FALSE, TRUE, 117, 137),
@@ -542,7 +542,7 @@ VALUES (101, TRUE, FALSE, 102, 140),
        (103, TRUE, FALSE, 106, 142),
        (104, FALSE, TRUE, 107, 143),
        (105, TRUE, FALSE, 112, 144),
-       (106, FALSE, TRUE, 113, 145);
+       (106, FALSE, FALSE, 113, 145);
 ------------------------------------------------------------------------------------------------------------------------
 -- TRIBUNALS
 -- SIPTIS USER
@@ -613,7 +613,7 @@ VALUES (101, FALSE, NULL, FALSE, 103, 150),
        (103, FALSE, NULL, FALSE, 103, 152),
        (104, TRUE, NULL, TRUE, 105, 153),
        (105, FALSE, NULL, FALSE, 105, 154),
-       (106, TRUE, NULL, TRUE, 105, 155),
+       (106, FALSE, NULL, TRUE, 105, 155),
        (107, FALSE, NULL, FALSE, 106, 156),
        (108, TRUE, NULL, TRUE, 106, 157),
        (109, FALSE, NULL, FALSE, 106, 158),
@@ -634,10 +634,11 @@ VALUES (101, FALSE, NULL, FALSE, 103, 150),
        (124, TRUE, NULL, TRUE, 114, 153),
        (125, FALSE, NULL, FALSE, 117, 154),
        (126, TRUE, NULL, TRUE, 117, 155),
-       (127, FALSE, NULL, FALSE, 117, 156),
-       (128, TRUE, NULL, TRUE, 119, 157),
-       (129, FALSE, NULL, FALSE, 119, 158),
-       (130, TRUE, NULL, TRUE, 119, 159);
+       (127, FALSE, NULL, FALSE, 117, 156);
+
+--(128, TRUE, NULL, TRUE, 119, 157),
+--(129, FALSE, NULL, FALSE, 119, 158),
+--(130, TRUE, NULL, TRUE, 119, 159);
 ------------------------------------------------------------------------------------------------------------------------
 -- COMBINATED ROLES
 -- SIPTIS USER
