@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Pageable;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -192,7 +192,7 @@ class SiptisUserRepositoryTest {
     @Test
     @DisplayName("Test for find all personal activities")
     void givenSiptisUser_whenFindAllPersonalActivities_thenSiptisUserObject() {
-        assertNotNull(siptisUserRepository.findAllPersonalActivities(123L, new Date(), Pageable.ofSize(12)));
+        assertNotNull(siptisUserRepository.findAllPersonalActivities(123L, LocalDate.now(), Pageable.ofSize(12)));
     }
 
     @Test

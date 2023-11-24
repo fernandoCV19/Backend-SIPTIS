@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -23,7 +24,7 @@ public class GeneralActivityServiceModifyOperationsTest {
 
     private void startActivity() {
         activity = new GeneralActivity();
-        activity.setActivityDate(new Date());
+        activity.setActivityDate(LocalDate.now());
         activity.setId(1233245L);
         activity.setActivityName("name");
         activity.setActivityDescription("");
@@ -31,7 +32,7 @@ public class GeneralActivityServiceModifyOperationsTest {
 
     private void startGeneralActivityDTO() {
         activityDTO = new GeneralActivityDTO();
-        activityDTO.setActivityDate(new Date());
+        activityDTO.setActivityDate(LocalDate.now());
         activityDTO.setActivityName("name");
         activityDTO.setActivityDescription("");
     }

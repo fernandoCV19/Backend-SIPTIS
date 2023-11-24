@@ -26,7 +26,7 @@ public class EmailController {
 
     @Operation(summary = "Ask email for send recover password link")
     @GetMapping("/askemail/{email}")
-    public ResponseEntity<ControllerAnswer> sendEmailTest(@PathVariable String email) throws MessagingException, IOException {
+    public ResponseEntity<ControllerAnswer> sendEmailTest(@PathVariable String email) {
         ServiceAnswer answer = sendRecoverPasswordEmailService.sendRecoverPasswordEmail(email);
         return crearResponseEntityRegistrar(answer);
     }

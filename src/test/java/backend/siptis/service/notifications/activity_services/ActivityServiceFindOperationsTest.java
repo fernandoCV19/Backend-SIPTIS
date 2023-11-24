@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,7 +22,7 @@ public class ActivityServiceFindOperationsTest {
 
     private void startActivity() {
         activity = new Activity();
-        activity.setActivityDate(new Date());
+        activity.setActivityDate(LocalDate.now());
         activity.setId(1233245L);
         activity.setActivityName("name");
         activity.setActivityDescription("");
