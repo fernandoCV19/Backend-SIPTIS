@@ -36,7 +36,7 @@ public class ProjectGetProjectsController {
 
     @Operation(summary = "Get all proyects")
     @GetMapping("/")
-    public ResponseEntity<ControllerAnswer> getProyectos() {
+    public ResponseEntity<ControllerAnswer> getProjects() {
         ServiceAnswer serviceAnswer = projectServiceGetProjects.getProjects();
         HttpStatus httpStatus = HttpStatus.OK;
         if (serviceAnswer.getServiceMessage() != ServiceMessage.OK) {

@@ -9,13 +9,10 @@ import backend.siptis.service.notifications.recover_password.SendRecoverPassword
 import backend.siptis.utils.constant.controller_constans.ControllerConstants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
 
 @Tag(name = ControllerConstants.Email.TAG_NAME, description = ControllerConstants.Email.TAG_DESCRIPTION)
 @RestController
