@@ -34,13 +34,13 @@ class SiptisUserServiceStudentOperationsTest {
     @Test
     @DisplayName("test gest number of students by year and career")
     void givenCareerIdWhenGetNumberOfStudentsByYearAndCareerThenServiceMessageOK() {
-        assertEquals(ServiceMessage.OK, siptisUserServiceStudentOperations.getNumberOfStudentsByYearAndCareer(1L).getServiceMessage());
+        assertEquals(ServiceMessage.OK, siptisUserServiceStudentOperations.getNumberOfStudentsByYearAndCareer("INFORMATICA").getServiceMessage());
     }
 
     @Test
     @DisplayName("test gest number of students by career")
     void givenCareerIdWhenGetNumberOfStudentsByCareerThenServiceMessageOK() {
-        assertEquals(ServiceMessage.OK, siptisUserServiceStudentOperations.getNumberStudentsCareer(1L).getServiceMessage());
+        assertEquals(ServiceMessage.OK, siptisUserServiceStudentOperations.getNumberStudentsCareer("INFORMATICA").getServiceMessage());
     }
 
     @Test

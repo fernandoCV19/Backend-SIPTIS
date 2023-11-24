@@ -41,10 +41,10 @@ public class StudentOperationsController {
     }
 
     @Operation(summary = "get number of students in career")
-    @GetMapping("/studentsInCareer/{careerId}")
-    public ResponseEntity<ControllerAnswer> getStudentsInCareer(@PathVariable Long careerId) {
+    @GetMapping("/studentsInCareer/{careerName}")
+    public ResponseEntity<ControllerAnswer> getStudentsInCareer(@PathVariable String careerName) {
         ServiceAnswer answerService =
-                siptisUserServiceStudentOperations.getNumberStudentsCareer(careerId);
+                siptisUserServiceStudentOperations.getNumberStudentsCareer(careerName);
         return createResponseEntity(answerService);
     }
 
@@ -69,10 +69,10 @@ public class StudentOperationsController {
     }
 
     @Operation(summary = "get number of students by year and career")
-    @GetMapping("/studentsByYear/{careerId}")
-    public ResponseEntity<ControllerAnswer> getNumberOfStudentsByYearAndCareer(@PathVariable Long careerId) {
+    @GetMapping("/studentsByYear/{careerName}")
+    public ResponseEntity<ControllerAnswer> getNumberOfStudentsByYearAndCareer(@PathVariable String careerName) {
         ServiceAnswer answerService =
-                siptisUserServiceStudentOperations.getNumberOfStudentsByYearAndCareer(careerId);
+                siptisUserServiceStudentOperations.getNumberOfStudentsByYearAndCareer(careerName);
         return createResponseEntity(answerService);
     }
 

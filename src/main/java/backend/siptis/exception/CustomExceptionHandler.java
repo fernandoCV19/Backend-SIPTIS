@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class CustomExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<?> handleAccessDeniedException(AccessDeniedException ex) {
+    public ResponseEntity<ResponseDTO> handleAccessDeniedException(AccessDeniedException ex) {
         ResponseDTO dto = new ResponseDTO();
         dto.setMessage("UNAUTHORIZED");
         return new ResponseEntity<>(dto, HttpStatus.UNAUTHORIZED);

@@ -3,6 +3,7 @@ package backend.siptis.service.user_data.document.generation_tools;
 
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfWriter;
+import lombok.RequiredArgsConstructor;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,28 +11,28 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.time.LocalDate;
 
+@RequiredArgsConstructor
 public class LetterTool {
 
     private String[] months =
             {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
-
-    private final static String footerText = "Sin otro particular, saludo a Ud. cordialmente.\n";
-    public LetterTool() {
-    }
+    private static final String FOOTER_TEXT = "Sin otro particular, saludo a Ud. cordialmente.\n";
+    private static final String DOC_TITLE = "REF: Informe de Proyecto Final concluido y solicitud de asignación de tribunales\n";
+    private static final String START_TEXT = "Estimado Director de Carrera:\n";
 
     public String generateTribunalRequest(String student, String directorName, String career, String projectName, String teacherName) {
         String fileName = projectName + "_" + student + "_CartaConformidadDocente.pdf";
-        fileName = fileName.replaceAll(" ", "");
+        fileName = fileName.replace(" ", "");
         Document document = new Document(PageSize.LETTER, 85, 85, 70, 70);
         try {
             File file = new File(fileName);
             OutputStream outFile = new FileOutputStream(file);
             PdfWriter.getInstance(document, outFile);
             document.open();
-            createWithHeader(document, directorName, career, "REF: Informe de Proyecto Final concluido y solicitud de asignación de tribunales\n");
+            createWithHeader(document, directorName, career, DOC_TITLE);
 
             Paragraph bodyHeader = new Paragraph();
-            bodyHeader.add(new Phrase("Estimado Director de Carrera:\n", FontFactory.getFont(FontFactory.HELVETICA, 10)));
+            bodyHeader.add(new Phrase(START_TEXT, FontFactory.getFont(FontFactory.HELVETICA, 10)));
             bodyHeader.setSpacingBefore(40);
 
             Paragraph bodyContent = new Paragraph();
@@ -45,7 +46,7 @@ public class LetterTool {
             document.add(bodyContent);
 
             Paragraph bodyEnd = new Paragraph();
-            bodyEnd.add(new Phrase(footerText, FontFactory.getFont(FontFactory.HELVETICA, 10)));
+            bodyEnd.add(new Phrase(FOOTER_TEXT, FontFactory.getFont(FontFactory.HELVETICA, 10)));
             bodyEnd.setSpacingBefore(20);
             document.add(bodyEnd);
 
@@ -55,23 +56,24 @@ public class LetterTool {
             footer.setSpacingBefore(70);
             document.add(footer);
         } catch (Exception e) {
+            fileName = null;
+        }finally {
+            document.close();
         }
-        document.close();
-
         return fileName;
     }
 
     public String generateStudentTribunalRequest(String student, String directorName, String career, String projectName, String studentCi) {
         String fileName = projectName + "_" + student + "_SolicitudTribunalEstudiante.pdf";
-        fileName = fileName.replaceAll(" ", "");
+        fileName = fileName.replace(" ", "");
         Document document = new Document(PageSize.LETTER, 85, 85, 70, 70);
         try {
             PdfWriter.getInstance(document, new FileOutputStream(fileName));
             document.open();
-            createWithHeader(document, directorName, career, "REF: Informe de Proyecto Final concluido y solicitud de asignación de tribunales\n");
+            createWithHeader(document, directorName, career, DOC_TITLE);
 
             Paragraph bodyHeader = new Paragraph();
-            bodyHeader.add(new Phrase("Estimado Director de Carrera:\n", FontFactory.getFont(FontFactory.HELVETICA, 10)));
+            bodyHeader.add(new Phrase(START_TEXT, FontFactory.getFont(FontFactory.HELVETICA, 10)));
             bodyHeader.setSpacingBefore(40);
             document.add(bodyHeader);
 
@@ -88,7 +90,7 @@ public class LetterTool {
             document.add(bodyContent);
 
             Paragraph bodyEnd = new Paragraph();
-            bodyEnd.add(new Phrase(footerText, FontFactory.getFont(FontFactory.HELVETICA, 10)));
+            bodyEnd.add(new Phrase(FOOTER_TEXT, FontFactory.getFont(FontFactory.HELVETICA, 10)));
             bodyEnd.setSpacingBefore(20);
             document.add(bodyEnd);
 
@@ -98,25 +100,26 @@ public class LetterTool {
             footer.add(new Phrase("C.I. " + studentCi + "\n", FontFactory.getFont(FontFactory.HELVETICA, 10)));
             footer.setSpacingBefore(70);
             document.add(footer);
-
-
         } catch (Exception e) {
+            fileName = null;
+        }finally {
+
+            document.close();
         }
-        document.close();
         return fileName;
     }
 
     public String generateTutorTribunalRequest(String tutor, String student, String directorName, String career, String projectName, String studentCi) throws FileNotFoundException {
         String fileName = projectName + "_" + student + "_" + tutor + "_CartaConformidadTutor.pdf";
-        fileName = fileName.replaceAll(" ", "");
+        fileName = fileName.replace(" ", "");
         Document document = new Document(PageSize.LETTER, 85, 85, 70, 70);
-
+        try {
             PdfWriter.getInstance(document, new FileOutputStream(fileName));
             document.open();
-            createWithHeader(document, directorName, career, "REF: Informe de Proyecto Final concluido y solicitud de asignación de tribunales\n");
+            createWithHeader(document, directorName, career, DOC_TITLE);
 
             Paragraph bodyHeader = new Paragraph();
-            bodyHeader.add(new Phrase("Estimado Director de Carrera:\n", FontFactory.getFont(FontFactory.HELVETICA, 10)));
+            bodyHeader.add(new Phrase(START_TEXT, FontFactory.getFont(FontFactory.HELVETICA, 10)));
             bodyHeader.setSpacingBefore(40);
             document.add(bodyHeader);
 
@@ -142,22 +145,25 @@ public class LetterTool {
             footer.add(new Phrase("Tutor " + "\n", FontFactory.getFont(FontFactory.HELVETICA, 10)));
             footer.setSpacingBefore(70);
             document.add(footer);
-
-        document.close();
+        }catch (Exception e) {
+            fileName = null;
+        }finally {
+            document.close();
+        }
         return fileName;
     }
 
     public String generateSupervisorTribunalRequest(String tutor, String student, String directorName, String career, String projectName, String studentCi) throws FileNotFoundException {
         String fileName = projectName + "_" + student + "_" + tutor + "_CartaConformidadTutor.pdf";
-        fileName = fileName.replaceAll(" ", "");
+        fileName = fileName.replace(" ", "");
         Document document = new Document(PageSize.LETTER, 85, 85, 70, 70);
-
+        try{
             PdfWriter.getInstance(document, new FileOutputStream(fileName));
             document.open();
-            createWithHeader(document, directorName, career, "REF: Informe de Proyecto Final concluido y solicitud de asignación de tribunales\n");
+            createWithHeader(document, directorName, career, DOC_TITLE);
 
             Paragraph bodyHeader = new Paragraph();
-            bodyHeader.add(new Phrase("Estimado Director de Carrera:\n", FontFactory.getFont(FontFactory.HELVETICA, 10)));
+            bodyHeader.add(new Phrase(START_TEXT, FontFactory.getFont(FontFactory.HELVETICA, 10)));
             bodyHeader.setSpacingBefore(40);
             document.add(bodyHeader);
 
@@ -183,14 +189,17 @@ public class LetterTool {
             footer.add(new Phrase("Supervisor " + "\n", FontFactory.getFont(FontFactory.HELVETICA, 10)));
             footer.setSpacingBefore(70);
             document.add(footer);
-
-        document.close();
+        }catch (Exception e) {
+            fileName = null;
+        }finally {
+            document.close();
+        }
         return fileName;
     }
 
     public String generateTribunalApproval(String student, String directorName, String career, String projectName, String tribunalName) {
         String fileName = projectName + "_" + student + "_" + tribunalName + "_CartaConformidadTribunal.pdf";
-        fileName = fileName.replaceAll(" ", "");
+        fileName = fileName.replace(" ", "");
         Document document = new Document(PageSize.LETTER, 85, 85, 70, 70);
         try {
             PdfWriter.getInstance(document, new FileOutputStream(fileName));
@@ -198,7 +207,7 @@ public class LetterTool {
             createWithHeader(document, directorName, career, "REF: Proyecto final concluido\n");
 
             Paragraph bodyHeader = new Paragraph();
-            bodyHeader.add(new Phrase("Estimado Director de Carrera:\n", FontFactory.getFont(FontFactory.HELVETICA, 10)));
+            bodyHeader.add(new Phrase(START_TEXT, FontFactory.getFont(FontFactory.HELVETICA, 10)));
             bodyHeader.setSpacingBefore(50);
             document.add(bodyHeader);
 
@@ -212,22 +221,20 @@ public class LetterTool {
                     "me permito señalar que corresponde continuar con la presentación pública respectiva.", FontFactory.getFont(FontFactory.HELVETICA, 10)));
             bodyContent.setSpacingBefore(50);
             document.add(bodyContent);
-
             Paragraph bodyEnd = new Paragraph();
-            bodyEnd.add(new Phrase(footerText, FontFactory.getFont(FontFactory.HELVETICA, 10)));
+            bodyEnd.add(new Phrase(FOOTER_TEXT, FontFactory.getFont(FontFactory.HELVETICA, 10)));
             bodyEnd.setSpacingBefore(20);
             document.add(bodyEnd);
-
             Paragraph footer = new Paragraph();
             footer.add(new Phrase("Lic. " + tribunalName + "\n", FontFactory.getFont(FontFactory.HELVETICA, 10)));
             footer.add(new Phrase("Tribunal asignado", FontFactory.getFont(FontFactory.HELVETICA, 10)));
             footer.setSpacingBefore(70);
             document.add(footer);
-
-
         } catch (Exception e) {
+            fileName = null;
+        }finally {
+            document.close();
         }
-        document.close();
         return fileName;
     }
 

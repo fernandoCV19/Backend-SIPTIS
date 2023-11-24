@@ -121,7 +121,7 @@ class ProjectRepositoryTest {
     @Test
     @DisplayName("Test for search project")
     void givenProjects_whenSearchProject_thenEmptyList() {
-        projectRepository.searchProject("", pageable);
+        assertTrue(projectRepository.searchProject("bad project name", pageable).isEmpty());
     }
 
     @Test

@@ -233,78 +233,175 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
 
 
     @Override
-    public ServiceAnswer teacherTribunalRequest(LetterGenerationRequestDTO dto) throws IOException {
-        LetterTool letterTool = new LetterTool();
-        Optional<Project> projectOptional = projectRepository.findById(dto.getProjectId());
-        if (projectOptional.isEmpty())
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
-        Project project = projectOptional.get();
-        String projectName = project.getName();
-        Collection<ProjectStudent> students = project.getStudents();
-        ProjectTeacher teacher = projectTeacherRepository.findByTeacherIdAndProjectId(dto.getUserId(), dto.getProjectId());
-        if (teacher == null)
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
-        if (teacher.getAccepted() == null || !teacher.getAccepted())
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_APPROVED).data(null).build();
-        SiptisUser user = teacher.getTeacher();
-        String teacherName = user.getFullName();
-        String key = "";
-        for (ProjectStudent projectStudent : students) {
-            String studentName = projectStudent.getStudent().getFullName();
-            Set<UserCareer> career = projectStudent.getStudent().getCareer();
-            String careerName = career.iterator().next().getName();
-            String directorName = siptisUserServiceCareerDirectorOperations.getCareerDirectorName(careerName);
-            if (directorName == null)
-                ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_CURRENT_DIRECTOR).data(null).build();
-            String filename = letterTool.generateTribunalRequest(studentName, directorName, careerName, projectName, teacherName);
-            key = nube.uploadLetterToCloud(filename, projectName);
-            Optional<Document> oDocument = documentRepository.findDocumentByPath(key);
-            Document document;
-            if (oDocument.isEmpty()) {
-                document = new Document();
-            } else {
-                document = oDocument.get();
+    public ServiceAnswer teacherTribunalRequest(LetterGenerationRequestDTO dto){
+        try{
+            LetterTool letterTool = new LetterTool();
+            Optional<Project> projectOptional = projectRepository.findById(dto.getProjectId());
+            if (projectOptional.isEmpty())
+                return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
+            Project project = projectOptional.get();
+            String projectName = project.getName();
+            Collection<ProjectStudent> students = project.getStudents();
+            ProjectTeacher teacher = projectTeacherRepository.findByTeacherIdAndProjectId(dto.getUserId(), dto.getProjectId());
+            if (teacher == null)
+                return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
+            if (teacher.getAccepted() == null || !teacher.getAccepted())
+                return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_APPROVED).data(null).build();
+            SiptisUser user = teacher.getTeacher();
+            String teacherName = user.getFullName();
+            String key = "";
+            for (ProjectStudent projectStudent : students) {
+                String studentName = projectStudent.getStudent().getFullName();
+                Set<UserCareer> career = projectStudent.getStudent().getCareer();
+                String careerName = career.iterator().next().getName();
+                String directorName = siptisUserServiceCareerDirectorOperations.getCareerDirectorName(careerName);
+                if (directorName == null)
+                    return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_CURRENT_DIRECTOR).data(null).build();
+                String filename = letterTool.generateTribunalRequest(studentName, directorName, careerName, projectName, teacherName);
+                key = nube.uploadLetterToCloud(filename, projectName);
+                Optional<Document> oDocument = documentRepository.findDocumentByPath(key);
+                Document document;
+                if (oDocument.isEmpty()) {
+                    document = new Document();
+                } else {
+                    document = oDocument.get();
+                }
+                document.setPath(key);
+                document.setType(DocumentType.LETTER.toString());
+                document.setDescription("Carta de Conformidad y solicitud de asignación de tribunales, emitida por el docente de Taller de Grado 2 encargado del proyecto.");
+                document.setDate(LocalDateTime.now());
+                document.setSiptisUser(projectStudent.getStudent());
+                documentRepository.save(document);
             }
-            document.setPath(key);
-            document.setType(DocumentType.LETTER.toString());
-            document.setDescription("Carta de Conformidad y solicitud de asignación de tribunales, emitida por el docente de Taller de Grado 2 encargado del proyecto.");
-            document.setDate(LocalDateTime.now());
-            document.setSiptisUser(projectStudent.getStudent());
-            documentRepository.save(document);
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
+        }catch (Exception e){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
         }
-
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
     }
 
     @Override
-    public ServiceAnswer tutorTribunalRequest(LetterGenerationRequestDTO dto) throws IOException {
-        LetterTool letterTool = new LetterTool();
-        Optional<Project> projectOptional = projectRepository.findById(dto.getProjectId());
-        if (projectOptional.isEmpty())
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
-        Project project = projectOptional.get();
-        String projectName = project.getName();
-        ProjectTutor tutor = projectTutorRepository.findByTutorIdAndProjectId(dto.getUserId(), dto.getProjectId());
-        if (tutor == null)
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
-        if (tutor.getAccepted() == null || !tutor.getAccepted())
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_APPROVED).data(null).build();
-        SiptisUser user = tutor.getTutor();
-        String tutorName = user.getFullName();
-        Collection<ProjectStudent> students = project.getStudents();
-        String key = "";
-        for (ProjectStudent projectStudent : students) {
+    public ServiceAnswer tutorTribunalRequest(LetterGenerationRequestDTO dto){
+        try{
+            LetterTool letterTool = new LetterTool();
+            Optional<Project> projectOptional = projectRepository.findById(dto.getProjectId());
+            if (projectOptional.isEmpty())
+                return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
+            Project project = projectOptional.get();
+            String projectName = project.getName();
+            ProjectTutor tutor = projectTutorRepository.findByTutorIdAndProjectId(dto.getUserId(), dto.getProjectId());
+            if (tutor == null)
+                return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
+            if (tutor.getAccepted() == null || !tutor.getAccepted())
+                return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_APPROVED).data(null).build();
+            SiptisUser user = tutor.getTutor();
+            String tutorName = user.getFullName();
+            Collection<ProjectStudent> students = project.getStudents();
+            String key = "";
+            for (ProjectStudent projectStudent : students) {
+                UserInformation student = projectStudent.getStudent().getUserInformation();
+                String studentName = student.getNames() + " " + student.getLastNames();
+
+                Set<UserCareer> career = projectStudent.getStudent().getCareer();
+                String careerName = career.iterator().next().getName();
+
+                String directorName = siptisUserServiceCareerDirectorOperations.getCareerDirectorName(careerName);
+                if (directorName == null)
+                    return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_CURRENT_DIRECTOR).data(null).build();
+                String filename = letterTool.generateTutorTribunalRequest(
+                        tutorName, studentName, directorName, careerName, projectName, student.getCi());
+                key = nube.uploadLetterToCloud(filename, projectName);
+                Optional<Document> oDocument = documentRepository.findDocumentByPath(key);
+                Document document;
+                if (oDocument.isEmpty()) {
+                    document = new Document();
+                } else {
+                    document = oDocument.get();
+                }
+                document.setPath(key);
+                document.setType(DocumentType.LETTER.toString());
+                document.setDescription("Carta de Conformidad y solicitud de asignación de tribunales, emitida por el tutor encargado del proyecto.");
+                document.setDate(LocalDateTime.now());
+                document.setSiptisUser(projectStudent.getStudent());
+                documentRepository.save(document);
+            }
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
+        }catch (Exception e){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
+        }
+    }
+
+    @Override
+    public ServiceAnswer supervisorTribunalRequest(LetterGenerationRequestDTO dto)  {
+        try{
+            LetterTool letterTool = new LetterTool();
+            Optional<Project> projectOptional = projectRepository.findById(dto.getProjectId());
+            if (projectOptional.isEmpty())
+                return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
+            Project project = projectOptional.get();
+            String projectName = project.getName();
+            ProjectSupervisor supervisor = projectSupervisorRepository.findBySupervisorIdAndProjectId(dto.getUserId(), dto.getProjectId());
+            if (supervisor == null)
+                return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
+            if (supervisor.getAccepted() == null || !supervisor.getAccepted())
+                return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_APPROVED).data(null).build();
+            SiptisUser user = supervisor.getSupervisor();
+            String supervisorName = user.getFullName();
+            Collection<ProjectStudent> students = project.getStudents();
+            String key = "";
+            for (ProjectStudent projectStudent : students) {
+                UserInformation student = projectStudent.getStudent().getUserInformation();
+                String studentName = student.getNames() + " " + student.getLastNames();
+                Set<UserCareer> career = projectStudent.getStudent().getCareer();
+                String careerName = career.iterator().next().getName();
+
+                String directorName = siptisUserServiceCareerDirectorOperations.getCareerDirectorName(careerName);
+                if (directorName == null)
+                    return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_CURRENT_DIRECTOR).data(null).build();
+                String filename = letterTool.generateSupervisorTribunalRequest(
+                        supervisorName, studentName, directorName, careerName, projectName, student.getCi());
+                key = nube.uploadLetterToCloud(filename, projectName);
+                Optional<Document> oDocument = documentRepository.findDocumentByPath(key);
+                Document document;
+                if (oDocument.isEmpty()) {
+                    document = new Document();
+                } else {
+                    document = oDocument.get();
+                }
+                document.setPath(key);
+                document.setType(DocumentType.LETTER.toString());
+                document.setDescription("Carta de Conformidad y solicitud de asignación de tribunales, emitida por el tutor encargado del proyecto.");
+                document.setDate(LocalDateTime.now());
+                document.setSiptisUser(projectStudent.getStudent());
+                documentRepository.save(document);
+            }
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
+        }catch (Exception e){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
+        }
+    }
+
+    @Override
+    public ServiceAnswer studentTribunalRequest(LetterGenerationRequestDTO dto)  {
+        try{
+            LetterTool letterTool = new LetterTool();
+            Optional<Project> projectOptional = projectRepository.findById(dto.getProjectId());
+            if (projectOptional.isEmpty())
+                return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
+            Project project = projectOptional.get();
+            String projectName = project.getName();
+            ProjectStudent projectStudent = projectStudentRepository.findByStudentIdAndProjectId(dto.getUserId(), dto.getProjectId());
+            if (projectStudent == null)
+                return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
             UserInformation student = projectStudent.getStudent().getUserInformation();
             String studentName = student.getNames() + " " + student.getLastNames();
-
+            String studentCi = student.getCi();
+            String key = "";
             Set<UserCareer> career = projectStudent.getStudent().getCareer();
             String careerName = career.iterator().next().getName();
-
             String directorName = siptisUserServiceCareerDirectorOperations.getCareerDirectorName(careerName);
             if (directorName == null)
-                ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_CURRENT_DIRECTOR).data(null).build();
-            String filename = letterTool.generateTutorTribunalRequest(
-                    tutorName, studentName, directorName, careerName, projectName, student.getCi());
+                return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_CURRENT_DIRECTOR).data(null).build();
+            String filename = letterTool.generateStudentTribunalRequest(studentName, directorName, careerName, projectName, studentCi);
             key = nube.uploadLetterToCloud(filename, projectName);
             Optional<Document> oDocument = documentRepository.findDocumentByPath(key);
             Document document;
@@ -315,144 +412,61 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
             }
             document.setPath(key);
             document.setType(DocumentType.LETTER.toString());
-            document.setDescription("Carta de Conformidad y solicitud de asignación de tribunales, emitida por el tutor encargado del proyecto.");
+            document.setDescription("Carta de solicitud de asignación de tribunales emitida por estudiante que realizó el proyecto.");
             document.setDate(LocalDateTime.now());
             document.setSiptisUser(projectStudent.getStudent());
             documentRepository.save(document);
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
+        }catch (Exception e){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
         }
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
     }
 
     @Override
-    public ServiceAnswer supervisorTribunalRequest(LetterGenerationRequestDTO dto) throws IOException {
-        LetterTool letterTool = new LetterTool();
-        Optional<Project> projectOptional = projectRepository.findById(dto.getProjectId());
-        if (projectOptional.isEmpty())
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
-        Project project = projectOptional.get();
-        String projectName = project.getName();
-        ProjectSupervisor supervisor = projectSupervisorRepository.findBySupervisorIdAndProjectId(dto.getUserId(), dto.getProjectId());
-        if (supervisor == null)
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
-        if (supervisor.getAccepted() == null || !supervisor.getAccepted())
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_APPROVED).data(null).build();
-        SiptisUser user = supervisor.getSupervisor();
-        String supervisorName = user.getFullName();
-        Collection<ProjectStudent> students = project.getStudents();
-        String key = "";
-        for (ProjectStudent projectStudent : students) {
-            UserInformation student = projectStudent.getStudent().getUserInformation();
-            String studentName = student.getNames() + " " + student.getLastNames();
-            Set<UserCareer> career = projectStudent.getStudent().getCareer();
-            String careerName = career.iterator().next().getName();
-
-            String directorName = siptisUserServiceCareerDirectorOperations.getCareerDirectorName(careerName);
-            if (directorName == null)
-                ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_CURRENT_DIRECTOR).data(null).build();
-            String filename = letterTool.generateSupervisorTribunalRequest(
-                    supervisorName, studentName, directorName, careerName, projectName, student.getCi());
-            key = nube.uploadLetterToCloud(filename, projectName);
-            Optional<Document> oDocument = documentRepository.findDocumentByPath(key);
-            Document document;
-            if (oDocument.isEmpty()) {
-                document = new Document();
-            } else {
-                document = oDocument.get();
+    public ServiceAnswer generateTribunalApproval(LetterGenerationRequestDTO dto)  {
+        try{
+            LetterTool letterTool = new LetterTool();
+            Optional<Project> projectOptional = projectRepository.findById(dto.getProjectId());
+            if (projectOptional.isEmpty())
+                return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
+            Project project = projectOptional.get();
+            String projectName = project.getName();
+            Collection<ProjectStudent> students = project.getStudents();
+            String key = "";
+            ProjectTribunal tribunal = projectTribunalRepository.findByProject_IdAndTribunal_Id(dto.getUserId(), dto.getProjectId());
+            if (tribunal == null)
+                return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
+            if (tribunal.getAccepted() == null || !tribunal.getAccepted())
+                return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_APPROVED).data(null).build();
+            SiptisUser user = tribunal.getTribunal();
+            String tribunalName = user.getFullName();
+            for (ProjectStudent projectStudent : students) {
+                Set<UserCareer> career = projectStudent.getStudent().getCareer();
+                String careerName = career.iterator().next().getName();
+                String directorName = siptisUserServiceCareerDirectorOperations.getCareerDirectorName(careerName);
+                if (directorName == null)
+                    return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_CURRENT_DIRECTOR).data(null).build();
+                String studentName = projectStudent.getStudent().getFullName();
+                String filename = letterTool.generateTribunalApproval(
+                        studentName, directorName, careerName, projectName, tribunalName);
+                key = nube.uploadLetterToCloud(filename, projectName);
+                Document document;
+                Optional<Document> oDocument = documentRepository.findDocumentByPath(key);
+                if (oDocument.isEmpty()) {
+                    document = new Document();
+                } else {
+                    document = oDocument.get();
+                }
+                document.setPath(key);
+                document.setType(DocumentType.LETTER.toString());
+                document.setDescription("Carta de aprobación de Tribunal encargado del proyecto.");
+                document.setDate(LocalDateTime.now());
+                document.setSiptisUser(projectStudent.getStudent());
+                documentRepository.save(document);
             }
-            document.setPath(key);
-            document.setType(DocumentType.LETTER.toString());
-            document.setDescription("Carta de Conformidad y solicitud de asignación de tribunales, emitida por el tutor encargado del proyecto.");
-            document.setDate(LocalDateTime.now());
-            document.setSiptisUser(projectStudent.getStudent());
-            documentRepository.save(document);
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
+        }catch (Exception e){
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
         }
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
-    }
-
-    @Override
-    public ServiceAnswer studentTribunalRequest(LetterGenerationRequestDTO dto) throws IOException {
-        LetterTool letterTool = new LetterTool();
-        Optional<Project> projectOptional = projectRepository.findById(dto.getProjectId());
-        if (projectOptional.isEmpty())
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
-        Project project = projectOptional.get();
-        String projectName = project.getName();
-        ProjectStudent projectStudent = projectStudentRepository.findByStudentIdAndProjectId(dto.getUserId(), dto.getProjectId());
-        if (projectStudent == null)
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
-        UserInformation student = projectStudent.getStudent().getUserInformation();
-        String studentName = student.getNames() + " " + student.getLastNames();
-        String studentCi = student.getCi();
-        String key = "";
-        Set<UserCareer> career = projectStudent.getStudent().getCareer();
-        String careerName = career.iterator().next().getName();
-        String directorName = siptisUserServiceCareerDirectorOperations.getCareerDirectorName(careerName);
-        if (directorName == null)
-            ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_CURRENT_DIRECTOR).data(null).build();
-        String filename = letterTool.generateStudentTribunalRequest(studentName, directorName, careerName, projectName, studentCi);
-        key = nube.uploadLetterToCloud(filename, projectName);
-        Optional<Document> oDocument = documentRepository.findDocumentByPath(key);
-        Document document;
-        if (oDocument.isEmpty()) {
-            document = new Document();
-        } else {
-            document = oDocument.get();
-        }
-        document.setPath(key);
-        document.setType(DocumentType.LETTER.toString());
-        document.setDescription("Carta de solicitud de asignación de tribunales emitida por estudiante que realizó el proyecto.");
-        document.setDate(LocalDateTime.now());
-        document.setSiptisUser(projectStudent.getStudent());
-        documentRepository.save(document);
-
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
-    }
-
-    @Override
-    public ServiceAnswer generateTribunalApproval(LetterGenerationRequestDTO dto) throws IOException {
-        LetterTool letterTool = new LetterTool();
-        Optional<Project> projectOptional = projectRepository.findById(dto.getProjectId());
-        if (projectOptional.isEmpty())
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
-        Project project = projectOptional.get();
-        String projectName = project.getName();
-        Collection<ProjectStudent> students = project.getStudents();
-        String key = "";
-        ProjectTribunal tribunal = projectTribunalRepository.findByProject_IdAndTribunal_Id(dto.getUserId(), dto.getProjectId());
-        if (tribunal == null)
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
-        if (tribunal.getAccepted() == null || !tribunal.getAccepted())
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_APPROVED).data(null).build();
-
-        SiptisUser user = tribunal.getTribunal();
-        String tribunalName = user.getFullName();
-
-        for (ProjectStudent projectStudent : students) {
-            Set<UserCareer> career = projectStudent.getStudent().getCareer();
-            String careerName = career.iterator().next().getName();
-            String directorName = siptisUserServiceCareerDirectorOperations.getCareerDirectorName(careerName);
-            if (directorName == null)
-                ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_CURRENT_DIRECTOR).data(null).build();
-
-            String studentName = projectStudent.getStudent().getFullName();
-            String filename = letterTool.generateTribunalApproval(
-                    studentName, directorName, careerName, projectName, tribunalName);
-            key = nube.uploadLetterToCloud(filename, projectName);
-            Document document;
-            Optional<Document> oDocument = documentRepository.findDocumentByPath(key);
-            if (oDocument.isEmpty()) {
-                document = new Document();
-            } else {
-                document = oDocument.get();
-            }
-            document.setPath(key);
-            document.setType(DocumentType.LETTER.toString());
-            document.setDescription("Carta de aprobación de Tribunal encargado del proyecto.");
-            document.setDate(LocalDateTime.now());
-            document.setSiptisUser(projectStudent.getStudent());
-            documentRepository.save(document);
-        }
-
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
     }
 }

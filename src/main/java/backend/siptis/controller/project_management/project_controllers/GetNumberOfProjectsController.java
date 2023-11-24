@@ -21,45 +21,45 @@ public class GetNumberOfProjectsController {
     private final ProjectServiceGetNumberOfProjects projectServiceGetNumberOfProjects;
 
     @Operation(summary = "Get number of project by modality and career id ")
-    @GetMapping("/modalityAndCareer/{careerId}")
-    public ResponseEntity<ControllerAnswer> getNumberOfProjectsByModalityAndCareer(@PathVariable Long careerId) {
-        ServiceAnswer serviceAnswer = projectServiceGetNumberOfProjects.getNumberOfProjectsByModalityAndCareer(careerId);
+    @GetMapping("/modalityAndCareer/{career}")
+    public ResponseEntity<ControllerAnswer> getNumberOfProjectsByModalityAndCareer(@PathVariable String career) {
+        ServiceAnswer serviceAnswer = projectServiceGetNumberOfProjects.getNumberOfProjectsByModalityAndCareer(career);
         HttpStatus httpStatus = HttpStatus.OK;
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
 
     @Operation(summary = "Get number of projects by area and career id")
-    @GetMapping("/areaAndCareer/{careerId}")
-    public ResponseEntity<ControllerAnswer> getNumberOfProjectsByAreaAndCareer(@PathVariable Long careerId) {
-        ServiceAnswer serviceAnswer = projectServiceGetNumberOfProjects.getNumberOfProjectsByAreaAndCareer(careerId);
+    @GetMapping("/areaAndCareer/{career}")
+    public ResponseEntity<ControllerAnswer> getNumberOfProjectsByAreaAndCareer(@PathVariable String career) {
+        ServiceAnswer serviceAnswer = projectServiceGetNumberOfProjects.getNumberOfProjectsByAreaAndCareer(career);
         HttpStatus httpStatus = HttpStatus.OK;
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
 
-    @Operation(summary = "Get number of projets by sub area and career")
-    @GetMapping("/subareaAndCareer/{careerId}")
-    public ResponseEntity<ControllerAnswer> getNumberOfProjectsBySubAreaAndCareer(@PathVariable Long careerId) {
-        ServiceAnswer serviceAnswer = projectServiceGetNumberOfProjects.getNumberOfProjectsBySubAreaAndCareer(careerId);
+    @Operation(summary = "Get number of projects by sub area and career")
+    @GetMapping("/subareaAndCareer/{career}")
+    public ResponseEntity<ControllerAnswer> getNumberOfProjectsBySubAreaAndCareer(@PathVariable String career) {
+        ServiceAnswer serviceAnswer = projectServiceGetNumberOfProjects.getNumberOfProjectsBySubAreaAndCareer(career);
         HttpStatus httpStatus = HttpStatus.OK;
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
 
     @Operation(summary = "Get number of projects by career id")
-    @GetMapping("/projectsByCareer/{careerId}")
-    public ResponseEntity<ControllerAnswer> getNumberProjectsByCareer(@PathVariable Long careerId) {
-        ServiceAnswer serviceAnswer = projectServiceGetNumberOfProjects.getNumberProjectsByCareer(careerId);
+    @GetMapping("/projectsByCareer/{career}")
+    public ResponseEntity<ControllerAnswer> getNumberProjectsByCareer(@PathVariable String career) {
+        ServiceAnswer serviceAnswer = projectServiceGetNumberOfProjects.getNumberProjectsByCareer(career);
         HttpStatus httpStatus = HttpStatus.OK;
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
 
-    @Operation(summary = "Get number of projects by period and cereer id")
-    @GetMapping("/periodAndCareer/{careerId}")
-    public ResponseEntity<ControllerAnswer> getNumberProjectsByPeriodAndCareer(@PathVariable Long careerId) {
-        ServiceAnswer serviceAnswer = projectServiceGetNumberOfProjects.getNumberProjectsByPeriodAndCareer(careerId);
+    @Operation(summary = "Get number of projects by period and career id")
+    @GetMapping("/periodAndCareer/{career}")
+    public ResponseEntity<ControllerAnswer> getNumberProjectsByPeriodAndCareer(@PathVariable String career) {
+        ServiceAnswer serviceAnswer = projectServiceGetNumberOfProjects.getNumberProjectsByPeriodAndCareer(career);
         HttpStatus httpStatus = HttpStatus.OK;
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
         return new ResponseEntity<>(controllerAnswer, httpStatus);

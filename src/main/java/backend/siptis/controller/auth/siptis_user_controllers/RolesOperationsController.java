@@ -44,7 +44,7 @@ public class RolesOperationsController {
     @GetMapping("/roles/{userId}")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<ControllerAnswer> getRolesById(@PathVariable int userId) {
-        Long id = Long.valueOf(userId);
+        Long id = (long) userId;
         ServiceAnswer answerService = siptisUserServiceRolesOperations.getRolesById(id);
         return createResponseEntity(answerService);
     }
@@ -53,7 +53,7 @@ public class RolesOperationsController {
     @PutMapping("/updateRoles/{userId}")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<ControllerAnswer> updateRoles(@PathVariable int userId, @Valid @RequestBody RolesListDTO dto) {
-        Long id = Long.valueOf(userId);
+        Long id = (long) userId;
         ServiceAnswer answerService = siptisUserServiceRolesOperations.updateRoles(id, dto);
         return createResponseEntity(answerService);
     }

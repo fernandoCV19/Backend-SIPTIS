@@ -10,6 +10,7 @@ import backend.siptis.model.entity.user_data.UserInformation;
 import backend.siptis.model.pjo.dto.user_data.RegisterStudentDTO;
 import backend.siptis.model.pjo.dto.user_data.UserInformationDTO;
 import backend.siptis.model.repository.auth.SiptisUserRepository;
+import backend.siptis.model.repository.user_data.UserCareerRepository;
 import backend.siptis.service.auth.RoleService;
 import backend.siptis.service.user_data.UserCareerService;
 import backend.siptis.service.user_data.UserInformationService;
@@ -29,6 +30,7 @@ public class SiptisUserServiceStudentOperations {
     private final RoleService roleService;
     private final UserCareerService userCareerService;
     private final SiptisUserRepository siptisUserRepository;
+    private final UserCareerRepository userCareerRepository;
     private final SiptisUserServiceExistValidation siptisUserServiceExistValidation;
     private final SiptisUserServiceModifyUserOperations siptisUserServiceModifyUserOperations;
 
@@ -66,12 +68,18 @@ public class SiptisUserServiceStudentOperations {
         return createResponse(ServiceMessage.SUCCESSFUL_REGISTER, new UserInformationDTO(user));
     }
 
-    public ServiceAnswer getNumberOfStudentsByYearAndCareer(Long careerId) {
-        return createResponse(ServiceMessage.OK, siptisUserRepository.getNumberOfStudentsByYearAndCareer(careerId));
+    public ServiceAnswer getNumberOfStudentsByYearAndCareer(String careerName) {
+        Optional<UserCareer> oUserCareer = userCareerRepository.findByName(careerName.toUpperCase());
+        if(oUserCareer.isEmpty())
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
+        return createResponse(ServiceMessage.OK, siptisUserRepository.getNumberOfStudentsByYearAndCareer(oUserCareer.get().getId()));
     }
 
-    public ServiceAnswer getNumberStudentsCareer(Long careerId) {
-        return createResponse(ServiceMessage.OK, siptisUserRepository.getNumberOfStudentsInCareer(careerId));
+    public ServiceAnswer getNumberStudentsCareer(String careerName) {
+        Optional<UserCareer> oUserCareer = userCareerRepository.findByName(careerName.toUpperCase());
+        if(oUserCareer.isEmpty())
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
+        return createResponse(ServiceMessage.OK, siptisUserRepository.getNumberOfStudentsInCareer(oUserCareer.get().getId()));
     }
 
     public ServiceAnswer getStudentCareerById(Long id) {
