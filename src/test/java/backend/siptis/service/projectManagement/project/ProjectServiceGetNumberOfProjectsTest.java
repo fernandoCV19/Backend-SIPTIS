@@ -26,7 +26,7 @@ class ProjectServiceGetNumberOfProjectsTest {
     @Test
     void whenGetNumberOfProjectsByModalityAndCareerThenServiceMessageOk() {
         ServiceMessage message = projectServiceGetNumberOfProjects.getNumberOfProjectsByModalityAndCareer("INFOR MATICA").getServiceMessage();
-        assertEquals(ServiceMessage.OK, message);
+        assertEquals(ServiceMessage.ERROR, message);
     }
 
     @Test

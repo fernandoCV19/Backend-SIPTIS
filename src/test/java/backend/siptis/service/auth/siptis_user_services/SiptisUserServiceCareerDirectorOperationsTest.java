@@ -21,7 +21,7 @@ class SiptisUserServiceCareerDirectorOperationsTest {
     @DisplayName("test register user as career director")
     void givenWrongRoleAndUserIDWhenRegisterUserAsCareerDirectorThenServiceMessageError() {
         ServiceAnswer answer = siptisUserServiceCareerDirectorOperations.registerUserAsCareerDirector(123L, "wrong role");
-        assertEquals(ServiceMessage.ERROR, answer.getServiceMessage());
+        assertEquals(ServiceMessage.DIRECTOR_ROLE_NOT_FOUND, answer.getServiceMessage());
     }
 
     @Test
