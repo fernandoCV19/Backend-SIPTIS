@@ -27,7 +27,7 @@ public class SiptisUserServiceCareerDirectorOperations {
 
     public ServiceAnswer registerUserAsCareerDirector(Long id, String directorRole) {
         if (!roleRepository.existsRoleByName(directorRole))
-            return createResponse(ServiceMessage.ERROR, null);
+            return createResponse(ServiceMessage.DIRECTOR_ROLE_NOT_FOUND, null);
         if (siptisUserServiceExistValidation.existCareerDirector(directorRole))
             return createResponse(ServiceMessage.DIRECTOR_ALREADY_EXIST, null);
         Optional<SiptisUser> userOptional = siptisUserRepository.findById(id);

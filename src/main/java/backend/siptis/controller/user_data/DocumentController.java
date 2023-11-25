@@ -111,16 +111,19 @@ public class DocumentController {
 
     private ResponseEntity<ControllerAnswer> createResponseEntity(ServiceAnswer serviceAnswer) {
         Object data = serviceAnswer.getData();
-        ServiceMessage mensajeServicio = serviceAnswer.getServiceMessage();
+        ServiceMessage message = serviceAnswer.getServiceMessage();
         HttpStatus httpStatus = HttpStatus.OK;
 
-        if (mensajeServicio == ServiceMessage.NOT_FOUND || mensajeServicio == ServiceMessage.ERROR)
+        if (message == ServiceMessage.NOT_FOUND || message == ServiceMessage.ERROR)
             httpStatus = HttpStatus.NOT_FOUND;
 
-        if (mensajeServicio == ServiceMessage.CANNOT_GENERATE_LETTER || mensajeServicio == ServiceMessage.ERROR || mensajeServicio == ServiceMessage.NOT_APPROVED)
+        if (message == ServiceMessage.CANNOT_GENERATE_LETTER ||
+                message == ServiceMessage.ERROR ||
+                message == ServiceMessage.NOT_APPROVED ||
+                message == ServiceMessage.NO_CURRENT_DIRECTOR)
             httpStatus = HttpStatus.BAD_REQUEST;
 
-        ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(data).message(mensajeServicio.toString()).build();
+        ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(data).message(message.toString()).build();
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
 }

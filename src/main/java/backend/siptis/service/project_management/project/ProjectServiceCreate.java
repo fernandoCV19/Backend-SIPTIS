@@ -62,8 +62,13 @@ public class ProjectServiceCreate {
             Optional<SiptisUser> userOptional = siptisUserRepository.findById(studentId);
             if (userOptional.isEmpty())
                 return ServiceAnswer.builder().serviceMessage(ServiceMessage.USER_ID_DOES_NOT_EXIST).build();
+            SiptisUser student = userOptional.get();
+            Collection<ProjectStudent> projectStudents = student.getStudents();
+            if(projectStudents.size() > 0)
+                return ServiceAnswer.builder().serviceMessage(ServiceMessage.STUDENT_ALREADY_IN_A_PROJECT).build();
             ProjectStudent projectStudent = new ProjectStudent();
             projectStudent.setStudent(userOptional.get());
+
             projectStudent.setProject(newProject);
             students.add(projectStudent);
         }
@@ -91,9 +96,10 @@ public class ProjectServiceCreate {
 
         ArrayList<ProjectSupervisor> supervisors = new ArrayList<>();
         String modalityName = optionalModality.get().getName();
-        if (dto.getSupervisorsId() != null &&
-                (modalityName.equals(backend.siptis.commons.Modality.TRABAJO_DIRIGIDO.toString())
-                        || modalityName.equals(backend.siptis.commons.Modality.ADSCRIPCION.toString()))) {
+        if (modalityName.equals(backend.siptis.commons.Modality.TRABAJO_DIRIGIDO.toString())
+                        || modalityName.equals(backend.siptis.commons.Modality.ADSCRIPCION.toString())) {
+            if(dto.getSupervisorsId() == null || dto.getSupervisorsId().isEmpty())
+                return ServiceAnswer.builder().serviceMessage(ServiceMessage.INVALID_PROJECT_SUPERVISOR_VALUE).build();
             for (Long supervisorId : dto.getSupervisorsId()) {
                 Optional<SiptisUser> supervisorOptional = siptisUserRepository.findById(supervisorId);
                 if (supervisorOptional.isEmpty())
@@ -103,8 +109,6 @@ public class ProjectServiceCreate {
                 projectSupervisor.setProject(newProject);
                 supervisors.add(projectSupervisor);
             }
-        } else {
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).build();
         }
 
         ArrayList<ProjectTeacher> teachers = new ArrayList<>();
@@ -153,6 +157,6 @@ public class ProjectServiceCreate {
         projectSupervisorRepository.saveAll(supervisors);
         projectTeacherRepository.saveAll(teachers);
 
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.SUCCESSFUL_PROJECT_REGISTER).data(newProject).build();
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.SUCCESSFUL_PROJECT_REGISTER).data(newProject.getName()).build();
     }
 }

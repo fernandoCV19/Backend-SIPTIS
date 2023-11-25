@@ -5,7 +5,9 @@ VALUES (100, 'ADMIN'),
        (102, 'TEACHER'),
        (103, 'TUTOR'),
        (104, 'SUPERVISOR'),
-       (105, 'TRIBUNAL');
+       (105, 'TRIBUNAL'),
+       (106, 'INF_DIRECTOR'),
+       (107, 'SIS_DIRECTOR');
 ------------------------------------------------------------------------------------------------------------------------
 -- USER CARRER
 INSERT INTO user_career_ (id_, name_)
@@ -1589,3 +1591,33 @@ VALUES (100, '2023-05-31', TRUE, '1-2023', '2023-01-15'),
        (107, '2025-08-31', FALSE, '3-2025', '2025-06-01'),
        (108, '2025-12-15', FALSE, '3-2025', '2025-09-01'),
        (109, '2026-05-30', FALSE, '4-2026', '2026-01-15');
+
+
+SELECT SETVAL('activity__seq', (SELECT MAX(id_) FROM activity_) + 5);
+SELECT SETVAL('area__seq', (SELECT MAX(id_) FROM area_ ) + 5);
+SELECT SETVAL('chat_history__seq', (SELECT MAX(id_) FROM chat_history_) + 5);
+SELECT SETVAL('defense__seq', (SELECT MAX(id_) FROM defense_) + 5);
+SELECT SETVAL('document__seq', (SELECT MAX(id_) FROM document_) + 5);
+SELECT SETVAL('document_phase__seq', (SELECT MAX(id_) FROM document_phase_) + 5);
+SELECT SETVAL('general_activity__seq', (SELECT MAX(id_) FROM general_activity_) + 5);
+SELECT SETVAL('modality__seq', (SELECT MAX(id_) FROM modality_) + 5);
+SELECT SETVAL('phase__seq', (SELECT MAX(id_) FROM phase_) + 5);
+SELECT SETVAL('place_to_defense__seq', (SELECT MAX(id_) FROM place_to_defense_) + 5);
+SELECT SETVAL('presentation__seq', (SELECT MAX(id_) FROM presentation_) + 5);
+SELECT SETVAL('project__seq', (SELECT MAX(id_) FROM project_) + 5);
+SELECT SETVAL('project_student__seq', (SELECT MAX(id_) FROM project_student_) + 5);
+SELECT SETVAL('project_supervisor__seq', (SELECT MAX(id_) FROM project_supervisor_) + 5);
+SELECT SETVAL('project_teacher__seq', (SELECT MAX(id_) FROM project_teacher_) + 5);
+SELECT SETVAL('project_tribunal__seq', (SELECT MAX(id_) FROM project_tribunal_) + 5);
+SELECT SETVAL('project_tutor__seq', (SELECT MAX(id_) FROM project_tutor_) + 5);
+SELECT SETVAL('refresh_token__seq', (SELECT MAX(id_) FROM refresh_token_) + 5);
+SELECT SETVAL('review__seq', (SELECT MAX(id_) FROM review_) + 5);
+SELECT SETVAL('role__seq', (SELECT MAX(id_) FROM role_) + 5);
+SELECT SETVAL('schedule__seq', (SELECT MAX(id_) FROM schedule_) + 5);
+SELECT SETVAL('semester_information__seq', (SELECT MAX(id_) FROM semester_information_) + 5);
+SELECT SETVAL('siptis_user__seq', (SELECT MAX(id_) FROM siptis_user_) + 5);
+SELECT SETVAL('state__seq', (SELECT MAX(id_) FROM state_) + 5);
+SELECT SETVAL('sub_area__seq', (SELECT MAX(id_) FROM sub_area_) + 5);
+SELECT SETVAL('user_area__seq', (SELECT MAX(id_) FROM user_area_) + 5);
+SELECT SETVAL('user_career__seq', (SELECT MAX(id_) FROM user_career_) + 5);
+SELECT SETVAL('user_information__seq', (SELECT MAX(id_) FROM user_information_) + 5);

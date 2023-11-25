@@ -28,9 +28,9 @@ public class CreateController {
     public ResponseEntity<ControllerAnswer> createProject(@Valid @RequestBody NewProjectDTO dto) {
         ServiceAnswer serviceAnswer = projectServiceCreate.createProject(dto);
 
-        HttpStatus httpStatus = HttpStatus.OK;
-        if (serviceAnswer.getServiceMessage() != ServiceMessage.OK)
-            httpStatus = HttpStatus.BAD_REQUEST;
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        if (serviceAnswer.getServiceMessage() == ServiceMessage.OK || serviceAnswer.getServiceMessage() == ServiceMessage.SUCCESSFUL_PROJECT_REGISTER)
+            httpStatus = HttpStatus.OK;
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }

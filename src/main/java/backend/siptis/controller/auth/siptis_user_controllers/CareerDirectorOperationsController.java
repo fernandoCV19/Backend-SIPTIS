@@ -32,7 +32,8 @@ public class CareerDirectorOperationsController {
     @PreAuthorize("hasAuthority('ADMIN')")
     ResponseEntity<ControllerAnswer> getDirectorInfo(@PathVariable String career) {
         String directorRole = "SIS_DIRECTOR";
-        if (career.equals("informatica")) {
+        career = career.toUpperCase();
+        if (career.equals("INFORMATICA")) {
             directorRole = "INF_DIRECTOR";
         }
         ServiceAnswer answer = siptisUserServiceCareerDirectorOperations.getDirectorPersonalInformation(directorRole);
@@ -44,8 +45,9 @@ public class CareerDirectorOperationsController {
     @PreAuthorize("hasAuthority('ADMIN')")
     ResponseEntity<ControllerAnswer> registerCareerDirector(@PathVariable String career, @PathVariable int userId) {
         Long id = Long.valueOf(userId);
+        career = career.toUpperCase();
         String directorRole = "SIS_DIRECTOR";
-        if (career.equals("informatica")) {
+        if (career.equals("INFORMATICA")) {
             directorRole = "INF_DIRECTOR";
         }
         ServiceAnswer answer = siptisUserServiceCareerDirectorOperations.registerUserAsCareerDirector(id, directorRole);

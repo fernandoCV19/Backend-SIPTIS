@@ -42,7 +42,8 @@ public class DeleteController {
     @PreAuthorize("hasAuthority('ADMIN')")
     ResponseEntity<ControllerAnswer> removeDirector(@PathVariable String career) {
         String directorRole = "SIS_DIRECTOR";
-        if (career.equals("informatica")) {
+        career = career.toUpperCase();
+        if (career.equals("INFORMATICA")) {
             directorRole = "INF_DIRECTOR";
         }
         ServiceAnswer answer = siptisUserServiceDelete.removeDirectorRole(directorRole);
