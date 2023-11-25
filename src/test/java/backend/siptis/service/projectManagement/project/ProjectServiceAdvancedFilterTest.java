@@ -8,14 +8,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @Transactional
 @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 class ProjectServiceAdvancedFilterTest {
 
-    private ProjectServiceAdvancedFilter projectServiceAdvancedFilter;
+    private final ProjectServiceAdvancedFilter projectServiceAdvancedFilter;
 
     @Autowired
     public ProjectServiceAdvancedFilterTest(ProjectServiceAdvancedFilter projectServiceAdvancedFilter) {

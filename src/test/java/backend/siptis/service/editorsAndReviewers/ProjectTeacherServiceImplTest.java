@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @Transactional
@@ -18,7 +18,7 @@ class ProjectTeacherServiceImplTest {
     private final ProjectTeacherService projectTeacherService;
 
     @Autowired
-    public ProjectTeacherServiceImplTest (ProjectTeacherService projectTeacherService) {
+    public ProjectTeacherServiceImplTest(ProjectTeacherService projectTeacherService) {
         this.projectTeacherService = projectTeacherService;
     }
 
@@ -34,6 +34,7 @@ class ProjectTeacherServiceImplTest {
         ServiceMessage message = projectTeacherService.getAllProjectsNotAcceptedReviewedByTeacherId(1L).getServiceMessage();
         assertEquals(ServiceMessage.ID_DOES_NOT_EXIST, message);
     }
+
     @Test
     void givenValidTeacherIdWhenGetAllProjectsNotAcceptedNotReviewedByTeacherIdThenServiceMessageOk() {
         ServiceMessage message = projectTeacherService.getAllProjectsNotAcceptedNotReviewedByTeacherId(120L).getServiceMessage();

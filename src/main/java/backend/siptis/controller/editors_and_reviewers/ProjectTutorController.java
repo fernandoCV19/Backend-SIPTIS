@@ -42,9 +42,8 @@ public class ProjectTutorController {
         return createResponseEntity(serviceAnswer);
     }
 
-    // TODO
     @Operation(summary = "Accept a project")
-    @GetMapping("/acceptProject/{idProject}/{idReviewer}")
+    @PostMapping("/acceptProject/{idProject}/{idReviewer}")
     public ResponseEntity<ControllerAnswer> acceptProject(@PathVariable("idProject") Long idProject, @PathVariable("idReviewer") Long idReviewer) {
         ServiceAnswer serviceAnswer = projectTutorService.acceptProject(idReviewer, idProject);
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;

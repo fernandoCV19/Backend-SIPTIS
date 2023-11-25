@@ -8,14 +8,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @Transactional
 @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 class PhaseServiceImplTest {
 
-    private PhaseService phaseService;
+    private final PhaseService phaseService;
 
     @Autowired
     public PhaseServiceImplTest(PhaseService phaseService) {
@@ -43,13 +43,13 @@ class PhaseServiceImplTest {
         assertEquals(ServiceMessage.OK, phaseService.getPhasesByUserId(100L).getServiceMessage());
     }
 
-     @Test
-     void givenInvalidUserIdWhenGetPhasesByUserIdThenServiceMessageNotFound() {
-         assertEquals(ServiceMessage.NOT_FOUND, phaseService.getPhasesByUserId(999L).getServiceMessage());
-     }
+    @Test
+    void givenInvalidUserIdWhenGetPhasesByUserIdThenServiceMessageNotFound() {
+        assertEquals(ServiceMessage.NOT_FOUND, phaseService.getPhasesByUserId(999L).getServiceMessage());
+    }
 
-     @Test
-     void givenValidModalityIdWhenFindPhaseByModalityIdThenServiceMessageOk() {
-         assertEquals(ServiceMessage.OK, phaseService.findPhaseByModalityId(100L).getServiceMessage());
-     }
+    @Test
+    void givenValidModalityIdWhenFindPhaseByModalityIdThenServiceMessageOk() {
+        assertEquals(ServiceMessage.OK, phaseService.findPhaseByModalityId(100L).getServiceMessage());
+    }
 }

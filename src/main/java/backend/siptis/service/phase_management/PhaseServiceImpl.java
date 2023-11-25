@@ -50,7 +50,7 @@ public class PhaseServiceImpl implements PhaseService {
     @Override
     public ServiceAnswer getPhasesByUserId(Long id) {
         Long projectId = siptisUserServiceGeneralUserOperations.getProjectById(id);
-        if(projectId == null) {
+        if (projectId == null) {
             return ServiceAnswer.builder()
                     .serviceMessage(ServiceMessage.NOT_FOUND)
                     .build();

@@ -3,13 +3,10 @@ package backend.siptis.service.projectManagement.project;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.project_management.NewProjectDTO;
 import backend.siptis.service.project_management.project.ProjectServiceCreate;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Role;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @Transactional
@@ -25,7 +22,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class ProjectServiceCreateTest {
 
     private final ProjectServiceCreate projectServiceCreate;
-    private NewProjectDTO NEW_PROJECT_DTO = new NewProjectDTO();
+    private final NewProjectDTO NEW_PROJECT_DTO = new NewProjectDTO();
+
+    @Autowired
+    public ProjectServiceCreateTest(ProjectServiceCreate projectServiceCreate) {
+        this.projectServiceCreate = projectServiceCreate;
+    }
 
     @BeforeEach
     void setUp() {
@@ -55,10 +57,6 @@ class ProjectServiceCreateTest {
         subAreasId.add(100L);
         subAreasId.add(101L);
         NEW_PROJECT_DTO.setSubAreasId(subAreasId);
-    }
-    @Autowired
-    public ProjectServiceCreateTest(ProjectServiceCreate projectServiceCreate) {
-        this.projectServiceCreate = projectServiceCreate;
     }
 
     @Test

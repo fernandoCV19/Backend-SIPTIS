@@ -70,14 +70,14 @@ public class SiptisUserServiceStudentOperations {
 
     public ServiceAnswer getNumberOfStudentsByYearAndCareer(String careerName) {
         Optional<UserCareer> oUserCareer = userCareerRepository.findByName(careerName.toUpperCase());
-        if(oUserCareer.isEmpty())
+        if (oUserCareer.isEmpty())
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
         return createResponse(ServiceMessage.OK, siptisUserRepository.getNumberOfStudentsByYearAndCareer(oUserCareer.get().getId()));
     }
 
     public ServiceAnswer getNumberStudentsCareer(String careerName) {
         Optional<UserCareer> oUserCareer = userCareerRepository.findByName(careerName.toUpperCase());
-        if(oUserCareer.isEmpty())
+        if (oUserCareer.isEmpty())
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
         return createResponse(ServiceMessage.OK, siptisUserRepository.getNumberOfStudentsInCareer(oUserCareer.get().getId()));
     }

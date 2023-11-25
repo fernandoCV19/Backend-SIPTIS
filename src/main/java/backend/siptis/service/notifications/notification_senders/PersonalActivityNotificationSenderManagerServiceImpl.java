@@ -30,7 +30,7 @@ public class PersonalActivityNotificationSenderManagerServiceImpl implements Per
 
         List<ActivityVO> activityVOS = activityServiceFindOperations.findAllVO();
         for (ActivityVO vo : activityVOS) {
-            int activityMonth = vo.getActivityDate().getMonthValue()+ 1;
+            int activityMonth = vo.getActivityDate().getMonthValue() + 1;
             int activityDay = vo.getActivityDate().getDayOfMonth();
             if (activityMonth == actualMonth && (actualDay == activityDay - 1 || actualDay == activityDay)) {
                 sender.sendNotification(vo.getActivityName(), getEmails(vo), vo.getActivityDate().toString());

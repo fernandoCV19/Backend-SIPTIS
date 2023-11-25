@@ -5,7 +5,10 @@ import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.project_management.DefenseDTO;
 import backend.siptis.model.repository.defense_management.DefenseRepository;
 import backend.siptis.service.defense_management.DefenseService;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
@@ -13,9 +16,10 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.time.LocalDate;
 import java.time.LocalTime;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @Transactional
@@ -23,9 +27,9 @@ import java.time.LocalTime;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class DefenseServiceTest {
 
+    private static final DefenseDTO DEFENSE_DTO = new DefenseDTO();
     private final DefenseService defenseService;
     private final DefenseRepository defenseRepository;
-    private static final DefenseDTO DEFENSE_DTO = new DefenseDTO();
 
     @Autowired
     DefenseServiceTest(DefenseService defenseService, DefenseRepository defenseRepository) {
@@ -86,7 +90,6 @@ public class DefenseServiceTest {
     @Test
     @Rollback
     @DisplayName("Test for remove a defense")
-
     void givenADefenseIdWhenRemoveDefenseThenServiceMessageOK() {
         ServiceAnswer sa = defenseService.removeDefense(101L);
         Assertions.assertEquals(ServiceMessage.OK, sa.getServiceMessage());
@@ -95,7 +98,6 @@ public class DefenseServiceTest {
     @Test
     @Rollback
     @DisplayName("Test for remove a defense with invalid id")
-
     void givenAProjectIdWhenRemoveDefenseThenServiceMessagePROJECTIDDOESNOTEXIST() {
         ServiceAnswer sa = defenseService.removeDefense(1L);
         Assertions.assertEquals(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST, sa.getServiceMessage());
@@ -104,7 +106,6 @@ public class DefenseServiceTest {
     @Test
     @Rollback
     @DisplayName("Test for remove a defense verify correct remove")
-
     void givenADefenseIdWhenRemoveDefenseThenDefenseIsNotPresent() {
         defenseService.removeDefense(101L);
         Assertions.assertFalse(defenseRepository.findById(101L).isPresent());

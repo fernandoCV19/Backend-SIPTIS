@@ -19,35 +19,35 @@ public class ProjectServiceGetNumberOfProjects {
 
     public ServiceAnswer getNumberOfProjectsByModalityAndCareer(String name) {
         Optional<UserCareer> oUserCareer = userCareerRepository.findByName(name.toUpperCase());
-        if(oUserCareer.isEmpty())
+        if (oUserCareer.isEmpty())
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(projectRepository.getNumberOfProjectsByModalityAndCareer(oUserCareer.get().getId())).build();
     }
 
     public ServiceAnswer getNumberOfProjectsByAreaAndCareer(String name) {
         Optional<UserCareer> oUserCareer = userCareerRepository.findByName(name.toUpperCase());
-        if(oUserCareer.isEmpty())
+        if (oUserCareer.isEmpty())
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(projectRepository.getNumberOfProjectsByAreasAndCareer(oUserCareer.get().getId())).build();
     }
 
     public ServiceAnswer getNumberOfProjectsBySubAreaAndCareer(String name) {
         Optional<UserCareer> oUserCareer = userCareerRepository.findByName(name.toUpperCase());
-        if(oUserCareer.isEmpty())
+        if (oUserCareer.isEmpty())
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(projectRepository.getNumberOfProjectsBySubAreasAndCareer(oUserCareer.get().getId())).build();
     }
 
     public ServiceAnswer getNumberProjectsByPeriodAndCareer(String name) {
         Optional<UserCareer> oUserCareer = userCareerRepository.findByName(name.toUpperCase());
-        if(oUserCareer.isEmpty())
+        if (oUserCareer.isEmpty())
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(projectRepository.getNumberProjectsByPeriodAndCareer(oUserCareer.get().getId())).build();
     }
 
     public ServiceAnswer getNumberProjectsByCareer(String name) {
         Optional<UserCareer> oUserCareer = userCareerRepository.findByName(name.toUpperCase());
-        if(oUserCareer.isEmpty())
+        if (oUserCareer.isEmpty())
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(projectRepository.getProjectsByCareer(oUserCareer.get().getId())).build();
     }

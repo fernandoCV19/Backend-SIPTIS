@@ -14,15 +14,15 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @Transactional
 @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 class ProjectTribunalServiceModifyProjectTribunalsTest {
 
-    private final ProjectTribunalServiceModifyProjectTribunals projectTribunalServiceModifyProjectTribunals;
     private static final AssignTribunalsDTO ASSIGN_TRIBUNAL_DTO = new AssignTribunalsDTO();
+    private final ProjectTribunalServiceModifyProjectTribunals projectTribunalServiceModifyProjectTribunals;
 
 
     @Autowired
@@ -32,7 +32,7 @@ class ProjectTribunalServiceModifyProjectTribunalsTest {
 
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         List<Long> tribunalsIds = new ArrayList<>();
         tribunalsIds.add(157L);
         tribunalsIds.add(158L);
@@ -40,11 +40,13 @@ class ProjectTribunalServiceModifyProjectTribunalsTest {
         ASSIGN_TRIBUNAL_DTO.setProjectId(119L);
         ASSIGN_TRIBUNAL_DTO.setTribunalsIds(tribunalsIds);
     }
+
     @Test
     @Rollback
     void givenValidProjectIdWhenRemoveTribunalsThenServiceMessageOk() {
         assertEquals(ServiceMessage.OK, projectTribunalServiceModifyProjectTribunals.removeTribunals(117L).getServiceMessage());
     }
+
     @Test
     @Rollback
     void givenInvalidProjectIdWhenRemoveTribunalsThenServiceMessageProjectIdDoesNotExist() {
@@ -60,7 +62,7 @@ class ProjectTribunalServiceModifyProjectTribunalsTest {
 
     @Test
     @Rollback
-    void givenAnAssignTribinalDTOWithNoTribunalIdWhenAssignTribunalsThenServiceMessageIdNotExist(){
+    void givenAnAssignTribinalDTOWithNoTribunalIdWhenAssignTribunalsThenServiceMessageIdNotExist() {
         List<Long> tribunalsIds = new ArrayList<>();
         tribunalsIds.add(1L);
         tribunalsIds.add(1L);

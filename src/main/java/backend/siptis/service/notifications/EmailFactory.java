@@ -16,31 +16,23 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class EmailFactory {
+    private final JavaMailSender mailSender;
     @Setter
     private String toMail;
-
     @Setter
     private String subject;
-
     @Setter
     private String text;
-
     @Setter
     private String[] emailArray;
-
     @Setter
     private Boolean isHtml;
-
     @Getter
     private String response;
-
     @Value("${spring.mail.host}")
     private String fromMail;
-
     @Value("${application.name}")
     private String from;
-
-    private final JavaMailSender mailSender;
 
     public void send() {
         MimeMessagePreparator message = mimeMessage -> {

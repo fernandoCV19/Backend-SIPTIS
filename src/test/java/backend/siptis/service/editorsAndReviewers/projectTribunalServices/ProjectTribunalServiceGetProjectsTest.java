@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @Transactional
@@ -22,6 +22,7 @@ class ProjectTribunalServiceGetProjectsTest {
     public ProjectTribunalServiceGetProjectsTest(ProjectTribunalServiceGetProjects projectTribunalServiceGetProjects) {
         this.projectTribunalServiceGetProjects = projectTribunalServiceGetProjects;
     }
+
     @Test
     void givenValidTribunalIdWhenGetAllProjectsNotAcceptedReviewedByTribunalIdThenServiceMessageOK() {
         ServiceAnswer sa = projectTribunalServiceGetProjects.getAllProjectsNotAcceptedReviewedByTribunalId(155L);
@@ -45,6 +46,7 @@ class ProjectTribunalServiceGetProjectsTest {
         ServiceAnswer sa = projectTribunalServiceGetProjects.getAllProjectsNotAcceptedNotReviewedByTribunalId(1L);
         assertEquals(ServiceMessage.ID_DOES_NOT_EXIST, sa.getServiceMessage());
     }
+
     @Test
     void givenValidTribunalIdWhenGetAllProjectsNotAcceptedNotReviewedByTribunalIdThenServiceMessageOk() {
         ServiceAnswer sa = projectTribunalServiceGetProjects.getAllProjectsNotAcceptedNotReviewedByTribunalId(154L);
@@ -59,7 +61,7 @@ class ProjectTribunalServiceGetProjectsTest {
 
 
     @Test
-    void givenValidTribunalIdWhenGetAllProjectsAcceptedWithoutDefensePointsByTribunalId(){
+    void givenValidTribunalIdWhenGetAllProjectsAcceptedWithoutDefensePointsByTribunalId() {
         ServiceAnswer sa = projectTribunalServiceGetProjects.getAllProjectsAcceptedWithoutDefensePointsByTribunalId(153L);
         assertEquals(ServiceMessage.OK, sa.getServiceMessage());
     }

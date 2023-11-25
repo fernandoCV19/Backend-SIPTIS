@@ -68,21 +68,21 @@ public class DocumentController {
     @Operation(summary = "Create tribunal approval letter")
     @PostMapping("/create-tribunal-approval")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
-    ResponseEntity<ControllerAnswer> createTribunalApproval(@RequestBody LetterGenerationRequestDTO dto) throws IOException {
+    ResponseEntity<ControllerAnswer> createTribunalApproval(@RequestBody LetterGenerationRequestDTO dto) {
         return createResponseEntity(documentGeneratorService.generateTribunalApproval(dto));
     }
 
     @Operation(summary = "Create teacher approval letter")
     @PostMapping("/create-teacher-approval-letter")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
-    ResponseEntity<ControllerAnswer> createTeacherTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) throws IOException {
+    ResponseEntity<ControllerAnswer> createTeacherTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) {
         return createResponseEntity(documentGeneratorService.teacherTribunalRequest(dto));
     }
 
     @Operation(summary = "Create student's tribunal request letter")
     @PostMapping("/create-student-tribunal-request")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
-    ResponseEntity<ControllerAnswer> createStudentTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) throws IOException {
+    ResponseEntity<ControllerAnswer> createStudentTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) {
         return createResponseEntity(documentGeneratorService.studentTribunalRequest(dto));
     }
 
@@ -98,14 +98,14 @@ public class DocumentController {
     @Operation(summary = "Create tutor approval letter")
     @PostMapping("/create-tutor-approval-letter")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
-    ResponseEntity<ControllerAnswer> createTutorTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) throws IOException {
+    ResponseEntity<ControllerAnswer> createTutorTribunalRequest(@RequestBody LetterGenerationRequestDTO dto){
         return createResponseEntity(documentGeneratorService.tutorTribunalRequest(dto));
     }
 
     @Operation(summary = "Create supervisor approval letter")
     @PostMapping("/create-supervisor-approval-letter")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
-    ResponseEntity<ControllerAnswer> createSupervisorTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) throws IOException {
+    ResponseEntity<ControllerAnswer> createSupervisorTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) {
         return createResponseEntity(documentGeneratorService.supervisorTribunalRequest(dto));
     }
 

@@ -138,7 +138,7 @@ public class GeneralUserOperationsController {
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(data).message(messageService.toString()).build();
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
-    //TODO
+
     @Operation(summary = "Get own personal project")
     @GetMapping("/project")
     public ResponseEntity<ControllerAnswer> getProjectByUserId(@RequestHeader(name = "Authorization") String token) {
@@ -148,13 +148,4 @@ public class GeneralUserOperationsController {
 
         return createResponseEntity(projectFound);
     }
-    /*
-    @GetMapping("/project")
-    public ResponseEntity<?> getProjectByUserId(@RequestHeader(name = "Authorization") String token) {
-        Long idL = siptisUserService.getIdFromToken(token);
-        Long projectID = siptisUserService.getProjectById(idL);
-        ServiceAnswer projectFound = projectService.getProjectById(projectID);
-        return crearResponseEntityRegistrar(projectFound);
-    }*/
-
 }

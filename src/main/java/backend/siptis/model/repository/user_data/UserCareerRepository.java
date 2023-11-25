@@ -14,6 +14,8 @@ public interface UserCareerRepository extends JpaRepository<UserCareer, Integer>
     List<UserCareer> findAll();
 
     boolean existsByName(String name);
+
     Optional<UserCareer> findByName(String name);
+
     UserCareer findUserCareerByName(String name);
 }

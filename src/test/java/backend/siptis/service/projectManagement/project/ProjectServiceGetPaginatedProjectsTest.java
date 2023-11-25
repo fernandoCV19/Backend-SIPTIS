@@ -8,14 +8,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @Transactional
 @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 class ProjectServiceGetPaginatedProjectsTest {
 
-    private ProjectServiceGetPaginatedProjects projectServiceGetPaginatedProjects;
+    private final ProjectServiceGetPaginatedProjects projectServiceGetPaginatedProjects;
 
     @Autowired
     public ProjectServiceGetPaginatedProjectsTest(ProjectServiceGetPaginatedProjects projectServiceGetPaginatedProjects) {

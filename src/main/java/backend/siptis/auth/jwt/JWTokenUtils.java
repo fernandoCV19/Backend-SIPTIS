@@ -85,10 +85,10 @@ public class JWTokenUtils {
                     .setSigningKey(accessTokenSecret.getBytes())
                     .build().parseClaimsJws(authToken).getBody();
             return true;
-            } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
 
-            }
-            return false;
+        }
+        return false;
     }
 
     public static UsernamePasswordAuthenticationToken getAuthentication(String token) {

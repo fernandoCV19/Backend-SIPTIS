@@ -8,14 +8,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @Transactional
 @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 class ProjectTutorServiceImplTest {
 
-    private ProjectTutorServiceImpl projectTutorService;
+    private final ProjectTutorServiceImpl projectTutorService;
 
     @Autowired
     public ProjectTutorServiceImplTest(ProjectTutorServiceImpl projectTutorService) {
@@ -39,6 +39,7 @@ class ProjectTutorServiceImplTest {
         ServiceMessage message = projectTutorService.getAllProjectsNotAcceptedNotReviewedByTutorId(134L).getServiceMessage();
         assertEquals(ServiceMessage.OK, message);
     }
+
     @Test
     void givenInvalidTutorIdWhenGetAllProjectsNotAcceptedNotReviewedByTutorIdThenServiceMessageIdDoesNotExist() {
         ServiceMessage message = projectTutorService.getAllProjectsNotAcceptedNotReviewedByTutorId(1L).getServiceMessage();
@@ -71,7 +72,7 @@ class ProjectTutorServiceImplTest {
 
     @Test
     void givenNotMatchTeacherIdWhenAcceptProjectThenServiceMessageIdReviewerDoesNotMatchWithProject() {
-        ServiceMessage message = projectTutorService.acceptProject(132L,101L).getServiceMessage();
+        ServiceMessage message = projectTutorService.acceptProject(132L, 101L).getServiceMessage();
         assertEquals(ServiceMessage.ID_REVIEWER_DOES_NOT_MATCH_WITH_PROJECT, message);
     }
 
@@ -80,6 +81,7 @@ class ProjectTutorServiceImplTest {
         ServiceMessage message = projectTutorService.acceptProject(131L, 101L).getServiceMessage();
         assertEquals(ServiceMessage.PROJECT_HAS_ALREADY_BEEN_ACCEPTED, message);
     }
+
     @Test
     void getAllTutorProject() {
     }

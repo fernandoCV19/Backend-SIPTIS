@@ -11,7 +11,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @Transactional
@@ -20,19 +20,21 @@ class ProjectTribunalServiceReviewADefenseTest {
 
     private final ProjectTribunalServiceReviewADefense projectTribunalService;
     private ReviewADefenseDTO REVIEW_A_DEFENSE_DTO;
+
     @Autowired
-    public ProjectTribunalServiceReviewADefenseTest (ProjectTribunalServiceReviewADefense projectTribunalService) {
+    public ProjectTribunalServiceReviewADefenseTest(ProjectTribunalServiceReviewADefense projectTribunalService) {
         this.projectTribunalService = projectTribunalService;
     }
 
     @BeforeEach
-    void setUp (){
-         REVIEW_A_DEFENSE_DTO= new ReviewADefenseDTO(117L, 156L, 100.0);
+    void setUp() {
+        REVIEW_A_DEFENSE_DTO = new ReviewADefenseDTO(117L, 156L, 100.0);
     }
+
     @Test
     @Rollback
     void givenAnReviewADefenseDTOWhenReviewADefenseThenServiceMessageHasNotStarted() {
-           assertEquals(ServiceMessage.DEFENSE_HAS_NOT_STARTED, projectTribunalService.reviewADefense(REVIEW_A_DEFENSE_DTO).getServiceMessage());
+        assertEquals(ServiceMessage.DEFENSE_HAS_NOT_STARTED, projectTribunalService.reviewADefense(REVIEW_A_DEFENSE_DTO).getServiceMessage());
     }
 
     @Test
@@ -48,16 +50,17 @@ class ProjectTribunalServiceReviewADefenseTest {
         REVIEW_A_DEFENSE_DTO.setTribunal(999L);
         assertEquals(ServiceMessage.USER_ID_DOES_NOT_EXIST, projectTribunalService.reviewADefense(REVIEW_A_DEFENSE_DTO).getServiceMessage());
     }
+
     @Test
     @Rollback
-    void givenReviewDefenseDTOWithNotMathTribunalWhenReviewADefenseThenServiceMessageIdNotMatch(){
+    void givenReviewDefenseDTOWithNotMathTribunalWhenReviewADefenseThenServiceMessageIdNotMatch() {
         REVIEW_A_DEFENSE_DTO.setTribunal(157L);
         assertEquals(ServiceMessage.ID_TRIBUNAL_DOES_NOT_MATCH_WITH_PROJECT, projectTribunalService.reviewADefense(REVIEW_A_DEFENSE_DTO).getServiceMessage());
     }
 
     @Test
     @Rollback
-    void givenReviewDefenseDTOWithInvalidScoreWhenReviewADefenseThenServiceMessageScoreIsNotValid(){
+    void givenReviewDefenseDTOWithInvalidScoreWhenReviewADefenseThenServiceMessageScoreIsNotValid() {
         REVIEW_A_DEFENSE_DTO.setPoints(101.0);
         assertEquals(ServiceMessage.SCORE_IS_NOT_VALID, projectTribunalService.reviewADefense(REVIEW_A_DEFENSE_DTO).getServiceMessage());
     }

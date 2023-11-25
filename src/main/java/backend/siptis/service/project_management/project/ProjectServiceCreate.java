@@ -64,7 +64,7 @@ public class ProjectServiceCreate {
                 return ServiceAnswer.builder().serviceMessage(ServiceMessage.USER_ID_DOES_NOT_EXIST).build();
             SiptisUser student = userOptional.get();
             Collection<ProjectStudent> projectStudents = student.getStudents();
-            if(projectStudents.size() > 0)
+            if (!projectStudents.isEmpty())
                 return ServiceAnswer.builder().serviceMessage(ServiceMessage.STUDENT_ALREADY_IN_A_PROJECT).build();
             ProjectStudent projectStudent = new ProjectStudent();
             projectStudent.setStudent(userOptional.get());
@@ -97,8 +97,8 @@ public class ProjectServiceCreate {
         ArrayList<ProjectSupervisor> supervisors = new ArrayList<>();
         String modalityName = optionalModality.get().getName();
         if (modalityName.equals(backend.siptis.commons.Modality.TRABAJO_DIRIGIDO.toString())
-                        || modalityName.equals(backend.siptis.commons.Modality.ADSCRIPCION.toString())) {
-            if(dto.getSupervisorsId() == null || dto.getSupervisorsId().isEmpty())
+                || modalityName.equals(backend.siptis.commons.Modality.ADSCRIPCION.toString())) {
+            if (dto.getSupervisorsId() == null || dto.getSupervisorsId().isEmpty())
                 return ServiceAnswer.builder().serviceMessage(ServiceMessage.INVALID_PROJECT_SUPERVISOR_VALUE).build();
             for (Long supervisorId : dto.getSupervisorsId()) {
                 Optional<SiptisUser> supervisorOptional = siptisUserRepository.findById(supervisorId);

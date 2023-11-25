@@ -39,7 +39,7 @@ public class ProjectGetProjectsController {
     public ResponseEntity<ControllerAnswer> getProjects() {
         ServiceAnswer serviceAnswer = projectServiceGetProjects.getProjects();
         HttpStatus httpStatus = HttpStatus.OK;
-        if (serviceAnswer.getServiceMessage() != ServiceMessage.OK) {   
+        if (serviceAnswer.getServiceMessage() != ServiceMessage.OK) {
             httpStatus = HttpStatus.BAD_REQUEST;
         }
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();

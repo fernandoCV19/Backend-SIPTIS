@@ -16,14 +16,6 @@ import java.util.List;
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Long> {
 
-    /*
-    @Query(value = "SELECT  project.id_ AS id, project.name_ AS name, " +
-            "project.perfil_path_ AS perfil, modality.name_ AS modality," +
-            " modality.id_ AS modalityId  " +
-            " FROM project_ project, modality_ modality " +
-            " WHERE project.modality_id_ = modality.id_ " +
-            " AND LOWER( project.name_ ) LIKE LOWER( CONCAT( '%', :search, '%'))  ", nativeQuery = true)
-    Page<ProjectInfoDTO> searchProject(String search, Pageable pageable);*/
     @Query("SELECT p.id AS id, p.name AS name, m.name AS modality, m.id AS modalityId " +
             " FROM Project p JOIN p.modality m WHERE LOWER( p.name ) LIKE LOWER( CONCAT( '%', :search, '%'))")
     Page<ProjectInfoDTO> searchProject(String search, Pageable pageable);

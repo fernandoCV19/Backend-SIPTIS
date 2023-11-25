@@ -233,8 +233,8 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
 
 
     @Override
-    public ServiceAnswer teacherTribunalRequest(LetterGenerationRequestDTO dto){
-        try{
+    public ServiceAnswer teacherTribunalRequest(LetterGenerationRequestDTO dto) {
+        try {
             LetterTool letterTool = new LetterTool();
             Optional<Project> projectOptional = projectRepository.findById(dto.getProjectId());
             if (projectOptional.isEmpty())
@@ -274,14 +274,14 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
                 documentRepository.save(document);
             }
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
-        }catch (Exception e){
+        } catch (Exception e) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
         }
     }
 
     @Override
-    public ServiceAnswer tutorTribunalRequest(LetterGenerationRequestDTO dto){
-        try{
+    public ServiceAnswer tutorTribunalRequest(LetterGenerationRequestDTO dto) {
+        try {
             LetterTool letterTool = new LetterTool();
             Optional<Project> projectOptional = projectRepository.findById(dto.getProjectId());
             if (projectOptional.isEmpty())
@@ -325,14 +325,14 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
                 documentRepository.save(document);
             }
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
-        }catch (Exception e){
+        } catch (Exception e) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
         }
     }
 
     @Override
-    public ServiceAnswer supervisorTribunalRequest(LetterGenerationRequestDTO dto)  {
-        try{
+    public ServiceAnswer supervisorTribunalRequest(LetterGenerationRequestDTO dto) {
+        try {
             LetterTool letterTool = new LetterTool();
             Optional<Project> projectOptional = projectRepository.findById(dto.getProjectId());
             if (projectOptional.isEmpty())
@@ -375,14 +375,14 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
                 documentRepository.save(document);
             }
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
-        }catch (Exception e){
+        } catch (Exception e) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
         }
     }
 
     @Override
-    public ServiceAnswer studentTribunalRequest(LetterGenerationRequestDTO dto)  {
-        try{
+    public ServiceAnswer studentTribunalRequest(LetterGenerationRequestDTO dto) {
+        try {
             LetterTool letterTool = new LetterTool();
             Optional<Project> projectOptional = projectRepository.findById(dto.getProjectId());
             if (projectOptional.isEmpty())
@@ -417,14 +417,14 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
             document.setSiptisUser(projectStudent.getStudent());
             documentRepository.save(document);
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
-        }catch (Exception e){
+        } catch (Exception e) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
         }
     }
 
     @Override
-    public ServiceAnswer generateTribunalApproval(LetterGenerationRequestDTO dto)  {
-        try{
+    public ServiceAnswer generateTribunalApproval(LetterGenerationRequestDTO dto) {
+        try {
             LetterTool letterTool = new LetterTool();
             Optional<Project> projectOptional = projectRepository.findById(dto.getProjectId());
             if (projectOptional.isEmpty())
@@ -465,7 +465,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
                 documentRepository.save(document);
             }
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
-        }catch (Exception e){
+        } catch (Exception e) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
         }
     }

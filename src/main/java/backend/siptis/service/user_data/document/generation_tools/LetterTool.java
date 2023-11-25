@@ -14,11 +14,11 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class LetterTool {
 
-    private String[] months =
-            {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
     private static final String FOOTER_TEXT = "Sin otro particular, saludo a Ud. cordialmente.\n";
     private static final String DOC_TITLE = "REF: Informe de Proyecto Final concluido y solicitud de asignación de tribunales\n";
     private static final String START_TEXT = "Estimado Director de Carrera:\n";
+    private final String[] months =
+            {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
 
     public String generateTribunalRequest(String student, String directorName, String career, String projectName, String teacherName) {
         String fileName = projectName + "_" + student + "_CartaConformidadDocente.pdf";
@@ -57,7 +57,7 @@ public class LetterTool {
             document.add(footer);
         } catch (Exception e) {
             fileName = null;
-        }finally {
+        } finally {
             document.close();
         }
         return fileName;
@@ -102,7 +102,7 @@ public class LetterTool {
             document.add(footer);
         } catch (Exception e) {
             fileName = null;
-        }finally {
+        } finally {
 
             document.close();
         }
@@ -145,9 +145,9 @@ public class LetterTool {
             footer.add(new Phrase("Tutor " + "\n", FontFactory.getFont(FontFactory.HELVETICA, 10)));
             footer.setSpacingBefore(70);
             document.add(footer);
-        }catch (Exception e) {
+        } catch (Exception e) {
             fileName = null;
-        }finally {
+        } finally {
             document.close();
         }
         return fileName;
@@ -157,7 +157,7 @@ public class LetterTool {
         String fileName = projectName + "_" + student + "_" + tutor + "_CartaConformidadTutor.pdf";
         fileName = fileName.replace(" ", "");
         Document document = new Document(PageSize.LETTER, 85, 85, 70, 70);
-        try{
+        try {
             PdfWriter.getInstance(document, new FileOutputStream(fileName));
             document.open();
             createWithHeader(document, directorName, career, DOC_TITLE);
@@ -189,9 +189,9 @@ public class LetterTool {
             footer.add(new Phrase("Supervisor " + "\n", FontFactory.getFont(FontFactory.HELVETICA, 10)));
             footer.setSpacingBefore(70);
             document.add(footer);
-        }catch (Exception e) {
+        } catch (Exception e) {
             fileName = null;
-        }finally {
+        } finally {
             document.close();
         }
         return fileName;
@@ -200,8 +200,7 @@ public class LetterTool {
     public String generateTribunalApproval(String student, String directorName, String career, String projectName, String tribunalName) {
         String fileName = projectName + "_" + student + "_" + tribunalName + "_CartaConformidadTribunal.pdf";
         fileName = fileName.replace(" ", "");
-        Document document = new Document(PageSize.LETTER, 85, 85, 70, 70);
-        try {
+        try (Document document = new Document(PageSize.LETTER, 85, 85, 70, 70)) {
             PdfWriter.getInstance(document, new FileOutputStream(fileName));
             document.open();
             createWithHeader(document, directorName, career, "REF: Proyecto final concluido\n");
@@ -232,8 +231,6 @@ public class LetterTool {
             document.add(footer);
         } catch (Exception e) {
             fileName = null;
-        }finally {
-            document.close();
         }
         return fileName;
     }
