@@ -71,7 +71,7 @@ public class ProjectTribunalServiceModifyProjectTribunals {
         }
 
         Project projectNotOptional = project.get();
-        projectNotOptional.setPhase(PhaseName.PRE_DEFENSE_PHASE.toString());
+        projectNotOptional.setPhase(PhaseName.TRIBUNALS_PHASE.toString());
 
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("Tribunals has been assigned to the project").build();
     }

@@ -51,7 +51,11 @@ public class ProjectTutorServiceImpl implements ProjectTutorService {
         }
 
         List<ProjectTutor> projectsList = projectTutorRepository.findByTutorIdAndAcceptedIsTrue(id);
-        return getProjects(projectsList);
+        List<ProjectToHomePageVO> data = projectsList
+                .stream()
+                .map(aux -> new ProjectToHomePageVO(aux.getProject(), aux.getAccepted(), aux.getReviewed()))
+                .toList();
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(data).build();
     }
 
     @Override
@@ -94,13 +98,14 @@ public class ProjectTutorServiceImpl implements ProjectTutorService {
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("THE PROJECT HAS NOT CHANGED TO THE PHASE OF TRIBUNALS").build();
     }
 
-    private ServiceAnswer getProjects(List<ProjectTutor> listaProyectos) {
-        if (listaProyectos.isEmpty()) {
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.WITHOUT_PROJECTS).data(listaProyectos).build();
+    private ServiceAnswer getProjects(List<ProjectTutor> projectsList) {
+        if (projectsList.isEmpty()) {
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.WITHOUT_PROJECTS).data(projectsList).build();
         }
 
-        List<ProjectToHomePageVO> data = listaProyectos
+        List<ProjectToHomePageVO> data = projectsList
                 .stream()
+                .filter(projectTutor -> projectTutor.getProject().getPhase().equals(PhaseName.REVIEWERS_PHASE.toString()))
                 .map(aux -> new ProjectToHomePageVO(aux.getProject(), aux.getAccepted(), aux.getReviewed()))
                 .toList();
 
