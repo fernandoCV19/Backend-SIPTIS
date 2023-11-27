@@ -41,9 +41,7 @@ public class ProjectTribunalServiceModifyProjectTribunals {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.TRIBUNALS_ERROR).data("THIS PROJECT HAS BEEN DEFENDED").build();
         }
 
-        for (ProjectTribunal tribunal : project.getTribunals()) {
-            projectTribunalRepository.delete(tribunal);
-        }
+        projectTribunalRepository.deleteAll(project.getTribunals());
 
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("TRIBUNALS HAS BEEN REMOVED").build();
     }
