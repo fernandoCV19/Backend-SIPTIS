@@ -42,7 +42,8 @@ public class ProjectTribunalServiceModifyProjectTribunals {
         }
 
         projectTribunalRepository.deleteAll(project.getTribunals());
-
+        project.setPhase(PhaseName.ASSIGN_TRIBUNALS_PHASE.toString());
+        projectRepository.save(project);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("TRIBUNALS HAS BEEN REMOVED").build();
     }
 

@@ -82,8 +82,11 @@ public class ProjectTeacherServiceImpl implements ProjectTeacherService {
 
     private ServiceAnswer verifyChangeOfFase(ProjectTeacher query) {
         Project project = query.getProject();
-        boolean allReviewersHaveAccepted = project.getSupervisors().stream().allMatch(ProjectSupervisor::getAccepted) &&
-                project.getTeachers().stream().allMatch(ProjectTeacher::getAccepted) && project.getTutors().stream().allMatch(ProjectTutor::getAccepted);
+        boolean allReviewersHaveAccepted = project.getSupervisors()
+                .stream()
+                .allMatch(ProjectSupervisor::getAccepted) && project.getTeachers().stream().allMatch(ProjectTeacher::getAccepted) && project.getTutors()
+                .stream()
+                .allMatch(ProjectTutor::getAccepted);
 
         if (allReviewersHaveAccepted) {
             project.setPhase(PhaseName.ASSIGN_TRIBUNALS_PHASE.toString());

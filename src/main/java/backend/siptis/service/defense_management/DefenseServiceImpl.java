@@ -120,7 +120,11 @@ public class DefenseServiceImpl implements DefenseService {
         if (project.getTotalDefensePoints() != null) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.DEFENSE_ERROR).data("Project has been defended").build();
         }
-        defenseRepository.deleteById(project.getDefense().getId());
+        project.setPhase(PhaseName.ASSIGN_DEFENSE_PHASE.toString());
+        Long defenseId = project.getDefense().getId();
+        project.setDefense(null);
+        projectRepository.save(project);
+        defenseRepository.deleteById(defenseId);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("Defense has been deleted").build();
     }
 }
