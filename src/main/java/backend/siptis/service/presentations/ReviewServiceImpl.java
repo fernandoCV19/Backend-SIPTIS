@@ -3,10 +3,18 @@ package backend.siptis.service.presentations;
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
+import backend.siptis.model.entity.editors_and_reviewers.ProjectSupervisor;
+import backend.siptis.model.entity.editors_and_reviewers.ProjectTeacher;
+import backend.siptis.model.entity.editors_and_reviewers.ProjectTribunal;
+import backend.siptis.model.entity.editors_and_reviewers.ProjectTutor;
 import backend.siptis.model.entity.presentations.Presentation;
 import backend.siptis.model.entity.presentations.Review;
 import backend.siptis.model.entity.project_management.Project;
 import backend.siptis.model.repository.auth.SiptisUserRepository;
+import backend.siptis.model.repository.editors_and_reviewers.ProjectSupervisorRepository;
+import backend.siptis.model.repository.editors_and_reviewers.ProjectTeacherRepository;
+import backend.siptis.model.repository.editors_and_reviewers.ProjectTribunalRepository;
+import backend.siptis.model.repository.editors_and_reviewers.ProjectTutorRepository;
 import backend.siptis.model.repository.presentations.PresentationRepository;
 import backend.siptis.model.repository.presentations.ReviewRepository;
 import backend.siptis.model.repository.project_management.ProjectRepository;
@@ -31,6 +39,10 @@ public class ReviewServiceImpl implements ReviewService {
     private final CloudManagementService cloudManagementService;
     private final SiptisUserRepository siptisUserRepository;
     private final ProjectRepository projectRepository;
+    private final ProjectTribunalRepository projectTribunalRepository;
+    private final ProjectTeacherRepository projectTeacherRepository;
+    private final ProjectTutorRepository projectTutorRepository;
+    private final ProjectSupervisorRepository projectSupervisorRepository;
 
     @Override
     public ServiceAnswer addReview(Long projectId, Long userId, MultipartFile multipartFile, String commentary) {
@@ -55,15 +67,37 @@ public class ReviewServiceImpl implements ReviewService {
             String newKey = cloudManagementService.putObject(multipartFile, "Reviews/");
             Review newReview = new Review(newKey, commentary, userOptional.get(), lastPresentation, LocalDateTime.now());
             Optional<Review> lastPossibleReview = lastPresentation.getReviews().stream().filter(review -> Objects.equals(review.getSiptisUser().getId(), userId)).findFirst();
-            if (!lastPossibleReview.isEmpty()) {
-                newReview.setId(lastPossibleReview.get().getId());
-            }
+            lastPossibleReview.ifPresent(review -> newReview.setId(review.getId()));
             lastPresentation.setReviewed(true);
             presentationRepository.save(lastPresentation);
             reviewRepository.save(newReview);
+            updateReviewed(projectId, userId);
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("REVIEW SAVED").build();
         } catch (Exception e) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.THERE_IS_A_PROBLEM_WITH_THE_CLOUD).data("REVIEW SAVED").build();
+        }
+    }
+
+    private void updateReviewed(Long projectId, Long userId) {
+        ProjectTribunal tribunal = projectTribunalRepository.findByProject_IdAndTribunal_Id(projectId, userId);
+        ProjectSupervisor supervisor = projectSupervisorRepository.findBySupervisorIdAndProjectId(userId, projectId);
+        ProjectTutor tutor = projectTutorRepository.findByTutorIdAndProjectId(userId, projectId);
+        ProjectTeacher teacher = projectTeacherRepository.findByTeacherIdAndProjectId(userId, projectId);
+        if (tribunal != null) {
+            tribunal.setReviewed(true);
+            projectTribunalRepository.save(tribunal);
+        }
+        if (supervisor != null) {
+            supervisor.setReviewed(true);
+            projectSupervisorRepository.save(supervisor);
+        }
+        if (tutor != null) {
+            tutor.setReviewed(true);
+            projectTutorRepository.save(tutor);
+        }
+        if (teacher != null) {
+            teacher.setReviewed(true);
+            projectTeacherRepository.save(teacher);
         }
     }
 }

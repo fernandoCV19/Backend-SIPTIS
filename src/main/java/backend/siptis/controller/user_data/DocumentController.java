@@ -17,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.List;
 
 @Tag(name = ControllerConstants.Document.TAG_NAME, description = ControllerConstants.Document.TAG_DESCRIPTION)
@@ -98,7 +97,7 @@ public class DocumentController {
     @Operation(summary = "Create tutor approval letter")
     @PostMapping("/create-tutor-approval-letter")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
-    ResponseEntity<ControllerAnswer> createTutorTribunalRequest(@RequestBody LetterGenerationRequestDTO dto){
+    ResponseEntity<ControllerAnswer> createTutorTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) {
         return createResponseEntity(documentGeneratorService.tutorTribunalRequest(dto));
     }
 
