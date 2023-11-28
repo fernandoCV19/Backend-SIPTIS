@@ -4,6 +4,7 @@ import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.service.auth.siptis_user_services.SiptisUserServiceDelete;
+import backend.siptis.service.auth.siptis_user_services.SiptisUserServiceTokenOperations;
 import backend.siptis.utils.constant.controller_constans.ControllerConstants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,12 +28,19 @@ public class DeleteController {
     private final Set<ServiceMessage> okResponse = new HashSet<>(
             List.of(ServiceMessage.OK, ServiceMessage.SUCCESSFUL_REGISTER, ServiceMessage.USER_DELETED));
     private final SiptisUserServiceDelete siptisUserServiceDelete;
+    private final SiptisUserServiceTokenOperations siptisUserServiceTokenOperations;
 
     @Operation(summary = "Delete user")
     @DeleteMapping("/delete/{userId}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    ResponseEntity<ControllerAnswer> deleteUser(@PathVariable int userId) {
+    ResponseEntity<ControllerAnswer> deleteUser(@RequestHeader(name = "Authorization") String token, @PathVariable int userId) {
         Long id = Long.valueOf(userId);
+        Long adminId = siptisUserServiceTokenOperations.getIdFromToken(token);
+        if(id == adminId){
+            ServiceAnswer answer = new ServiceAnswer();
+            answer.setServiceMessage(ServiceMessage.ERROR_CANNOT_DELETE_USER);
+            return createResponseEntity(answer);
+        }
         ServiceAnswer answer = siptisUserServiceDelete.deleteUser(id);
         return createResponseEntity(answer);
     }

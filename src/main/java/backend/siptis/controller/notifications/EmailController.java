@@ -9,6 +9,7 @@ import backend.siptis.service.notifications.recover_password.SendRecoverPassword
 import backend.siptis.utils.constant.controller_constans.ControllerConstants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class EmailController {
     }
 
     @PostMapping("/changePassword")
-    public ResponseEntity<ControllerAnswer> changePassword(@RequestBody TokenPasswordDTO dto) {
+    public ResponseEntity<ControllerAnswer> changePassword(@Valid @RequestBody TokenPasswordDTO dto) {
         ServiceAnswer answer = emailServiceImpl.changePassword(dto);
         return crearResponseEntityRegistrar(answer);
     }

@@ -22,8 +22,8 @@ public class AdminEditUserInformationDTO {
     @Size(max = 50, message = "LASTNAMES_INVALID_LENGTH")
     private String lastnames;
     @NotEmpty(message = "EMAIL_CANNOT_BE_NULL")
-    @Size(min = 2, message = "EMAIL_INVALID_LENGTH")
-    @Size(max = 50, message = "EMAIL_INVALID_LENGTH")
+    @Size(min = 5, message = "EMAIL_INVALID_LENGTH")
+    @Size(max = 25, message = "EMAIL_INVALID_LENGTH")
     @Pattern(regexp = ".+@.+\\..+", message = "EMAIL_INVALID_FORMAT")
     private String email;
     @NotEmpty(message = "CEL_NUMBER_CANNOT_BE_NULL")
@@ -32,7 +32,7 @@ public class AdminEditUserInformationDTO {
     private String celNumber;
     @NotEmpty(message = "CI_CANNOT_BE_NULL")
     @Size(min = 5, message = "CI_INVALID_LENGTH")
-    @Size(max = 50, message = "CI_INVALID_LENGTH")
+    @Size(max = 14, message = "CI_INVALID_LENGTH")
     private String ci;
     @NotNull(message = "BIRTH_DATE_CANNOT_BE_NULL")
     private Date birthDate;
