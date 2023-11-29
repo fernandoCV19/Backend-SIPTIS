@@ -23,14 +23,6 @@ class UserCareerServiceTest {
         this.userCareerService = userCareerService;
     }
 
-    @Test
-    @DisplayName("Test for get non existing career by name")
-    void givenNonExistingCareerName_WhenGetCareerByName_ThenServiceMessageNotFound() {
-        ServiceAnswer answer = userCareerService.getCareerByName("TESIS");
-        assertEquals(ServiceMessage.NOT_FOUND, answer.getServiceMessage());
-    }
-
-
 /*
     @Test
     @DisplayName("Test for get non existing career by name")

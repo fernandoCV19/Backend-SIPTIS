@@ -30,7 +30,7 @@ public class AreaServiceImpl implements AreaService {
         if (answer != null)
             return answer;
         Area area = new Area();
-        area.setName(dto.getName());
+        area.setName(dto.getName().toUpperCase());
         areaRepository.save(area);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.AREA_CREATED).data(area).build();
     }
@@ -38,7 +38,7 @@ public class AreaServiceImpl implements AreaService {
     private ServiceAnswer validateCreateArea(String name) {
         if (name == null || name.length() < 2)
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.INVALID_AREA_NAME).build();
-        if (areaRepository.existsAreaByName(name))
+        if (areaRepository.existsAreaByName(name.toUpperCase()))
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.AREA_ALREADY_EXIST).data(null).build();
         return null;
     }
