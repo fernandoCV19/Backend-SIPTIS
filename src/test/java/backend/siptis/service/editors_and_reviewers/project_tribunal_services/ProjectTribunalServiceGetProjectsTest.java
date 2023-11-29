@@ -1,8 +1,7 @@
-package backend.siptis.service.editorsAndReviewers.projectTribunalServices;
+package backend.siptis.service.editors_and_reviewers.project_tribunal_services;
 
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.service.editors_and_reviewers.project_tribunal_services.ProjectTribunalServiceGetProjects;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

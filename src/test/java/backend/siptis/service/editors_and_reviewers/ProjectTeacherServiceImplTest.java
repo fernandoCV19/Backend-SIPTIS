@@ -1,7 +1,6 @@
-package backend.siptis.service.editorsAndReviewers;
+package backend.siptis.service.editors_and_reviewers;
 
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.service.editors_and_reviewers.ProjectTeacherService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

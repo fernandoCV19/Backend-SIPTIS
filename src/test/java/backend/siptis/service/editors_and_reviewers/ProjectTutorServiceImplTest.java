@@ -1,7 +1,6 @@
-package backend.siptis.service.editorsAndReviewers;
+package backend.siptis.service.editors_and_reviewers;
 
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.service.editors_and_reviewers.ProjectTutorServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,10 +14,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 class ProjectTutorServiceImplTest {
 
-    private final ProjectTutorServiceImpl projectTutorService;
+    private final ProjectTutorService projectTutorService;
 
     @Autowired
-    public ProjectTutorServiceImplTest(ProjectTutorServiceImpl projectTutorService) {
+    public ProjectTutorServiceImplTest(ProjectTutorService projectTutorService) {
         this.projectTutorService = projectTutorService;
     }
 
@@ -80,9 +79,5 @@ class ProjectTutorServiceImplTest {
     void givenAcceptedProjectIdWhenAcceptProjectThenServiceAnswerProjectHasAlreadyBeenAccepted() {
         ServiceMessage message = projectTutorService.acceptProject(131L, 101L).getServiceMessage();
         assertEquals(ServiceMessage.PROJECT_HAS_ALREADY_BEEN_ACCEPTED, message);
-    }
-
-    @Test
-    void getAllTutorProject() {
     }
 }
