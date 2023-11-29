@@ -1,17 +1,9 @@
 package backend.siptis.service.user_data;
 
-import backend.siptis.commons.ServiceAnswer;
-import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.general_information.user_area.CreateAreaDTO;
 import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.Rollback;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional

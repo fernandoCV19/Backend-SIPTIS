@@ -84,7 +84,7 @@ public class ProjectServiceGetProjects {
         List<Project> projects = projectRepository.findAll();
         List<ProjectCompleteInfoVO> withDefense = projects
                 .stream()
-                .filter(project -> project.getPhase().equals(PhaseName.DEFENSE_PHASE.toString()))
+                .filter(project -> project.getPhase().equals(PhaseName.DEFENSE_PHASE.toString()) && project.getTotalDefensePoints() == null)
                 .map(ProjectCompleteInfoVO::new)
                 .toList();
 
