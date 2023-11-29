@@ -51,9 +51,11 @@ public class UserAreaServiceImpl implements UserAreaService {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.AREA_NOT_FOUND).build();
         }
         UserArea area = areaOptional.get();
-        if (!area.getSiptisUsers().isEmpty()) {
-            return ServiceAnswer.builder()
-                    .serviceMessage(ServiceMessage.CANNOT_DELETE_AREA).build();
+        if (area.getSiptisUsers() != null) {
+            if (!area.getSiptisUsers().isEmpty()) {
+                return ServiceAnswer.builder()
+                        .serviceMessage(ServiceMessage.CANNOT_DELETE_AREA).build();
+            }
         }
         return null;
 
