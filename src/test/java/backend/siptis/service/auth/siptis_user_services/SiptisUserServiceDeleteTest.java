@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.jdbc.Sql;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -19,7 +20,7 @@ class SiptisUserServiceDeleteTest {
     private SiptisUserServiceDelete siptisUserServiceDelete;
 
     @Test
-    @DisplayName("test for delete user by id")
+    @DisplayName("test for delete user by wrong id")
     void givenUserIdWhenDeleteUserThenServiceMessageID_DOES_NOT_EXIST() {
         ServiceAnswer answer = siptisUserServiceDelete.deleteUser(123L);
         assertEquals(ServiceMessage.ID_DOES_NOT_EXIST, answer.getServiceMessage());

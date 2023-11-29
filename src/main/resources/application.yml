@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/siptis
     username: postgres
-    password: postgres
+    password: 123
     driver-class-name: org.postgresql.Driver
   servlet:
     multipart:
@@ -84,8 +84,10 @@ feign:
 
 application:
   name: SIPTIS
+
   gateway:
     chatAPI: http://localhost:3000/
+    client: http://localhost:5173
 
 springdoc:
   api-docs:

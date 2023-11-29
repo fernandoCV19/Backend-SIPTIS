@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.jdbc.Sql;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,8 +28,10 @@ class SiptisUserServiceAdminOperationsTest {
     }
 
     @Test
+    @Rollback
+    @DisplayName("test register admin with already existing email")
     @Sql(scripts = {"/custom_imports/create_users.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    void given_WhenRegisterAdmin_ThenServiceMessageEMAIL_ALREADY_EXIST() {
+    void givenAdminDTO_WhenRegisterAdmin_ThenServiceMessageEMAIL_ALREADY_EXIST() {
         startAdminDTO();
         ServiceAnswer answer = siptisUserServiceAdminOperations.registerAdmin(registerAdminDTO);
         assertEquals(ServiceMessage.EMAIL_ALREADY_EXIST, answer.getServiceMessage());

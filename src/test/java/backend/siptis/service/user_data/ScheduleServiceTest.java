@@ -6,6 +6,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.jdbc.Sql;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -20,6 +22,5 @@ class ScheduleServiceTest {
         ServiceAnswer answer = scheduleService.getAllSchedulesFromAProject(1L);
         assertEquals(ServiceMessage.ID_DOES_NOT_EXIST, answer.getServiceMessage());
     }
-
 
 }

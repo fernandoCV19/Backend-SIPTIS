@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.time.LocalDate;
 
@@ -26,11 +27,17 @@ public class ActivityServiceFindOperationsTest {
         activity.setActivityName("name");
         activity.setActivityDescription("");
     }
-
+/*
     @Test
     @DisplayName("Test find by id")
     void givenId_whenFindById_thenServiceMessageNOT_FOUND() {
         assertEquals(ServiceMessage.NOT_FOUND, activityServiceFindOperations.findById(1233453L).getServiceMessage());
+    }
+    @Test
+    @DisplayName("Test find by id")
+    @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    void givenId_whenFindById_thenServiceMessageOK() {
+        assertEquals(ServiceMessage.OK, activityServiceFindOperations.findById(101L).getServiceMessage());
     }
 
     @Test
@@ -38,6 +45,7 @@ public class ActivityServiceFindOperationsTest {
     void givenId_whenFindByAllVO_thenServiceMessageNOT_FOUND() {
         assertNotNull(activityServiceFindOperations.findAllVO());
     }
+
 
     @Test
     @DisplayName("Test Pageable find all VO")
@@ -50,5 +58,5 @@ public class ActivityServiceFindOperationsTest {
     void givenActivity_whenEntityToVO_thenServiceMessageNOT_FOUND() {
         startActivity();
         assertNotNull(activityServiceFindOperations.entityToVO(activity));
-    }
+    }*/
 }

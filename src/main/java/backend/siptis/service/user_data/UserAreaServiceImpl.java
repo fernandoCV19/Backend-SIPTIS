@@ -32,7 +32,7 @@ public class UserAreaServiceImpl implements UserAreaService {
             return answer;
         }
         UserArea userArea = new UserArea();
-        userArea.setName(dto.getName());
+        userArea.setName(dto.getName().toUpperCase());
         userAreaRepository.save(userArea);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.AREA_CREATED).data(userArea).build();
     }
@@ -40,7 +40,7 @@ public class UserAreaServiceImpl implements UserAreaService {
     private ServiceAnswer validateCreateUserArea(String name) {
         if (name == null || name.length() < 2)
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.INVALID_AREA_NAME).build();
-        if (userAreaRepository.existsUserAreaByName(name))
+        if (userAreaRepository.existsUserAreaByName(name.toUpperCase()))
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.AREA_ALREADY_EXIST).build();
         return null;
     }
@@ -51,9 +51,11 @@ public class UserAreaServiceImpl implements UserAreaService {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.AREA_NOT_FOUND).build();
         }
         UserArea area = areaOptional.get();
-        if (!area.getSiptisUsers().isEmpty()) {
-            return ServiceAnswer.builder()
-                    .serviceMessage(ServiceMessage.CANNOT_DELETE_AREA).build();
+        if (area.getSiptisUsers() != null) {
+            if (!area.getSiptisUsers().isEmpty()) {
+                return ServiceAnswer.builder()
+                        .serviceMessage(ServiceMessage.CANNOT_DELETE_AREA).build();
+            }
         }
         return null;
 
