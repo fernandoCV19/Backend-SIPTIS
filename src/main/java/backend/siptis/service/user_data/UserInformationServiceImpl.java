@@ -52,6 +52,7 @@ public class UserInformationServiceImpl implements UserInformationService {
 
         UserInformation userInformation = new UserInformation();
         userInformation.setNames(dto.getNames());
+        userInformation.setFullName(dto.getNames()+" "+dto.getLastnames());
         userInformation.setLastNames(dto.getLastnames());
         userInformation.setFullName(dto.getNames() + " " + dto.getLastnames());
         userInformation.setCi(dto.getCi());

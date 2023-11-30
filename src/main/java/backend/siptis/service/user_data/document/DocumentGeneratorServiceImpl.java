@@ -4,11 +4,14 @@ import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.DocumentType;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
+import backend.siptis.model.entity.defense_management.Defense;
+import backend.siptis.model.entity.defense_management.PlaceToDefense;
 import backend.siptis.model.entity.editors_and_reviewers.*;
 import backend.siptis.model.entity.project_management.Project;
 import backend.siptis.model.entity.user_data.Document;
 import backend.siptis.model.entity.user_data.UserCareer;
 import backend.siptis.model.entity.user_data.UserInformation;
+import backend.siptis.model.pjo.dto.document.ActRequestDTO;
 import backend.siptis.model.pjo.dto.document.DocumentaryRecordDto;
 import backend.siptis.model.pjo.dto.document.LetterGenerationRequestDTO;
 import backend.siptis.model.pjo.dto.document.ReportDocumentDTO;
@@ -30,7 +33,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -466,6 +471,60 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
             }
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
         } catch (Exception e) {
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
+        }
+    }
+
+    @Override
+    public ServiceAnswer generateDefenseAct(ActRequestDTO dto) {
+        try{
+            LetterTool letterTool = new LetterTool();
+            Optional<Project> projectOptional = projectRepository.findById(dto.getProjectId());
+            if (projectOptional.isEmpty())
+                return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
+            Project project = projectOptional.get();
+            Defense defense = project.getDefense();
+            if (defense == null)
+                return ServiceAnswer.builder().serviceMessage(ServiceMessage.DEFENSE_NOT_FOUND).data(null).build();
+            LocalDate date = defense.getDate();
+            LocalTime startTime = defense.getStartTime();
+            LocalTime endTime = defense.getEndTime();
+            PlaceToDefense placeToDefense = defense.getPlaceToDefense();
+            if (placeToDefense == null)
+                return ServiceAnswer.builder().serviceMessage(ServiceMessage.DEFENSE_NOT_FOUND).data(null).build();
+            String place = placeToDefense.getName();
+            String projectName = project.getName();
+            Collection<ProjectStudent> students = project.getStudents();
+            String key = "";
+            Collection<ProjectTribunal> tribunals = project.getTribunals();
+            for (ProjectStudent projectStudent : students) {
+                Set<UserCareer> career = projectStudent.getStudent().getCareer();
+                String careerName = career.iterator().next().getName();
+                String directorName = siptisUserServiceCareerDirectorOperations.getCareerDirectorName(careerName);
+                if (directorName == null)
+                    return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_CURRENT_DIRECTOR).data(null).build();
+                String studentName = projectStudent.getStudent().getFullName();
+                String filename = letterTool.generateDefenseAct(
+                        studentName, dto.getPresidentName(), "INFORMATICA",
+                        projectName,tribunals, dto.getDeanName(), date, startTime, endTime,
+                        place, project.getTotalDefensePoints().intValue());
+                key = nube.uploadActToCloud(filename, projectName);
+                Document document;
+                Optional<Document> oDocument = documentRepository.findDocumentByPath(key);
+                if (oDocument.isEmpty()) {
+                    document = new Document();
+                } else {
+                    document = oDocument.get();
+                }
+                document.setPath(key);
+                document.setType(DocumentType.ACT.toString());
+                document.setDescription("Acta de defensa.");
+                document.setDate(LocalDateTime.now());
+                document.setSiptisUser(projectStudent.getStudent());
+                documentRepository.save(document);
+            }
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data("").build();
+        }catch (Exception e){
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
         }
     }

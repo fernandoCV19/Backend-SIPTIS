@@ -22,4 +22,6 @@ public interface CloudManagementService {
     String uploadDocumentToCloud(String filename);
 
     String uploadLetterToCloud(String filename, String projectName);
+
+    String uploadActToCloud(String filename, String projectName);
 }

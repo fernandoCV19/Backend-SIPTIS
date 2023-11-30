@@ -3,6 +3,7 @@ package backend.siptis.controller.user_data;
 import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
+import backend.siptis.model.pjo.dto.document.ActRequestDTO;
 import backend.siptis.model.pjo.dto.document.DocumentaryRecordDto;
 import backend.siptis.model.pjo.dto.document.LetterGenerationRequestDTO;
 import backend.siptis.model.pjo.dto.document.ReportDocumentDTO;
@@ -106,6 +107,13 @@ public class DocumentController {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     ResponseEntity<ControllerAnswer> createSupervisorTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) {
         return createResponseEntity(documentGeneratorService.supervisorTribunalRequest(dto));
+    }
+
+    @Operation(summary = "Create defense act")
+    @PostMapping("/create-defense-act")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
+    ResponseEntity<ControllerAnswer> createDefenseAct(@RequestBody ActRequestDTO dto) {
+        return createResponseEntity(documentGeneratorService.generateDefenseAct(dto));
     }
 
     private ResponseEntity<ControllerAnswer> createResponseEntity(ServiceAnswer serviceAnswer) {

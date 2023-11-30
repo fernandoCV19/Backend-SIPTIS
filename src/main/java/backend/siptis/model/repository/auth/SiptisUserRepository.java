@@ -60,6 +60,18 @@ public interface SiptisUserRepository extends JpaRepository<SiptisUser, Long> {
             " ORDER BY ui.last_names_ ASC", nativeQuery = true)
     Page<UserListItemDTO> searchUserList(String searchName, String roleName, Pageable pageable);
 
+    @Query(value = "SELECT su.id_ as id, ui.names_ as names, ui.last_names_ as lastNames, " +
+            " su.email_ as email, ui.cod_sis_ as codSIS  " +
+            " FROM siptis_user_ su " +
+            " JOIN user_information_ ui ON ui.user_id_ = su.id_ " +
+            " JOIN siptis_user_role_ sur ON sur.siptis_user_id_ = su.id_ " +
+            " JOIN role_ role ON role.id_ = sur.role_id_ " +
+            " LEFT JOIN project_student_ pu ON pu.user_id_ = su.id_ " +
+            " WHERE role.name_ = 'STUDENT' AND pu.user_id_ IS NULL " +
+            " AND ( LOWER( ui.names_ ) LIKE LOWER( CONCAT( '%', :searchName, '%')) " +
+            " OR LOWER( ui.last_names_ ) LIKE LOWER( CONCAT( '%', :searchName, '%') ))" +
+            " ORDER BY ui.last_names_ ASC", nativeQuery = true)
+    Page<UserListItemDTO> searchAvailableStudentsList(String searchName,  Pageable pageable);
 
     @Query(value = "SELECT DISTINCT su.id_ as id, ui.names_ as names, ui.last_names_ as lastNames, su.email_ as email" +
             " FROM user_information_ ui" +

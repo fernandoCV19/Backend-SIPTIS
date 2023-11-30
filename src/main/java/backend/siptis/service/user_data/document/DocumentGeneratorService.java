@@ -1,6 +1,7 @@
 package backend.siptis.service.user_data.document;
 
 import backend.siptis.commons.ServiceAnswer;
+import backend.siptis.model.pjo.dto.document.ActRequestDTO;
 import backend.siptis.model.pjo.dto.document.DocumentaryRecordDto;
 import backend.siptis.model.pjo.dto.document.LetterGenerationRequestDTO;
 import backend.siptis.model.pjo.dto.document.ReportDocumentDTO;
@@ -30,4 +31,5 @@ public interface DocumentGeneratorService {
 
     ServiceAnswer generateTribunalApproval(LetterGenerationRequestDTO dto) throws IOException;
 
+    ServiceAnswer generateDefenseAct(ActRequestDTO dto);
 }

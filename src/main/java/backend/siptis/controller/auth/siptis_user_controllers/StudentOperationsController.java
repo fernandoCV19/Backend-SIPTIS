@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -45,6 +46,14 @@ public class StudentOperationsController {
     public ResponseEntity<ControllerAnswer> getStudentsInCareer(@PathVariable String careerName) {
         ServiceAnswer answerService =
                 siptisUserServiceStudentOperations.getNumberStudentsCareer(careerName);
+        return createResponseEntity(answerService);
+    }
+
+    @Operation(summary = "get available students for register a new project")
+    @GetMapping("/list/availableStudents")
+    public ResponseEntity<ControllerAnswer> getAvailableStudents(String search, Pageable pageable) {
+        ServiceAnswer answerService =
+                siptisUserServiceStudentOperations.getAvailableStudents(search, pageable);
         return createResponseEntity(answerService);
     }
 
