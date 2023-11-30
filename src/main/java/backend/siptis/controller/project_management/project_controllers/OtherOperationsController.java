@@ -56,7 +56,7 @@ public class OtherOperationsController {
 
     @Operation(summary = "Get involved people by project id")
     @GetMapping("/getInvolvedPeople/{projectId}")
-    @PreAuthorize("hasAnyAuthority('TUTOR','TRIBUNAL','SUPERVISOR','TEACHER')")
+    @PreAuthorize("hasAnyAuthority('TUTOR','TRIBUNAL','SUPERVISOR','TEACHER','ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<ControllerAnswer> getInvolvedPeople(@PathVariable("projectId") Long projectId) {
         ServiceAnswer serviceAnswer = projectServiceOtherOperations.getInvolvedPeople(projectId);
         HttpStatus httpStatus = HttpStatus.OK;

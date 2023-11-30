@@ -25,7 +25,7 @@ public class ModifyProjectTribunalsController {
 
     @Operation(summary = "Remove tribunals from a project with project id")
     @DeleteMapping("/removeTribunals/{id}")
-    @PreAuthorize("hasAnyAuthority('TRIBUNAL')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<ControllerAnswer> removeTribunalsFromAProject(@PathVariable("id") Long projectId) {
         ServiceAnswer serviceAnswer = projectTribunalServiceModifyProjectTribunals.removeTribunals(projectId);
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
@@ -38,7 +38,7 @@ public class ModifyProjectTribunalsController {
 
     @Operation(summary = "Assign tribunals to a project with project id")
     @PostMapping("/assignTribunals")
-    @PreAuthorize("hasAnyAuthority('TRIBUNAL')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<ControllerAnswer> assignTribunal(@RequestBody AssignTribunalsDTO assignTribunalsDTO) {
         ServiceAnswer serviceAnswer = projectTribunalServiceModifyProjectTribunals.assignTribunals(assignTribunalsDTO);
         HttpStatus httpStatus = HttpStatus.OK;

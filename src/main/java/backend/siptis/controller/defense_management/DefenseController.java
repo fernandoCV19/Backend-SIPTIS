@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = ControllerConstants.Defense.TAG_NAME, description = ControllerConstants.Defense.TAG_DESCRIPTION)
@@ -36,6 +37,7 @@ public class DefenseController {
 
     @Operation(summary = "Create a new defense")
     @PostMapping("/createDefense")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<ControllerAnswer> createDefense(@RequestBody DefenseDTO defenseDTO) {
         ServiceAnswer serviceAnswer = defenseService.registerDefense(defenseDTO);
         HttpStatus httpStatus = HttpStatus.OK;
@@ -48,6 +50,7 @@ public class DefenseController {
 
     @Operation(summary = "Remove a defense")
     @DeleteMapping("/removeDefense/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<ControllerAnswer> removeDefenseFromAProject(@PathVariable("id") Long projectId) {
         ServiceAnswer serviceAnswer = defenseService.removeDefense(projectId);
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
