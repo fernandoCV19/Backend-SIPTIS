@@ -22,7 +22,7 @@ public class ProjectGetProjectsController {
 
     private final ProjectServiceGetProjects projectServiceGetProjects;
 
-    @Operation(summary = "Search paginated projets by name")
+    @Operation(summary = "Search paginated projects by name")
     @GetMapping("/projectList")
     public ResponseEntity<ControllerAnswer> searchProjects(String search, Pageable pageable) {
         ServiceAnswer serviceAnswer = projectServiceGetProjects.getProjectsList(search, pageable);
@@ -34,7 +34,7 @@ public class ProjectGetProjectsController {
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
 
-    @Operation(summary = "Get all proyects")
+    @Operation(summary = "Get all projects")
     @GetMapping("/")
     public ResponseEntity<ControllerAnswer> getProjects() {
         ServiceAnswer serviceAnswer = projectServiceGetProjects.getProjects();
@@ -46,7 +46,7 @@ public class ProjectGetProjectsController {
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
 
-    @Operation(summary = "Get projects to defense or defeneded by tribunal id")
+    @Operation(summary = "Get projects to defense or defended by tribunal id")
     @GetMapping("/defenses/{tribunalID}")
     public ResponseEntity<ControllerAnswer> getProjectsToDefenseOrDefended(@PathVariable("tribunalID") Long tribunalID) {
         ServiceAnswer serviceAnswer = projectServiceGetProjects.getProjectsToDefenseOrDefended(tribunalID);
@@ -58,7 +58,7 @@ public class ProjectGetProjectsController {
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
 
-    @Operation(summary = "Get projets all project on tribunal phase")
+    @Operation(summary = "Get projects all project on tribunal phase")
     @GetMapping("/withAndWithoutTribunals")
     public ResponseEntity<ControllerAnswer> getProjectsWithAndWithoutTribunals() {
         ServiceAnswer serviceAnswer = projectServiceGetProjects.getProjectsWithoutAndWithTribunals();
