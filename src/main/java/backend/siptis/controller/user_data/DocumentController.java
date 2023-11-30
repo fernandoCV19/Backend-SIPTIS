@@ -102,7 +102,7 @@ public class DocumentController {
     @Operation(summary = "Create tutor approval letter")
     @PostMapping("/create-tutor-approval-letter")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
-    ResponseEntity<ControllerAnswer> createTutorTribunalRequest(@RequestBody LetterGenerationRequestDTO dto){
+    ResponseEntity<ControllerAnswer> createTutorTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) {
         return createResponseEntity(documentGeneratorService.tutorTribunalRequest(dto));
     }
 
