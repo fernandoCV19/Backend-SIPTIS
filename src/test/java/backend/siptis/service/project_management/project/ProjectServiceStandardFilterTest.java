@@ -7,7 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @SpringBootTest
 @Transactional
 @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -19,6 +20,7 @@ class ProjectServiceStandardFilterTest {
     public ProjectServiceStandardFilterTest(ProjectServiceStandardFilter projectServiceStandardFilter) {
         this.projectServiceStandardFilter = projectServiceStandardFilter;
     }
+
     @Test
     void givenValidFilterWhenGetProjectsWithStandardFilterThenServiceMessageOk() {
         ServiceMessage sm = projectServiceStandardFilter.getProjectsWithStandardFilter(0, 10, "Proyecto", "2021-1").getServiceMessage();

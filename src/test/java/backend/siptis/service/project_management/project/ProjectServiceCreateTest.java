@@ -2,7 +2,6 @@ package backend.siptis.service.project_management.project;
 
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.project_management.NewProjectDTO;
-import backend.siptis.service.project_management.project.ProjectServiceCreate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @Transactional
@@ -23,52 +23,53 @@ class ProjectServiceGetProjectInfoTest {
 
 
     @Test
-    void givenValidIdProjectandIdReviwerWhenGetProjectInfoToReviewThenServiceMessageNoPresentation(){
+    void givenValidIdProjectandIdReviwerWhenGetProjectInfoToReviewThenServiceMessageNoPresentation() {
         ServiceMessage sm = projectServiceGetProjectInfo.getProjectInfoToReview(102L, 140L).getServiceMessage();
         assertEquals(ServiceMessage.THERE_IS_NO_PRESENTATION_YET, sm);
     }
 
     @Test
-    void givenInvalidProjectIdWhenGetProjectInfoToReviewThenServiceMessageERROR(){
+    void givenInvalidProjectIdWhenGetProjectInfoToReviewThenServiceMessageERROR() {
         ServiceMessage sm = projectServiceGetProjectInfo.getProjectInfoToReview(100L, 101L).getServiceMessage();
         assertEquals(ServiceMessage.ID_REVIEWER_DOES_NOT_MATCH_WITH_PROJECT, sm);
     }
 
     @Test
-    void givenInvalidReviwerIdWhenGetProjectInfoToReviewThenServiceMessageUserDoesNotExist(){
+    void givenInvalidReviwerIdWhenGetProjectInfoToReviewThenServiceMessageUserDoesNotExist() {
         ServiceMessage sm = projectServiceGetProjectInfo.getProjectInfoToReview(101L, 1L).getServiceMessage();
         assertEquals(ServiceMessage.USER_ID_DOES_NOT_EXIST, sm);
     }
 
     @Test
-    void givenNoMatchProjectAndReviwerIdWHenGetProjectInfoToReviewThenServiceMessageNotMatch(){
+    void givenNoMatchProjectAndReviwerIdWHenGetProjectInfoToReviewThenServiceMessageNotMatch() {
         ServiceMessage sm = projectServiceGetProjectInfo.getProjectInfoToReview(1L, 1L).getServiceMessage();
         assertEquals(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST, sm);
     }
 
     @Test
-    void givenValidIdProjectWhenGetProjectInfoToAssignTribunalsThenServiceMessageOk(){
+    void givenValidIdProjectWhenGetProjectInfoToAssignTribunalsThenServiceMessageOk() {
         ServiceMessage sm = projectServiceGetProjectInfo.getProjectInfoToAssignTribunals(100L).getServiceMessage();
         assertEquals(ServiceMessage.OK, sm);
     }
 
     @Test
-    void givenInvalidProjectIdWhenGetProjectInfoToAssignTribunalsThenServiceMessageProjectDoesNotExist(){
+    void givenInvalidProjectIdWhenGetProjectInfoToAssignTribunalsThenServiceMessageProjectDoesNotExist() {
         ServiceMessage sm = projectServiceGetProjectInfo.getProjectInfoToAssignTribunals(1L).getServiceMessage();
         assertEquals(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST, sm);
     }
 
     @Test
-    void givenValidIdProjectWhenGetProjectInfoThenServiceMessageOk(){
+    void givenValidIdProjectWhenGetProjectInfoThenServiceMessageOk() {
         ServiceMessage sm = projectServiceGetProjectInfo.getProjectInfoToAssignTribunals(100L).getServiceMessage();
         assertEquals(ServiceMessage.OK, sm);
     }
 
     @Test
-    void givenInvalidProjectIdWhenGetProjectInfoThenServiceMessageIdDoesNotExist(){
+    void givenInvalidProjectIdWhenGetProjectInfoThenServiceMessageIdDoesNotExist() {
         ServiceMessage sm = projectServiceGetProjectInfo.getProjectInfoToAssignTribunals(1L).getServiceMessage();
         assertEquals(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST, sm);
     }
+
     @Test
     void givenValidProjectIdWhenGetAllProjectInfoThenServiceMessageOk() {
         ServiceMessage sm = projectServiceGetProjectInfo.getProjectInfo(100L).getServiceMessage();

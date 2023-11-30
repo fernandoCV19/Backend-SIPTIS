@@ -8,7 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @SpringBootTest
 @Transactional
 @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -25,7 +26,7 @@ class ProjectServiceGetProjectsTest {
     void whenGetProjectsThenServiceMessageOk() {
         assertEquals(ServiceMessage.OK, projectsServiceGetProjects.getProjects().getServiceMessage());
     }
-    
+
 
     @Test
     void givenAProjectNameAnsPageableObjectWhenGetProjectsListThenServiceMessageOk() {
@@ -44,6 +45,7 @@ class ProjectServiceGetProjectsTest {
         ServiceMessage sm = projectsServiceGetProjects.getProjectsToDefenseOrDefended(1L).getServiceMessage();
         assertEquals(ServiceMessage.USER_ID_DOES_NOT_EXIST, sm);
     }
+
     @Test
     void whenGetProjectsWithoutAndWithTribunalsThenServiceMessageOk() {
         ServiceMessage sm = projectsServiceGetProjects.getProjectsWithoutAndWithTribunals().getServiceMessage();

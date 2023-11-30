@@ -477,7 +477,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
 
     @Override
     public ServiceAnswer generateDefenseAct(ActRequestDTO dto) {
-        try{
+        try {
             LetterTool letterTool = new LetterTool();
             Optional<Project> projectOptional = projectRepository.findById(dto.getProjectId());
             if (projectOptional.isEmpty())
@@ -506,7 +506,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
                 String studentName = projectStudent.getStudent().getFullName();
                 String filename = letterTool.generateDefenseAct(
                         studentName, dto.getPresidentName(), "INFORMATICA",
-                        projectName,tribunals, dto.getDeanName(), date, startTime, endTime,
+                        projectName, tribunals, dto.getDeanName(), date, startTime, endTime,
                         place, project.getTotalDefensePoints().intValue());
                 key = nube.uploadActToCloud(filename, projectName);
                 Document document;
@@ -524,7 +524,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
                 documentRepository.save(document);
             }
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data("").build();
-        }catch (Exception e){
+        } catch (Exception e) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
         }
     }

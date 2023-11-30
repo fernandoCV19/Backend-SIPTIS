@@ -1,7 +1,6 @@
 package backend.siptis.service.project_management.project;
 
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.service.project_management.project.ProjectServiceGetPaginatedProjects;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

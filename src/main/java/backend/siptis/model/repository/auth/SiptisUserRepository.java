@@ -71,7 +71,7 @@ public interface SiptisUserRepository extends JpaRepository<SiptisUser, Long> {
             " AND ( LOWER( ui.names_ ) LIKE LOWER( CONCAT( '%', :searchName, '%')) " +
             " OR LOWER( ui.last_names_ ) LIKE LOWER( CONCAT( '%', :searchName, '%') ))" +
             " ORDER BY ui.last_names_ ASC", nativeQuery = true)
-    Page<UserListItemDTO> searchAvailableStudentsList(String searchName,  Pageable pageable);
+    Page<UserListItemDTO> searchAvailableStudentsList(String searchName, Pageable pageable);
 
     @Query(value = "SELECT DISTINCT su.id_ as id, ui.names_ as names, ui.last_names_ as lastNames, su.email_ as email" +
             " FROM user_information_ ui" +

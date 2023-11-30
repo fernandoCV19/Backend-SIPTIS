@@ -72,6 +72,7 @@ public class SiptisUserServiceStudentOperations {
     public ServiceAnswer getAvailableStudents(String search, Pageable pageable) {
         return createResponse(ServiceMessage.OK, siptisUserRepository.searchAvailableStudentsList(search, pageable));
     }
+
     public ServiceAnswer getNumberOfStudentsByYearAndCareer(String careerName) {
         Optional<UserCareer> oUserCareer = userCareerRepository.findByName(careerName.toUpperCase());
         if (oUserCareer.isEmpty())

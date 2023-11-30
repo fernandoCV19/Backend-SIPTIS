@@ -10,7 +10,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @Transactional
@@ -41,12 +41,12 @@ class AreaServiceImplTest {
         assertEquals(ServiceMessage.AREA_CREATED, areaService.createArea(CREATE_AREA_DTO).getServiceMessage());
     }
 
-     @Test
-     @Rollback
-     void givenInvalidDTOWhenCreateAreaThenServiceMessageInvalidName() {
-         CREATE_AREA_DTO.setName(null);
-         assertEquals(ServiceMessage.INVALID_AREA_NAME, areaService.createArea(CREATE_AREA_DTO).getServiceMessage());
-     }
+    @Test
+    @Rollback
+    void givenInvalidDTOWhenCreateAreaThenServiceMessageInvalidName() {
+        CREATE_AREA_DTO.setName(null);
+        assertEquals(ServiceMessage.INVALID_AREA_NAME, areaService.createArea(CREATE_AREA_DTO).getServiceMessage());
+    }
 
     @Test
     @Rollback
