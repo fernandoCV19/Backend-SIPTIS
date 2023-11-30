@@ -34,7 +34,7 @@ public class AdminOperationsController {
 
     @Operation(summary = "Register a new user with ADMIN role")
     @PostMapping("/register/admin")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<ControllerAnswer> registerAdmin(@Valid @RequestBody RegisterAdminDTO dto) {
         ServiceAnswer admin = siptisUserServiceAdminOperations.registerAdmin(dto);
         return createResponseEntity(admin);
@@ -42,7 +42,7 @@ public class AdminOperationsController {
 
     @Operation(summary = "Get list of users with ADMIN role")
     @GetMapping("/list/admins")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'STUDENT')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<ControllerAnswer> getAdminList(String search, Pageable pageable) {
         ServiceAnswer answerService =
                 siptisUserServiceAdminOperations.getAdminUserList(search, pageable);
@@ -51,7 +51,7 @@ public class AdminOperationsController {
 
     @Operation(summary = "Edit information of other user")
     @PutMapping("/editUserInformation/{userId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<ControllerAnswer> editUser(
             @PathVariable int userId,
             @Valid @RequestBody AdminEditUserInformationDTO dto) {

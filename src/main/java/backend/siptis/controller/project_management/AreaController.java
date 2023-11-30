@@ -41,7 +41,7 @@ public class AreaController {
 
     @Operation(summary = "Create a new area")
     @PostMapping("/createArea")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<ControllerAnswer> createArea(@Valid @RequestBody CreateAreaDTO dto) {
         ServiceAnswer answerService = areaService.createArea(dto);
         return createResponseEntity(answerService);
@@ -49,7 +49,7 @@ public class AreaController {
 
     @Operation(summary = "Delete an area by id")
     @DeleteMapping("/deleteArea/{areaId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<ControllerAnswer> deleteArea(@PathVariable int areaId) {
         Long id = Long.valueOf(areaId);
         ServiceAnswer answerService = areaService.deleteArea(id);

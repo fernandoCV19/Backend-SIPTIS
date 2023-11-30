@@ -41,7 +41,7 @@ public class SubAreaController {
 
     @Operation(summary = "Create a new sub area")
     @PostMapping("/createSubArea")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<ControllerAnswer> createSubArea(
             @Valid @RequestBody CreateAreaDTO dto) {
         ServiceAnswer answerService = subAreaService.createSubArea(dto);
@@ -50,7 +50,7 @@ public class SubAreaController {
 
     @Operation(summary = "Delete an sub area by id")
     @DeleteMapping("/deleteSubArea/{userId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<ControllerAnswer> deleteArea(@PathVariable int userId) {
         Long id = Long.valueOf(userId);
         ServiceAnswer answerService = subAreaService.deleteSubArea(id);

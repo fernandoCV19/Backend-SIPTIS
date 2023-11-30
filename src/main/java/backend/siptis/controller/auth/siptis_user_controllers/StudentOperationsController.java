@@ -35,7 +35,7 @@ public class StudentOperationsController {
 
     @Operation(summary = "Register user with STUDENT role")
     @PostMapping("/register/student")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<ControllerAnswer> registerStudent(@Valid @RequestBody RegisterStudentDTO dto) {
         ServiceAnswer student = siptisUserServiceStudentOperations.registerStudent(dto);
         return createResponseEntity(student);
@@ -51,6 +51,7 @@ public class StudentOperationsController {
 
     @Operation(summary = "get available students for register a new project")
     @GetMapping("/list/availableStudents")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<ControllerAnswer> getAvailableStudents(String search, Pageable pageable) {
         ServiceAnswer answerService =
                 siptisUserServiceStudentOperations.getAvailableStudents(search, pageable);

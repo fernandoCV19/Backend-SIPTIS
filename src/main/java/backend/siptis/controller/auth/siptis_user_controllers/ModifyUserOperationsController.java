@@ -36,7 +36,7 @@ public class ModifyUserOperationsController {
 
     @Operation(summary = "Register general user")
     @PostMapping("/register/general")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<ControllerAnswer> registerUser(@Valid @RequestBody RegisterUserDTO dto) {
         ServiceAnswer user = siptisUserServiceModifyUserOperations.registerUser(dto);
         return createResponseEntity(user);
