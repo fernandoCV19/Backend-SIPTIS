@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,6 +26,7 @@ public class ReviewController {
 
     @Operation(summary = "Create a review")
     @PostMapping(value = "/createReview", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasAnyAuthority('TUTOR','TRIBUNAL','SUPERVISOR','TEACHER')")
     ResponseEntity<ControllerAnswer> attachFile(@RequestParam Long projectId, @RequestParam Long userId, @RequestParam MultipartFile file, @RequestParam String commentary) {
         ServiceAnswer serviceAnswer = reviewService.addReview(projectId, userId, file, commentary);
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;

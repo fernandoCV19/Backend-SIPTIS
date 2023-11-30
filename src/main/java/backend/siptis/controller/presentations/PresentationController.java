@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -40,6 +41,7 @@ public class PresentationController {
 
     @Operation(summary = "Get reviews from a presentation")
     @GetMapping("/reviews/{presentationId}")
+    @PreAuthorize("hasAnyAuthority('TUTOR','TRIBUNAL','SUPERVISOR','TEACHER')")
     ResponseEntity<ControllerAnswer> getReviewsFromPresentation(@PathVariable("presentationId") Long presentationId) {
         ServiceAnswer serviceAnswer = presentationService.getReviewsFromAPresentation(presentationId);
         return createResponseEntity(serviceAnswer);
@@ -54,6 +56,7 @@ public class PresentationController {
 
     @Operation(summary = "Get last reviews from a presentation")
     @GetMapping("/getLastReviews/{id}")
+    @PreAuthorize("hasAnyAuthority('TUTOR','TRIBUNAL','SUPERVISOR','TEACHER')")
     ResponseEntity<ControllerAnswer> getLastReviews(@PathVariable("id") Long projectId) {
         ServiceAnswer serviceAnswer = presentationService.getReviewsFromLastPresentation(projectId);
         HttpStatus httpStatus = HttpStatus.OK;
