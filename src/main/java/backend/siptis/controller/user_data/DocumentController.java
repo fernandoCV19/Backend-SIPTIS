@@ -12,6 +12,7 @@ import backend.siptis.service.user_data.document.DocumentGeneratorServiceImpl;
 import backend.siptis.utils.constant.controller_constans.ControllerConstants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -68,21 +69,21 @@ public class DocumentController {
     @Operation(summary = "Create tribunal approval letter")
     @PostMapping("/create-tribunal-approval")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
-    ResponseEntity<ControllerAnswer> createTribunalApproval(@RequestBody LetterGenerationRequestDTO dto) {
+    ResponseEntity<ControllerAnswer> createTribunalApproval(@RequestBody @Valid LetterGenerationRequestDTO dto) {
         return createResponseEntity(documentGeneratorService.generateTribunalApproval(dto));
     }
 
     @Operation(summary = "Create teacher approval letter")
     @PostMapping("/create-teacher-approval-letter")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
-    ResponseEntity<ControllerAnswer> createTeacherTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) {
+    ResponseEntity<ControllerAnswer> createTeacherTribunalRequest(@RequestBody @Valid LetterGenerationRequestDTO dto) {
         return createResponseEntity(documentGeneratorService.teacherTribunalRequest(dto));
     }
 
     @Operation(summary = "Create student's tribunal request letter")
     @PostMapping("/create-student-tribunal-request")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
-    ResponseEntity<ControllerAnswer> createStudentTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) {
+    ResponseEntity<ControllerAnswer> createStudentTribunalRequest(@RequestBody @Valid LetterGenerationRequestDTO dto) {
         return createResponseEntity(documentGeneratorService.studentTribunalRequest(dto));
     }
 
@@ -98,21 +99,21 @@ public class DocumentController {
     @Operation(summary = "Create tutor approval letter")
     @PostMapping("/create-tutor-approval-letter")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
-    ResponseEntity<ControllerAnswer> createTutorTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) {
+    ResponseEntity<ControllerAnswer> createTutorTribunalRequest(@RequestBody @Valid LetterGenerationRequestDTO dto) {
         return createResponseEntity(documentGeneratorService.tutorTribunalRequest(dto));
     }
 
     @Operation(summary = "Create supervisor approval letter")
     @PostMapping("/create-supervisor-approval-letter")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
-    ResponseEntity<ControllerAnswer> createSupervisorTribunalRequest(@RequestBody LetterGenerationRequestDTO dto) {
+    ResponseEntity<ControllerAnswer> createSupervisorTribunalRequest(@RequestBody @Valid LetterGenerationRequestDTO dto) {
         return createResponseEntity(documentGeneratorService.supervisorTribunalRequest(dto));
     }
 
     @Operation(summary = "Create defense act")
     @PostMapping("/create-defense-act")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
-    ResponseEntity<ControllerAnswer> createDefenseAct(@RequestBody ActRequestDTO dto) {
+    ResponseEntity<ControllerAnswer> createDefenseAct(@RequestBody @Valid ActRequestDTO dto) {
         return createResponseEntity(documentGeneratorService.generateDefenseAct(dto));
     }
 
