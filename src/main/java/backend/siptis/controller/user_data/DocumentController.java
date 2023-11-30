@@ -110,6 +110,7 @@ public class DocumentController {
         return createResponseEntity(documentGeneratorService.supervisorTribunalRequest(dto));
     }
 
+
     @Operation(summary = "Create defense act")
     @PostMapping("/create-defense-act")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
