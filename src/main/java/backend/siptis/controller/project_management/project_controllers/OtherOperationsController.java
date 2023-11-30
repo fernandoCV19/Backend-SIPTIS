@@ -28,6 +28,7 @@ public class OtherOperationsController {
 
     @Operation(summary = "Get project presentations by id")
     @GetMapping("/presentations/{id}")
+    @PreAuthorize("hasAuthority('STUDENT')")
     public ResponseEntity<ControllerAnswer> getPresentationsById(@PathVariable("id") Long projectId) {
         ServiceAnswer serviceAnswer = projectServiceOtherOperations.getPresentations(projectId);
         HttpStatus httpStatus = HttpStatus.OK;
@@ -40,7 +41,7 @@ public class OtherOperationsController {
 
     @Operation(summary = "Get project presentations")
     @GetMapping("/presentations")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR','STUDENT')")
     public ResponseEntity<ControllerAnswer> getPresentations(@RequestHeader(name = "Authorization") String token) {
         List<?> projects = siptisUserServiceTokenOperations.getProjectsFromToken(token);
         int projectId = (int) projects.get(0);

@@ -30,6 +30,7 @@ public class PresentationController {
 
     @Operation(summary = "Create new presentation")
     @PostMapping("/create")
+    @PreAuthorize("hasAuthority('STUDENT')")
     ResponseEntity<ControllerAnswer> create(@RequestHeader(name = "Authorization") String token,
                                             @RequestPart("bluebook") @Nullable MultipartFile bluebook,
                                             @RequestPart("project") @Nullable MultipartFile project) {
@@ -41,7 +42,7 @@ public class PresentationController {
 
     @Operation(summary = "Get reviews from a presentation")
     @GetMapping("/reviews/{presentationId}")
-    @PreAuthorize("hasAnyAuthority('TUTOR','TRIBUNAL','SUPERVISOR','TEACHER')")
+    @PreAuthorize("hasAnyAuthority('TUTOR','TRIBUNAL','SUPERVISOR','TEACHER','STUDENT')")
     ResponseEntity<ControllerAnswer> getReviewsFromPresentation(@PathVariable("presentationId") Long presentationId) {
         ServiceAnswer serviceAnswer = presentationService.getReviewsFromAPresentation(presentationId);
         return createResponseEntity(serviceAnswer);
@@ -49,6 +50,7 @@ public class PresentationController {
 
     @Operation(summary = "Delete a presentation")
     @DeleteMapping("/{presentationId}")
+    @PreAuthorize("hasAuthority('STUDENT')")
     ResponseEntity<ControllerAnswer> deletePresentation(@PathVariable("presentationId") Long presentationId) {
         ServiceAnswer serviceAnswer = presentationService.deletePresentation(presentationId);
         return createResponseEntity(serviceAnswer);
@@ -56,7 +58,7 @@ public class PresentationController {
 
     @Operation(summary = "Get last reviews from a presentation")
     @GetMapping("/getLastReviews/{id}")
-    @PreAuthorize("hasAnyAuthority('TUTOR','TRIBUNAL','SUPERVISOR','TEACHER')")
+    @PreAuthorize("hasAnyAuthority('TUTOR','TRIBUNAL','SUPERVISOR','TEACHER','STUDENT')")
     ResponseEntity<ControllerAnswer> getLastReviews(@PathVariable("id") Long projectId) {
         ServiceAnswer serviceAnswer = presentationService.getReviewsFromLastPresentation(projectId);
         HttpStatus httpStatus = HttpStatus.OK;
