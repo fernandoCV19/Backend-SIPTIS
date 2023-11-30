@@ -16,10 +16,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Transactional
 @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 class UserCareerServiceTest {
-    private UserCareerService userCareerService;
+    private final UserCareerService userCareerService;
 
     @Autowired
-    UserCareerServiceTest(UserCareerService userCareerService){
+    UserCareerServiceTest(UserCareerService userCareerService) {
         this.userCareerService = userCareerService;
     }
 
