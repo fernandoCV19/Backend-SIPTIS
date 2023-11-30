@@ -24,7 +24,7 @@ public class ProjectTeacherController {
 
     @Operation(summary = "Get not accepted projects without teacher review")
     @GetMapping("/notReviewedProjects/{id}")
-    @PreAuthorize("hasAnyAuthority('TEACHER')")
+    @PreAuthorize("hasAuthority('TEACHER')")
     public ResponseEntity<ControllerAnswer> getProjectsWithoutReview(@PathVariable("id") Long id) {
         ServiceAnswer serviceAnswer = projectTeacherService.getAllProjectsNotAcceptedNotReviewedByTeacherId(id);
         return createResponseEntity(serviceAnswer);
@@ -32,7 +32,7 @@ public class ProjectTeacherController {
 
     @Operation(summary = "Get not accepted projects with teacher review")
     @GetMapping("/reviewedProjects/{id}")
-    @PreAuthorize("hasAnyAuthority('TEACHER')")
+    @PreAuthorize("hasAuthority('TEACHER')")
     public ResponseEntity<ControllerAnswer> getReviewedProjects(@PathVariable("id") Long id) {
         ServiceAnswer serviceAnswer = projectTeacherService.getAllProjectsNotAcceptedReviewedByTeacherId(id);
         return createResponseEntity(serviceAnswer);
