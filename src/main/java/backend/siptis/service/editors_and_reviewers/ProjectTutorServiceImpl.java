@@ -80,11 +80,6 @@ public class ProjectTutorServiceImpl implements ProjectTutorService {
         return verifyChangeOfFase(query);
     }
 
-    @Override
-    public ServiceAnswer getAllTutorProject(Long idTutor) {
-        return null;
-    }
-
     private ServiceAnswer verifyChangeOfFase(ProjectTutor query) {
         Project project = query.getProject();
         boolean allReviewersHaveAccepted = project.getSupervisors().stream().allMatch(ProjectSupervisor::getAccepted) &&

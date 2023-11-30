@@ -1,4 +1,4 @@
-package backend.siptis.service.projectManagement.project;
+package backend.siptis.service.project_management.project;
 
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.service.project_management.project.ProjectServiceGetPaginatedProjects;

@@ -10,6 +10,4 @@ public interface ProjectTutorService {
     ServiceAnswer getAllProjectsAcceptedByTutorId(Long id);
 
     ServiceAnswer acceptProject(Long idTutor, Long idProject);
-
-    ServiceAnswer getAllTutorProject(Long idTutor);
 }

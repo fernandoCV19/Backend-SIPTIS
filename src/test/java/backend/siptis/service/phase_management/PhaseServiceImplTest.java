@@ -1,7 +1,6 @@
-package backend.siptis.service.phaseManagement;
+package backend.siptis.service.phase_management;
 
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.service.phase_management.PhaseService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
