@@ -53,7 +53,11 @@ public class ProjectSupervisorServiceImpl implements ProjectSupervisorService {
         }
 
         List<ProjectSupervisor> projectsList = projectSupervisorRepository.findBySupervisorIdAndAcceptedIsTrue(id);
-        return getProjects(projectsList);
+        List<ProjectToHomePageVO> data = projectsList
+                .stream()
+                .map(aux -> new ProjectToHomePageVO(aux.getProject(), aux.getAccepted(), aux.getReviewed()))
+                .toList();
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(data).build();
     }
 
     @Override
@@ -98,6 +102,7 @@ public class ProjectSupervisorServiceImpl implements ProjectSupervisorService {
 
         List<ProjectToHomePageVO> data = projectsList
                 .stream()
+                .filter(projectSupervisor -> projectSupervisor.getProject().getPhase().equals(PhaseName.REVIEWERS_PHASE.toString()))
                 .map(aux -> new ProjectToHomePageVO(aux.getProject(), aux.getAccepted(), aux.getReviewed()))
                 .toList();
 

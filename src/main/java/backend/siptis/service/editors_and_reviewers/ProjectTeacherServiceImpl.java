@@ -51,7 +51,11 @@ public class ProjectTeacherServiceImpl implements ProjectTeacherService {
         }
 
         List<ProjectTeacher> projectsList = projectTeacherRepository.findByTeacherIdAndAcceptedIsTrue(id);
-        return getProjects(projectsList);
+        List<ProjectToHomePageVO> data = projectsList
+                .stream()
+                .map(aux -> new ProjectToHomePageVO(aux.getProject(), aux.getAccepted(), aux.getReviewed()))
+                .toList();
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(data).build();
     }
 
     @Override
@@ -78,8 +82,11 @@ public class ProjectTeacherServiceImpl implements ProjectTeacherService {
 
     private ServiceAnswer verifyChangeOfFase(ProjectTeacher query) {
         Project project = query.getProject();
-        boolean allReviewersHaveAccepted = project.getSupervisors().stream().allMatch(ProjectSupervisor::getAccepted) &&
-                project.getTeachers().stream().allMatch(ProjectTeacher::getAccepted) && project.getTutors().stream().allMatch(ProjectTutor::getAccepted);
+        boolean allReviewersHaveAccepted = project.getSupervisors()
+                .stream()
+                .allMatch(ProjectSupervisor::getAccepted) && project.getTeachers().stream().allMatch(ProjectTeacher::getAccepted) && project.getTutors()
+                .stream()
+                .allMatch(ProjectTutor::getAccepted);
 
         if (allReviewersHaveAccepted) {
             project.setPhase(PhaseName.ASSIGN_TRIBUNALS_PHASE.toString());
@@ -96,6 +103,7 @@ public class ProjectTeacherServiceImpl implements ProjectTeacherService {
 
         List<ProjectToHomePageVO> data = listaProyectos
                 .stream()
+                .filter(projectTeacher -> projectTeacher.getProject().getPhase().equals(PhaseName.REVIEWERS_PHASE.toString()))
                 .map(aux -> new ProjectToHomePageVO(aux.getProject(), aux.getAccepted(), aux.getReviewed()))
                 .toList();
 

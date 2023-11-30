@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 public class AdminEditStudentInformationDTO extends AdminEditUserInformationDTO {
     @NotEmpty(message = "CODSIS_CANNOT_BE_NULL")
-    @Size(min = 2, message = "INVALID_CODSIS_LENGTH")
-    @Size(max = 50, message = "INVALID_CODSIS_LENGTH")
+    @Size(min = 8, message = "INVALID_CODSIS_LENGTH")
+    @Size(max = 15, message = "INVALID_CODSIS_LENGTH")
     private String codSIS;
 }

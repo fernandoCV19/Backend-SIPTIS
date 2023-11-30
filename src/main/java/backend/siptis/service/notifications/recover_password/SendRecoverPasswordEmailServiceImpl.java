@@ -8,6 +8,7 @@ import backend.siptis.model.repository.auth.SiptisUserRepository;
 import backend.siptis.service.notifications.EmailFactory;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -22,6 +23,8 @@ public class SendRecoverPasswordEmailServiceImpl implements SendRecoverPasswordE
     private final TemplateEngine templateEngine;
     private final EmailFactory emailFactory;
     private final SiptisUserRepository siptisUserRepository;
+    @Value("${application.gateway.client}")
+    private String localUI;
 
     @Override
     public ServiceAnswer sendRecoverPasswordEmail(String email) {
@@ -47,6 +50,7 @@ public class SendRecoverPasswordEmailServiceImpl implements SendRecoverPasswordE
     private String buildHtmlTemplate(String token) {
         Context context = new Context();
         context.setVariable("url", token);
+        context.setVariable("client", localUI);
         return templateEngine.process("recoverpassword", context);
     }
 

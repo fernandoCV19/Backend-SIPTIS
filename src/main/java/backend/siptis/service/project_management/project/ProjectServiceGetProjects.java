@@ -72,7 +72,8 @@ public class ProjectServiceGetProjects {
                 .map(ProjectCompleteInfoVO::new).toList();
 
         List<ProjectCompleteInfoVO> withoutTribunals = projects
-                .stream().filter(project -> project.getPhase().equals(PhaseName.ASSIGN_TRIBUNALS_PHASE.toString()))
+                .stream()
+                .filter(project -> project.getPhase().equals(PhaseName.ASSIGN_TRIBUNALS_PHASE.toString()))
                 .map(ProjectCompleteInfoVO::new).toList();
 
         ProjectsWithoutAndWithTribunalsVO data = new ProjectsWithoutAndWithTribunalsVO(withTribunals, withoutTribunals);
@@ -83,12 +84,13 @@ public class ProjectServiceGetProjects {
         List<Project> projects = projectRepository.findAll();
         List<ProjectCompleteInfoVO> withDefense = projects
                 .stream()
-                .filter(project -> project.getDefense() != null && project.getPhase().equals(PhaseName.DEFENSE_PHASE.toString()) && project.getTotalDefensePoints() == null)
+                .filter(project -> project.getPhase().equals(PhaseName.DEFENSE_PHASE.toString()) && project.getTotalDefensePoints() == null)
                 .map(ProjectCompleteInfoVO::new)
                 .toList();
+
         List<ProjectCompleteInfoVO> withoutDefense = projects
                 .stream()
-                .filter(project -> project.getDefense() == null && project.getPhase().equals(PhaseName.DEFENSE_PHASE.toString()))
+                .filter(project -> project.getPhase().equals(PhaseName.ASSIGN_DEFENSE_PHASE.toString()))
                 .map(ProjectCompleteInfoVO::new)
                 .toList();
         ProjectsWithoutAndWithoutDefensePlaceVO data = new ProjectsWithoutAndWithoutDefensePlaceVO(withDefense, withoutDefense);

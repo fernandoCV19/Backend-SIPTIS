@@ -41,7 +41,7 @@ public class OtherOperationsController {
 
     @Operation(summary = "Get project presentations")
     @GetMapping("/presentations")
-    @PreAuthorize("hasAuthority('STUDENT')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR','STUDENT')")
     public ResponseEntity<ControllerAnswer> getPresentations(@RequestHeader(name = "Authorization") String token) {
         List<?> projects = siptisUserServiceTokenOperations.getProjectsFromToken(token);
         int projectId = (int) projects.get(0);
@@ -56,6 +56,7 @@ public class OtherOperationsController {
 
     @Operation(summary = "Get involved people by project id")
     @GetMapping("/getInvolvedPeople/{projectId}")
+    @PreAuthorize("hasAnyAuthority('TUTOR','TRIBUNAL','SUPERVISOR','TEACHER')")
     public ResponseEntity<ControllerAnswer> getInvolvedPeople(@PathVariable("projectId") Long projectId) {
         ServiceAnswer serviceAnswer = projectServiceOtherOperations.getInvolvedPeople(projectId);
         HttpStatus httpStatus = HttpStatus.OK;
@@ -68,6 +69,7 @@ public class OtherOperationsController {
 
     @Operation(summary = "Get schedules to assign defense by project id")
     @GetMapping("/schedulesToAssignDefense/{projectId}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<ControllerAnswer> getSchedulesToAssignDefense(@PathVariable("projectId") Long projectId) {
         ServiceAnswer serviceAnswer = projectServiceOtherOperations.getSchedulesInfoToAssignADefense(projectId);
         HttpStatus httpStatus = HttpStatus.OK;

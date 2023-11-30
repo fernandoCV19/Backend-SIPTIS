@@ -1,5 +1,6 @@
 package backend.siptis.service.defense_management;
 
+import backend.siptis.commons.PhaseName;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.defense_management.Defense;
@@ -12,6 +13,7 @@ import backend.siptis.model.repository.defense_management.PlaceToDefenseReposito
 import backend.siptis.model.repository.project_management.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,6 +24,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class DefenseServiceImpl implements DefenseService {
 
     private final DefenseRepository defenseRepository;
@@ -63,13 +66,13 @@ public class DefenseServiceImpl implements DefenseService {
         LocalTime endTime = newDefense.getEndTime();
         LocalDate date = newDefense.getDate();
         LocalDate now = LocalDate.now();
-        Optional<Project> project = projectRepository.findById(newDefense.getProjectId());
+        Optional<Project> projectOptional = projectRepository.findById(newDefense.getProjectId());
         Optional<PlaceToDefense> place = placeToDefenseRepository.findById(newDefense.getPlaceId());
 
         if (startTime.isAfter(endTime)) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.INVALID_HOUR).data("The start hour must be before the end hour").build();
         }
-        if (project.isEmpty()) {
+        if (projectOptional.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.PROJECT_ID_DOES_NOT_EXIST).data("").build();
         }
         if (place.isEmpty()) {
@@ -79,8 +82,8 @@ public class DefenseServiceImpl implements DefenseService {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.INVALID_DATE).data("The date must be after the current day").build();
         }
 
-        if (project.get().getDefense() != null) {
-            return ServiceAnswer.builder().serviceMessage(ServiceMessage.DEFENSE_ERROR).data("The project has a defense").build();
+        if (projectOptional.get().getDefense() != null) {
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.DEFENSE_ERROR).data("The projectOptional has a defense").build();
         }
         List<Defense> defenses = defenseRepository.findAll()
                 .stream()
@@ -96,8 +99,11 @@ public class DefenseServiceImpl implements DefenseService {
         if (!blocks.isEmpty()) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.INVALID_DATE).data("This date is already registered").build();
         }
-        Defense defense = new Defense(place.get(), project.get(), date, startTime, endTime, newDefense.getSubstituteName());
+        Defense defense = new Defense(place.get(), projectOptional.get(), date, startTime, endTime, newDefense.getSubstituteName());
         defenseRepository.save(defense);
+        Project project = projectOptional.get();
+        project.setPhase(PhaseName.DEFENSE_PHASE.toString());
+        projectRepository.save(project);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("The defense has been registered").build();
     }
 
@@ -114,7 +120,11 @@ public class DefenseServiceImpl implements DefenseService {
         if (project.getTotalDefensePoints() != null) {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.DEFENSE_ERROR).data("Project has been defended").build();
         }
-        defenseRepository.deleteById(project.getDefense().getId());
+        project.setPhase(PhaseName.ASSIGN_DEFENSE_PHASE.toString());
+        Long defenseId = project.getDefense().getId();
+        project.setDefense(null);
+        projectRepository.save(project);
+        defenseRepository.deleteById(defenseId);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("Defense has been deleted").build();
     }
 }

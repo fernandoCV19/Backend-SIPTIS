@@ -15,6 +15,6 @@ public class RegisterAdminDTO {
     @Pattern(regexp = ".+@.+\\..+", message = "EMAIL_INVALID_FORMAT")
     private String email;
     @NotEmpty(message = "PASSWORD_CANNOT_BE_NULL")
-    @Size(min = 6, message = "INVALID_PASSWORD_LENGTH")
+    @Size(min = 8, message = "INVALID_PASSWORD_LENGTH")
     private String password;
 }

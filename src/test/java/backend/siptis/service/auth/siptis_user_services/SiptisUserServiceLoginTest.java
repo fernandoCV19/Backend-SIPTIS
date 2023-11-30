@@ -24,9 +24,10 @@ class SiptisUserServiceLoginTest {
     }
 
     @Test
-    @DisplayName("test logIn")
+    @DisplayName("test logIn with wrong credentials")
     void givenLogInDTOWhenLoginThenServiceMessageERROR_BAD_CREDENTIALS() {
         createLoginDTO();
         assertEquals(ServiceMessage.ERROR_BAD_CREDENTIALS, serviceLogin.logIn(logInDTO).getServiceMessage());
     }
+
 }

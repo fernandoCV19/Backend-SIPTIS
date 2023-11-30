@@ -29,7 +29,7 @@ public class SubAreaServiceImpl implements SubAreaService {
         if (answer != null)
             return answer;
         SubArea area = new SubArea();
-        area.setName(dto.getName());
+        area.setName(dto.getName().toUpperCase());
         subAreaRepository.save(area);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.SUB_AREA_CREATED)
                 .data(area).build();
@@ -38,7 +38,7 @@ public class SubAreaServiceImpl implements SubAreaService {
     private ServiceAnswer validateCreateArea(String name) {
         if (name == null || name.length() < 2)
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.INVALID_SUB_AREA_NAME).build();
-        if (subAreaRepository.existsSubAreaByName(name))
+        if (subAreaRepository.existsSubAreaByName(name.toUpperCase()))
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.SUB_AREA_ALREADY_EXIST).build();
         return null;
     }

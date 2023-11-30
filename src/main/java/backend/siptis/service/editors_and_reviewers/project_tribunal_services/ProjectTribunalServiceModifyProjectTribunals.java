@@ -42,7 +42,8 @@ public class ProjectTribunalServiceModifyProjectTribunals {
         }
 
         projectTribunalRepository.deleteAll(project.getTribunals());
-
+        project.setPhase(PhaseName.ASSIGN_TRIBUNALS_PHASE.toString());
+        projectRepository.save(project);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("TRIBUNALS HAS BEEN REMOVED").build();
     }
 
@@ -71,7 +72,7 @@ public class ProjectTribunalServiceModifyProjectTribunals {
         }
 
         Project projectNotOptional = project.get();
-        projectNotOptional.setPhase(PhaseName.PRE_DEFENSE_PHASE.toString());
+        projectNotOptional.setPhase(PhaseName.TRIBUNALS_PHASE.toString());
 
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data("Tribunals has been assigned to the project").build();
     }

@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = ControllerConstants.ProjecTribunal.TAG_NAME, description = ControllerConstants.ProjecTribunal.TAG_DESCRIPTION)
@@ -24,6 +25,7 @@ public class ReviewADefenseController {
 
     @Operation(summary = "Review a defense given")
     @PostMapping("/reviewDefense")
+    @PreAuthorize("hasAnyAuthority('TRIBUNAL')")
     public ResponseEntity<ControllerAnswer> reviewDefense(@RequestBody ReviewADefenseDTO reviewADefenseDTO) {
         ServiceAnswer serviceAnswer = projectTribunalServiceReviewADefense.reviewADefense(reviewADefenseDTO);
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;

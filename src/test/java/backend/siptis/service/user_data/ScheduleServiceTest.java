@@ -21,5 +21,4 @@ class ScheduleServiceTest {
         assertEquals(ServiceMessage.ID_DOES_NOT_EXIST, answer.getServiceMessage());
     }
 
-
 }

@@ -42,7 +42,7 @@ public class PresentationController {
 
     @Operation(summary = "Get reviews from a presentation")
     @GetMapping("/reviews/{presentationId}")
-    @PreAuthorize("hasAuthority('STUDENT')")
+    @PreAuthorize("hasAnyAuthority('TUTOR','TRIBUNAL','SUPERVISOR','TEACHER','STUDENT')")
     ResponseEntity<ControllerAnswer> getReviewsFromPresentation(@PathVariable("presentationId") Long presentationId) {
         ServiceAnswer serviceAnswer = presentationService.getReviewsFromAPresentation(presentationId);
         return createResponseEntity(serviceAnswer);
@@ -58,7 +58,7 @@ public class PresentationController {
 
     @Operation(summary = "Get last reviews from a presentation")
     @GetMapping("/getLastReviews/{id}")
-    @PreAuthorize("hasAuthority('STUDENT')")
+    @PreAuthorize("hasAnyAuthority('TUTOR','TRIBUNAL','SUPERVISOR','TEACHER','STUDENT')")
     ResponseEntity<ControllerAnswer> getLastReviews(@PathVariable("id") Long projectId) {
         ServiceAnswer serviceAnswer = presentationService.getReviewsFromLastPresentation(projectId);
         HttpStatus httpStatus = HttpStatus.OK;

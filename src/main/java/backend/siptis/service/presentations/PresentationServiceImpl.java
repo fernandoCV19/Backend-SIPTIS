@@ -6,6 +6,10 @@ import backend.siptis.model.entity.presentations.Presentation;
 import backend.siptis.model.entity.project_management.Project;
 import backend.siptis.model.pjo.vo.project_management.InfoToReviewAProjectVO;
 import backend.siptis.model.pjo.vo.project_management.ReviewShortInfoVO;
+import backend.siptis.model.repository.editors_and_reviewers.ProjectSupervisorRepository;
+import backend.siptis.model.repository.editors_and_reviewers.ProjectTeacherRepository;
+import backend.siptis.model.repository.editors_and_reviewers.ProjectTribunalRepository;
+import backend.siptis.model.repository.editors_and_reviewers.ProjectTutorRepository;
 import backend.siptis.model.repository.presentations.PresentationRepository;
 import backend.siptis.model.repository.presentations.ReviewRepository;
 import backend.siptis.model.repository.project_management.ProjectRepository;
@@ -30,6 +34,10 @@ public class PresentationServiceImpl implements PresentationService {
     private final PresentationRepository presentationRepository;
     private final ProjectRepository projectRepository;
     private final ReviewRepository reviewRepository;
+    private final ProjectTeacherRepository projectTeacherRepository;
+    private final ProjectTutorRepository projectTutorRepository;
+    private final ProjectSupervisorRepository projectSupervisorRepository;
+    private final ProjectTribunalRepository projectTribunalRepository;
 
     @Override
     public ServiceAnswer createPresentation(Long projectId, MultipartFile bluebookFile, MultipartFile projectFile) {
@@ -57,8 +65,23 @@ public class PresentationServiceImpl implements PresentationService {
         presentation.setPhase(project.getPhase());
         presentation.setProject(project);
         presentationRepository.save(presentation);
+        updateReviewed(project);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.PRESENTATION_CREATED).data(presentation).build();
 
+    }
+
+    private void updateReviewed(Project project) {
+        project.getTeachers().forEach(projectTeacher -> projectTeacher.setReviewed(false));
+        projectTeacherRepository.saveAll(project.getTeachers());
+
+        project.getTribunals().forEach(projectTribunal -> projectTribunal.setReviewed(false));
+        projectTribunalRepository.saveAll(project.getTribunals());
+
+        project.getSupervisors().forEach(projectSupervisor -> projectSupervisor.setReviewed(false));
+        projectSupervisorRepository.saveAll(project.getSupervisors());
+
+        project.getTutors().forEach(projectTutor -> projectTutor.setReviewed(false));
+        projectTutorRepository.saveAll(project.getTutors());
     }
 
     @Override

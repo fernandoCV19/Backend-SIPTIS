@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.time.LocalDate;
 
@@ -28,9 +29,16 @@ class GeneralActivityServiceFindOperationsTest {
     }
 
     @Test
-    @DisplayName("test find by id")
+    @DisplayName("test find by id not found")
     void givenId_WhenFindById_ThenServiceMessageNOT_FOUND() {
         assertEquals(ServiceMessage.NOT_FOUND, generalActivityServiceFindOperations.findById(1233453L).getServiceMessage());
+    }
+
+    @Test
+    @DisplayName("test success find by id")
+    @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    void givenId_WhenFindById_ThenServiceMessageOK() {
+        assertEquals(ServiceMessage.OK, generalActivityServiceFindOperations.findById(101L).getServiceMessage());
     }
 
     @Test

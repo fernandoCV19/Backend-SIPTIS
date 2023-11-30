@@ -19,7 +19,7 @@ class SiptisUserServiceDeleteTest {
     private SiptisUserServiceDelete siptisUserServiceDelete;
 
     @Test
-    @DisplayName("test for delete user by id")
+    @DisplayName("test for delete user by wrong id")
     void givenUserIdWhenDeleteUserThenServiceMessageID_DOES_NOT_EXIST() {
         ServiceAnswer answer = siptisUserServiceDelete.deleteUser(123L);
         assertEquals(ServiceMessage.ID_DOES_NOT_EXIST, answer.getServiceMessage());

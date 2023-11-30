@@ -84,8 +84,10 @@ feign:
 
 application:
   name: SIPTIS
+
   gateway:
     chatAPI: http://localhost:3000/
+    client: http://localhost:5173
 
 springdoc:
   api-docs:
