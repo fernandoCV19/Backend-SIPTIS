@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = ControllerConstants.Activity.TAG_NAME, description = ControllerConstants.GeneralActivity.TAG_DESCRIPTION)
@@ -24,18 +25,21 @@ public class ModifyOperationsController {
 
     @Operation(summary = "Create general activity")
     @PostMapping("/create")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ControllerAnswer> persistGeneralActivity(@RequestBody GeneralActivityDTO generalActivityDTO) {
         return createResponse(generalActivityServiceModifyOperations.persistGeneralActivity(generalActivityDTO));
     }
 
     @Operation(summary = "Update general activity")
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ControllerAnswer> updateGeneralActivity(@RequestBody GeneralActivityDTO generalActivityDTO, @PathVariable long id) {
         return createResponse(generalActivityServiceModifyOperations.update(generalActivityDTO, id));
     }
 
     @Operation(summary = "Delete general activity")
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ControllerAnswer> deleteGeneralActivity(@PathVariable long id) {
         return createResponse(generalActivityServiceModifyOperations.delete(id));
     }

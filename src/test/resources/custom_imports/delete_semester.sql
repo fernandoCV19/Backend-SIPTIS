@@ -1,3 +1,3 @@
 DELETE
 FROM semester_information
-WHERE id = 1l;
+WHERE id = 1 l;

@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = ControllerConstants.Phase.TAG_NAME, description = ControllerConstants.Phase.TAG_DESCRIPTION)
@@ -25,6 +26,7 @@ public class PhaseController {
 
     @Operation(summary = "Get all phases")
     @GetMapping("")
+    @PreAuthorize("hasAuthority('STUDENT')")
     public ResponseEntity<ControllerAnswer> findAll() {
         return new ResponseEntity<>(ControllerAnswer.builder()
                 .data(phaseService.findAllPhases())
@@ -33,6 +35,7 @@ public class PhaseController {
 
     @Operation(summary = "Get a phase by id")
     @GetMapping("/{idPhase}")
+    @PreAuthorize("hasAuthority('STUDENT')")
     public ResponseEntity<ControllerAnswer> findById(@PathVariable int idPhase) {
         Long id = Long.valueOf(idPhase);
 
@@ -43,6 +46,7 @@ public class PhaseController {
 
     @Operation(summary = "Get phases by modality id")
     @GetMapping("/modality/{idModality}")
+    @PreAuthorize("hasAuthority('STUDENT')")
     public ResponseEntity<ControllerAnswer> findByModalityId(@PathVariable int idModality) {
         Long id = Long.valueOf(idModality);
 
@@ -53,6 +57,7 @@ public class PhaseController {
 
     @Operation(summary = "Get all phases by user token")
     @GetMapping("/user")
+    @PreAuthorize("hasAuthority('STUDENT')")
     public ResponseEntity<ControllerAnswer> getPhasesByUserId(@RequestHeader(name = "Authorization") String token) {
         Long idL = siptisUserServiceTokenOperations.getIdFromToken(token);
         return new ResponseEntity<>(ControllerAnswer.builder()

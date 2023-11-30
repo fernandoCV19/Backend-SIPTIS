@@ -1594,7 +1594,7 @@ VALUES (100, '2023-05-31', TRUE, '1-2023', '2023-01-15'),
 
 
 SELECT SETVAL('activity__seq', (SELECT MAX(id_) FROM activity_) + 5);
-SELECT SETVAL('area__seq', (SELECT MAX(id_) FROM area_ ) + 5);
+SELECT SETVAL('area__seq', (SELECT MAX(id_) FROM area_) + 5);
 SELECT SETVAL('chat_history__seq', (SELECT MAX(id_) FROM chat_history_) + 5);
 SELECT SETVAL('defense__seq', (SELECT MAX(id_) FROM defense_) + 5);
 SELECT SETVAL('document__seq', (SELECT MAX(id_) FROM document_) + 5);

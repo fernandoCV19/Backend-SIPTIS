@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = ControllerConstants.Activity.TAG_NAME, description = ControllerConstants.Activity.TAG_DESCRIPTION)
@@ -27,6 +28,7 @@ public class ActivityModifyOperationsController {
 
     @Operation(summary = "Create activity")
     @PostMapping("/create")
+    @PreAuthorize("hasAuthority('STUDENT')")
     public ResponseEntity<ControllerAnswer> saveActivity(@RequestHeader(name = "Authorization") String token,
                                                          @RequestBody ActivityDTO activityDTO) {
 
@@ -38,12 +40,14 @@ public class ActivityModifyOperationsController {
 
     @Operation(summary = "Update activity")
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('STUDENT')")
     public ResponseEntity<ControllerAnswer> updateActivity(@PathVariable int id, @RequestBody ActivityDTO activityDTO) {
         return createResponse(activityServiceModifyOperations.update(activityDTO, id));
     }
 
     @Operation(summary = "Delete activity")
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('STUDENT')")
     public ResponseEntity<ControllerAnswer> deleteActivity(@PathVariable int id) {
         return createResponse(activityServiceModifyOperations.delete(id));
     }
