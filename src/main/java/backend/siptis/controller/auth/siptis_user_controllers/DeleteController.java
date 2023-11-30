@@ -36,7 +36,7 @@ public class DeleteController {
     ResponseEntity<ControllerAnswer> deleteUser(@RequestHeader(name = "Authorization") String token, @PathVariable int userId) {
         Long id = Long.valueOf(userId);
         Long adminId = siptisUserServiceTokenOperations.getIdFromToken(token);
-        if(id == adminId){
+        if (id == adminId) {
             ServiceAnswer answer = new ServiceAnswer();
             answer.setServiceMessage(ServiceMessage.ERROR_CANNOT_DELETE_USER);
             return createResponseEntity(answer);

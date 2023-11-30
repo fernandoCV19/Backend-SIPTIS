@@ -1,18 +1,10 @@
 package backend.siptis.service.notifications.activity_services;
 
-import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.notifications.Activity;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.test.context.jdbc.Sql;
 
 import java.time.LocalDate;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 public class ActivityServiceFindOperationsTest {

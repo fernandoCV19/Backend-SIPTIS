@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = ControllerConstants.Project.TAG_NAME, description = ControllerConstants.Project.TAG_DESCRIPTION)
@@ -48,6 +49,7 @@ public class ProjectGetProjectsController {
 
     @Operation(summary = "Get projects to defense or defended by tribunal id")
     @GetMapping("/defenses/{tribunalID}")
+    @PreAuthorize("hasAnyAuthority('TRIBUNAL')")
     public ResponseEntity<ControllerAnswer> getProjectsToDefenseOrDefended(@PathVariable("tribunalID") Long tribunalID) {
         ServiceAnswer serviceAnswer = projectServiceGetProjects.getProjectsToDefenseOrDefended(tribunalID);
         HttpStatus httpStatus = HttpStatus.OK;
@@ -58,8 +60,9 @@ public class ProjectGetProjectsController {
         return new ResponseEntity<>(controllerAnswer, httpStatus);
     }
 
-    @Operation(summary = "Get projects all project on tribunal phase")
+    @Operation(summary = "Get all projects on tribunal phase")
     @GetMapping("/withAndWithoutTribunals")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<ControllerAnswer> getProjectsWithAndWithoutTribunals() {
         ServiceAnswer serviceAnswer = projectServiceGetProjects.getProjectsWithoutAndWithTribunals();
         HttpStatus httpStatus = HttpStatus.OK;
@@ -72,6 +75,7 @@ public class ProjectGetProjectsController {
 
     @Operation(summary = "Get projects with and without defense place")
     @GetMapping("/withAndWithoutDefensePlace")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<ControllerAnswer> getProjectsWithAndWithoutDefensePlace() {
         ServiceAnswer serviceAnswer = projectServiceGetProjects.getProjectsWithoutAndWithDefensePlace();
         HttpStatus httpStatus = HttpStatus.OK;

@@ -1,21 +1,13 @@
 package backend.siptis.service.auth;
 
 import backend.siptis.auth.entity.RefreshToken;
-import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.model.repository.auth.SiptisUserRepository;
-import backend.siptis.service.user_data.UserInformationService;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.jdbc.Sql;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)

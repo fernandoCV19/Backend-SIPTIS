@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = ControllerConstants.ProjectTeacher.TAG_NAME, description = ControllerConstants.ProjectTeacher.TAG_DESCRIPTION)
@@ -23,6 +24,7 @@ public class ProjectTeacherController {
 
     @Operation(summary = "Get not accepted projects without teacher review")
     @GetMapping("/notReviewedProjects/{id}")
+    @PreAuthorize("hasAnyAuthority('TEACHER')")
     public ResponseEntity<ControllerAnswer> getProjectsWithoutReview(@PathVariable("id") Long id) {
         ServiceAnswer serviceAnswer = projectTeacherService.getAllProjectsNotAcceptedNotReviewedByTeacherId(id);
         return createResponseEntity(serviceAnswer);
@@ -30,6 +32,7 @@ public class ProjectTeacherController {
 
     @Operation(summary = "Get not accepted projects with teacher review")
     @GetMapping("/reviewedProjects/{id}")
+    @PreAuthorize("hasAnyAuthority('TEACHER')")
     public ResponseEntity<ControllerAnswer> getReviewedProjects(@PathVariable("id") Long id) {
         ServiceAnswer serviceAnswer = projectTeacherService.getAllProjectsNotAcceptedReviewedByTeacherId(id);
         return createResponseEntity(serviceAnswer);
@@ -37,6 +40,7 @@ public class ProjectTeacherController {
 
     @Operation(summary = "Get all accepted projects by teacher id")
     @GetMapping("/acceptedProjects/{id}")
+    @PreAuthorize("hasAnyAuthority('TEACHER')")
     public ResponseEntity<ControllerAnswer> getAcceptedProjects(@PathVariable("id") Long id) {
         ServiceAnswer serviceAnswer = projectTeacherService.getAllProjectsAcceptedByTeacherId(id);
         return createResponseEntity(serviceAnswer);
@@ -44,6 +48,7 @@ public class ProjectTeacherController {
 
     @Operation(summary = "Get all accepted projects by project id and teacher id")
     @GetMapping("/acceptProject/{idProject}/{idReviewer}")
+    @PreAuthorize("hasAnyAuthority('TEACHER')")
     public ResponseEntity<ControllerAnswer> acceptProject(@PathVariable("idProject") Long idProject, @PathVariable("idReviewer") Long idReviewer) {
         ServiceAnswer serviceAnswer = projectTeacherService.acceptProject(idReviewer, idProject);
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;

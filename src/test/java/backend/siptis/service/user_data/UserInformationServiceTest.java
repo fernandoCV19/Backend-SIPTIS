@@ -1,19 +1,13 @@
 package backend.siptis.service.user_data;
 
 
-import backend.siptis.commons.ServiceAnswer;
-import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.user_data.RegisterStudentDTO;
 import backend.siptis.model.pjo.dto.user_data.RegisterUserDTO;
 import backend.siptis.model.pjo.dto.user_data.UserEditInformationDTO;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Date;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 class UserInformationServiceTest {
@@ -23,7 +17,7 @@ class UserInformationServiceTest {
     private RegisterStudentDTO registerStudentDTO;
     private UserEditInformationDTO userEditInformationDTO;
 
-    private void createRegisterUserDTO(){
+    private void createRegisterUserDTO() {
         registerUserDTO = new RegisterUserDTO();
         registerUserDTO.setNames("user name");
         registerUserDTO.setLastnames("user last name");
@@ -32,7 +26,8 @@ class UserInformationServiceTest {
         registerUserDTO.setCelNumber("2343243243");
         registerUserDTO.setBirthDate(new Date());
     }
-    private void createRegisterStudentDTO(){
+
+    private void createRegisterStudentDTO() {
         registerStudentDTO = new RegisterStudentDTO();
         registerStudentDTO.setNames("user name");
         registerStudentDTO.setLastnames("user last name");
@@ -43,7 +38,8 @@ class UserInformationServiceTest {
         registerStudentDTO.setCodSIS("204900122");
         registerStudentDTO.setCareer("INFORMATICA");
     }
-    private void createUserEditInformationDTO(){
+
+    private void createUserEditInformationDTO() {
         userEditInformationDTO = new UserEditInformationDTO();
         userEditInformationDTO.setEmail("user@gmail.com");
         userEditInformationDTO.setBirthDate(new Date());

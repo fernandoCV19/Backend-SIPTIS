@@ -1,23 +1,11 @@
 package backend.siptis.service.notifications.activity_services;
 
-import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.notifications.Activity;
-import backend.siptis.model.entity.project_management.Project;
 import backend.siptis.model.pjo.dto.notifications.ActivityDTO;
-import backend.siptis.model.repository.project_management.ProjectRepository;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.jdbc.Sql;
 
 import java.time.LocalDate;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 class ActivityServiceModifyOperationsTest {

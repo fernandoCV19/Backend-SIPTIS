@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = ControllerConstants.ProjecTribunal.TAG_NAME, description = ControllerConstants.ProjecTribunal.TAG_DESCRIPTION)
@@ -23,6 +24,7 @@ public class GetProjectsController {
 
     @Operation(summary = "Get all projects without review by tribunal id")
     @GetMapping("/notReviewedProjects/{id}")
+    @PreAuthorize("hasAnyAuthority('TRIBUNAL')")
     public ResponseEntity<ControllerAnswer> getProjectsWithoutReview(@PathVariable("id") Long id) {
         ServiceAnswer serviceAnswer = projectTribunalServiceGetProjects.getAllProjectsNotAcceptedNotReviewedByTribunalId(id);
         return createResponseEntity(serviceAnswer);
@@ -30,6 +32,7 @@ public class GetProjectsController {
 
     @Operation(summary = "Get all projects with review by tribunal id")
     @GetMapping("/reviewedProjects/{id}")
+    @PreAuthorize("hasAnyAuthority('TRIBUNAL')")
     public ResponseEntity<ControllerAnswer> getReviewedProjects(@PathVariable("id") Long id) {
         ServiceAnswer serviceAnswer = projectTribunalServiceGetProjects.getAllProjectsNotAcceptedReviewedByTribunalId(id);
         return createResponseEntity(serviceAnswer);
@@ -38,6 +41,7 @@ public class GetProjectsController {
 
     @Operation(summary = "Get all projects accepted without defense points by tribunal id")
     @GetMapping("/acceptedProjects/{id}")
+    @PreAuthorize("hasAnyAuthority('TRIBUNAL')")
     public ResponseEntity<ControllerAnswer> getProjectsReadyToDefense(@PathVariable("id") Long id) {
         ServiceAnswer serviceAnswer = projectTribunalServiceGetProjects.getAllProjectsAcceptedWithoutDefensePointsByTribunalId(id);
         return createResponseEntity(serviceAnswer);
@@ -45,6 +49,7 @@ public class GetProjectsController {
 
     @Operation(summary = "Get all projects defended by tribunal id")
     @GetMapping("/defendedProjects/{id}")
+    @PreAuthorize("hasAnyAuthority('TRIBUNAL')")
     public ResponseEntity<ControllerAnswer> getdefendedProjects(@PathVariable("id") Long id) {
         ServiceAnswer serviceAnswer = projectTribunalServiceGetProjects.getAllProjectsDefendedByTribunalId(id);
         return createResponseEntity(serviceAnswer);

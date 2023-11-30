@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = ControllerConstants.ProjecTribunal.TAG_NAME, description = ControllerConstants.ProjecTribunal.TAG_DESCRIPTION)
@@ -22,6 +23,7 @@ public class AcceptProjectController {
     private final ProjectTribunalServiceAcceptProject tribunalServiceAcceptProject;
 
     @Operation(summary = "Accept a project")
+    @PreAuthorize("hasAnyAuthority('TRIBUNAL')")
     @GetMapping("/acceptProject/{idProject}/{idReviewer}")
     public ResponseEntity<ControllerAnswer> acceptProject(@PathVariable("idProject") Long idProject, @PathVariable("idReviewer") Long idReviewer) {
         ServiceAnswer serviceAnswer = tribunalServiceAcceptProject.acceptProject(idReviewer, idProject);
