@@ -15,6 +15,7 @@ import backend.siptis.service.auth.RoleService;
 import backend.siptis.service.user_data.UserCareerService;
 import backend.siptis.service.user_data.UserInformationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -68,6 +69,9 @@ public class SiptisUserServiceStudentOperations {
         return createResponse(ServiceMessage.SUCCESSFUL_REGISTER, new UserInformationDTO(user));
     }
 
+    public ServiceAnswer getAvailableStudents(String search, Pageable pageable) {
+        return createResponse(ServiceMessage.OK, siptisUserRepository.searchAvailableStudentsList(search, pageable));
+    }
     public ServiceAnswer getNumberOfStudentsByYearAndCareer(String careerName) {
         Optional<UserCareer> oUserCareer = userCareerRepository.findByName(careerName.toUpperCase());
         if (oUserCareer.isEmpty())

@@ -120,4 +120,12 @@ public class CloudManagementServiceImpl implements CloudManagementService {
         document.delete();
         return key;
     }
+
+    @Override
+    public String uploadActToCloud(String filename, String projectName) {
+        File document = new File(filename);
+        String key = putObject(document, "Actas/");
+        document.delete();
+        return key;
+    }
 }

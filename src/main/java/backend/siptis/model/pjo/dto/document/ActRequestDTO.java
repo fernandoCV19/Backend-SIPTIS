@@ -6,9 +6,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class LetterGenerationRequestDTO {
+public class ActRequestDTO {
     @NotNull(message = "INVALID_PROJECT_ID")
     private Long projectId;
-    @NotNull(message = "INVALID_USER_ID")
-    private Long userId;
+    @NotNull(message = "INVALID_USER_NAME")
+    private String presidentName;
+    @NotNull(message = "INVALID_USER_NAME")
+    private String deanName;
 }
