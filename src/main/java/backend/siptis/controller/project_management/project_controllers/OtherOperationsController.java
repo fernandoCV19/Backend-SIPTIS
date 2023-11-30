@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,6 +28,7 @@ public class OtherOperationsController {
 
     @Operation(summary = "Get project presentations by id")
     @GetMapping("/presentations/{id}")
+    @PreAuthorize("hasAuthority('STUDENT')")
     public ResponseEntity<ControllerAnswer> getPresentationsById(@PathVariable("id") Long projectId) {
         ServiceAnswer serviceAnswer = projectServiceOtherOperations.getPresentations(projectId);
         HttpStatus httpStatus = HttpStatus.OK;
@@ -39,6 +41,7 @@ public class OtherOperationsController {
 
     @Operation(summary = "Get project presentations")
     @GetMapping("/presentations")
+    @PreAuthorize("hasAuthority('STUDENT')")
     public ResponseEntity<ControllerAnswer> getPresentations(@RequestHeader(name = "Authorization") String token) {
         List<?> projects = siptisUserServiceTokenOperations.getProjectsFromToken(token);
         int projectId = (int) projects.get(0);

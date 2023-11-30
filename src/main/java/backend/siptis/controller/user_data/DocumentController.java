@@ -17,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.List;
 
 @Tag(name = ControllerConstants.Document.TAG_NAME, description = ControllerConstants.Document.TAG_DESCRIPTION)
@@ -32,6 +31,7 @@ public class DocumentController {
 
     @Operation(summary = "Get all documents belonging to a user")
     @GetMapping("/")
+    @PreAuthorize("hasAuthority('STUDENT')")
     ResponseEntity<ControllerAnswer> getDocumentsFromUser(@RequestHeader(name = "Authorization") String token) {
         Long userId = siptisUserServiceTokenOperations.getIdFromToken(token);
         return createResponseEntity(documentGeneratorService.getAllDocumentsFromUser(userId));
@@ -45,12 +45,14 @@ public class DocumentController {
 
     @Operation(summary = "Delete a document")
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('STUDENT')")
     ResponseEntity<ControllerAnswer> deleteDocument(@PathVariable("id") long documentId) {
         return createResponseEntity(documentGeneratorService.deleteDocument(documentId));
     }
 
     @Operation(summary = "Create student report document")
     @PostMapping("/create-report")
+    @PreAuthorize("hasAuthority('STUDENT')")
     ResponseEntity<ControllerAnswer> createReport(@RequestHeader(name = "Authorization") String token, @RequestBody ReportDocumentDTO reportDocumentDTO) {
         Long userId = siptisUserServiceTokenOperations.getIdFromToken(token);
         List<?> projects = siptisUserServiceTokenOperations.getProjectsFromToken(token);
@@ -60,6 +62,7 @@ public class DocumentController {
 
     @Operation(summary = "Create student solvency document")
     @GetMapping("/create-solvency")
+    @PreAuthorize("hasAuthority('STUDENT')")
     ResponseEntity<ControllerAnswer> createSolvency(@RequestHeader(name = "Authorization") String token) {
         Long userId = siptisUserServiceTokenOperations.getIdFromToken(token);
         return createResponseEntity(documentGeneratorService.generateSolvency(userId));
@@ -88,6 +91,7 @@ public class DocumentController {
 
     @Operation(summary = "Create documentary record")
     @PostMapping("/create-documentary-record")
+    @PreAuthorize("hasAuthority('STUDENT')")
     ResponseEntity<ControllerAnswer> createDocumentaryRecord(@RequestHeader(name = "Authorization") String token, @RequestBody DocumentaryRecordDto documentaryRecordDto) {
         Long userId = siptisUserServiceTokenOperations.getIdFromToken(token);
         List<?> projects = siptisUserServiceTokenOperations.getProjectsFromToken(token);
