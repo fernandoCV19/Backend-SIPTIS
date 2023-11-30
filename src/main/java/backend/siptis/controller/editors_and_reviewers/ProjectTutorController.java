@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = ControllerConstants.ProjectTutor.TAG_NAME, description = ControllerConstants.ProjectTutor.TAG_DESCRIPTION)
@@ -23,6 +24,7 @@ public class ProjectTutorController {
 
     @Operation(summary = "Get all projects without review y tutor id")
     @GetMapping("/notReviewedProjects/{id}")
+    @PreAuthorize("hasAnyAuthority('TUTOR')")
     public ResponseEntity<ControllerAnswer> getProjectsWithoutReview(@PathVariable("id") Long id) {
         ServiceAnswer serviceAnswer = projectTutorService.getAllProjectsNotAcceptedNotReviewedByTutorId(id);
         return createResponseEntity(serviceAnswer);
@@ -30,6 +32,7 @@ public class ProjectTutorController {
 
     @Operation(summary = "Get all projects with review y tutor id")
     @GetMapping("/reviewedProjects/{id}")
+    @PreAuthorize("hasAnyAuthority('TUTOR')")
     public ResponseEntity<ControllerAnswer> getReviewedProjects(@PathVariable("id") Long id) {
         ServiceAnswer serviceAnswer = projectTutorService.getAllProjectsNotAcceptedReviewedByTutorId(id);
         return createResponseEntity(serviceAnswer);
@@ -37,6 +40,7 @@ public class ProjectTutorController {
 
     @Operation(summary = "Ge all accepted projects by tutor id")
     @GetMapping("/acceptedProjects/{id}")
+    @PreAuthorize("hasAnyAuthority('TUTOR')")
     public ResponseEntity<ControllerAnswer> getAcceptedProjects(@PathVariable("id") Long id) {
         ServiceAnswer serviceAnswer = projectTutorService.getAllProjectsAcceptedByTutorId(id);
         return createResponseEntity(serviceAnswer);
@@ -44,6 +48,7 @@ public class ProjectTutorController {
 
     @Operation(summary = "Accept a project")
     @PostMapping("/acceptProject/{idProject}/{idReviewer}")
+    @PreAuthorize("hasAnyAuthority('TUTOR')")
     public ResponseEntity<ControllerAnswer> acceptProject(@PathVariable("idProject") Long idProject, @PathVariable("idReviewer") Long idReviewer) {
         ServiceAnswer serviceAnswer = projectTutorService.acceptProject(idReviewer, idProject);
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;

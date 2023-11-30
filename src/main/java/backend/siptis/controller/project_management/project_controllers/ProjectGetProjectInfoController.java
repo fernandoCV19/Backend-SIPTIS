@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = ControllerConstants.Project.TAG_NAME, description = ControllerConstants.Project.TAG_DESCRIPTION)
@@ -23,6 +24,7 @@ public class ProjectGetProjectInfoController {
 
     @Operation(summary = "Get project information by project id")
     @GetMapping("/information/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR','TUTOR','TRIBUNAL','SUPERVISOR','TEACHER')")
     public ResponseEntity<ControllerAnswer> getProjectInformation(@PathVariable("id") Long idProject) {
         ServiceAnswer serviceAnswer = projectServiceGetProjectInfo.getProjectInfo(idProject);
         HttpStatus httpStatus = HttpStatus.OK;
@@ -35,6 +37,7 @@ public class ProjectGetProjectInfoController {
 
     @Operation(summary = "Get project information by project id and reviewer id")
     @GetMapping("/getProjectInfoToReview/{projectId}/{reviewerId}")
+    @PreAuthorize("hasAnyAuthority('TUTOR','TRIBUNAL','SUPERVISOR','TEACHER')")
     public ResponseEntity<ControllerAnswer> getProjectInfoToReview(@PathVariable("projectId") Long projectId, @PathVariable("reviewerId") Long reviewerId) {
         ServiceAnswer serviceAnswer = projectServiceGetProjectInfo.getProjectInfoToReview(projectId, reviewerId);
         HttpStatus httpStatus = HttpStatus.OK;
@@ -47,6 +50,7 @@ public class ProjectGetProjectInfoController {
 
     @Operation(summary = "Get all project information by project id")
     @GetMapping("/allInfo/{projectId}")
+    @PreAuthorize("hasAnyAuthority('TUTOR','TRIBUNAL','SUPERVISOR','TEACHER','ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<ControllerAnswer> getAllInfo(@PathVariable("projectId") Long projectId) {
         ServiceAnswer serviceAnswer = projectServiceGetProjectInfo.getAllProjectInfo(projectId);
         HttpStatus httpStatus = HttpStatus.OK;
@@ -59,6 +63,7 @@ public class ProjectGetProjectInfoController {
 
     @Operation(summary = "Get project assign tribunals by project id")
     @GetMapping("/getInfoToAssignTribunals/{projectId}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<ControllerAnswer> getInfoToAssignTribunals(@PathVariable("projectId") Long projectId) {
         ServiceAnswer serviceAnswer = projectServiceGetProjectInfo.getProjectInfoToAssignTribunals(projectId);
         HttpStatus httpStatus = HttpStatus.OK;

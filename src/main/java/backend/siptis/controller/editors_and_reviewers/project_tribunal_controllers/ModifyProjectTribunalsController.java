@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = ControllerConstants.ProjecTribunal.TAG_NAME, description = ControllerConstants.ProjecTribunal.TAG_DESCRIPTION)
@@ -24,6 +25,7 @@ public class ModifyProjectTribunalsController {
 
     @Operation(summary = "Remove tribunals from a project with project id")
     @DeleteMapping("/removeTribunals/{id}")
+    @PreAuthorize("hasAnyAuthority('TRIBUNAL')")
     public ResponseEntity<ControllerAnswer> removeTribunalsFromAProject(@PathVariable("id") Long projectId) {
         ServiceAnswer serviceAnswer = projectTribunalServiceModifyProjectTribunals.removeTribunals(projectId);
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
@@ -36,6 +38,7 @@ public class ModifyProjectTribunalsController {
 
     @Operation(summary = "Assign tribunals to a project with project id")
     @PostMapping("/assignTribunals")
+    @PreAuthorize("hasAnyAuthority('TRIBUNAL')")
     public ResponseEntity<ControllerAnswer> assignTribunal(@RequestBody AssignTribunalsDTO assignTribunalsDTO) {
         ServiceAnswer serviceAnswer = projectTribunalServiceModifyProjectTribunals.assignTribunals(assignTribunalsDTO);
         HttpStatus httpStatus = HttpStatus.OK;
