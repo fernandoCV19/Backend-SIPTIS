@@ -57,14 +57,14 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
             "JOIN p.modality m " +
             "JOIN p.areas a " +
             "JOIN p.subAreas s " +
-            "WHERE p.state.name = 'FINISHED' " +
+            "WHERE p.state.name = 'FINISHED'" +
             "AND (:name IS NULL OR UPPER(p.name) LIKE CONCAT('%', UPPER(:name), '%'))  " +
             "AND (:period IS NULL OR p.period = :period)")
     Page<Project> standardFilter(Pageable pageable, @Param("name") String name, @Param("period") String period);
 
     @Query("""
-            select distinct p from Project p 
-            left join p.subAreas subAreas 
+            select distinct p from Project p
+            left join p.subAreas subAreas
             left join p.areas areas 
             left join p.students students 
             left join p.tutors tutors

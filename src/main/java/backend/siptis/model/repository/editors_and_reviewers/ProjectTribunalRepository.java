@@ -2,6 +2,7 @@ package backend.siptis.model.repository.editors_and_reviewers;
 
 import backend.siptis.model.entity.editors_and_reviewers.ProjectTribunal;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -24,4 +25,11 @@ public interface ProjectTribunalRepository extends JpaRepository<ProjectTribunal
     List<ProjectTribunal> findByTribunal_IdAndProject_PhaseAndDefensePointsNotNull(Long id, String phase);
 
     ProjectTribunal findByProjectId(Long projectId);
+
+    @Query("""
+            select p from ProjectTribunal p
+            order by p.tribunal.userInformation.lastNames""")
+    List<ProjectTribunal> getGeneralTribunals();
+
+
 }
