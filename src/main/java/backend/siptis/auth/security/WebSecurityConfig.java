@@ -84,7 +84,8 @@ public class WebSecurityConfig {
                         "/review/**",
                         "/phase/**",
                         "/wpp",
-                        "/defense/**")
+                        "/defense/**",
+                        "/report/**")
                 .permitAll()
                 .requestMatchers(AUTH_WHITELIST).permitAll()
                 .anyRequest().authenticated()

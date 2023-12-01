@@ -63,8 +63,8 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     Page<Project> standardFilter(Pageable pageable, @Param("name") String name, @Param("period") String period);
 
     @Query("""
-            select distinct p from Project p 
-            left join p.subAreas subAreas 
+            select distinct p from Project p
+            left join p.subAreas subAreas
             left join p.areas areas 
             left join p.students students 
             left join p.tutors tutors

@@ -40,6 +40,8 @@ public interface SiptisUserRepository extends JpaRepository<SiptisUser, Long> {
 
     List<SiptisUser> findByRolesName(String roleName);
 
+    List<SiptisUser> findByRoles_NameOrderByUserInformation_LastNamesAsc(String name);
+
     Optional<SiptisUser> findOneById(Long id);
 
     @Query("SELECT a FROM Activity a, ProjectStudent ps " +
@@ -110,4 +112,14 @@ public interface SiptisUserRepository extends JpaRepository<SiptisUser, Long> {
             " AND suc.career_id_ = :careerId " +
             " GROUP BY (userYear) ORDER BY userYear ASC ", nativeQuery = true)
     List<Object> getNumberOfStudentsByYearAndCareer(Long careerId);
+
+    @Query("""
+            select s from SiptisUser s
+            inner join s.roles roles
+            inner join s.userInformation information
+            where roles.name = "TRIBUNAL"
+            order by information.lastNames""")
+    List<SiptisUser> getGeneralTribunals();
+
+
 }

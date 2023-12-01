@@ -11,6 +11,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -38,7 +41,7 @@ public class CloudManagementServiceImpl implements CloudManagementService {
             s3Client.putObject(putObjectRequest);
             return key;
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            return null;
         }
 
     }
@@ -66,10 +69,8 @@ public class CloudManagementServiceImpl implements CloudManagementService {
 
             return outputStream;
         } catch (IOException ioException) {
-            System.err.println(ioException);
+            return null;
         }
-
-        return null;
     }
 
     @Override
@@ -109,23 +110,55 @@ public class CloudManagementServiceImpl implements CloudManagementService {
     public String uploadDocumentToCloud(String filename) {
         File document = new File(filename);
         String key = putObject(document, "Documentos/");
-        document.delete();
-        return key;
+        try {
+            Path path = Paths.get(filename);
+            Files.deleteIfExists(path);
+            return key;
+
+        } catch (IOException exception) {
+            return null;
+        }
     }
 
     @Override
     public String uploadLetterToCloud(String filename, String projectName) {
         File document = new File(filename);
         String key = putObject(document, "Cartas/");
-        document.delete();
-        return key;
+        try {
+            Path path = Paths.get(filename);
+            Files.deleteIfExists(path);
+            return key;
+
+        } catch (IOException exception) {
+            return null;
+        }
     }
 
     @Override
     public String uploadActToCloud(String filename, String projectName) {
         File document = new File(filename);
         String key = putObject(document, "Actas/");
-        document.delete();
-        return key;
+        try {
+            Path path = Paths.get(filename);
+            Files.deleteIfExists(path);
+            return key;
+
+        } catch (IOException exception) {
+            return null;
+        }
+    }
+
+    @Override
+    public String uploadReportToCloud(String filename) {
+        File document = new File(filename);
+        String key = putObject(document, "Reportes/");
+        try {
+            Path path = Paths.get(filename);
+            Files.deleteIfExists(path);
+            return key;
+
+        } catch (IOException exception) {
+            return null;
+        }
     }
 }

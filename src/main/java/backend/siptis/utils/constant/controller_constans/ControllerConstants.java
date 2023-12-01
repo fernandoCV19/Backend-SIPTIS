@@ -144,4 +144,10 @@ public class ControllerConstants {
         public static final String TAG_NAME = "USER AREA";
         public static final String TAG_DESCRIPTION = "Operations related to user area management";
     }
+
+    public static class Report {
+        public static final String BASE_PATH = "/report";
+        public static final String TAG_NAME = "REPORT";
+        public static final String TAG_DESCRIPTION = "Operations related to report generation";
+    }
 }
