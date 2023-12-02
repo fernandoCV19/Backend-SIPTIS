@@ -29,4 +29,19 @@ public class ReportController {
                 .message("REPORT_GENERATED").build(), null, 200);
     }
 
+    @Operation(summary = "Get project report about tribunals")
+    @GetMapping("/project/tribunal")
+    public ResponseEntity<ControllerAnswer> getProjectTribunalReport(){
+        return new ResponseEntity<>(ControllerAnswer.builder()
+                .data(reportService.getProjectTribunalReport())
+                .message("REPORT_GENERATED").build(), null, 200);
+    }
+
+    @Operation(summary = "Get projects filter by career")
+    @GetMapping("/project/career")
+    public ResponseEntity<ControllerAnswer> getProjectFilterByCareerReport(){
+        return new ResponseEntity<>(ControllerAnswer.builder()
+                .data(reportService.getProjectCareerReport())
+                .message("REPORT_GENERATED").build(), null, 200);
+    }
 }
