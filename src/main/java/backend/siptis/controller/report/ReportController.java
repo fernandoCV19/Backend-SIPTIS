@@ -1,6 +1,7 @@
 package backend.siptis.controller.report;
 
 import backend.siptis.commons.ControllerAnswer;
+import backend.siptis.service.report.ProjectReportService;
 import backend.siptis.service.report.ReportService;
 import backend.siptis.utils.constant.controller_constans.ControllerConstants;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ReportController {
 
     private final ReportService reportService;
+    private final ProjectReportService projectReportService;
 
     @Operation(summary = "Get tribunal report")
     @GetMapping("/tribunal/general")
@@ -29,4 +31,19 @@ public class ReportController {
                 .message("REPORT_GENERATED").build(), null, 200);
     }
 
+    @Operation(summary = "Get project report about tribunals")
+    @GetMapping("/project/tribunal")
+    public ResponseEntity<ControllerAnswer> getProjectTribunalReport(){
+        return new ResponseEntity<>(ControllerAnswer.builder()
+                .data(projectReportService.getProjectTribunalReport())
+                .message("REPORT_GENERATED").build(), null, 200);
+    }
+
+    @Operation(summary = "Get projects filter by career")
+    @GetMapping("/project/career")
+    public ResponseEntity<ControllerAnswer> getProjectFilterByCareerReport(){
+        return new ResponseEntity<>(ControllerAnswer.builder()
+                .data(projectReportService.getProjectCareerReport())
+                .message("REPORT_GENERATED").build(), null, 200);
+    }
 }
