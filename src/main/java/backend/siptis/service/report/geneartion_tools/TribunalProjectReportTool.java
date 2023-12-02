@@ -1,9 +1,11 @@
 package backend.siptis.service.report.geneartion_tools;
 
-import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.model.entity.editors_and_reviewers.ProjectTribunal;
 import backend.siptis.model.entity.project_management.Project;
-import org.apache.poi.ss.usermodel.*;
+import backend.siptis.utils.functions.ReportFunctions;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileOutputStream;
@@ -15,45 +17,31 @@ import java.util.List;
 
 public class TribunalProjectReportTool {
 
-    private TribunalProjectReportTool(){}
+    private TribunalProjectReportTool() {
+    }
 
-    public static String generateReport(List<Project> projects)  {
+    public static String generateReport(List<Project> projects) {
         LocalDate today = LocalDate.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String date = today.format(dateTimeFormatter);
         String fileName = "proyectos-tribunal" + date + ".xlsx";
 
-        try(Workbook report = new XSSFWorkbook()){
-            CellStyle headerStyle = report.createCellStyle();
-            Font font = report.createFont();
-            font.setBold(true);
-            headerStyle.setFont(font);
-            headerStyle.setFillForegroundColor(IndexedColors.YELLOW.getIndex());
-            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-
-            CellStyle contentStyle = report.createCellStyle();
-            contentStyle.setAlignment(HorizontalAlignment.CENTER);
-
-            Sheet sheet = report.createSheet("Tribunales");
+        try (Workbook report = new XSSFWorkbook()) {
+            Sheet sheet = report.createSheet("Tribunales de un Proyecto");
             Row row = sheet.createRow(2);
-            Cell cell = row.createCell(2);
-            cell.setCellValue("Reporte general de los tribunales por proyecto");
-            cell = row.createCell(3);
-            cell.setCellValue("Fecha: " + date);
+
+            String title = "Reporte general de los tribunales por proyecto";
+            ReportFunctions.addCellInRow(2, title, ReportFunctions.getContentStyle(report), row);
+            ReportFunctions.addCellInRow(3, "Fecha " + date, ReportFunctions.getContentStyle(report), row);
 
             row = sheet.createRow(4);
-            cell = row.createCell(1);
-            cell.setCellValue("N°");
-            cell.setCellStyle(headerStyle);
-            cell = row.createCell(2);
-            cell.setCellValue("Proyecto");
-            cell.setCellStyle(headerStyle);
-            cell = row.createCell(3);
-            cell.setCellValue("Tribunales");
-            cell.setCellStyle(headerStyle);
+
+            ReportFunctions.addCellInRow(1, "N°", ReportFunctions.getHeaderCellStyle(report), row);
+            ReportFunctions.addCellInRow(2, "Proyecto", ReportFunctions.getHeaderCellStyle(report), row);
+            ReportFunctions.addCellInRow(3, "Tribunales", ReportFunctions.getHeaderCellStyle(report), row);
 
             int rowIndex = 5;
-            for (Project project: projects){
+            for (Project project : projects) {
                 String projectName = project.getName();
 
                 Collection<ProjectTribunal> tribunals = project.getTribunals();
@@ -66,16 +54,9 @@ public class TribunalProjectReportTool {
 
                 row = sheet.createRow(rowIndex);
 
-                cell = row.createCell(1);
-                cell.setCellValue(rowIndex - 4);
-                cell.setCellStyle(contentStyle);
-
-                cell = row.createCell(2);
-                cell.setCellValue(projectName);
-                cell.setCellStyle(contentStyle);
-                cell = row.createCell(3);
-                cell.setCellValue(names);
-                cell.setCellStyle(contentStyle);
+                ReportFunctions.addCellInRow(1, "" + (rowIndex - 4), ReportFunctions.getContentStyle(report), row);
+                ReportFunctions.addCellInRow(2, projectName, ReportFunctions.getContentStyle(report), row);
+                ReportFunctions.addCellInRow(3, names, ReportFunctions.getContentStyle(report), row);
                 rowIndex++;
             }
 
@@ -86,8 +67,7 @@ public class TribunalProjectReportTool {
             FileOutputStream fileOutputStream = new FileOutputStream(fileName);
             report.write(fileOutputStream);
             fileOutputStream.close();
-        }
-        catch (IOException exception) {
+        } catch (IOException exception) {
             return null;
         }
         return fileName;
