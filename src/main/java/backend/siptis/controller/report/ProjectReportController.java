@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(ControllerConstants.Report.BASE_PATH)
 @RequiredArgsConstructor
 @CrossOrigin
-public class ReportController {
+public class ProjectReportController {
 
     private final ReportService reportService;
     private final ProjectReportService projectReportService;
