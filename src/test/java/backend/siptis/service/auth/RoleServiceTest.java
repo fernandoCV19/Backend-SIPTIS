@@ -29,7 +29,7 @@ class RoleServiceTest {
     }
 
     @Test
-    @DisplayName("test for get allowed roles")
+    @DisplayName("test for get role by name")
     void givenRoleNameWhenGetRoleByNameThenServiceMessageERROR() {
         assertEquals(ServiceMessage.ERROR, roleService.getRoleByName("wrong name").getServiceMessage());
     }
