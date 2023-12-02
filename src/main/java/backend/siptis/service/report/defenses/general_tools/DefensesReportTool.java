@@ -1,4 +1,4 @@
-package backend.siptis.service.report.geneartion_tools;
+package backend.siptis.service.report.defenses.general_tools;
 
 import backend.siptis.model.entity.defense_management.Defense;
 import backend.siptis.utils.functions.ReportFunctions;
@@ -14,18 +14,18 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public class SiptisUserReportTool {
+public class DefensesReportTool {
 
     public static String generateReport(List<Defense> defenses) {
         LocalDate today = LocalDate.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String date = today.format(dateTimeFormatter);
-        String fileName = "lista-tutores" + date + ".xlsx";
+        String fileName = "lista-defensas" + date + ".xlsx";
 
         try (Workbook report = new XSSFWorkbook()) {
             CellStyle headerStyle = ReportFunctions.getHeaderCellStyle(report);
             CellStyle contentStyle = ReportFunctions.getContentStyle(report);
-            Sheet sheet = report.createSheet("Tutores");
+            Sheet sheet = report.createSheet("Defensas");
 
             addHeadersValues(sheet, headerStyle, date);
             addBodyValues(sheet, contentStyle, defenses);
@@ -70,7 +70,7 @@ public class SiptisUserReportTool {
 
     private static void addHeadersValues(Sheet sheet, CellStyle headerStyle, String date) {
         Row row = sheet.createRow(2);
-        ReportFunctions.addCellInRow(4, "Reporte general de usuarios segun rol", null, row);
+        ReportFunctions.addCellInRow(4, "Reporte general de defensas", null, row);
         ReportFunctions.addCellInRow(6, "Fecha: " + date, null, row);
 
         row = sheet.createRow(4);

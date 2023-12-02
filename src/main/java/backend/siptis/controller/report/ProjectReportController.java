@@ -1,8 +1,8 @@
 package backend.siptis.controller.report;
 
 import backend.siptis.commons.ControllerAnswer;
-import backend.siptis.service.report.ProjectReportService;
-import backend.siptis.service.report.ReportService;
+import backend.siptis.service.report.projects.ProjectReportService;
+import backend.siptis.service.report.tribunals.general_tools.ReportService;
 import backend.siptis.utils.constant.controller_constans.ControllerConstants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(ControllerConstants.Report.BASE_PATH)
 @RequiredArgsConstructor
 @CrossOrigin
-public class ReportController {
+public class ProjectReportController {
 
     private final ReportService reportService;
     private final ProjectReportService projectReportService;
@@ -39,11 +39,17 @@ public class ReportController {
                 .message("REPORT_GENERATED").build(), null, 200);
     }
 
-    @Operation(summary = "Get projects filter by career")
+    @Operation(summary = "Get projects filter by career report")
     @GetMapping("/project/career")
     public ResponseEntity<ControllerAnswer> getProjectFilterByCareerReport(){
         return new ResponseEntity<>(ControllerAnswer.builder()
                 .data(projectReportService.getProjectCareerReport())
                 .message("REPORT_GENERATED").build(), null, 200);
+    }
+
+    @Operation(summary = "Get complete project report")
+    @GetMapping("/project/complete")
+    public ResponseEntity<ControllerAnswer> getCompleteProjectReport() {
+        return null;
     }
 }

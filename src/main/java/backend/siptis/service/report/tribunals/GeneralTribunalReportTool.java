@@ -1,4 +1,4 @@
-package backend.siptis.service.report.geneartion_tools;
+package backend.siptis.service.report.tribunals;
 
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.model.entity.user_data.UserInformation;

@@ -1,4 +1,4 @@
-package backend.siptis.service.report.geneartion_tools;
+package backend.siptis.service.report.projects.generation_tools;
 
 import backend.siptis.commons.UserCareer;
 import backend.siptis.model.entity.project_management.Project;
@@ -40,18 +40,10 @@ public class ProjectByCareerReportTool {
             ReportFunctions.addCellInRow(3, "Carrera", ReportFunctions.getHeaderCellStyle(report), row);
 
             int rowIndex = 5;
-            for (Project project : sistemas) {
-                String projectName = project.getName();
 
-                row = sheet.createRow(rowIndex);
-
-                ReportFunctions.addCellInRow(1, "" + (rowIndex - 4), ReportFunctions.getContentStyle(report), row);
-                ReportFunctions.addCellInRow(2, projectName, ReportFunctions.getContentStyle(report), row);
-                ReportFunctions.addCellInRow(3, UserCareer.SISTEMAS.name(), ReportFunctions.getContentStyle(report), row);
-            }
             rowIndex = addCareerToReport(sistemas, report, rowIndex, sheet, row, UserCareer.SISTEMAS.name());
-            rowIndex = addCareerToReport(sistemas, report, rowIndex, sheet, row, UserCareer.INFORMATICA.name());
-            rowIndex = addCareerToReport(sistemas, report, rowIndex, sheet, row, "COMPARTIDO");
+            rowIndex = addCareerToReport(informatica, report, rowIndex, sheet, row, UserCareer.INFORMATICA.name());
+            rowIndex = addCareerToReport(combined, report, rowIndex, sheet, row, "COMPARTIDO");
 
             rowIndex = rowIndex + 2;
             row = sheet.createRow(rowIndex);

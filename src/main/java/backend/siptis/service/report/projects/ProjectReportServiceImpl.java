@@ -1,4 +1,4 @@
-package backend.siptis.service.report;
+package backend.siptis.service.report.projects;
 
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
@@ -7,7 +7,8 @@ import backend.siptis.model.entity.project_management.Project;
 import backend.siptis.model.entity.user_data.UserCareer;
 import backend.siptis.model.repository.project_management.ProjectRepository;
 import backend.siptis.service.cloud.CloudManagementService;
-import backend.siptis.service.report.geneartion_tools.TribunalProjectReportTool;
+import backend.siptis.service.report.projects.generation_tools.ProjectByCareerReportTool;
+import backend.siptis.service.report.projects.generation_tools.TribunalProjectReportTool;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,7 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
-public class ProjectReportReportServiceImpl implements ProjectReportService {
+public class ProjectReportServiceImpl implements ProjectReportService {
 
     private final ProjectRepository projectRepository;
     private final CloudManagementService cloud;
@@ -45,6 +46,14 @@ public class ProjectReportReportServiceImpl implements ProjectReportService {
                 informatica.add(project);
             else combined.add(project);
         }
+
+        String fileName = ProjectByCareerReportTool.generateReport(sistemas, informatica, combined);
+        String key = cloud.uploadReportToCloud(fileName);
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
+    }
+
+    public ServiceAnswer getCompleteProjectReport() {
+        List<Project> projects = projectRepository.findAll();
         return null;
     }
 

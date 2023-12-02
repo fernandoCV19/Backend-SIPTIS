@@ -1,7 +1,6 @@
-package backend.siptis.service.report.geneartion_tools;
+package backend.siptis.service.report.activities.generation_tools;
 
-import backend.siptis.model.entity.editors_and_reviewers.ProjectTribunal;
-import backend.siptis.model.entity.project_management.Project;
+import backend.siptis.model.entity.notifications.Activity;
 import backend.siptis.utils.functions.ReportFunctions;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -12,25 +11,22 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Collection;
 import java.util.List;
 
-public class TribunalProjectReportTool {
+public class ActivitiesByProjectReportTool {
 
-    private TribunalProjectReportTool() {
-    }
-
-    public static String generateReport(List<Project> projects) {
+    private ActivitiesByProjectReportTool() {}
+    public static String generateReport(List<Activity> activities) {
         LocalDate today = LocalDate.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String date = today.format(dateTimeFormatter);
-        String fileName = "proyectos-tribunal" + date + ".xlsx";
+        String fileName = "actividades-por-proyecto-" + date + ".xlsx";
 
-        try (Workbook report = new XSSFWorkbook()) {
-            Sheet sheet = report.createSheet("Tribunales de un Proyecto");
+        try(Workbook report = new XSSFWorkbook()){
+            Sheet sheet = report.createSheet("Actividades por proyecto");
             Row row = sheet.createRow(2);
 
-            String title = "Reporte general de los tribunales por proyecto";
+            String title = "Report de proyectos por carreras";
             ReportFunctions.addCellInRow(2, title, ReportFunctions.getContentStyle(report), row);
             ReportFunctions.addCellInRow(3, "Fecha " + date, ReportFunctions.getContentStyle(report), row);
 
@@ -38,25 +34,22 @@ public class TribunalProjectReportTool {
 
             ReportFunctions.addCellInRow(1, "N°", ReportFunctions.getHeaderCellStyle(report), row);
             ReportFunctions.addCellInRow(2, "Proyecto", ReportFunctions.getHeaderCellStyle(report), row);
-            ReportFunctions.addCellInRow(3, "Tribunales", ReportFunctions.getHeaderCellStyle(report), row);
+            ReportFunctions.addCellInRow(3, "Actividad", ReportFunctions.getHeaderCellStyle(report), row);
+            ReportFunctions.addCellInRow(4, "Fecha", ReportFunctions.getHeaderCellStyle(report), row);
 
             int rowIndex = 5;
-            for (Project project : projects) {
-                String projectName = project.getName();
 
-                Collection<ProjectTribunal> tribunals = project.getTribunals();
-
-                List<String> tribunalNames = tribunals
-                        .stream()
-                        .map(projectTribunal -> projectTribunal.getTribunal().getFullName()).toList();
-
-                String names = String.join(", ", tribunalNames);
+            for(Activity activity: activities){
+                String activityName = activity.getActivityName();
+                String activityDate = activity.getActivityDate().toString();
+                String projectName = activity.getProject().getName();
 
                 row = sheet.createRow(rowIndex);
 
                 ReportFunctions.addCellInRow(1, "" + (rowIndex - 4), ReportFunctions.getContentStyle(report), row);
                 ReportFunctions.addCellInRow(2, projectName, ReportFunctions.getContentStyle(report), row);
-                ReportFunctions.addCellInRow(3, names, ReportFunctions.getContentStyle(report), row);
+                ReportFunctions.addCellInRow(3, activityName, ReportFunctions.getContentStyle(report), row);
+                ReportFunctions.addCellInRow(4, activityDate, ReportFunctions.getContentStyle(report), row);
                 rowIndex++;
             }
 
@@ -67,7 +60,8 @@ public class TribunalProjectReportTool {
             FileOutputStream fileOutputStream = new FileOutputStream(fileName);
             report.write(fileOutputStream);
             fileOutputStream.close();
-        } catch (IOException exception) {
+        }
+        catch (IOException exception) {
             return null;
         }
         return fileName;
