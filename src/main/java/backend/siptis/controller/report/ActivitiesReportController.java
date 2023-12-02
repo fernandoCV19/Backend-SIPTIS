@@ -1,7 +1,7 @@
 package backend.siptis.controller.report;
 
 import backend.siptis.commons.ControllerAnswer;
-import backend.siptis.service.report.ActivitiesReportService;
+import backend.siptis.service.report.activities.ActivitiesReportService;
 import backend.siptis.utils.constant.controller_constans.ControllerConstants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

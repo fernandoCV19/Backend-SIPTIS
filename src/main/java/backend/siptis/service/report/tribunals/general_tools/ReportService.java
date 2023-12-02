@@ -1,4 +1,4 @@
-package backend.siptis.service.report;
+package backend.siptis.service.report.tribunals.general_tools;
 
 import backend.siptis.commons.ServiceAnswer;
 

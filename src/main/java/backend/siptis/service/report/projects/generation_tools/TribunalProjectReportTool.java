@@ -1,4 +1,4 @@
-package backend.siptis.service.report.geneartion_tools;
+package backend.siptis.service.report.projects.generation_tools;
 
 import backend.siptis.model.entity.editors_and_reviewers.ProjectTribunal;
 import backend.siptis.model.entity.project_management.Project;

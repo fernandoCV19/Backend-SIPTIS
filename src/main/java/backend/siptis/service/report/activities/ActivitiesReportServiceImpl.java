@@ -1,4 +1,4 @@
-package backend.siptis.service.report;
+package backend.siptis.service.report.activities;
 
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
@@ -7,8 +7,8 @@ import backend.siptis.model.entity.notifications.GeneralActivity;
 import backend.siptis.model.repository.notifications.ActivityRepository;
 import backend.siptis.model.repository.notifications.GeneralActivityRepository;
 import backend.siptis.service.cloud.CloudManagementService;
-import backend.siptis.service.report.geneartion_tools.ActivitiesByProjectReportTool;
-import backend.siptis.service.report.geneartion_tools.GeneralActivityReportTool;
+import backend.siptis.service.report.activities.generation_tools.ActivitiesByProjectReportTool;
+import backend.siptis.service.report.activities.generation_tools.GeneralActivityReportTool;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

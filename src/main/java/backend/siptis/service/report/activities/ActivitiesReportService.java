@@ -1,4 +1,4 @@
-package backend.siptis.service.report;
+package backend.siptis.service.report.activities;
 
 import backend.siptis.commons.ServiceAnswer;
 
