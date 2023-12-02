@@ -6,11 +6,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.annotation.DirtiesContext;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class ChatHistoryRepositoryTest {
     @Autowired
     private ChatHistoryRespository chatHistoryRespository;
@@ -36,8 +38,8 @@ class ChatHistoryRepositoryTest {
     }
 
     @Test
-    @DisplayName("Test for find Chat History by non existing prompt")
-    void test() {
+    @DisplayName("Test for find Chat History success")
+    void givenChatHistoryPromp_whenFindByPromptLikeIgnoreCase_thenChatHistory() {
         chatHistoryRespository.save(chatHistory);
         assertNotNull(chatHistoryRespository.findByPromptLikeIgnoreCase("chat_history_test").get());
     }

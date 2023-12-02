@@ -6,10 +6,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.annotation.DirtiesContext;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class DefenseRepositoryTest {
 
     @Autowired
@@ -23,7 +26,12 @@ class DefenseRepositoryTest {
     }
 
     @Test
-    @DisplayName("Test for find defense by id")
+    @DisplayName("Test for find defense by id false")
+    void givenDefenseId_whenFindById_thenEmpty() {
+        assertTrue(defenseRepository.findById(123l).isEmpty());
+    }
+    @Test
+    @DisplayName("Test for find defense by id success")
     void givenDefenseId_whenFindById_thenDefenseObject() {
         defenseRepository.save(defense);
         assertFalse(defenseRepository.findById(defense.getId()).isEmpty());
