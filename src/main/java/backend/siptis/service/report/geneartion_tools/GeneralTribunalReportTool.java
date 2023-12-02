@@ -13,7 +13,8 @@ import java.util.List;
 
 public class  GeneralTribunalReportTool {
 
-    private GeneralTribunalReportTool(){}
+    private GeneralTribunalReportTool() {
+    }
 
     public static String generateReport(List<SiptisUser> tribunals) {
         LocalDate today = LocalDate.now();
