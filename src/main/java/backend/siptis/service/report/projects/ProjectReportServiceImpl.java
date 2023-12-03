@@ -3,12 +3,14 @@ package backend.siptis.service.report.projects;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.editors_and_reviewers.ProjectStudent;
+import backend.siptis.model.entity.notifications.Activity;
 import backend.siptis.model.entity.project_management.Project;
 import backend.siptis.model.entity.user_data.UserCareer;
 import backend.siptis.model.repository.project_management.ProjectRepository;
 import backend.siptis.service.cloud.CloudManagementService;
 import backend.siptis.service.report.projects.generation_tools.CompleteProjectReportTool;
 import backend.siptis.service.report.projects.generation_tools.ProjectByCareerReportTool;
+import backend.siptis.service.report.projects.generation_tools.ProjectsByStateReportTool;
 import backend.siptis.service.report.projects.generation_tools.TribunalProjectReportTool;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -62,7 +65,13 @@ public class ProjectReportServiceImpl implements ProjectReportService {
 
     @Override
     public ServiceAnswer getActiveAndInactiveProjects(){
-        return null;
+        List<Project> projectList = projectRepository.findAll();
+        projectList = projectList.stream()
+                .sorted((p1, p2) -> p1.getState().getName()
+                        .compareTo(p2.getState().getName())).collect(Collectors.toList());
+        String fileName = ProjectsByStateReportTool.generateReport(projectList);
+        String key = ""; // cloud.uploadReportToCloud(fileName);
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
     }
 
     private boolean isCareer(Project project, backend.siptis.commons.UserCareer compareCareer) {

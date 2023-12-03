@@ -54,4 +54,12 @@ public class ProjectReportController {
                 .data(projectReportService.getCompleteProjectReport())
                 .message("REPORT_GENERATED").build(), null, 200);
     }
+
+    @Operation(summary = "Get projects with state report")
+    @GetMapping ("/project/state")
+    public ResponseEntity<ControllerAnswer> getProjectStateReport(){
+        return new ResponseEntity<>(ControllerAnswer.builder()
+                .data(projectReportService.getActiveAndInactiveProjects())
+                .message("REPORT_GENERATED").build(), null, 200);
+    }
 }
