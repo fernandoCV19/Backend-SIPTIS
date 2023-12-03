@@ -43,10 +43,7 @@ public class ProjectServiceStandardFilter {
             jsonMap.put("projectName", p.getName());
             jsonMap.put("period", p.getPeriod());
             jsonMap.put("modality", p.getModality().getName());
-            jsonMap.put("perfilPath", p.getPerfilPath());
-            jsonMap.put("blueBookPath", p.getBlueBookPath());
-            jsonMap.put("projectPath", p.getProjectPath());
-
+            jsonMap.put("summarySheetPath", p.getSummarySheetPath());
             jsonMap.put("areas", p.getAreas().toArray());
             jsonMap.put("subAreas", p.getSubAreas().toArray());
 

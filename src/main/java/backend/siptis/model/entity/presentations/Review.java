@@ -28,7 +28,7 @@ public class Review {
     @Column(name = ReviewTable.DocumentPath.NAME)
     private String documentPath;
 
-    @Column(name = ReviewTable.Commentary.NAME)
+    @Column(name = ReviewTable.Commentary.NAME, length = 510)
     private String commentary;
 
     @ManyToOne(fetch = FetchType.LAZY)

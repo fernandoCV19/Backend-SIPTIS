@@ -3,6 +3,7 @@ package backend.siptis.controller.project_management.project_controllers;
 import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
+import backend.siptis.service.auth.siptis_user_services.SiptisUserServiceTokenOperations;
 import backend.siptis.service.project_management.project.ProjectServiceGetProjectInfo;
 import backend.siptis.utils.constant.controller_constans.ControllerConstants;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Tag(name = ControllerConstants.Project.TAG_NAME, description = ControllerConstants.Project.TAG_DESCRIPTION)
 @RestController
 @RequestMapping(ControllerConstants.Project.BASE_PATH)
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 public class ProjectGetProjectInfoController {
 
     private final ProjectServiceGetProjectInfo projectServiceGetProjectInfo;
+    private final SiptisUserServiceTokenOperations siptisUserServiceTokenOperations;
 
     @Operation(summary = "Get project information by project id")
     @GetMapping("/information/{id}")
@@ -66,6 +70,21 @@ public class ProjectGetProjectInfoController {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<ControllerAnswer> getInfoToAssignTribunals(@PathVariable("projectId") Long projectId) {
         ServiceAnswer serviceAnswer = projectServiceGetProjectInfo.getProjectInfoToAssignTribunals(projectId);
+        HttpStatus httpStatus = HttpStatus.OK;
+        if (serviceAnswer.getServiceMessage() != ServiceMessage.OK) {
+            httpStatus = HttpStatus.BAD_REQUEST;
+        }
+        ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(serviceAnswer.getData()).message(serviceAnswer.getServiceMessage().toString()).build();
+        return new ResponseEntity<>(controllerAnswer, httpStatus);
+    }
+
+    @Operation(summary = "Get students current's project phase")
+    @GetMapping("/studentPhase")
+    @PreAuthorize("hasAuthority('STUDENT')")
+    public ResponseEntity<ControllerAnswer> getPresentations(@RequestHeader(name = "Authorization") String token) {
+        List<?> projects = siptisUserServiceTokenOperations.getProjectsFromToken(token);
+        int projectId = (int) projects.get(0);
+        ServiceAnswer serviceAnswer = projectServiceGetProjectInfo.getStudentPhase((long) projectId);
         HttpStatus httpStatus = HttpStatus.OK;
         if (serviceAnswer.getServiceMessage() != ServiceMessage.OK) {
             httpStatus = HttpStatus.BAD_REQUEST;
