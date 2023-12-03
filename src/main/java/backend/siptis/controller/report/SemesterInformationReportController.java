@@ -24,7 +24,7 @@ public class SemesterInformationReportController {
 
     @Operation(summary = "Get semester information report")
     @GetMapping("/semester")
-    public ResponseEntity<ControllerAnswer> getSemesterInformationReport(){
+    public ResponseEntity<ControllerAnswer> getSemesterInformationReport() {
         return new ResponseEntity<>(ControllerAnswer.builder()
                 .data(semesterInformationServiceReport.getAllSemesterInformation())
                 .message("REPORT_GENERATED").build(), null, 200);

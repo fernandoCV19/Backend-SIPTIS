@@ -15,14 +15,16 @@ import java.util.List;
 
 public class ActivitiesByProjectReportTool {
 
-    private ActivitiesByProjectReportTool() {}
+    private ActivitiesByProjectReportTool() {
+    }
+
     public static String generateReport(List<Activity> activities) {
         LocalDate today = LocalDate.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String date = today.format(dateTimeFormatter);
         String fileName = "actividades-por-proyecto-" + date + ".xlsx";
 
-        try(Workbook report = new XSSFWorkbook()){
+        try (Workbook report = new XSSFWorkbook()) {
             Sheet sheet = report.createSheet("Actividades por proyecto");
             Row row = sheet.createRow(2);
 
@@ -39,7 +41,7 @@ public class ActivitiesByProjectReportTool {
 
             int rowIndex = 5;
 
-            for(Activity activity: activities){
+            for (Activity activity : activities) {
                 String activityName = activity.getActivityName();
                 String activityDate = activity.getActivityDate().toString();
                 String projectName = activity.getProject().getName();
@@ -60,8 +62,7 @@ public class ActivitiesByProjectReportTool {
             FileOutputStream fileOutputStream = new FileOutputStream(fileName);
             report.write(fileOutputStream);
             fileOutputStream.close();
-        }
-        catch (IOException exception) {
+        } catch (IOException exception) {
             return null;
         }
         return fileName;

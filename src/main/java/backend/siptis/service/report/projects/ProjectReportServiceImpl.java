@@ -98,8 +98,14 @@ public class ProjectReportServiceImpl implements ProjectReportService {
     }
 
     @Override
-    public ServiceAnswer getActiveAndInactiveProjects(){
-        return null;
+    public ServiceAnswer getActiveAndInactiveProjects() {
+        List<Project> projectList = projectRepository.findAll();
+        projectList = projectList.stream()
+                .sorted((p1, p2) -> p1.getState().getName()
+                        .compareTo(p2.getState().getName())).toList();
+        String fileName = ProjectsByStateReportTool.generateReport(projectList);
+        String key = cloud.uploadReportToCloud(fileName);
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
     }
 
     private boolean isCareer(Project project, backend.siptis.commons.UserCareer compareCareer) {

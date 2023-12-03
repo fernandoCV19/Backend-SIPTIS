@@ -23,7 +23,7 @@ public class ActivitiesReportController {
 
     @Operation(summary = "Get activites report")
     @GetMapping("/activities/general")
-    public ResponseEntity<ControllerAnswer> getGeneralActivitiesReport(){
+    public ResponseEntity<ControllerAnswer> getGeneralActivitiesReport() {
         return new ResponseEntity<>(ControllerAnswer.builder()
                 .data(activitiesReportService.getGeneralActivitesReport())
                 .message("REPORT_GENERATED").build(), null, 200);

@@ -33,7 +33,7 @@ public class ProjectReportController {
 
     @Operation(summary = "Get project report about tribunals")
     @GetMapping("/project/tribunal")
-    public ResponseEntity<ControllerAnswer> getProjectTribunalReport(){
+    public ResponseEntity<ControllerAnswer> getProjectTribunalReport() {
         return new ResponseEntity<>(ControllerAnswer.builder()
                 .data(projectReportService.getProjectTribunalReport())
                 .message("REPORT_GENERATED").build(), null, 200);
@@ -41,7 +41,7 @@ public class ProjectReportController {
 
     @Operation(summary = "Get projects filter by career report")
     @GetMapping("/project/career")
-    public ResponseEntity<ControllerAnswer> getProjectFilterByCareerReport(){
+    public ResponseEntity<ControllerAnswer> getProjectFilterByCareerReport() {
         return new ResponseEntity<>(ControllerAnswer.builder()
                 .data(projectReportService.getProjectCareerReport())
                 .message("REPORT_GENERATED").build(), null, 200);
@@ -76,6 +76,14 @@ public class ProjectReportController {
     public ResponseEntity<ControllerAnswer> getCompleteProjectReport() {
         return new ResponseEntity<>(ControllerAnswer.builder()
                 .data(projectReportService.getCompleteProjectReport())
+                .message("REPORT_GENERATED").build(), null, 200);
+    }
+
+    @Operation(summary = "Get projects with state report")
+    @GetMapping("/project/state")
+    public ResponseEntity<ControllerAnswer> getProjectStateReport() {
+        return new ResponseEntity<>(ControllerAnswer.builder()
+                .data(projectReportService.getActiveAndInactiveProjects())
                 .message("REPORT_GENERATED").build(), null, 200);
     }
 }

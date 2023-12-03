@@ -1,6 +1,6 @@
-package backend.siptis.service.report.activities.generation_tools;
+package backend.siptis.service.report.projects.generation_tools;
 
-import backend.siptis.model.entity.notifications.GeneralActivity;
+import backend.siptis.model.entity.project_management.Project;
 import backend.siptis.utils.functions.ReportFunctions;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -13,44 +13,42 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public class GeneralActivityReportTool {
-
-    private GeneralActivityReportTool() {
+public class ProjectsByStateReportTool {
+    private ProjectsByStateReportTool() {
     }
 
-    public static String generateReport(List<GeneralActivity> activities) {
+    public static String generateReport(List<Project> projectList) {
         LocalDate today = LocalDate.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String date = today.format(dateTimeFormatter);
-        String fileName = "actividades-generales-" + date + ".xlsx";
+        String fileName = "proyectos-por-estado" + date + ".xlsx";
 
         try (Workbook report = new XSSFWorkbook()) {
-            Sheet sheet = report.createSheet("Proyecto por tribunales");
+            Sheet sheet = report.createSheet("Proyecto por estado");
             Row row = sheet.createRow(2);
 
-            String title = "Reporte de actividades generales";
+            String title = "Reporte de proyectos por estado";
             ReportFunctions.addCellInRow(2, title, ReportFunctions.getContentStyle(report), row);
             ReportFunctions.addCellInRow(3, "Fecha " + date, ReportFunctions.getContentStyle(report), row);
 
             row = sheet.createRow(4);
 
             ReportFunctions.addCellInRow(1, "N°", ReportFunctions.getHeaderCellStyle(report), row);
-            ReportFunctions.addCellInRow(2, "Actividad", ReportFunctions.getHeaderCellStyle(report), row);
-            ReportFunctions.addCellInRow(3, "Fecha", ReportFunctions.getHeaderCellStyle(report), row);
+            ReportFunctions.addCellInRow(2, "Proyecto", ReportFunctions.getHeaderCellStyle(report), row);
+            ReportFunctions.addCellInRow(3, "Estado", ReportFunctions.getHeaderCellStyle(report), row);
 
             int rowIndex = 5;
-
-            for (GeneralActivity activity : activities) {
-                String activityName = activity.getActivityName();
-                String activityDate = activity.getActivityDate().toString();
-
+            for (Project project : projectList) {
+                String projectName = project.getName();
+                String projectState = project.getState().getName();
                 row = sheet.createRow(rowIndex);
 
                 ReportFunctions.addCellInRow(1, "" + (rowIndex - 4), ReportFunctions.getContentStyle(report), row);
-                ReportFunctions.addCellInRow(2, activityName, ReportFunctions.getContentStyle(report), row);
-                ReportFunctions.addCellInRow(3, activityDate, ReportFunctions.getContentStyle(report), row);
+                ReportFunctions.addCellInRow(2, projectName, ReportFunctions.getContentStyle(report), row);
+                ReportFunctions.addCellInRow(3, projectState, ReportFunctions.getContentStyle(report), row);
                 rowIndex++;
             }
+
 
             for (int i = 0; i < 8; i++) {
                 sheet.autoSizeColumn(i);
