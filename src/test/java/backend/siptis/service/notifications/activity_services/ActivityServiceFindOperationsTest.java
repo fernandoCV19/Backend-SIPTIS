@@ -1,12 +1,22 @@
 package backend.siptis.service.notifications.activity_services;
 
 import backend.siptis.model.entity.notifications.Activity;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import backend.siptis.commons.ServiceAnswer;
+import backend.siptis.commons.ServiceMessage;
+import org.springframework.data.domain.Pageable;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.jdbc.Sql;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
 
 @SpringBootTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class ActivityServiceFindOperationsTest {
     @Autowired
     private ActivityServiceFindOperations activityServiceFindOperations;
@@ -19,7 +29,7 @@ public class ActivityServiceFindOperationsTest {
         activity.setActivityName("name");
         activity.setActivityDescription("");
     }
-/*
+
     @Test
     @DisplayName("Test find by id")
     void givenId_whenFindById_thenServiceMessageNOT_FOUND() {
@@ -50,5 +60,5 @@ public class ActivityServiceFindOperationsTest {
     void givenActivity_whenEntityToVO_thenServiceMessageNOT_FOUND() {
         startActivity();
         assertNotNull(activityServiceFindOperations.entityToVO(activity));
-    }*/
+    }
 }

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.time.LocalDate;
@@ -15,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class GeneralActivityServiceFindOperationsTest {
     @Autowired
     private GeneralActivityServiceFindOperations generalActivityServiceFindOperations;

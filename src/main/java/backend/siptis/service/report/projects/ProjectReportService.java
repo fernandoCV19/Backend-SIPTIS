@@ -7,6 +7,12 @@ public interface ProjectReportService {
 
     ServiceAnswer getProjectCareerReport();
 
+    ServiceAnswer getProjectAreaReport();
+
+    ServiceAnswer getProjectSubAreaReport();
+
+    ServiceAnswer getProjectPhaseReport();
+
     ServiceAnswer getCompleteProjectReport();
 
     ServiceAnswer getActiveAndInactiveProjects();

@@ -1,15 +1,23 @@
 package backend.siptis.service.user_data;
 
 
+import backend.siptis.commons.ServiceAnswer;
+import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.user_data.RegisterStudentDTO;
 import backend.siptis.model.pjo.dto.user_data.RegisterUserDTO;
 import backend.siptis.model.pjo.dto.user_data.UserEditInformationDTO;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Date;
 
 @SpringBootTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class UserInformationServiceTest {
     @Autowired
     private UserInformationService userInformationService;
@@ -48,7 +56,7 @@ class UserInformationServiceTest {
 
 
 
-/*
+
     @Test
     @DisplayName("Test for find by id")
     void givenNoUserInformation_WhenFindById_ThenServiceMessageOK() {
@@ -62,7 +70,6 @@ class UserInformationServiceTest {
         ServiceAnswer answer = userInformationService.registerUserInformation(null);
         assertEquals(ServiceMessage.ERROR, answer.getServiceMessage());
     }
-
     @Test
     @DisplayName("Test for success register user ")
     void givenRegisterUserDTO_WhenRegisterUserInformation_ThenServiceMessageERROR() {
@@ -77,7 +84,6 @@ class UserInformationServiceTest {
         ServiceAnswer answer = userInformationService.registerUserInformation(null);
         assertEquals(ServiceMessage.ERROR, answer.getServiceMessage());
     }
-
     @Test
     @DisplayName("Test for success register student")
     void givenNull_WhenRegisterStudentInformation_ThenServiceMessageOK() {
@@ -106,5 +112,5 @@ class UserInformationServiceTest {
         ServiceAnswer answer = userInformationService.adminEditStudentInformation(null, null);
         assertEquals(ServiceMessage.ERROR, answer.getServiceMessage());
     }
-*/
+
 }
