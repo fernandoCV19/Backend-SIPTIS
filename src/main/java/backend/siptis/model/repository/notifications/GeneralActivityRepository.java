@@ -14,4 +14,5 @@ import java.time.LocalDate;
 public interface GeneralActivityRepository extends JpaRepository<GeneralActivity, Long> {
     @Query("SELECT ga FROM GeneralActivity ga WHERE ga.activityDate >=:now ")
     Page<GeneralActivity> findAllAfterADate(@Param("now") LocalDate now, Pageable pageable);
+
 }

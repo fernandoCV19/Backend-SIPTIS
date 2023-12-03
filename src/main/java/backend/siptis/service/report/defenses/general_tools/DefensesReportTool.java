@@ -1,4 +1,4 @@
-package backend.siptis.service.report.geneartion_tools;
+package backend.siptis.service.report.defenses.general_tools;
 
 import backend.siptis.model.entity.defense_management.Defense;
 import backend.siptis.utils.functions.ReportFunctions;
