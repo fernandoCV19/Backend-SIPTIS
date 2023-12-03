@@ -12,6 +12,8 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
+
 @Scope(value = "prototype")
 @Component
 @RequiredArgsConstructor
@@ -27,6 +29,10 @@ public class EmailFactory {
     private String[] emailArray;
     @Setter
     private Boolean isHtml;
+    @Setter
+    private File file;
+    @Setter
+    private String filename;
     @Getter
     private String response;
     @Value("${spring.mail.host}")
@@ -41,6 +47,24 @@ public class EmailFactory {
             messageHelper.setTo(toMail);
             messageHelper.setSubject(subject);
             messageHelper.setText(text, isHtml);
+        };
+
+        try {
+            mailSender.send(message);
+            response = "EMAIL SENT SUCCESSFULLY";
+        } catch (MailException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendDocument(){
+        MimeMessagePreparator message = mimeMessage -> {
+            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true);
+            messageHelper.setFrom(new InternetAddress(fromMail, from));
+            messageHelper.setTo(toMail);
+            messageHelper.setSubject(subject);
+            messageHelper.setText(text, isHtml);
+            messageHelper.addAttachment(filename, file);
         };
 
         try {
