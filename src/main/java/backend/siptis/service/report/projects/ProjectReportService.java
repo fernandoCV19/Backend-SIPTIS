@@ -12,4 +12,6 @@ public interface ProjectReportService {
     ServiceAnswer getProjectPhaseReport();
 
     ServiceAnswer getCompleteProjectReport();
+
+    ServiceAnswer getActiveAndInactiveProjects();
 }
