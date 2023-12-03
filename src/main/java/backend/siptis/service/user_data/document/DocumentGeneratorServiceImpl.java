@@ -22,6 +22,7 @@ import backend.siptis.model.repository.user_data.DocumentRepository;
 import backend.siptis.model.repository.user_data.UserInformationRepository;
 import backend.siptis.service.auth.siptis_user_services.SiptisUserServiceCareerDirectorOperations;
 import backend.siptis.service.cloud.CloudManagementService;
+import backend.siptis.service.notifications.notification_senders.DocumentSenderService;
 import backend.siptis.service.user_data.document.generation_tools.DocumentaryRecordTool;
 import backend.siptis.service.user_data.document.generation_tools.LetterTool;
 import backend.siptis.service.user_data.document.generation_tools.ReportTool;
@@ -53,6 +54,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
     private final ProjectSupervisorRepository projectSupervisorRepository;
     private final ProjectStudentRepository projectStudentRepository;
     private final SiptisUserServiceCareerDirectorOperations siptisUserServiceCareerDirectorOperations;
+    private final DocumentSenderService documentSenderService;
 
     @Override
     public ServiceAnswer getAllDocumentsFromUser(long idUser) {
@@ -240,7 +242,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
     @Override
     public ServiceAnswer teacherTribunalRequest(LetterGenerationRequestDTO dto) {
         try {
-            LetterTool letterTool = new LetterTool();
+            LetterTool letterTool = new LetterTool(documentSenderService);
             Optional<Project> projectOptional = projectRepository.findById(dto.getProjectId());
             if (projectOptional.isEmpty())
                 return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
@@ -257,12 +259,13 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
             String key = "";
             for (ProjectStudent projectStudent : students) {
                 String studentName = projectStudent.getStudent().getFullName();
+                String studentEmail = projectStudent.getStudent().getEmail();
                 Set<UserCareer> career = projectStudent.getStudent().getCareer();
                 String careerName = career.iterator().next().getName();
                 String directorName = siptisUserServiceCareerDirectorOperations.getCareerDirectorName(careerName);
                 if (directorName == null)
                     return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_CURRENT_DIRECTOR).data(null).build();
-                String filename = letterTool.generateTribunalRequest(studentName, directorName, careerName, projectName, teacherName);
+                String filename = letterTool.generateTribunalRequest(studentName, studentEmail, directorName, careerName, projectName, teacherName);
                 key = nube.uploadLetterToCloud(filename, projectName);
                 Optional<Document> oDocument = documentRepository.findDocumentByPath(key);
                 Document document;
@@ -287,7 +290,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
     @Override
     public ServiceAnswer tutorTribunalRequest(LetterGenerationRequestDTO dto) {
         try {
-            LetterTool letterTool = new LetterTool();
+            LetterTool letterTool = new LetterTool(documentSenderService);
             Optional<Project> projectOptional = projectRepository.findById(dto.getProjectId());
             if (projectOptional.isEmpty())
                 return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
@@ -305,7 +308,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
             for (ProjectStudent projectStudent : students) {
                 UserInformation student = projectStudent.getStudent().getUserInformation();
                 String studentName = student.getNames() + " " + student.getLastNames();
-
+                String studentEmail = projectStudent.getStudent().getEmail();
                 Set<UserCareer> career = projectStudent.getStudent().getCareer();
                 String careerName = career.iterator().next().getName();
 
@@ -313,7 +316,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
                 if (directorName == null)
                     return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_CURRENT_DIRECTOR).data(null).build();
                 String filename = letterTool.generateTutorTribunalRequest(
-                        tutorName, studentName, directorName, careerName, projectName, student.getCi());
+                        tutorName, studentName, studentEmail, directorName, careerName, projectName, student.getCi());
                 key = nube.uploadLetterToCloud(filename, projectName);
                 Optional<Document> oDocument = documentRepository.findDocumentByPath(key);
                 Document document;
@@ -338,7 +341,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
     @Override
     public ServiceAnswer supervisorTribunalRequest(LetterGenerationRequestDTO dto) {
         try {
-            LetterTool letterTool = new LetterTool();
+            LetterTool letterTool = new LetterTool(documentSenderService);
             Optional<Project> projectOptional = projectRepository.findById(dto.getProjectId());
             if (projectOptional.isEmpty())
                 return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
@@ -356,6 +359,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
             for (ProjectStudent projectStudent : students) {
                 UserInformation student = projectStudent.getStudent().getUserInformation();
                 String studentName = student.getNames() + " " + student.getLastNames();
+                String studentEmail = projectStudent.getStudent().getEmail();
                 Set<UserCareer> career = projectStudent.getStudent().getCareer();
                 String careerName = career.iterator().next().getName();
 
@@ -363,7 +367,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
                 if (directorName == null)
                     return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_CURRENT_DIRECTOR).data(null).build();
                 String filename = letterTool.generateSupervisorTribunalRequest(
-                        supervisorName, studentName, directorName, careerName, projectName, student.getCi());
+                        supervisorName, studentName, studentEmail, directorName, careerName, projectName, student.getCi());
                 key = nube.uploadLetterToCloud(filename, projectName);
                 Optional<Document> oDocument = documentRepository.findDocumentByPath(key);
                 Document document;
@@ -388,7 +392,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
     @Override
     public ServiceAnswer studentTribunalRequest(LetterGenerationRequestDTO dto) {
         try {
-            LetterTool letterTool = new LetterTool();
+            LetterTool letterTool = new LetterTool(documentSenderService);
             Optional<Project> projectOptional = projectRepository.findById(dto.getProjectId());
             if (projectOptional.isEmpty())
                 return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
@@ -399,6 +403,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
                 return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
             UserInformation student = projectStudent.getStudent().getUserInformation();
             String studentName = student.getNames() + " " + student.getLastNames();
+            String studentEmail = projectStudent.getStudent().getEmail();
             String studentCi = student.getCi();
             String key = "";
             Set<UserCareer> career = projectStudent.getStudent().getCareer();
@@ -406,7 +411,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
             String directorName = siptisUserServiceCareerDirectorOperations.getCareerDirectorName(careerName);
             if (directorName == null)
                 return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_CURRENT_DIRECTOR).data(null).build();
-            String filename = letterTool.generateStudentTribunalRequest(studentName, directorName, careerName, projectName, studentCi);
+            String filename = letterTool.generateStudentTribunalRequest(studentName, studentEmail, directorName, careerName, projectName, studentCi);
             key = nube.uploadLetterToCloud(filename, projectName);
             Optional<Document> oDocument = documentRepository.findDocumentByPath(key);
             Document document;
@@ -430,7 +435,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
     @Override
     public ServiceAnswer generateTribunalApproval(LetterGenerationRequestDTO dto) {
         try {
-            LetterTool letterTool = new LetterTool();
+            LetterTool letterTool = new LetterTool(documentSenderService);
             Optional<Project> projectOptional = projectRepository.findById(dto.getProjectId());
             if (projectOptional.isEmpty())
                 return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
@@ -438,7 +443,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
             String projectName = project.getName();
             Collection<ProjectStudent> students = project.getStudents();
             String key = "";
-            ProjectTribunal tribunal = projectTribunalRepository.findByProject_IdAndTribunal_Id(dto.getUserId(), dto.getProjectId());
+            ProjectTribunal tribunal = projectTribunalRepository.findByProject_IdAndTribunal_Id(dto.getProjectId(), dto.getUserId());
             if (tribunal == null)
                 return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
             if (tribunal.getAccepted() == null || !tribunal.getAccepted())
@@ -452,8 +457,9 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
                 if (directorName == null)
                     return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_CURRENT_DIRECTOR).data(null).build();
                 String studentName = projectStudent.getStudent().getFullName();
+                String studentEmail = projectStudent.getStudent().getEmail();
                 String filename = letterTool.generateTribunalApproval(
-                        studentName, directorName, careerName, projectName, tribunalName);
+                        studentName, studentEmail, directorName, careerName, projectName, tribunalName);
                 key = nube.uploadLetterToCloud(filename, projectName);
                 Document document;
                 Optional<Document> oDocument = documentRepository.findDocumentByPath(key);
@@ -478,7 +484,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
     @Override
     public ServiceAnswer generateDefenseAct(ActRequestDTO dto) {
         try {
-            LetterTool letterTool = new LetterTool();
+            LetterTool letterTool = new LetterTool(documentSenderService);
             Optional<Project> projectOptional = projectRepository.findById(dto.getProjectId());
             if (projectOptional.isEmpty())
                 return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
@@ -503,11 +509,16 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
                 String directorName = siptisUserServiceCareerDirectorOperations.getCareerDirectorName(careerName);
                 if (directorName == null)
                     return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_CURRENT_DIRECTOR).data(null).build();
+                if(project.getTotalDefensePoints() == null){
+                    return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_DEFENSE_POINTS).data(null).build();
+                }
                 String studentName = projectStudent.getStudent().getFullName();
+                String studentEmail = projectStudent.getStudent().getEmail();
                 String filename = letterTool.generateDefenseAct(
-                        studentName, dto.getPresidentName(), "INFORMATICA",
+                        studentName, studentEmail, dto.getPresidentName(), careerName,
                         projectName, tribunals, dto.getDeanName(), date, startTime, endTime,
                         place, project.getTotalDefensePoints().intValue());
+
                 key = nube.uploadActToCloud(filename, projectName);
                 Document document;
                 Optional<Document> oDocument = documentRepository.findDocumentByPath(key);

@@ -134,7 +134,9 @@ public class DocumentController {
         if (message == ServiceMessage.CANNOT_GENERATE_LETTER ||
                 message == ServiceMessage.ERROR ||
                 message == ServiceMessage.NOT_APPROVED ||
-                message == ServiceMessage.NO_CURRENT_DIRECTOR)
+                message == ServiceMessage.NO_CURRENT_DIRECTOR ||
+                message == ServiceMessage.DEFENSE_NOT_FOUND ||
+                message == ServiceMessage.NO_DEFENSE_POINTS)
             httpStatus = HttpStatus.BAD_REQUEST;
 
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(data).message(message.toString()).build();

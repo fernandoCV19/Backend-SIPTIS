@@ -52,39 +52,18 @@ class PresentationRepositoryTest {
     void givenIdWhenFindTopByProjectIdAndReviewedThenEmpty() {
         assertTrue(presentationRepository.findTopByProjectIdAndReviewed(123123L, true).isEmpty());
     }
-    /*@Test
-    @DisplayName("test find top by project id and reviewed success")
-    @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    void givenIdWhenFindTopByProjectIdAndReviewedThenPresentation() {
-        createPresentation();
-        assertFalse(presentationRepository.findTopByProjectIdAndReviewed(presentation.getId(), true).isEmpty());
-    }*/
 
     @Test
     @DisplayName("test find by project id and reviewed ")
     void givenIdWhenFindByProjectIdAndReviewedThenEmpty() {
         assertTrue(presentationRepository.findByProjectIdAndReviewed(123123L, true).isEmpty());
     }
-    /*@Test
-    @DisplayName("test find by project id and reviewed success")
-    @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    void givenIdWhenFindByProjectIdAndReviewedThenPresentation() {
-        createPresentation();
-        assertFalse(presentationRepository.findByProjectIdAndReviewed(presentation.getId(), true).isEmpty());
-    }*/
 
     @Test
     @DisplayName("test find top by project id order by date desc")
     void givenIdWhenFindTopByProjectIdOrderByDateDescThenEmpty() {
         assertNull(presentationRepository.findTopByProjectIdOrderByDateDesc(123123L));
     }
-    /*@Test
-    @DisplayName("test find top by project id order by date desc success")
-    @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    void givenIdWhenFindTopByProjectIdOrderByDateDescThenPresentation() {
-        createPresentation();
-        assertNotNull(presentationRepository.findTopByProjectIdOrderByDateDesc(presentation.getId()));
-    }*/
 
     @Test
     @DisplayName("test delete by id")

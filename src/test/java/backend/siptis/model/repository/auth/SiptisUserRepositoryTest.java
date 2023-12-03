@@ -245,30 +245,10 @@ class SiptisUserRepositoryTest {
         assertNotNull(siptisUserRepository.searchUserList("", "TUTOR", Pageable.ofSize(2)));
     }
 
-/*
-    @Test
-    @DisplayName("Test for verify if one exist user by id")
-    void givenSiptisUser_whenFindOneById_thenSiptisUserObject() {
-        siptisUserRepository.save(siptisUser);
-        assertNotNull(siptisUserRepository.findOneById(siptisUser.getId()).get());
-    }
-
-    @Test
-    @DisplayName("Test for find all personal activities")
-    void givenSiptisUser_whenFindAllPersonalActivities_thenSiptisUserObject() {
-        assertNotNull(siptisUserRepository.findAllPersonalActivities(123L, LocalDate.now(), Pageable.ofSize(12)));
-    }
-
     @Test
     @DisplayName("Test for find project by id")
     void givenSiptisUser_whenFindProjectById_thenNotNull() {
         assertTrue(siptisUserRepository.findProjectById(123L).isEmpty());
-    }
-
-    @Test
-    @DisplayName("Test for search user list")
-    void givenRoleAndPageable_whenSearchUserList_thenNotNull() {
-        assertNotNull(siptisUserRepository.searchUserList("", "TUTOR", Pageable.ofSize(2)));
     }
 
     @Test
@@ -294,5 +274,5 @@ class SiptisUserRepositoryTest {
     void givenSiptisUser_whenetNumberOfStudentsByYearAndCareer_ThenNotNull() {
         assertNotNull(siptisUserRepository.getNumberOfStudentsByYearAndCareer(1L));
     }
-*/
+
 }
