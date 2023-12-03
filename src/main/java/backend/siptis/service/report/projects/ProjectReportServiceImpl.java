@@ -60,6 +60,11 @@ public class ProjectReportServiceImpl implements ProjectReportService {
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
     }
 
+    @Override
+    public ServiceAnswer getActiveAndInactiveProjects(){
+        return null;
+    }
+
     private boolean isCareer(Project project, backend.siptis.commons.UserCareer compareCareer) {
         Collection<ProjectStudent> students = project.getStudents();
         boolean isCareer = true;
