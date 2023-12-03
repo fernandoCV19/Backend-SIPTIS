@@ -47,6 +47,14 @@ public class ProjectReportController {
                 .message("REPORT_GENERATED").build(), null, 200);
     }
 
+    @Operation(summary = "Get projects filter by career report")
+    @GetMapping("/project/areas")
+    public ResponseEntity<ControllerAnswer> getProjectFilterByAreasReport(){
+        return new ResponseEntity<>(ControllerAnswer.builder()
+                .data(projectReportService.getProjectAreaReport())
+                .message("REPORT_GENERATED").build(), null, 200);
+    }
+
     @Operation(summary = "Get complete project report")
     @GetMapping("/project/complete")
     public ResponseEntity<ControllerAnswer> getCompleteProjectReport() {

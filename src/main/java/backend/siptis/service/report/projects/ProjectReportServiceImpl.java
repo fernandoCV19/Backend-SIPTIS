@@ -5,8 +5,11 @@ import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.editors_and_reviewers.ProjectStudent;
 import backend.siptis.model.entity.project_management.Project;
 import backend.siptis.model.entity.user_data.UserCareer;
+import backend.siptis.model.pjo.dto.report.CountItemDTO;
+import backend.siptis.model.pjo.dto.report.ProjectAreaDTO;
 import backend.siptis.model.repository.project_management.ProjectRepository;
 import backend.siptis.service.cloud.CloudManagementService;
+import backend.siptis.service.report.projects.generation_tools.ProjectByAreaReportTool;
 import backend.siptis.service.report.projects.generation_tools.ProjectByCareerReportTool;
 import backend.siptis.service.report.projects.generation_tools.TribunalProjectReportTool;
 import lombok.RequiredArgsConstructor;
@@ -48,6 +51,26 @@ public class ProjectReportServiceImpl implements ProjectReportService {
         }
 
         String fileName = ProjectByCareerReportTool.generateReport(sistemas, informatica, combined);
+        String key = cloud.uploadReportToCloud(fileName);
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
+    }
+
+    @Override
+    public ServiceAnswer getProjectAreaReport() {
+        List<ProjectAreaDTO> projects = projectRepository.getProjectsByArea();
+        List<CountItemDTO> countProjects = projectRepository.countProjectsByArea();
+
+        String fileName = ProjectByAreaReportTool.generateReport(projects, countProjects);
+        String key = cloud.uploadReportToCloud(fileName);
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
+    }
+
+    @Override
+    public ServiceAnswer getProjectPhaseReport() {
+        List<ProjectAreaDTO> projects = projectRepository.get();
+        List<CountItemDTO> countProjects = projectRepository.countProjectsByArea();
+
+        String fileName = ProjectByAreaReportTool.generateReport(projects, countProjects);
         String key = cloud.uploadReportToCloud(fileName);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
     }

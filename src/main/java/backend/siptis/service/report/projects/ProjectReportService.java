@@ -7,5 +7,7 @@ public interface ProjectReportService {
 
     ServiceAnswer getProjectCareerReport();
 
+    ServiceAnswer getProjectAreaReport();
+
     ServiceAnswer getCompleteProjectReport();
 }
