@@ -1,12 +1,20 @@
 package backend.siptis.service.user_data;
 
+import backend.siptis.commons.ServiceAnswer;
+import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.general_information.user_area.CreateAreaDTO;
 import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.jdbc.Sql;
 
+import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class UserAreaServiceTest {
 
     @Autowired
@@ -17,10 +25,10 @@ class UserAreaServiceTest {
         createAreaDTO = new CreateAreaDTO();
         createAreaDTO.setName("AREA");
     }
-/*
+
     @Test
     @DisplayName("Test for get all user areas list")
-    @Rollback
+    @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void givenNoAreasWhenGetAllUserAreasThenServiceMessageOK() {
         ServiceAnswer answer = userAreaService.getAllUserAreas();
         assertEquals(ServiceMessage.OK, answer.getServiceMessage());
@@ -28,14 +36,12 @@ class UserAreaServiceTest {
 
     @Test
     @DisplayName("Test for create user area")
-    @Rollback
     void givenCreateAreaDTOWhenCreateUserAreaThenServiceMessageAREA_CREATED() {
         createDTO();
         ServiceAnswer answer = userAreaService.createUserArea(createAreaDTO);
         assertEquals(ServiceMessage.AREA_CREATED, answer.getServiceMessage());
     }
     @Test
-    @Rollback
     @DisplayName("Test for create user area with already existing name")
     void givenCreateAreaDTOWhenCreateUserAreaThenServiceMessageAREA_ALREADY_EXIST() {
         createDTO();
@@ -45,7 +51,6 @@ class UserAreaServiceTest {
     }
 
     @Test
-    @Rollback
     @DisplayName("Test for delete user area that doesnt exist")
     void givenNoArea_WhenDeleteUserArea_ThenServiceMessageAREA_NOT_FOUND() {
         ServiceAnswer answer = userAreaService.deleteUserArea(1L);
@@ -61,12 +66,10 @@ class UserAreaServiceTest {
     }
 
     @Test
-    @Rollback
     @DisplayName("Test for get non existing user area by id")
     void givenId_WhenGetUserAreaById_ThenNull() {
         assertNull(userAreaService.getUserAreaById(123));
     }
-
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     @DisplayName("Test for get user area by id")
@@ -77,12 +80,10 @@ class UserAreaServiceTest {
     }
 
     @Test
-    @Rollback
     @DisplayName("Test for verify if exist non existing user area by id")
     void givenId_WhenUserAreaExistById_ThenFalse() {
         assertFalse(userAreaService.userAreaExistById(123));
     }
-
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     @DisplayName("Test for verify if exist user area by id")
@@ -91,6 +92,6 @@ class UserAreaServiceTest {
         userAreaService.createUserArea(createAreaDTO);
         assertTrue(userAreaService.userAreaExistById(1));
     }
-*/
+
 
 }

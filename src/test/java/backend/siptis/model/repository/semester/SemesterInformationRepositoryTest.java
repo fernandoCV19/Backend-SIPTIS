@@ -6,12 +6,15 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class SemesterInformationRepositoryTest {
     @Autowired
     private SemesterInformationRepository semesterInformationRepository;
@@ -35,9 +38,16 @@ class SemesterInformationRepositoryTest {
 
     @Test
     @DisplayName("Test for find first by in progress true and id order by end date desc")
+    @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    void givenSemesterInformation_whenFindFirstByInProgressTrueOrderByEndDateDesc_thenNotNull() {
+        assertFalse(semesterInformationRepository.findFirstByInProgressTrueOrderByEndDateDesc().isEmpty());
+    }
+    @Test
+    @DisplayName("Test for find first by in progress true and id order by end date desc")
     void givenSemesterInformation_whenFindFirstByInProgressTrueOrderByEndDateDesc_thenNull() {
         assertTrue(semesterInformationRepository.findFirstByInProgressTrueOrderByEndDateDesc().isEmpty());
     }
+
 
     @Test
     @DisplayName("Test for get current period from semester")
@@ -47,7 +57,6 @@ class SemesterInformationRepositoryTest {
         assertNotNull(period);
         assertEquals("2-2023", period);
     }
-
     @Test
     @DisplayName("Test for get current period from non existing semester")
     void givenSemesterInformation_whenGetCurrentPeriod_thenNull() {
@@ -60,6 +69,12 @@ class SemesterInformationRepositoryTest {
     void givenSemesterInformation_whenFindFirstByInProgressTrueAndIdOrderByEndDateDesc_thenNull() {
         assertTrue(semesterInformationRepository.findFirstByInProgressTrueAndIdOrderByEndDateDesc(123456L).isEmpty());
     }
+    @Test
+    @DisplayName("Test for find first by in progress true and id order by end date desc success")
+    void givenSemesterInformation_whenFindFirstByInProgressTrueAndIdOrderByEndDateDesc_thenNotNull() {
+        semesterInformationRepository.save(semesterInformation);
+        assertFalse(semesterInformationRepository.findFirstByInProgressTrueAndIdOrderByEndDateDesc(semesterInformation.getId()).isEmpty());
+    }
 
     @Test
     @DisplayName("Test for verify if exist semester in progress")
@@ -67,7 +82,6 @@ class SemesterInformationRepositoryTest {
         semesterInformationRepository.save(semesterInformation);
         assertTrue(semesterInformationRepository.existsSemesterInformationByInProgressIsTrue());
     }
-
     @Test
     @DisplayName("Test for verify if exist non existing semester in progress")
     void givenSemesterInformation_whenExistsSemesterInformationByInProgressIsTrue_thenFalse() {
@@ -80,7 +94,6 @@ class SemesterInformationRepositoryTest {
         semesterInformationRepository.save(semesterInformation);
         assertFalse(semesterInformationRepository.findById(semesterInformation.getId()).isEmpty());
     }
-
     @Test
     @DisplayName("Test for find semester by non existing id")
     void givenSemesterInformationId_whenFindById_thenSemesterNull() {
@@ -93,7 +106,6 @@ class SemesterInformationRepositoryTest {
         semesterInformationRepository.save(semesterInformation);
         assertTrue(semesterInformationRepository.existsSemesterInformationById(semesterInformation.getId()));
     }
-
     @Test
     @DisplayName("Test for verify if exist semester information by non existing id")
     void givenSemesterInformationId_whenExistsSemesterInformationById_thenSemesterFalse() {

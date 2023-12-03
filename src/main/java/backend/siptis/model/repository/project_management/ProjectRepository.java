@@ -16,6 +16,7 @@ import java.util.List;
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Long> {
 
+
     @Query("SELECT p.id AS id, p.name AS name, m.name AS modality, m.id AS modalityId " +
             " FROM Project p JOIN p.modality m WHERE LOWER( p.name ) LIKE LOWER( CONCAT( '%', :search, '%'))")
     Page<ProjectInfoDTO> searchProject(String search, Pageable pageable);
@@ -135,5 +136,9 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
             " AND suc.siptis_user_id_ = su.id_ AND suc.career_id_ = :idCareer " +
             " GROUP BY (projectYear) ", nativeQuery = true)
     List<Object> getNumberProjectsByPeriodAndCareer(Long idCareer);
+
+
+    List<Project> findByTribunalsNotEmpty();
+
 
 }

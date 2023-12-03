@@ -5,7 +5,9 @@ VALUES (100, 'ADMIN'),
        (102, 'TEACHER'),
        (103, 'TUTOR'),
        (104, 'SUPERVISOR'),
-       (105, 'TRIBUNAL');
+       (105, 'TRIBUNAL'),
+       (106, 'INF_DIRECTOR'),
+       (107, 'SIS_DIRECTOR');
 ------------------------------------------------------------------------------------------------------------------------
 -- USER CARRER
 INSERT INTO user_career_ (id_, name_)

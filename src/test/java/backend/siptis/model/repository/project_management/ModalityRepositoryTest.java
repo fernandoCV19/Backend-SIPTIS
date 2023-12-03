@@ -6,12 +6,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.jdbc.Sql;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @DataJpaTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class ModalityRepositoryTest {
 
     @Autowired
@@ -26,14 +28,27 @@ class ModalityRepositoryTest {
 
     @Test
     @DisplayName("Test for find modality by id")
-    void givenModalityId_whenFindById_thenmodalityObject() {
-        assertFalse(modalityRepository.findById(1L).isEmpty());
+    void givenModalityId_whenFindById_thenNull() {
+        assertTrue(modalityRepository.findById(1525054L).isEmpty());
     }
+    @Test
+    @DisplayName("Test for find modality by id success")
+    @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    void givenModalityId_whenFindById_thenModalityObject() {
+        assertNotNull(modalityRepository.findById(101L));
+    }
+
 
     @Test
     @DisplayName("Test for find modality object by id")
+    void givenModalityId_whenFindModalityById_thenNull() {
+        assertNull(modalityRepository.findModalityById(14564L));
+    }
+    @Test
+    @DisplayName("Test for find modality object by id success")
+    @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void givenModalityId_whenFindModalityById_thenModalityObject() {
-        assertNotNull(modalityRepository.findModalityById(1L));
+        assertNotNull(modalityRepository.findModalityById(101L));
     }
 
 

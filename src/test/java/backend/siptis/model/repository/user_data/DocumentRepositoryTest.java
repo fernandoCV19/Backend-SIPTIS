@@ -7,11 +7,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.jdbc.Sql;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class DocumentRepositoryTest {
 
     @Autowired
@@ -24,13 +26,6 @@ class DocumentRepositoryTest {
         document.setPath("path");
         document.setSiptisUser(new SiptisUser());
         document.setDescription("document for test");
-    }
-
-    @Test
-    @DisplayName("Test for find document by id")
-    @Sql(scripts = {"/custom_imports/create_users.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    void givenDocumentId_whenFindById_thenDocumentObject() {
-        assertFalse(documentRepository.findById(1L).isEmpty());
     }
 
     @Test

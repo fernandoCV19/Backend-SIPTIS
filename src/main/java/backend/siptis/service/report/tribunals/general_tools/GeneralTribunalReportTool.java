@@ -1,4 +1,4 @@
-package backend.siptis.service.report.geneartion_tools;
+package backend.siptis.service.report.tribunals.general_tools;
 
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.model.entity.user_data.UserInformation;
@@ -13,7 +13,8 @@ import java.util.List;
 
 public class GeneralTribunalReportTool {
 
-    private GeneralTribunalReportTool(){}
+    private GeneralTribunalReportTool() {
+    }
 
     public static String generateReport(List<SiptisUser> tribunals) {
         LocalDate today = LocalDate.now();
