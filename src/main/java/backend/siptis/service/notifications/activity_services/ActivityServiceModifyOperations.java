@@ -24,6 +24,15 @@ public class ActivityServiceModifyOperations {
     private final ProjectRepository projectRepository;
 
     public ServiceAnswer persistActivity(ActivityDTO activityDTO) {
+        if(activityDTO.getActivityDate()==null ||
+                activityDTO.getActivityName()==null || activityDTO.getActivityName().isEmpty() ||
+                activityDTO.getActivityDescription()==null || activityDTO.getActivityDescription().isEmpty()){
+            return ServiceAnswer.builder()
+                    .serviceMessage(ServiceMessage.ERROR)
+                    .data("")
+                    .build();
+        }
+
         Activity activity = new Activity();
         Optional<Project> project = projectRepository.findById(activityDTO.getIdProject());
 
