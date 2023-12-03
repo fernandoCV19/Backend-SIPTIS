@@ -50,7 +50,7 @@ public class ActivitiesReportServiceImpl implements ActivitiesReportService {
     }
 
     @Override
-    public ServiceAnswer getActivitiesByProjectId(Long id){
+    public ServiceAnswer getActivitiesByProjectId(Long id) {
         List<Activity> activityList = activityRepository.findByProjectId(id);
         activityList = activityList.stream()
                 .sorted((a1, a2) -> a1.getActivityDate()

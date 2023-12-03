@@ -1,18 +1,15 @@
-package backend.siptis.service.report;
+package backend.siptis.service.report.presentation;
 
-import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.presentations.Presentation;
 import backend.siptis.model.entity.presentations.Review;
 import backend.siptis.model.entity.project_management.Project;
-import backend.siptis.model.repository.auth.SiptisUserRepository;
 import backend.siptis.model.repository.presentations.PresentationRepository;
 import backend.siptis.model.repository.project_management.ProjectRepository;
 import backend.siptis.service.cloud.CloudManagementService;
-import backend.siptis.service.report.geneartion_tools.GeneralTribunalReportTool;
-import backend.siptis.service.report.geneartion_tools.PresentationReportTool;
-import backend.siptis.service.report.geneartion_tools.ReviewSummaryReportTool;
+import backend.siptis.service.report.presentation.generation_tools.PresentationReportTool;
+import backend.siptis.service.report.presentation.generation_tools.ReviewSummaryReportTool;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,21 +19,13 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class ReportServiceImpl implements ReportService {
+public class PresentationReportServiceImpl implements PresentationReportService {
 
     private final CloudManagementService cloud;
-    private final SiptisUserRepository siptisUserRepository;
     private final PresentationRepository presentationRepository;
     private final ProjectRepository projectRepository;
 
     @Override
-    public ServiceAnswer getGeneralTribunalReport() {
-        List<SiptisUser> tribunals = siptisUserRepository.findByRoles_NameOrderByUserInformation_LastNamesAsc("TRIBUNAL");
-        String fileName = GeneralTribunalReportTool.generateReport(tribunals);
-        String key = cloud.uploadReportToCloud(fileName);
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
-    }
-
     public ServiceAnswer getReviewSummaryReport(Long presentationId) {
         Optional<Presentation> optionalPresentation = presentationRepository.findByIdAndReviewedTrue(presentationId);
         if (optionalPresentation.isEmpty()) {
@@ -64,10 +53,4 @@ public class ReportServiceImpl implements ReportService {
         String key = cloud.uploadReportToCloud(fileName);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
     }
-
-
 }
-
-
-
-

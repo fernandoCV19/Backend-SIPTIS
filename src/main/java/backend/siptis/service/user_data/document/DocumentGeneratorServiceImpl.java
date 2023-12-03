@@ -527,7 +527,7 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
                 String directorName = siptisUserServiceCareerDirectorOperations.getCareerDirectorName(careerName);
                 if (directorName == null)
                     return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_CURRENT_DIRECTOR).data(null).build();
-                if(project.getTotalDefensePoints() == null){
+                if (project.getTotalDefensePoints() == null) {
                     return ServiceAnswer.builder().serviceMessage(ServiceMessage.NO_DEFENSE_POINTS).data(null).build();
                 }
                 String studentName = projectStudent.getStudent().getFullName();

@@ -1,6 +1,5 @@
 package backend.siptis.model.repository.presentations;
 
-import backend.siptis.model.entity.presentations.Review;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

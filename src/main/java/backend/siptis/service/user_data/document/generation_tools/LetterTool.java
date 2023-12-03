@@ -8,7 +8,6 @@ import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -31,7 +30,7 @@ public class LetterTool {
     String[] decNumber = {"", "", "veinte", "treinta", "cuarenta", "cincuenta", "sesenta", "setenta", "ochenta", "noventa"};
     DocumentSenderService documentSenderService;
 
-    public LetterTool(DocumentSenderService documentSenderService){
+    public LetterTool(DocumentSenderService documentSenderService) {
         this.documentSenderService = documentSenderService;
     }
 
@@ -261,7 +260,7 @@ public class LetterTool {
             document.add(footer);
         } catch (Exception e) {
             fileName = null;
-        }finally {
+        } finally {
             document.close();
             documentSenderService.sendDocument(fileName, email, file);
         }
@@ -359,7 +358,7 @@ public class LetterTool {
             document.add(paragraph2);
         } catch (Exception e) {
             fileName = null;
-        }finally {
+        } finally {
             document.close();
             documentSenderService.sendDocument(fileName, email, file);
         }

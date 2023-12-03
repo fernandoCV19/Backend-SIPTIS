@@ -8,7 +8,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = ControllerConstants.Report.TAG_NAME, description = ControllerConstants.Report.TAG_DESCRIPTION)
 @RestController
@@ -17,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 public class SemesterInformationReportController {
 
-    private final ReportService reportService;
     private final SemesterInformationServiceReport semesterInformationServiceReport;
 
     @Operation(summary = "Get semester information report")
@@ -25,32 +27,6 @@ public class SemesterInformationReportController {
     public ResponseEntity<ControllerAnswer> getSemesterInformationReport() {
         return new ResponseEntity<>(ControllerAnswer.builder()
                 .data(semesterInformationServiceReport.getAllSemesterInformation())
-                .message("REPORT_GENERATED").build(), null, 200);
-    }
-
-    private final ReportService reportService;
-
-    @Operation(summary = "Get tribunal report")
-    @GetMapping("/tribunal/general")
-    public ResponseEntity<ControllerAnswer> getGeneralTribunalReport() {
-        return new ResponseEntity<>(ControllerAnswer.builder()
-                .data(reportService.getGeneralTribunalReport())
-                .message("REPORT_GENERATED").build(), null, 200);
-    }
-
-    @Operation(summary = "Get presentation reviews report")
-    @GetMapping("/review/{presentationId}")
-    public ResponseEntity<ControllerAnswer> getReviewsReport(@PathVariable(value = "presentationId") Long presentationId) {
-        return new ResponseEntity<>(ControllerAnswer.builder()
-                .data(reportService.getReviewSummaryReport(presentationId))
-                .message("REPORT_GENERATED").build(), null, 200);
-    }
-
-    @Operation(summary = "Get presentations report")
-    @GetMapping("/presentation/{projectId}")
-    public ResponseEntity<ControllerAnswer> getPresentationsReport(@PathVariable(value = "projectId") Long projectId) {
-        return new ResponseEntity<>(ControllerAnswer.builder()
-                .data(reportService.getPresentationReport(projectId))
                 .message("REPORT_GENERATED").build(), null, 200);
     }
 

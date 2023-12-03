@@ -1,6 +1,5 @@
 package backend.siptis.service.project_management.project;
 
-import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.project_management.NewProjectDTO;
 import org.junit.jupiter.api.BeforeEach;
@@ -60,7 +59,7 @@ class ProjectServiceCreateTest {
 
     @Test
     @Rollback
-    @Sql(scripts = {"/testDB.sql","/custom_imports/create_users.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/testDB.sql", "/custom_imports/create_users.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void givenNewProjectDTOWhenCreateProjectThenServiceMessageOk() {
         List<Long> studentsId = new ArrayList<>();
         studentsId.add(1L);

@@ -24,9 +24,9 @@ public class ActivityServiceModifyOperations {
     private final ProjectRepository projectRepository;
 
     public ServiceAnswer persistActivity(ActivityDTO activityDTO) {
-        if(activityDTO.getActivityDate()==null ||
-                activityDTO.getActivityName()==null || activityDTO.getActivityName().isEmpty() ||
-                activityDTO.getActivityDescription()==null || activityDTO.getActivityDescription().isEmpty()){
+        if (activityDTO.getActivityDate() == null ||
+                activityDTO.getActivityName() == null || activityDTO.getActivityName().isEmpty() ||
+                activityDTO.getActivityDescription() == null || activityDTO.getActivityDescription().isEmpty()) {
             return ServiceAnswer.builder()
                     .serviceMessage(ServiceMessage.ERROR)
                     .data("")

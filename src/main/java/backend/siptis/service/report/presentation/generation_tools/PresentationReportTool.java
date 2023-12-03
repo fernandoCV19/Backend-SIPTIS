@@ -1,4 +1,4 @@
-package backend.siptis.service.report.geneartion_tools;
+package backend.siptis.service.report.presentation.generation_tools;
 
 import backend.siptis.model.entity.presentations.Presentation;
 import backend.siptis.utils.functions.ReportFunctions;

@@ -1,9 +1,8 @@
-package backend.siptis.service.report.tribunals;
+package backend.siptis.service.report.presentation;
 
 import backend.siptis.commons.ServiceAnswer;
 
-public interface ReportService {
-    ServiceAnswer getGeneralTribunalReport();
+public interface PresentationReportService {
 
     ServiceAnswer getReviewSummaryReport(Long presentationId);
 

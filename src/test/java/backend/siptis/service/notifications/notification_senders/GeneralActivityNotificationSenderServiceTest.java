@@ -12,7 +12,7 @@ import java.io.IOException;
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class GeneralActivityNotificationSenderServiceTest {
-   @Autowired
+    @Autowired
     private GeneralActivityNotificationSenderService generalActivityNotificationSenderService;
 
     @Test

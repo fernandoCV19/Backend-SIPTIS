@@ -40,7 +40,7 @@ public class ActivitiesReportController {
 
     @Operation(summary = "Get activities by specific project")
     @GetMapping("/activities/project/user")
-    public ResponseEntity<ControllerAnswer> getActivitiesSpecificProject(@RequestHeader(name = "Authorization") String token){
+    public ResponseEntity<ControllerAnswer> getActivitiesSpecificProject(@RequestHeader(name = "Authorization") String token) {
         Long idL = siptisUserServiceTokenOperations.getIdFromToken(token);
         Long idP = siptisUserServiceGeneralUserOperations.getProjectById(idL);
         return new ResponseEntity<>(ControllerAnswer.builder()
