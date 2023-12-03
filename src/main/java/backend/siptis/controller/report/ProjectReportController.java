@@ -2,7 +2,7 @@ package backend.siptis.controller.report;
 
 import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.service.report.projects.ProjectReportService;
-import backend.siptis.service.report.tribunals.general_tools.ReportService;
+import backend.siptis.service.report.tribunals.ReportService;
 import backend.siptis.utils.constant.controller_constans.ControllerConstants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -58,6 +58,8 @@ public class ProjectReportController {
     @Operation(summary = "Get complete project report")
     @GetMapping("/project/complete")
     public ResponseEntity<ControllerAnswer> getCompleteProjectReport() {
-        return null;
+        return new ResponseEntity<>(ControllerAnswer.builder()
+                .data(projectReportService.getCompleteProjectReport())
+                .message("REPORT_GENERATED").build(), null, 200);
     }
 }
