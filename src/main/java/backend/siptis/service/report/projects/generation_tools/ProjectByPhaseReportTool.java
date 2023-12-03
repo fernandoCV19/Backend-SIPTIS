@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ProjectByPhaseReportTool {
 
@@ -34,16 +36,29 @@ public class ProjectByPhaseReportTool {
 
             row = sheet.createRow(4);
 
+            int rowIndex = 5;
+
             ReportFunctions.addCellInRow(1, "N°", ReportFunctions.getHeaderCellStyle(report), row);
             ReportFunctions.addCellInRow(2, "Nombre Proyecto", ReportFunctions.getHeaderCellStyle(report), row);
-            ReportFunctions.addCellInRow(4, "Fase", ReportFunctions.getHeaderCellStyle(report), row);
+            ReportFunctions.addCellInRow(3, "Fase", ReportFunctions.getHeaderCellStyle(report), row);
 
-            addProjects(projects, report, 5, sheet, row);
+            rowIndex = addProjects(projects, report, rowIndex, sheet, row);
 
             for (int i = 0; i < 8; i++) {
                 sheet.autoSizeColumn(i);
             }
 
+            Map<String, Long> countByPhases = projects.stream()
+                    .collect(Collectors.groupingBy(Project::getPhase, Collectors.counting()));
+
+            for (Map.Entry<String, Long> values : countByPhases.entrySet()) {
+                String key = values.getKey();
+                Long value = values.getValue();
+                rowIndex++;
+                row = sheet.createRow(rowIndex);
+                ReportFunctions.addCellInRow(2, key +" "+value, ReportFunctions.getHeaderCellStyle(report), row);
+
+            }
 
             FileOutputStream fileOutputStream = new FileOutputStream(fileName);
             report.write(fileOutputStream);
@@ -54,7 +69,7 @@ public class ProjectByPhaseReportTool {
         return fileName;
     }
 
-    private static void addProjects(List<Project> projects, Workbook report, int rowIndex, Sheet sheet, Row row) {
+    private static int addProjects(List<Project> projects, Workbook report, int rowIndex, Sheet sheet, Row row) {
         for (Project project : projects) {
             String projectName = project.getName();
             String phase = project.getPhase();
@@ -63,10 +78,12 @@ public class ProjectByPhaseReportTool {
             ReportFunctions.addCellInRow(1, "" + (rowIndex - 4), ReportFunctions.getContentStyle(report), row);
             ReportFunctions.addCellInRow(2, projectName, ReportFunctions.getContentStyle(report), row);
             ReportFunctions.addCellInRow(3, phase, ReportFunctions.getContentStyle(report), row);
-
             rowIndex++;
-
         }
+
+        return rowIndex;
     }
+
+
 
 }

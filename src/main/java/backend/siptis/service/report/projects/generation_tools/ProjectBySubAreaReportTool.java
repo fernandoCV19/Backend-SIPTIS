@@ -1,7 +1,5 @@
 package backend.siptis.service.report.projects.generation_tools;
 
-
-import backend.siptis.model.entity.project_management.Project;
 import backend.siptis.model.pjo.dto.project_management.ProjectAreaDTO;
 import backend.siptis.utils.functions.ReportFunctions;
 import org.apache.poi.ss.usermodel.Row;
@@ -17,19 +15,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ProjectByAreaReportTool {
+public class ProjectBySubAreaReportTool {
 
     public static String generateReport(List<ProjectAreaDTO> projects) {
+
         LocalDate today = LocalDate.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String date = today.format(dateTimeFormatter);
-        String fileName = "reporte-proyecto-areas" + date + ".xlsx";
+        String fileName = "reporte-proyecto-sub-áreas" + date + ".xlsx";
 
         try (Workbook report = new XSSFWorkbook()) {
-            Sheet sheet = report.createSheet("Reporte areas");
+            Sheet sheet = report.createSheet("Reporte sub áreas");
             Row row = sheet.createRow(2);
 
-            String title = "Reporte proyecto por areas";
+            String title = "Reporte proyecto por sub áreas";
             ReportFunctions.addCellInRow(2, title, ReportFunctions.getContentStyle(report), row);
             ReportFunctions.addCellInRow(3, "Fecha " + date, ReportFunctions.getContentStyle(report), row);
 
@@ -39,7 +38,7 @@ public class ProjectByAreaReportTool {
 
             ReportFunctions.addCellInRow(1, "N°", ReportFunctions.getHeaderCellStyle(report), row);
             ReportFunctions.addCellInRow(2, "Nombre Proyecto", ReportFunctions.getHeaderCellStyle(report), row);
-            ReportFunctions.addCellInRow(3, "Area", ReportFunctions.getHeaderCellStyle(report), row);
+            ReportFunctions.addCellInRow(3, "SubÁrea", ReportFunctions.getHeaderCellStyle(report), row);
 
             rowIndex = addProjects(projects, report, rowIndex, sheet, row);
 
@@ -81,6 +80,4 @@ public class ProjectByAreaReportTool {
         }
         return rowIndex;
     }
-
-
 }

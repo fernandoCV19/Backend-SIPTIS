@@ -1,13 +1,7 @@
 package backend.siptis.model.repository.project_management;
 
-import backend.siptis.auth.entity.SiptisUser;
-import backend.siptis.model.entity.project_management.Modality;
 import backend.siptis.model.entity.project_management.Project;
-import backend.siptis.model.entity.user_data.UserCareer;
 import backend.siptis.model.pjo.dto.project_management.ProjectInfoDTO;
-import backend.siptis.model.pjo.dto.report.CountItemDTO;
-import backend.siptis.model.pjo.dto.report.ProjectAreaDTO;
-import backend.siptis.model.pjo.dto.report.ProjectReportDTO;
 import backend.siptis.model.pjo.dto.stadistics.ProjectByCareerDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +11,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
 import java.util.List;
 
 @Repository
@@ -143,28 +136,6 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
             " AND suc.siptis_user_id_ = su.id_ AND suc.career_id_ = :idCareer " +
             " GROUP BY (projectYear) ", nativeQuery = true)
     List<Object> getNumberProjectsByPeriodAndCareer(Long idCareer);
-
-    @Query(value = "SELECT project_.name_ AS project, area_.name_ AS area" +
-            " FROM project_, project_area_, area_" +
-            " WHERE project_.id_ = project_area_.project_id_ AND project_area_.area_id_ = area_.id_ " +
-            " ORDER BY area ASC ", nativeQuery = true)
-    List<ProjectAreaDTO> getProjectsByArea();
-
-    @Query(value = "SELECT area_.name_ AS item, COUNT(*) " +
-            " FROM project_, project_area_, area_ " +
-            " WHERE project_.id_ = project_area_.project_id_ AND project_area_.area_id_ = area_.id_ " +
-            " GROUP BY area_.name_", nativeQuery = true)
-    List<CountItemDTO> countProjectsByArea();
-
-    @Query(value = "SELECT project_.name_ AS project, project_.phase_ AS field " +
-            "FROM project_ " +
-            "ORDER BY field ASC ", nativeQuery = true)
-    List<ProjectReportDTO> getProjectsByPhase();
-
-    @Query(value = "SELECT project_.name_ AS project, project_.phase_ AS field " +
-            " FROM project_ " +
-            " ORDER BY field ASC ", nativeQuery = true)
-    List<CountItemDTO> countProjectsByPhase();
 
 
     List<Project> findByTribunalsNotEmpty();
