@@ -51,7 +51,6 @@ public class CompleteProjectReportTool {
                 sheet.autoSizeColumn(i);
             }
 
-
             FileOutputStream fileOutputStream = new FileOutputStream(fileName);
             report.write(fileOutputStream);
             fileOutputStream.close();
