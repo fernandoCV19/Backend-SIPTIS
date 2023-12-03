@@ -17,7 +17,7 @@ import java.util.List;
 public class GeneralActivityNotificationSenderServiceImpl implements GeneralActivityNotificationSenderService {
     private final GeneralActivityServiceFindOperations generalActivityServiceFindOperations;
     private final SiptisUserServiceGeneralUserOperations siptisUserServiceGeneralUserOperations;
-    private final SendActivityNotificationServiceImpl sender;
+    private final SendActivityNotificationService sender;
     private final EmailFactory emailFactory;
 
     @Override
