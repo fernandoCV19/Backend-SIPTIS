@@ -4,7 +4,6 @@ import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.pjo.dto.user_data.TokenPasswordDTO;
-import backend.siptis.service.notifications.notification_senders.DocumentSenderService;
 import backend.siptis.service.notifications.recover_password.RecoverPasswordEmailService;
 import backend.siptis.service.notifications.recover_password.SendRecoverPasswordEmailService;
 import backend.siptis.utils.constant.controller_constans.ControllerConstants;
@@ -16,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.File;
 
 @Tag(name = ControllerConstants.Email.TAG_NAME, description = ControllerConstants.Email.TAG_DESCRIPTION)
 @RestController
@@ -27,7 +25,6 @@ public class EmailController {
 
     private final RecoverPasswordEmailService emailServiceImpl;
     private final SendRecoverPasswordEmailService sendRecoverPasswordEmailService;
-    private final DocumentSenderService documentSenderService;
 
     @Operation(summary = "Ask email for send recover password link")
     @GetMapping("/askemail/{email}")
@@ -56,12 +53,5 @@ public class EmailController {
 
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(data).message(messageService.toString()).build();
         return new ResponseEntity<>(controllerAnswer, httpStatus);
-    }
-
-    @GetMapping("/send")
-    public void sendDocument() {
-        File file = new File("qodana.yml");
-        documentSenderService.sendDocument("prueba de documento", "dilanantezana@gmail.com", file);
-
     }
 }
