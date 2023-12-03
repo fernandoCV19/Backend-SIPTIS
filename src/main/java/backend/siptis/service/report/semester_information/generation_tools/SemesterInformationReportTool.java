@@ -14,9 +14,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class SemesterInformationReportTool {
-    private SemesterInformationReportTool(){}
+    private SemesterInformationReportTool() {
+    }
 
-    public static String generateReport(List<SemesterInformation> semesterInformationList){
+    public static String generateReport(List<SemesterInformation> semesterInformationList) {
         LocalDate today = LocalDate.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String date = today.format(dateTimeFormatter);
@@ -40,10 +41,10 @@ public class SemesterInformationReportTool {
 
             int rowIndex = 5;
 
-            for(SemesterInformation semesterInformation: semesterInformationList){
+            for (SemesterInformation semesterInformation : semesterInformationList) {
                 row = sheet.createRow(rowIndex);
 
-                String estado = semesterInformation.isInProgress()?"EN CURSO": "FINALIZADO";
+                String estado = semesterInformation.isInProgress() ? "EN CURSO" : "FINALIZADO";
                 ReportFunctions.addCellInRow(1, "" + (rowIndex - 4), ReportFunctions.getContentStyle(report), row);
                 ReportFunctions.addCellInRow(2, semesterInformation.getStartDate().toString(), ReportFunctions.getContentStyle(report), row);
                 ReportFunctions.addCellInRow(3, semesterInformation.getEndDate().toString(), ReportFunctions.getContentStyle(report), row);

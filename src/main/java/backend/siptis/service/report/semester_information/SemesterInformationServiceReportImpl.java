@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -18,14 +17,15 @@ public class SemesterInformationServiceReportImpl implements SemesterInformation
 
     private final SemesterInformationRepository semesterInformationRepository;
     private final CloudManagementService cloud;
+
     @Override
-    public ServiceAnswer getAllSemesterInformation(){
+    public ServiceAnswer getAllSemesterInformation() {
         List<SemesterInformation> semesterInformationList = semesterInformationRepository.findAll();
         semesterInformationList = semesterInformationList.stream()
                 .sorted((si1, si2) -> si1.getStartDate()
-                        .compareTo(si2.getStartDate())).collect(Collectors.toList());
-        String fielName = SemesterInformationReportTool.generateReport(semesterInformationList);
-        String key = ""; //cloud.uploadReportToCloud(fileName);
+                        .compareTo(si2.getStartDate())).toList();
+        String fileName = SemesterInformationReportTool.generateReport(semesterInformationList);
+        String key = cloud.uploadReportToCloud(fileName);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
     }
 

@@ -13,36 +13,36 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class ActivitiesReportServiceImpl implements ActivitiesReportService{
+public class ActivitiesReportServiceImpl implements ActivitiesReportService {
 
     private final GeneralActivityRepository generalActivityRepository;
     private final ActivityRepository activityRepository;
     private final CloudManagementService cloud;
+
     @Override
     public ServiceAnswer getGeneralActivitesReport() {
         List<GeneralActivity> activityList = generalActivityRepository.findAll();
         activityList = activityList.stream()
                 .sorted((a1, a2) -> a1.getActivityDate()
-                        .compareTo(a2.getActivityDate())).collect(Collectors.toList());
+                        .compareTo(a2.getActivityDate())).toList();
         String fileName = GeneralActivityReportTool.generateReport(activityList);
         String key = cloud.uploadReportToCloud(fileName);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
     }
 
     @Override
-    public ServiceAnswer getActivitiesByProject(){
+    public ServiceAnswer getActivitiesByProject() {
         List<Activity> activityList = activityRepository.findAll();
         activityList = activityList.stream()
                 .sorted((a1, a2) -> a1.getActivityDate()
-                        .compareTo(a2.getActivityDate())).collect(Collectors.toList());
+                        .compareTo(a2.getActivityDate())).toList();
 
         activityList = activityList.stream()
                 .sorted((a1, a2) -> a1.getProject().getName()
-                        .compareTo(a2.getProject().getName())).collect(Collectors.toList());
+                        .compareTo(a2.getProject().getName())).toList();
 
         String fileName = ActivitiesByProjectReportTool.generateReport(activityList);
         String key = cloud.uploadReportToCloud(fileName);

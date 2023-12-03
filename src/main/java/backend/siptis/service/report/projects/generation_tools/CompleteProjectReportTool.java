@@ -21,6 +21,7 @@ public class CompleteProjectReportTool {
 
     private CompleteProjectReportTool() {
     }
+
     public static String generateReport(List<Project> projects) {
         LocalDate today = LocalDate.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -45,7 +46,7 @@ public class CompleteProjectReportTool {
             ReportFunctions.addCellInRow(6, "Tribunal", ReportFunctions.getHeaderCellStyle(report), row);
             ReportFunctions.addCellInRow(7, "Modalidad", ReportFunctions.getHeaderCellStyle(report), row);
 
-            addProjects(projects, report, 5, sheet, row);
+            addProjects(projects, report, sheet, row);
 
             for (int i = 0; i < 8; i++) {
                 sheet.autoSizeColumn(i);
@@ -60,7 +61,9 @@ public class CompleteProjectReportTool {
         return fileName;
     }
 
-    private static void addProjects(List<Project> projects, Workbook report, int rowIndex, Sheet sheet, Row row) {
+    private static void addProjects(List<Project> projects, Workbook report, Sheet sheet, Row row) {
+        int rowIndex = 5;
+
         for (Project project : projects) {
             String projectName = project.getName();
             String projectModality = project.getModality().getName();

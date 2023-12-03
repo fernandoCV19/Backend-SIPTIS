@@ -14,9 +14,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class ProjectsByStateReportTool {
-    private ProjectsByStateReportTool(){}
+    private ProjectsByStateReportTool() {
+    }
 
-    public static String generateReport(List<Project> projectList){
+    public static String generateReport(List<Project> projectList) {
         LocalDate today = LocalDate.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String date = today.format(dateTimeFormatter);
