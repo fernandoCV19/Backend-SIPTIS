@@ -25,7 +25,7 @@ public class ProjectByPhaseReportTool {
         LocalDate today = LocalDate.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String date = today.format(dateTimeFormatter);
-        String fileName = "reporte-proyectos-fases" + date + ".xlsx";
+        String fileName = "proyectos-fases" + date + ".xlsx";
 
         try (Workbook report = new XSSFWorkbook()) {
             Sheet sheet = report.createSheet("Reporte fases");

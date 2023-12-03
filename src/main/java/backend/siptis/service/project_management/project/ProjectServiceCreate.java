@@ -7,20 +7,14 @@ import backend.siptis.model.entity.editors_and_reviewers.ProjectStudent;
 import backend.siptis.model.entity.editors_and_reviewers.ProjectSupervisor;
 import backend.siptis.model.entity.editors_and_reviewers.ProjectTeacher;
 import backend.siptis.model.entity.editors_and_reviewers.ProjectTutor;
-import backend.siptis.model.entity.project_management.Area;
-import backend.siptis.model.entity.project_management.Modality;
-import backend.siptis.model.entity.project_management.Project;
-import backend.siptis.model.entity.project_management.SubArea;
+import backend.siptis.model.entity.project_management.*;
 import backend.siptis.model.pjo.dto.project_management.NewProjectDTO;
 import backend.siptis.model.repository.auth.SiptisUserRepository;
 import backend.siptis.model.repository.editors_and_reviewers.ProjectStudentRepository;
 import backend.siptis.model.repository.editors_and_reviewers.ProjectSupervisorRepository;
 import backend.siptis.model.repository.editors_and_reviewers.ProjectTeacherRepository;
 import backend.siptis.model.repository.editors_and_reviewers.ProjectTutorRepository;
-import backend.siptis.model.repository.project_management.AreaRepository;
-import backend.siptis.model.repository.project_management.ModalityRepository;
-import backend.siptis.model.repository.project_management.ProjectRepository;
-import backend.siptis.model.repository.project_management.SubAreaRepository;
+import backend.siptis.model.repository.project_management.*;
 import backend.siptis.model.repository.semester.SemesterInformationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -43,6 +37,7 @@ public class ProjectServiceCreate {
     private final AreaRepository areaRepository;
     private final SubAreaRepository subAreaRepository;
     private final SemesterInformationRepository semesterInformationRepository;
+    private final StateRepository stateRepository;
 
     public ServiceAnswer createProject(NewProjectDTO dto) {
         if (!semesterInformationRepository.existsSemesterInformationByInProgressIsTrue()) {
@@ -140,6 +135,9 @@ public class ProjectServiceCreate {
             subAreas.add(subArea);
         }
 
+        Optional<State> state = stateRepository.findByName("IN_PROGRESS");
+        if(state.isEmpty())
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).build();
         newProject.setName(dto.getName());
         newProject.setModality(modalityRepository.findModalityById(dto.getModalityId()));
         newProject.setStudents(students);
@@ -148,9 +146,9 @@ public class ProjectServiceCreate {
         newProject.setAreas(areas);
         newProject.setSubAreas(subAreas);
         newProject.setPhase("REVIEWERS_PHASE");
+        newProject.setState(state.get());
         newProject.setTeachers(teachers);
         newProject.setPeriod(semesterInformationRepository.getCurrentPeriod());
-
         projectRepository.save(newProject);
         projectStudentRepository.saveAll(students);
         projectTutorRepository.saveAll(tutors);

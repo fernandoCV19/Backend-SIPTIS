@@ -1,6 +1,7 @@
 package backend.siptis.service.report.projects.generation_tools;
 
 import backend.siptis.model.entity.project_management.Project;
+import backend.siptis.model.entity.project_management.State;
 import backend.siptis.utils.functions.ReportFunctions;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -40,7 +41,13 @@ public class ProjectsByStateReportTool {
             int rowIndex = 5;
             for (Project project : projectList) {
                 String projectName = project.getName();
-                String projectState = project.getState().getName();
+                String projectState = "";
+                State state = project.getState();
+                if(state == null){
+                    projectState = "IN_PROGRESS";
+                }else{
+                    projectState = state.getName();
+                }
                 row = sheet.createRow(rowIndex);
 
                 ReportFunctions.addCellInRow(1, "" + (rowIndex - 4), ReportFunctions.getContentStyle(report), row);
