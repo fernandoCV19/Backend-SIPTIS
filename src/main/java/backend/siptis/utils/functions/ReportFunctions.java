@@ -25,4 +25,12 @@ public class ReportFunctions {
         cell.setCellValue(value);
         cell.setCellStyle(cellStyle);
     }
+
+    public static CellStyle getListStyle(Workbook report) {
+        CellStyle listStyle = report.createCellStyle();
+        listStyle.setAlignment(HorizontalAlignment.CENTER);
+        listStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        listStyle.setWrapText(true);
+        return listStyle;
+    }
 }
