@@ -16,7 +16,7 @@ public class SemesterInformationServiceImpl implements SemesterInformationServic
     @Override
     public ServiceAnswer getAllSemesterInformation(){
         List<SemesterInformation> semesterInformationList = semesterInformationRepository.findAll();
-
+        return null;
     }
 
 

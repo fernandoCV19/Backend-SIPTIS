@@ -9,5 +9,7 @@ public interface ProjectReportService {
 
     ServiceAnswer getProjectAreaReport();
 
+    ServiceAnswer getProjectPhaseReport();
+
     ServiceAnswer getCompleteProjectReport();
 }
