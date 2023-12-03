@@ -24,9 +24,9 @@ public class LetterTool {
     private static final String START_TEXT = "Estimado Director de Carrera:\n";
     private final String[] months =
             {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
+    private final String[] unitNumber = {"", "uno", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve"};
     String[] espNumber = {"diez", "once", "doce", "trece", "catorce", "quince", "dieciséis", "diecisiete", "dieciocho", "diecinueve"};
     String[] decNumber = {"", "", "veinte", "treinta", "cuarenta", "cincuenta", "sesenta", "setenta", "ochenta", "noventa"};
-    private final String[] unitNumber = {"", "uno", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve"};
 
     public String generateTribunalRequest(String student, String directorName, String career, String projectName, String teacherName) {
         String fileName = projectName + "_" + student + "_CartaConformidadDocente.pdf";

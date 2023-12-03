@@ -99,6 +99,13 @@ public class ProjectServiceGetProjectInfo {
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(optionalProject.get()).build();
     }
 
+    public ServiceAnswer getStudentPhase(Long projectId) {
+        Optional<Project> optionalProject = projectRepository.findById(projectId);
+        if (optionalProject.isEmpty())
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(optionalProject.get().getPhase()).build();
+    }
+
     private Integer getDaysDifference(LocalDateTime compare) {
         LocalDateTime now = LocalDateTime.now();
         return now.getDayOfYear() - compare.getDayOfYear();

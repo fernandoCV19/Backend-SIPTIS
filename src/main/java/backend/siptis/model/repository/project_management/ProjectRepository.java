@@ -53,19 +53,19 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
             "AND UPPER(s.name) LIKE CONCAT('%', UPPER(:subarea), '%')")
     Page<Project> findAllBySubAreaWithDefense(Pageable pageable, @Param("subarea") String area);
 
-    @Query("SELECT DISTINCT p FROM Project p " +
-            "JOIN p.modality m " +
-            "JOIN p.areas a " +
-            "JOIN p.subAreas s " +
-            "WHERE p.state.name = 'FINISHED'" +
-            "AND (:name IS NULL OR UPPER(p.name) LIKE CONCAT('%', UPPER(:name), '%'))  " +
-            "AND (:period IS NULL OR p.period = :period)")
+    @Query("""
+            select distinct p from Project p
+            left join p.subAreas subAreas
+            left join p.areas areas
+            where p.state.name = 'FINISHED'
+            and (:name is null or upper(p.name) like concat('%',upper(:name),'%'))
+            and (:period is null or p.period = :period)""")
     Page<Project> standardFilter(Pageable pageable, @Param("name") String name, @Param("period") String period);
 
     @Query("""
             select distinct p from Project p
             left join p.subAreas subAreas
-            left join p.areas areas 
+            left join p.areas areas
             left join p.students students 
             left join p.tutors tutors
             where p.state.name = 'FINISHED'

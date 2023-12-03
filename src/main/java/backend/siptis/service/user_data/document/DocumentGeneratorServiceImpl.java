@@ -28,6 +28,7 @@ import backend.siptis.service.user_data.document.generation_tools.ReportTool;
 import backend.siptis.service.user_data.document.generation_tools.SolvencyTool;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -100,6 +101,23 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
         documentRepository.flush();
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_DELETED).data(document).build();
     }
+
+    @Override
+    public ServiceAnswer uploadSheet(Long projectId, MultipartFile sheet) {
+        Optional<Project> optionalProject = projectRepository.findById(projectId);
+        if (optionalProject.isEmpty()) {
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.NOT_FOUND).data(null).build();
+        }
+        Project project = optionalProject.get();
+        String path = project.getSummarySheetPath();
+        if (path != null) {
+            return ServiceAnswer.builder().serviceMessage(ServiceMessage.SHEET_ALREADY_EXISTS).data(null).build();
+        }
+        String key = nube.putObject(sheet, "Fichas-Resumen/");
+        project.setSummarySheetPath(key);
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(key).build();
+    }
+
 
     @Override
     public ServiceAnswer generateReport(ReportDocumentDTO reportDocumentDTO, Long idUser, Long idProject) {

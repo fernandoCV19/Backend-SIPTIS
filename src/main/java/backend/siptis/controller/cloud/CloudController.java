@@ -42,6 +42,8 @@ public class CloudController {
             case "png" -> MediaType.IMAGE_PNG;
             case "jpg" -> MediaType.IMAGE_JPEG;
             case "pdf" -> MediaType.APPLICATION_PDF;
+            case "xlsx", "xls" ->
+                    MediaType.valueOf("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
             default -> MediaType.APPLICATION_OCTET_STREAM;
         };
     }

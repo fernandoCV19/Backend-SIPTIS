@@ -46,6 +46,9 @@ public class Project {
     @Column(name = ProjectTable.ProjectPath.NAME)
     private String projectPath;
 
+    @Column(name = ProjectTable.SummarySheetPath.NAME)
+    private String summarySheetPath = null;
+
     @Column(name = ProjectTable.Phase.NAME)
     private String phase;
 

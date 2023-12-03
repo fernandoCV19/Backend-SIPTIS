@@ -2,7 +2,11 @@ package backend.siptis.service.report.geneartion_tools;
 
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.model.entity.user_data.UserInformation;
-import org.apache.poi.ss.usermodel.*;
+import backend.siptis.utils.functions.ReportFunctions;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileOutputStream;
@@ -13,7 +17,8 @@ import java.util.List;
 
 public class GeneralTribunalReportTool {
 
-    private GeneralTribunalReportTool(){}
+    private GeneralTribunalReportTool() {
+    }
 
     public static String generateReport(List<SiptisUser> tribunals) {
         LocalDate today = LocalDate.now();
@@ -22,45 +27,23 @@ public class GeneralTribunalReportTool {
         String fileName = "lista-tribunales" + date + ".xlsx";
 
         try (Workbook report = new XSSFWorkbook()) {
-            CellStyle headerStyle = report.createCellStyle();
-            Font font = report.createFont();
-            font.setBold(true);
-            headerStyle.setFont(font);
-            headerStyle.setFillForegroundColor(IndexedColors.YELLOW.getIndex());
-            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-
-            CellStyle contentStyle = report.createCellStyle();
-            contentStyle.setAlignment(HorizontalAlignment.CENTER);
+            CellStyle headerStyle = ReportFunctions.getHeaderCellStyle(report);
+            CellStyle contentStyle = ReportFunctions.getContentStyle(report);
+            CellStyle listStyle = ReportFunctions.getListStyle(report);
 
             Sheet sheet = report.createSheet("Tribunales");
             Row row = sheet.createRow(2);
-            Cell cell = row.createCell(4);
-            cell.setCellValue("Reporte general de tribunales");
-            cell = row.createCell(5);
-            cell.setCellValue("Fecha: " + date);
+            ReportFunctions.addCellInRow(4, "Reporte general de tribunales", null, row);
+            ReportFunctions.addCellInRow(5, "Fecha: " + date, null, row);
 
             row = sheet.createRow(4);
-            cell = row.createCell(1);
-            cell.setCellValue("N°");
-            cell.setCellStyle(headerStyle);
-            cell = row.createCell(2);
-            cell.setCellValue("Código SIS");
-            cell.setCellStyle(headerStyle);
-            cell = row.createCell(3);
-            cell.setCellValue("Apellidos y nombres");
-            cell.setCellStyle(headerStyle);
-            cell = row.createCell(4);
-            cell.setCellValue("Correo electrónico");
-            cell.setCellStyle(headerStyle);
-            cell = row.createCell(5);
-            cell.setCellValue("Celular");
-            cell.setCellStyle(headerStyle);
-            cell = row.createCell(6);
-            cell.setCellValue("# Proyectos");
-            cell.setCellStyle(headerStyle);
-            cell = row.createCell(7);
-            cell.setCellValue("Proyectos");
-            cell.setCellStyle(headerStyle);
+            ReportFunctions.addCellInRow(1, "N°", headerStyle, row);
+            ReportFunctions.addCellInRow(2, "Código SIS", headerStyle, row);
+            ReportFunctions.addCellInRow(3, "Apellidos y nombres", headerStyle, row);
+            ReportFunctions.addCellInRow(4, "Correo electrónico", headerStyle, row);
+            ReportFunctions.addCellInRow(5, "Celular", headerStyle, row);
+            ReportFunctions.addCellInRow(6, "# Proyectos", headerStyle, row);
+            ReportFunctions.addCellInRow(7, "Proyectos", headerStyle, row);
 
             int rowIndex = 5;
             for (SiptisUser tribunal : tribunals) {
@@ -76,29 +59,17 @@ public class GeneralTribunalReportTool {
                             .stream()
                             .map(projectTribunal -> projectTribunal.getProject().getName()).toList();
                     projectQuantity = projects.size();
-                    projectNames = String.join(", ", projects);
+                    projectNames = String.join("\n", projects);
                 }
                 row = sheet.createRow(rowIndex);
 
-                cell = row.createCell(1);
-                cell.setCellValue(rowIndex - 4);
-                cell.setCellStyle(contentStyle);
-                cell = row.createCell(2);
-                cell.setCellValue(codSIS);
-                cell.setCellStyle(contentStyle);
-                cell = row.createCell(3);
-                cell.setCellValue(fullName);
-                cell = row.createCell(4);
-                cell.setCellValue(email);
-                cell.setCellStyle(contentStyle);
-                cell = row.createCell(5);
-                cell.setCellValue(cellphone);
-                cell.setCellStyle(contentStyle);
-                cell = row.createCell(6);
-                cell.setCellValue(projectQuantity);
-                cell.setCellStyle(contentStyle);
-                cell = row.createCell(7);
-                cell.setCellValue(projectNames);
+                ReportFunctions.addCellInRow(1, "" + (rowIndex - 4), contentStyle, row);
+                ReportFunctions.addCellInRow(2, codSIS, contentStyle, row);
+                ReportFunctions.addCellInRow(3, fullName, contentStyle, row);
+                ReportFunctions.addCellInRow(4, email, contentStyle, row);
+                ReportFunctions.addCellInRow(5, cellphone, contentStyle, row);
+                ReportFunctions.addCellInRow(6, "" + projectQuantity, contentStyle, row);
+                ReportFunctions.addCellInRow(7, projectNames, listStyle, row);
                 rowIndex++;
             }
             for (int i = 0; i < 8; i++) {
