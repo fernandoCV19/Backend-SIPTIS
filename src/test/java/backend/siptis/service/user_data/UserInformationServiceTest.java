@@ -12,9 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.Date;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -55,8 +55,6 @@ class UserInformationServiceTest {
     }
 
 
-
-
     @Test
     @DisplayName("Test for find by id")
     void givenNoUserInformation_WhenFindById_ThenServiceMessageOK() {
@@ -70,6 +68,7 @@ class UserInformationServiceTest {
         ServiceAnswer answer = userInformationService.registerUserInformation(null);
         assertEquals(ServiceMessage.ERROR, answer.getServiceMessage());
     }
+
     @Test
     @DisplayName("Test for success register user ")
     void givenRegisterUserDTO_WhenRegisterUserInformation_ThenServiceMessageERROR() {
@@ -84,6 +83,7 @@ class UserInformationServiceTest {
         ServiceAnswer answer = userInformationService.registerUserInformation(null);
         assertEquals(ServiceMessage.ERROR, answer.getServiceMessage());
     }
+
     @Test
     @DisplayName("Test for success register student")
     void givenNull_WhenRegisterStudentInformation_ThenServiceMessageOK() {

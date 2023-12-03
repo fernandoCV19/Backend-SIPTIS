@@ -20,7 +20,7 @@ class SiptisUserServiceRolesOperationsTest {
     private SiptisUserServiceRolesOperations siptisUserServiceRolesOperations;
     private RolesListDTO rolesListDTO;
 
-    private void createRolesListDTO(){
+    private void createRolesListDTO() {
         rolesListDTO = new RolesListDTO();
         rolesListDTO.setRoles(List.of(104L));
     }
@@ -30,6 +30,7 @@ class SiptisUserServiceRolesOperationsTest {
     void givenUserIdWhenGetRolesByIdThenServiceMessageNOT_FOUND() {
         assertEquals(ServiceMessage.NOT_FOUND, siptisUserServiceRolesOperations.getRolesById(123123L).getServiceMessage());
     }
+
     @Test
     @DisplayName("test get roles by id success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -42,6 +43,7 @@ class SiptisUserServiceRolesOperationsTest {
     void givenUserIdWhenUpdateRolesByIdThenServiceMessageNOT_FOUND() {
         assertEquals(ServiceMessage.NOT_FOUND, siptisUserServiceRolesOperations.updateRoles(123123L, null).getServiceMessage());
     }
+
     @Test
     @DisplayName("test get update roles by id success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)

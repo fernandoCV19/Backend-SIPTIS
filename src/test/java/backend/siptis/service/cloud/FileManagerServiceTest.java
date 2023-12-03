@@ -24,6 +24,7 @@ class FileManagerServiceTest {
     void givenKeyWhenDownloadFileFromCloudThenServiceMessageOK() {
         assertEquals(ServiceMessage.OK, fileManagerService.downloadFileFromCloud("Cartas/test.pdf").getServiceMessage());
     }
+
     @Test
     @DisplayName("Test for download file from cloud")
     void givenKeyWhenDownloadFileFromCloudThenServiceMessageNotFound() {

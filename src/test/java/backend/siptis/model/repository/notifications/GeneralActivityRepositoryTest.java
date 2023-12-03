@@ -10,7 +10,8 @@ import org.springframework.test.context.jdbc.Sql;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -23,6 +24,7 @@ public class GeneralActivityRepositoryTest {
     void givenActivitiesAndProjectId_whenFindByProjectId_thenEmptyActivityList() {
         assertTrue(generalActivityRepository.findAllAfterADate(LocalDate.now(), Pageable.ofSize(2)).isEmpty());
     }
+
     @Test
     @DisplayName("Test for find All After A Date success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)

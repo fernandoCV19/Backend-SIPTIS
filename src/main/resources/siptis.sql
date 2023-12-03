@@ -463,7 +463,7 @@ VALUES (130, 100),
        (138, 108),
        (139, 109);
 -- PROJECT TUTOR
-    INSERT INTO project_tutor_ (id_, accepted_, reviewed_, project_id_, user_id_)
+INSERT INTO project_tutor_ (id_, accepted_, reviewed_, project_id_, user_id_)
 VALUES (101, TRUE, FALSE, 101, 131),
        (102, FALSE, TRUE, 102, 132),
        (103, TRUE, FALSE, 103, 133),

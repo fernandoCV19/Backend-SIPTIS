@@ -18,7 +18,6 @@ import org.springframework.test.context.jdbc.Sql;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -40,17 +39,18 @@ class DocumentGeneratorServiceTest {
 
     private void createLetterGenerationRequestDTO() {
         letterGenerationRequestDTO = new LetterGenerationRequestDTO();
-        letterGenerationRequestDTO.setProjectId(100l);
+        letterGenerationRequestDTO.setProjectId(100L);
         letterGenerationRequestDTO.setUserId(123L);
     }
 
-    private void createReportDocumentDTO(){
+    private void createReportDocumentDTO() {
         reportDocumentDTO = new ReportDocumentDTO();
         reportDocumentDTO.setReportNumber(123);
         reportDocumentDTO.setDescription("description");
         reportDocumentDTO.setShortDescription("short");
     }
-    private void createDocumentaryRecordDTO(){
+
+    private void createDocumentaryRecordDTO() {
         documentaryRecordDto = new DocumentaryRecordDto();
         documentaryRecordDto.setConsultants("cons");
         documentaryRecordDto.setDefenseDate("date");
@@ -61,7 +61,7 @@ class DocumentGeneratorServiceTest {
         documentaryRecordDto.setPageQuantity("12");
     }
 
-    private void createDocument(){
+    private void createDocument() {
         SiptisUser user = siptisUserRepository.findById(100L).get();
         document = new Document();
         document.setDate(LocalDateTime.now());
@@ -77,6 +77,7 @@ class DocumentGeneratorServiceTest {
     void givenBadUserId_WhenGetAllDocumentsFromUser_ThenServiceMessageNOT_FOUND() {
         assertEquals(ServiceMessage.NOT_FOUND, documentGeneratorService.getAllDocumentsFromUser(123L).getServiceMessage());
     }
+
     @Test
     @DisplayName("Test get all documents from user no documents")
     @Sql(scripts = {"/testDB.sql", "/custom_imports/create_documents.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -90,6 +91,7 @@ class DocumentGeneratorServiceTest {
     void givenBadIdProject_WhenGetAllDocumentsFromProject_ThenServiceMessageNOT_FOUND() {
         assertEquals(ServiceMessage.NOT_FOUND, documentGeneratorService.getAllDocumentsFromProject(123L).getServiceMessage());
     }
+
     @Test
     @DisplayName("Test get all documents from project success")
     @Sql(scripts = {"/testDB.sql", "/custom_imports/create_documents.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -102,10 +104,11 @@ class DocumentGeneratorServiceTest {
     void givenBadIdDocument_WhenDeleteDocument_ThenServiceMessageNOT_FOUND() {
         assertEquals(ServiceMessage.NOT_FOUND, documentGeneratorService.deleteDocument(123L).getServiceMessage());
     }
+
     @Test
     @Sql(scripts = {"/testDB.sql", "/custom_imports/create_documents.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void givenBadIdDocument_WhenDeleteDocument_ThenServiceMessageDOCUMENT_DELETED() {
-        assertEquals(ServiceMessage.DOCUMENT_DELETED, documentGeneratorService.deleteDocument(50l).getServiceMessage());
+        assertEquals(ServiceMessage.DOCUMENT_DELETED, documentGeneratorService.deleteDocument(50L).getServiceMessage());
     }
 
     @Test
@@ -113,12 +116,13 @@ class DocumentGeneratorServiceTest {
     void givenBadProjectId_WhenGenerateReport_ThenServiceMessageError() {
         assertEquals(ServiceMessage.ERROR, documentGeneratorService.generateReport(null, 123L, 123L).getServiceMessage());
     }
+
     @Test
     @DisplayName("Test generate report document generated")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void givenBadProjectId_WhenGenerateReport_ThenServiceMessageDOCUMENT_GENERATED() {
         createReportDocumentDTO();
-        assertEquals(ServiceMessage.DOCUMENT_GENERATED, documentGeneratorService.generateReport(reportDocumentDTO, 100l, 112L).getServiceMessage());
+        assertEquals(ServiceMessage.DOCUMENT_GENERATED, documentGeneratorService.generateReport(reportDocumentDTO, 100L, 112L).getServiceMessage());
     }
 
     @Test
@@ -126,12 +130,13 @@ class DocumentGeneratorServiceTest {
     void givenBadProjectId_WhenGenerateDocumentaryRecord_ThenServiceMessageError() {
         assertEquals(ServiceMessage.ERROR, documentGeneratorService.generateDocumentaryRecord(null, 123L, 123L).getServiceMessage());
     }
+
     @Test
     @DisplayName("Test generate documentary record document generated ")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void givenBadProjectId_WhenGenerateDocumentaryRecord_ThenServiceMessageDOCUMENT_GENERATED() {
         createDocumentaryRecordDTO();
-        assertEquals(ServiceMessage.DOCUMENT_GENERATED, documentGeneratorService.generateDocumentaryRecord(documentaryRecordDto, 100l, 112l).getServiceMessage());
+        assertEquals(ServiceMessage.DOCUMENT_GENERATED, documentGeneratorService.generateDocumentaryRecord(documentaryRecordDto, 100L, 112L).getServiceMessage());
     }
 
     @Test
@@ -139,6 +144,7 @@ class DocumentGeneratorServiceTest {
     void givenBadUserId_WhenGenerateSolvency_ThenServiceMessageNOT_FOUND() {
         assertEquals(ServiceMessage.NOT_FOUND, documentGeneratorService.generateSolvency(123L).getServiceMessage());
     }
+
     @Test
     @DisplayName("Test generate solvency success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)

@@ -1,7 +1,6 @@
 package backend.siptis.service.report.projects.generation_tools;
 
 
-import backend.siptis.model.entity.project_management.Project;
 import backend.siptis.model.pjo.dto.project_management.ProjectAreaDTO;
 import backend.siptis.utils.functions.ReportFunctions;
 import org.apache.poi.ss.usermodel.Row;
@@ -55,7 +54,7 @@ public class ProjectByAreaReportTool {
                 Long value = values.getValue();
                 rowIndex++;
                 row = sheet.createRow(rowIndex);
-                ReportFunctions.addCellInRow(2, key +" "+value, ReportFunctions.getHeaderCellStyle(report), row);
+                ReportFunctions.addCellInRow(2, key + " " + value, ReportFunctions.getHeaderCellStyle(report), row);
 
             }
 

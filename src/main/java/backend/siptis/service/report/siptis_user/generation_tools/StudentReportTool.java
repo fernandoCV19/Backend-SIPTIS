@@ -1,7 +1,6 @@
 package backend.siptis.service.report.siptis_user.generation_tools;
 
 import backend.siptis.auth.entity.SiptisUser;
-import backend.siptis.model.entity.project_management.Project;
 import backend.siptis.model.entity.user_data.UserInformation;
 import backend.siptis.utils.functions.ReportFunctions;
 import org.apache.poi.ss.usermodel.Row;
@@ -82,7 +81,7 @@ public class StudentReportTool {
             lastNames = userInformation.getLastNames();
             ci = userInformation.getCi();
             codSIS = userInformation.getCodSIS();
-            if(!student.getCareer().stream().findFirst().isEmpty()){
+            if (!student.getCareer().stream().findFirst().isEmpty()) {
                 career = student.getCareer().stream().findFirst().get().getName();
             }
 

@@ -27,6 +27,7 @@ class ProjectRepositoryTest {
     void givenProjects_whenSearchProject_thenEmptyList() {
         assertTrue(projectRepository.searchProject("bad project name", pageable).isEmpty());
     }
+
     @Test
     @DisplayName("Test for search project success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -40,6 +41,7 @@ class ProjectRepositoryTest {
         List<Long> list = projectRepository.getIdsListFromReviewers(1L);
         assertTrue(list.isEmpty());
     }
+
     @Test
     @DisplayName("Test for get id list from reviewers success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -54,6 +56,7 @@ class ProjectRepositoryTest {
         Page<Project> projects = projectRepository.findAllWithDefense(pageable);
         assertTrue(projects.isEmpty());
     }
+
     @Test
     @DisplayName("Test for find list of projects with defense success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -68,6 +71,7 @@ class ProjectRepositoryTest {
         Page<Project> projects = projectRepository.findAllByNameWithDefense(pageable, "Proyecto de Desarrollo de Aplicación Web");
         assertTrue(projects.isEmpty());
     }
+
     @Test
     @DisplayName("Test for find list of projects with defense by name")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -82,6 +86,7 @@ class ProjectRepositoryTest {
         Page<Project> projects = projectRepository.findAllByModalityWithDefense(pageable, "TESIS");
         assertTrue(projects.isEmpty());
     }
+
     @Test
     @DisplayName("Test for find list of projects with defense by modality success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -96,6 +101,7 @@ class ProjectRepositoryTest {
         Page<Project> projects = projectRepository.findAllByAreaWithDefense(pageable, "AREA1");
         assertTrue(projects.isEmpty());
     }
+
     @Test
     @DisplayName("Test for find list of projects with defense by area success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -110,6 +116,7 @@ class ProjectRepositoryTest {
         Page<Project> projects = projectRepository.findAllBySubAreaWithDefense(pageable, "SUB_AREA1");
         assertTrue(projects.isEmpty());
     }
+
     @Test
     @DisplayName("Test for find list of projects with defense by area success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -123,6 +130,7 @@ class ProjectRepositoryTest {
     void givenProjects_whenStandardFilter_thenEmptyList() {
         assertTrue(projectRepository.standardFilter(pageable, "Perfil4", "2-2023").isEmpty());
     }
+
     @Test
     @DisplayName("Test for find list of projects by standart filter success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -136,6 +144,7 @@ class ProjectRepositoryTest {
         Page<Project> projects = projectRepository.advancedFilter("", "", "", "", "", "", "", pageable);
         assertTrue(projects.isEmpty());
     }
+
     @Test
     @DisplayName("Test for find list of projects by advanced filter success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -149,6 +158,7 @@ class ProjectRepositoryTest {
     void givenProjects_whenExistByName_thenFalse() {
         assertFalse(projectRepository.existsByName("wrong name"));
     }
+
     @Test
     @DisplayName("Test for exist by name success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -161,11 +171,12 @@ class ProjectRepositoryTest {
     void givenProjects_whenGetNumberOfProjectsByModalityAndCareer_thenEmptyList() {
         assertTrue(projectRepository.getNumberOfProjectsByModalityAndCareer(123456L).isEmpty());
     }
+
     @Test
     @DisplayName("Test for get number of projects by modality and career success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void givenProjects_whenGetNumberOfProjectsByModalityAndCareer_thenList() {
-        assertNotNull(projectRepository.getNumberOfProjectsByModalityAndCareer(100l));
+        assertNotNull(projectRepository.getNumberOfProjectsByModalityAndCareer(100L));
     }
 
     @Test
@@ -173,11 +184,12 @@ class ProjectRepositoryTest {
     void givenProjects_whenGetNumberOfProjectsByAreasAndCareer_thenEmptyList() {
         assertTrue(projectRepository.getNumberOfProjectsByAreasAndCareer(123456L).isEmpty());
     }
+
     @Test
     @DisplayName("Test for get number of projects by areas and career success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void givenProjects_whenGetNumberOfProjectsByAreasAndCareer_thenList() {
-        assertNotNull(projectRepository.getNumberOfProjectsByAreasAndCareer(100l));
+        assertNotNull(projectRepository.getNumberOfProjectsByAreasAndCareer(100L));
     }
 
     @Test
@@ -185,6 +197,7 @@ class ProjectRepositoryTest {
     void givenProjects_whenGetNumberOfProjectsBySubAreasAndCareer_thenEmptyList() {
         assertTrue(projectRepository.getNumberOfProjectsBySubAreasAndCareer(123456L).isEmpty());
     }
+
     @Test
     @DisplayName("Test for get number of projects by areas and career success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -197,6 +210,7 @@ class ProjectRepositoryTest {
     void givenProjects_whenGetProjectsByCareer_thenEmptyList() {
         assertFalse(projectRepository.getProjectsByCareer(12345L).isEmpty());
     }
+
     @Test
     @DisplayName("Test for get number of projects by career success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -209,6 +223,7 @@ class ProjectRepositoryTest {
     void givenProjects_whenGetNumberProjectsByPeriodAndCareer_thenEmptyList() {
         assertTrue(projectRepository.getNumberProjectsByPeriodAndCareer(123456L).isEmpty());
     }
+
     @Test
     @DisplayName("Test for get number of projects by period and career")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)

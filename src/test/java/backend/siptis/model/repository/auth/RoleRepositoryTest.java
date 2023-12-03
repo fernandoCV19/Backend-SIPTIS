@@ -41,6 +41,7 @@ class RoleRepositoryTest {
     void givenRoleName_whenFindRoleByName_thenRoleObject() {
         assertNotNull(roleRepository.findRoleByName("ADMIN"));
     }
+
     @Test
     @DisplayName("Test for get role by non existing name.")
     void givenRoleName_whenFindRoleByName_thenNull() {
@@ -53,6 +54,7 @@ class RoleRepositoryTest {
     void givenRoleId_whenFindRoleById_thenRoleObject() {
         assertNotNull(roleRepository.findRoleById(101L));
     }
+
     @Test
     @DisplayName("Test for get role by non existing id.")
     void givenRoleId_whenFindRoleById_thenNull() {
@@ -65,6 +67,7 @@ class RoleRepositoryTest {
     void givenRoleName_whenExistRoleByName_thenTrue() {
         assertTrue(roleRepository.existsRoleByName("ADMIN"));
     }
+
     @Test
     @DisplayName("Test for verify if exist role by non existing name.")
     void givenRoleName_whenExistRoleByName_thenFalse() {
@@ -77,6 +80,7 @@ class RoleRepositoryTest {
     void givenRoleId_whenExistRoleById_thenTrue() {
         assertTrue(roleRepository.existsRoleById(101L));
     }
+
     @Test
     @DisplayName("Test for verify if exist role by non existing id.")
     void givenRoleId_whenExistRoleById_thenFalse() {

@@ -31,6 +31,7 @@ class ModalityRepositoryTest {
     void givenModalityId_whenFindById_thenNull() {
         assertTrue(modalityRepository.findById(1525054L).isEmpty());
     }
+
     @Test
     @DisplayName("Test for find modality by id success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -44,6 +45,7 @@ class ModalityRepositoryTest {
     void givenModalityId_whenFindModalityById_thenNull() {
         assertNull(modalityRepository.findModalityById(14564L));
     }
+
     @Test
     @DisplayName("Test for find modality object by id success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)

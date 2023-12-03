@@ -3,12 +3,9 @@ package backend.siptis.service.report.siptis_user;
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.model.entity.editors_and_reviewers.ProjectStudent;
-import backend.siptis.model.entity.project_management.Project;
 import backend.siptis.model.entity.user_data.UserCareer;
 import backend.siptis.model.repository.auth.SiptisUserRepository;
 import backend.siptis.service.cloud.CloudManagementService;
-import backend.siptis.service.report.projects.generation_tools.ProjectByPhaseReportTool;
 import backend.siptis.service.report.siptis_user.generation_tools.AdminReportTool;
 import backend.siptis.service.report.siptis_user.generation_tools.GeneralUserReportTool;
 import backend.siptis.service.report.siptis_user.generation_tools.StudentReportTool;
@@ -16,14 +13,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class SiptisUserReportServiceImp implements SiptisUserReportService{
+public class SiptisUserReportServiceImp implements SiptisUserReportService {
     private final SiptisUserRepository siptisUserRepository;
     private final CloudManagementService cloud;
 
@@ -61,7 +56,7 @@ public class SiptisUserReportServiceImp implements SiptisUserReportService{
 
     @Override
     public ServiceAnswer getGeneralUserReport(String role) {
-        if(!checkRole(role))
+        if (!checkRole(role))
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
         List<SiptisUser> userList = siptisUserRepository.findByRolesName(role.toUpperCase());
         userList = userList.stream()
@@ -72,7 +67,7 @@ public class SiptisUserReportServiceImp implements SiptisUserReportService{
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
     }
 
-    private boolean checkRole(String role){
+    private boolean checkRole(String role) {
         List<String> roles = List.of("TUTOR", "SUPERVISOR", "TEACHER", "TRIBUNAL", "REVIEWER");
 
         return roles.contains(role.toUpperCase());

@@ -24,10 +24,10 @@ public class GeneralUserReportTool {
         String fileName = "reporte-usuarios-" + role.toLowerCase() + date + ".xlsx";
 
         try (Workbook report = new XSSFWorkbook()) {
-            Sheet sheet = report.createSheet("Reporte usuarios "+role);
+            Sheet sheet = report.createSheet("Reporte usuarios " + role);
             Row row = sheet.createRow(2);
 
-            String title = "Reporte usuarios "+ role;
+            String title = "Reporte usuarios " + role;
             ReportFunctions.addCellInRow(2, title, ReportFunctions.getContentStyle(report), row);
             ReportFunctions.addCellInRow(3, "Fecha " + date, ReportFunctions.getContentStyle(report), row);
 
@@ -49,7 +49,7 @@ public class GeneralUserReportTool {
 
             rowIndex = rowIndex + 2;
             row = sheet.createRow(rowIndex);
-            ReportFunctions.addCellInRow(2, role.toUpperCase() +": " + users.size(), ReportFunctions.getHeaderCellStyle(report), row);
+            ReportFunctions.addCellInRow(2, role.toUpperCase() + ": " + users.size(), ReportFunctions.getHeaderCellStyle(report), row);
 
 
             FileOutputStream fileOutputStream = new FileOutputStream(fileName);
@@ -85,8 +85,8 @@ public class GeneralUserReportTool {
         return rowIndex;
     }
 
-    private static String getRoleName(String role){
-        return switch (role){
+    private static String getRoleName(String role) {
+        return switch (role) {
             case "TEACHER" -> "Docente";
             case "TRIBUNAL" -> "Tribunal";
             case "TUTOR" -> "Tutor";

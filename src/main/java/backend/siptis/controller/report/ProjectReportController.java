@@ -49,7 +49,7 @@ public class ProjectReportController {
 
     @Operation(summary = "Get projects filter by areas report")
     @GetMapping("/project/areas")
-    public ResponseEntity<ControllerAnswer> getProjectFilterByAreasReport(){
+    public ResponseEntity<ControllerAnswer> getProjectFilterByAreasReport() {
         return new ResponseEntity<>(ControllerAnswer.builder()
                 .data(projectReportService.getProjectAreaReport())
                 .message("REPORT_GENERATED").build(), null, 200);
@@ -57,7 +57,7 @@ public class ProjectReportController {
 
     @Operation(summary = "Get projects filter by areas report")
     @GetMapping("/project/subareas")
-    public ResponseEntity<ControllerAnswer> getProjectFilterBySubAreasReport(){
+    public ResponseEntity<ControllerAnswer> getProjectFilterBySubAreasReport() {
         return new ResponseEntity<>(ControllerAnswer.builder()
                 .data(projectReportService.getProjectSubAreaReport())
                 .message("REPORT_GENERATED").build(), null, 200);
@@ -65,7 +65,7 @@ public class ProjectReportController {
 
     @Operation(summary = "Get projects filter by phases report")
     @GetMapping("/project/phases")
-    public ResponseEntity<ControllerAnswer> getProjectFilterByPhasesReport(){
+    public ResponseEntity<ControllerAnswer> getProjectFilterByPhasesReport() {
         return new ResponseEntity<>(ControllerAnswer.builder()
                 .data(projectReportService.getProjectPhaseReport())
                 .message("REPORT_GENERATED").build(), null, 200);

@@ -39,6 +39,7 @@ class SiptisUserServiceCareerDirectorOperationsTest {
         ServiceAnswer answer = siptisUserServiceCareerDirectorOperations.getDirectorPersonalInformation("wrong role");
         assertEquals(ServiceMessage.NOT_FOUND, answer.getServiceMessage());
     }
+
     @Test
     @DisplayName("test get director personal information success")
     void givenWrongRoleWhenGetDirectorPersonalInformationThenServiceMessageOK() {
@@ -53,6 +54,7 @@ class SiptisUserServiceCareerDirectorOperationsTest {
         String answer = siptisUserServiceCareerDirectorOperations.getCareerDirectorName("wrong career");
         assertNull(answer);
     }
+
     @Test
     @DisplayName("Test get Career director name success")
     void givenRoleNameWhenGetCareerDirectorNameThenString() {

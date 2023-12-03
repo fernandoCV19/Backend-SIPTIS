@@ -59,7 +59,7 @@ public class EmailController {
     }
 
     @GetMapping("/send")
-    public void sendDocument(){
+    public void sendDocument() {
         File file = new File("qodana.yml");
         documentSenderService.sendDocument("prueba de documento", "dilanantezana@gmail.com", file);
 

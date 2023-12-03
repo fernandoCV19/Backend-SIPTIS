@@ -11,7 +11,9 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.time.LocalDate;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -40,6 +42,7 @@ class ActivityServiceModifyOperationsTest {
         startActivityDTO();
         assertEquals(ServiceMessage.NOT_FOUND, activityServiceModifyOperations.persistActivity(activityDTO).getServiceMessage());
     }
+
     @Test
     @DisplayName("Test success persist activity")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -54,6 +57,7 @@ class ActivityServiceModifyOperationsTest {
         startActivityDTO();
         assertEquals(ServiceMessage.NOT_FOUND, activityServiceModifyOperations.update(activityDTO, 1234678L).getServiceMessage());
     }
+
     @Test
     @DisplayName("Test success persist activity")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)

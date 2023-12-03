@@ -1,21 +1,20 @@
 package backend.siptis.service.notifications.notification_senders;
 
 import backend.siptis.service.notifications.EmailFactory;
-import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import java.io.File;
-import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
-public class DocumentSenderServiceImpl implements DocumentSenderService{
+public class DocumentSenderServiceImpl implements DocumentSenderService {
 
     private final TemplateEngine templateEngine;
     private final EmailFactory emailFactory;
+
     @Override
     public void sendDocument(String message, String email, File file) {
         emailFactory.setToMail(email);
@@ -27,7 +26,7 @@ public class DocumentSenderServiceImpl implements DocumentSenderService{
         emailFactory.sendDocument();
     }
 
-    private String buildHtmlTemplate(String message){
+    private String buildHtmlTemplate(String message) {
         Context context = new Context();
         context.setVariable("message", message);
         return templateEngine.process("common_notification", context);

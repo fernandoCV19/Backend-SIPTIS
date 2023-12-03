@@ -20,12 +20,14 @@ class ProjectTutorRepositoryTest {
     void givenTutorIdAndProjectId_whenFindByTutorIdAndProjectId_thenNull() {
         assertNull(projectTutorRepository.findByTutorIdAndProjectId(3L, 1L));
     }
+
     @Test
     @DisplayName("Test for get project tutor by tutor id and project id success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void givenTutorIdAndProjectId_whenFindByTutorIdAndProjectId_thenProjectTutorObject() {
-        assertNotNull(projectTutorRepository.findByTutorIdAndProjectId(131l, 101L));
+        assertNotNull(projectTutorRepository.findByTutorIdAndProjectId(131L, 101L));
     }
+
     @Test
     @DisplayName("Test for get project tutor by wrong tutor id and project id")
     void givenTutorWrongIdAndProjectId_whenFindByTutorIdAndProjectId_thenNull() {
@@ -37,6 +39,7 @@ class ProjectTutorRepositoryTest {
     void givenTutorIdAndAccepted_whenFindByTutorIdAndAcceptedIsTrue_thenEmpty() {
         assertTrue(projectTutorRepository.findByTutorIdAndAcceptedIsTrue(4L).isEmpty());
     }
+
     @Test
     @DisplayName("Test for get project tutor list by tutor id and accepted success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -49,6 +52,7 @@ class ProjectTutorRepositoryTest {
     void givenTutorIdAndAccepted_whenFindByTutorIdAndAcceptedIsFalseAndReviewedIsFalse_thenEmptyList() {
         assertTrue(projectTutorRepository.findByTutorIdAndAcceptedIsFalseAndReviewedIsFalse(3L).isEmpty());
     }
+
     @Test
     @DisplayName("Test for find by tutor id and accepted is false and reviewed is false ")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -61,6 +65,7 @@ class ProjectTutorRepositoryTest {
     void givenTutorIdAndAccepted_whenFindByTutorIdAndAcceptedIsFalseAndReviewedIsTrue_thenEmptyList() {
         assertTrue(projectTutorRepository.findByTutorIdAndAcceptedIsFalseAndReviewedIsTrue(3L).isEmpty());
     }
+
     @Test
     @DisplayName("Test for find by tutor id and accepted is false and reviewed is true ")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)

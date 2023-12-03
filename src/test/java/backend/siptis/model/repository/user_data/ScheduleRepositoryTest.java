@@ -30,6 +30,7 @@ class ScheduleRepositoryTest {
         scheduleRepository.save(schedule);
         assertFalse(scheduleRepository.findById(schedule.getId()).isEmpty());
     }
+
     @Test
     @DisplayName("Test for find schedule by id")
     void givenScheduleId_whenFindById_thenNull() {

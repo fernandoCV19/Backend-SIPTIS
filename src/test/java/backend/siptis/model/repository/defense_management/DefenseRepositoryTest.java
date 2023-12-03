@@ -28,8 +28,9 @@ class DefenseRepositoryTest {
     @Test
     @DisplayName("Test for find defense by id false")
     void givenDefenseId_whenFindById_thenEmpty() {
-        assertTrue(defenseRepository.findById(123l).isEmpty());
+        assertTrue(defenseRepository.findById(123L).isEmpty());
     }
+
     @Test
     @DisplayName("Test for find defense by id success")
     void givenDefenseId_whenFindById_thenDefenseObject() {

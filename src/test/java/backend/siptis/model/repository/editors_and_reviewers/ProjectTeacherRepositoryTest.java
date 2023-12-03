@@ -20,6 +20,7 @@ class ProjectTeacherRepositoryTest {
     void givenBadId_whenFindByTeacherIdAndAcceptedIsFalseAndReviewedIsTrue_thenEmpty() {
         assertTrue(projectTeacherRepository.findByTeacherIdAndAcceptedIsFalseAndReviewedIsTrue(123L).isEmpty());
     }
+
     @Test
     @DisplayName("test for get list of project teacher find by teacher id not accepted and reviewed success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -32,6 +33,7 @@ class ProjectTeacherRepositoryTest {
     void givenBadId_whenFindByTeacherIdAndAcceptedIsFalseAndReviewedIsFalse_thenEmpty() {
         assertTrue(projectTeacherRepository.findByTeacherIdAndAcceptedIsFalseAndReviewedIsFalse(123L).isEmpty());
     }
+
     @Test
     @DisplayName("test for get list of project teacher find by teacher id not accepted and not reviewed success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -44,6 +46,7 @@ class ProjectTeacherRepositoryTest {
     void givenBadId_whenFindByTeacherIdAndAcceptedIsTrue_thenEmpty() {
         assertTrue(projectTeacherRepository.findByTeacherIdAndAcceptedIsTrue(123L).isEmpty());
     }
+
     @Test
     @DisplayName("test for get list of project teacher find by teacher id  accepted success ")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -56,6 +59,7 @@ class ProjectTeacherRepositoryTest {
     void givenBadIds_whenFindByTeacherIdAndProjectId_thenNull() {
         assertNull(projectTeacherRepository.findByTeacherIdAndProjectId(123L, 123L));
     }
+
     @Test
     @DisplayName("test for find by teacher id and project id success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)

@@ -38,6 +38,7 @@ class SiptisUserServiceStudentOperationsTest {
         createRegisterStudentDTO();
         assertEquals(ServiceMessage.ERROR, siptisUserServiceStudentOperations.registerStudent(registerStudentDTO).getServiceMessage());
     }
+
     @Test
     @DisplayName("test for register student success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -51,6 +52,7 @@ class SiptisUserServiceStudentOperationsTest {
     void givenWrongCareerNameWhenGetNumberOfStudentsByYearAndCareerThenServiceMessageERROR() {
         assertEquals(ServiceMessage.ERROR, siptisUserServiceStudentOperations.getNumberOfStudentsByYearAndCareer("INFOR MATICA").getServiceMessage());
     }
+
     @Test
     @DisplayName("test gest number of students by year and career success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -63,6 +65,7 @@ class SiptisUserServiceStudentOperationsTest {
     void givenWrongCareerNameWhenGetNumberOfStudentsByCareerThenServiceMessageERROR() {
         assertEquals(ServiceMessage.ERROR, siptisUserServiceStudentOperations.getNumberStudentsCareer("INFORM ATICA").getServiceMessage());
     }
+
     @Test
     @DisplayName("test get number of students by career success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -75,6 +78,7 @@ class SiptisUserServiceStudentOperationsTest {
     void givenUserIdWhenThenGetStudentCareerByIdServiceMessageNOT_FOUND() {
         assertEquals(ServiceMessage.NOT_FOUND, siptisUserServiceStudentOperations.getStudentCareerById(1234567L).getServiceMessage());
     }
+
     @Test
     @DisplayName("test get student career by id")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)

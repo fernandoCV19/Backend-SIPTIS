@@ -30,6 +30,7 @@ class PlaceToDefenseRepositoryTest {
     void givenPlaceToDefenseId_whenFindById_thenNull() {
         assertTrue(placeToDefenseRepository.findById(123123123L).isEmpty());
     }
+
     @Test
     @DisplayName("Test for find place to defense by id success")
     void givenPlaceToDefenseId_whenFindById_thenPlaceToDefenseObject() {

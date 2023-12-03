@@ -46,6 +46,7 @@ class SiptisUserServiceTokenOperationsTest {
         } catch (Exception e) {
         }
     }
+
     @Test
     @DisplayName("test get id from token success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -62,6 +63,7 @@ class SiptisUserServiceTokenOperationsTest {
         } catch (Exception e) {
         }
     }
+
     @Test
     @DisplayName("test get projects from token success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -75,6 +77,7 @@ class SiptisUserServiceTokenOperationsTest {
     void givenBadRefreshTokenWhenUpdateTokenThenServiceMessageNOT_FOUND() {
         assertEquals(ServiceMessage.NOT_FOUND, siptisUserServiceTokenOperations.updateToken("123").getServiceMessage());
     }
+
     @Test
     @DisplayName("test update expired token success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -94,6 +97,7 @@ class SiptisUserServiceTokenOperationsTest {
     void givenBadTokenPasswordWhenFindByTokenPasswordThenNull() {
         assertNull(siptisUserServiceTokenOperations.findByTokenPassword("123"));
     }
+
     @Test
     @DisplayName("test find by token password success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)

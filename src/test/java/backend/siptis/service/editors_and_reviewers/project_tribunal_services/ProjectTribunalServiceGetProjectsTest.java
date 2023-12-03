@@ -64,11 +64,13 @@ class ProjectTribunalServiceGetProjectsTest {
         ServiceAnswer sa = projectTribunalServiceGetProjects.getAllProjectsAcceptedWithoutDefensePointsByTribunalId(153L);
         assertEquals(ServiceMessage.OK, sa.getServiceMessage());
     }
+
     @Test
     void givenValidTribunalIdWhenGetAllProjectsAcceptedWithoutDefensePointsByTribunalIdThenServiceMessageOk() {
         ServiceAnswer sa = projectTribunalServiceGetProjects.getAllProjectsAcceptedWithoutDefensePointsByTribunalId(153L);
         assertEquals(ServiceMessage.OK, sa.getServiceMessage());
     }
+
     @Test
     void givenValidTribunalIdWHenGetAllProjectsAcceptedWithoutDefensePointsByTribunalIdThenServiceMessageIdDoesNotExist() {
         ServiceAnswer sa = projectTribunalServiceGetProjects.getAllProjectsAcceptedWithoutDefensePointsByTribunalId(1L);

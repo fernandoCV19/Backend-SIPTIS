@@ -16,17 +16,19 @@ class ProjectTribunalRepositoryTest {
     @Autowired
     private ProjectTribunalRepository projectTribunalRepository;
 
-    private void updateProjectTribunal(){
+    private void updateProjectTribunal() {
         ProjectTribunal projectTribunal = projectTribunalRepository.findById(127L).get();
         projectTribunal.setDefensePoints(60.0);
         projectTribunalRepository.save(projectTribunal);
     }
+
     @Test
     @DisplayName("test find by tribunal id and accepted is false and reviewed is false empty")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void givenIdWhenFindByTribunalIdAndAcceptedIsFalseAndReviewedIsFalseThenIsEmpty() {
         assertTrue(projectTribunalRepository.findByTribunalIdAndAcceptedIsFalseAndReviewedIsFalse(123456L).isEmpty());
     }
+
     @Test
     @DisplayName("test find by tribunal id and accepted is false and reviewed is false success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -40,6 +42,7 @@ class ProjectTribunalRepositoryTest {
     void givenIdWhenFindByTribunalIdAndAcceptedIsFalseAndReviewedIsTrueThenIsEmpty() {
         assertTrue(projectTribunalRepository.findByTribunalIdAndAcceptedIsFalseAndReviewedIsTrue(123456L).isEmpty());
     }
+
     @Test
     @DisplayName("test find by tribunal id and accepted is false and reviewed is true success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -53,6 +56,7 @@ class ProjectTribunalRepositoryTest {
     void givenIdWhenFindByTribunalIdAndAcceptedIsTrueAndDefensePointsIsNullThenIsEmpty() {
         assertTrue(projectTribunalRepository.findByTribunalIdAndAcceptedIsTrueAndDefensePointsIsNull(123456L).isEmpty());
     }
+
     @Test
     @DisplayName("test find by tribunal id and accepted is true and defense points is null success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -65,6 +69,7 @@ class ProjectTribunalRepositoryTest {
     void givenIdWhenFindByTribunalIdAndDefensePointsIsNotNullThenIsEmpty() {
         assertTrue(projectTribunalRepository.findByTribunalIdAndDefensePointsIsNotNull(123456L).isEmpty());
     }
+
     @Test
     @DisplayName("test find by tribunal id and defense points is not null success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -78,6 +83,7 @@ class ProjectTribunalRepositoryTest {
     void givenIdWhenFindByProject_IdAndTribunal_IdThenIsNull() {
         assertNull(projectTribunalRepository.findByProject_IdAndTribunal_Id(123456L, 123456L));
     }
+
     @Test
     @DisplayName("test find by tribunal id and project id success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -90,6 +96,7 @@ class ProjectTribunalRepositoryTest {
     void givenIdWhenFindByTribunal_IdAndProject_PhaseAndDefensePointsNullThenIsEmpty() {
         assertTrue(projectTribunalRepository.findByTribunal_IdAndProject_PhaseAndDefensePointsNull(123456L, "").isEmpty());
     }
+
     @Test
     @DisplayName("test find by tribunal id and project phase and defense points is null success")
     void givenIdWhenFindByTribunal_IdAndProject_PhaseAndDefensePointsNullThenList() {
@@ -101,6 +108,7 @@ class ProjectTribunalRepositoryTest {
     void givenIdWhenFindByTribunal_IdAndProject_PhaseAndDefensePointsNotNullThenIsEmpty() {
         assertTrue(projectTribunalRepository.findByTribunal_IdAndProject_PhaseAndDefensePointsNotNull(123456L, "").isEmpty());
     }
+
     @Test
     @DisplayName("test find by tribunal id and project phase and defense points is  not null success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -114,6 +122,7 @@ class ProjectTribunalRepositoryTest {
     void givenIdWhenFindByProjectIdThenIsNull() {
         assertNull(projectTribunalRepository.findByProjectId(123456L));
     }
+
     @Test
     @DisplayName("test find by project id success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)

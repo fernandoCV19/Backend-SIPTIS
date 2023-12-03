@@ -2,7 +2,6 @@ package backend.siptis.service.auth;
 
 import backend.siptis.auth.entity.RefreshToken;
 import backend.siptis.auth.entity.SiptisUser;
-import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.model.repository.auth.SiptisUserRepository;
 import backend.siptis.service.user_data.UserInformationService;
 import org.junit.jupiter.api.DisplayName;
@@ -43,11 +42,12 @@ class RefreshTokenServiceTest {
     void givenTokenWhenFindByTokenThenNull() {
         assertNull(refreshTokenService.findByToken(""));
     }
+
     @Test
     @DisplayName("test for find by token success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void givenTokenWhenFindByTokenThenRefreshToken() {
-        Optional<SiptisUser> oUser = siptisUserRepository.findById(100l);
+        Optional<SiptisUser> oUser = siptisUserRepository.findById(100L);
         RefreshToken token = refreshTokenService.createRefreshToken(oUser.get());
         assertNotNull(refreshTokenService.findByToken(token.getToken()));
     }
@@ -58,11 +58,12 @@ class RefreshTokenServiceTest {
     void givenNullWhenCreateRefreshTokenBySiptisUserThenNull() {
         assertNull(refreshTokenService.createRefreshToken((SiptisUser) null));
     }
+
     @Test
     @DisplayName("test for create refresh token with siptis user")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void givenSiptisUserWhenCreateRefreshTokenBySiptisUserThenRefreshToken() {
-        Optional<SiptisUser> oUser = siptisUserRepository.findById(100l);
+        Optional<SiptisUser> oUser = siptisUserRepository.findById(100L);
         assertNotNull(refreshTokenService.createRefreshToken(oUser.get()));
     }
 
@@ -78,6 +79,7 @@ class RefreshTokenServiceTest {
         startToken();
         assertFalse(refreshTokenService.verifyValidExpirationDate(refreshToken));
     }
+
     @Test
     @DisplayName("test for verify expiration date refresh token")
     void givenRefreshTokenWhenVerifyExpirationDateThenTrue() {

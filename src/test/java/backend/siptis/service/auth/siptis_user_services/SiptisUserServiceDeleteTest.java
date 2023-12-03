@@ -21,15 +21,17 @@ class SiptisUserServiceDeleteTest {
     @Autowired
     private SiptisUserServiceCareerDirectorOperations siptisUserServiceCareerDirectorOperations;
 
-    private void registerDirector(){
+    private void registerDirector() {
         siptisUserServiceCareerDirectorOperations.registerUserAsCareerDirector(120L, "INF_DIRECTOR");
     }
+
     @Test
     @DisplayName("test for delete user by wrong id")
     void givenUserIdWhenDeleteUserThenServiceMessageID_DOES_NOT_EXIST() {
         ServiceAnswer answer = siptisUserServiceDelete.deleteUser(123456L);
         assertEquals(ServiceMessage.ID_DOES_NOT_EXIST, answer.getServiceMessage());
     }
+
     @Test
     @DisplayName("test for delete user success")
     void givenUserIdWhenDeleteUserThenServiceMessageUSER_DELETED() {
@@ -43,6 +45,7 @@ class SiptisUserServiceDeleteTest {
         ServiceAnswer answer = siptisUserServiceDelete.removeDirectorRole("wrong role");
         assertEquals(ServiceMessage.NOT_FOUND, answer.getServiceMessage());
     }
+
     @Test
     @DisplayName("test for remove director role success")
     void givenDierectorRoleWhenRemoveDirectorRoleThenServiceMessageOK() {
@@ -56,6 +59,7 @@ class SiptisUserServiceDeleteTest {
     void givenDirectorRoleWhenExistCareerDirectorThenFalse() {
         assertFalse(siptisUserServiceDelete.existCareerDirector("wrong role"));
     }
+
     @Test
     @DisplayName("Test for verify if exist director true")
     void givenDirectorRoleWhenExistCareerDirectorThenTrue() {

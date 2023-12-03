@@ -19,14 +19,17 @@ class SiptisUserServiceGeneralUserOperationsTest {
     private SiptisUserServiceGeneralUserOperations siptisUserServiceGeneralUserOperations;
     @Autowired
     private SiptisUserRepository siptisUserRepository;
+
     private void clearDatabase() {
         siptisUserRepository.deleteAll();
     }
+
     @Test
     @DisplayName("test get project by non existing id")
     void givenUserIDWhenGetProjectByIdThenNull() {
         assertNull(siptisUserServiceGeneralUserOperations.getProjectById(10000L));
     }
+
     @Test
     @DisplayName("test get project by id success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -40,6 +43,7 @@ class SiptisUserServiceGeneralUserOperationsTest {
     void givenSiptisUsersWhenGetAllUsersThenServiceMessageOK() {
         assertEquals(ServiceMessage.OK, siptisUserServiceGeneralUserOperations.getAllUsers().getServiceMessage());
     }
+
     @Test
     @DisplayName("test get all users")
     void givenSiptisUsersWhenGetAllUsersThenServiceMessageNOT_FOUND() {
@@ -52,6 +56,7 @@ class SiptisUserServiceGeneralUserOperationsTest {
     void givenBadUserIdWhenGetUserPersonalInformationThenServiceMessageNOT_FOUND() {
         assertEquals(ServiceMessage.NOT_FOUND, siptisUserServiceGeneralUserOperations.getUserPersonalInformation(123123L).getServiceMessage());
     }
+
     @Test
     @DisplayName("test get user personal information")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -64,6 +69,7 @@ class SiptisUserServiceGeneralUserOperationsTest {
     void givenUserIdWhenGetUserAreasByIdThenServiceMessageNOT_FOUND() {
         assertEquals(ServiceMessage.NOT_FOUND, siptisUserServiceGeneralUserOperations.getUserAreasById(123123L).getServiceMessage());
     }
+
     @Test
     @DisplayName("test get user areas by id success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)

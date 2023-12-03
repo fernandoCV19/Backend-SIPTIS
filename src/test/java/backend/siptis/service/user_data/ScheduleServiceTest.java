@@ -26,9 +26,9 @@ class ScheduleServiceTest {
     @Autowired
     private SiptisUserRepository siptisUserRepository;
 
-    private void createSchedule(){
+    private void createSchedule() {
         Schedule schedule = new Schedule();
-        schedule.setSiptisUser(siptisUserRepository.findById(100l).get());
+        schedule.setSiptisUser(siptisUserRepository.findById(100L).get());
         schedule.setDay("day");
         schedule.setHourFinish("10");
         schedule.setHourStart("9");
@@ -41,6 +41,7 @@ class ScheduleServiceTest {
         ServiceAnswer answer = scheduleService.getAllSchedulesFromAProject(1L);
         assertEquals(ServiceMessage.ID_DOES_NOT_EXIST, answer.getServiceMessage());
     }
+
     @Test
     @DisplayName("Test for get all schedules of a project")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)

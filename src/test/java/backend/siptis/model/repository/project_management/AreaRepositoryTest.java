@@ -1,7 +1,6 @@
 package backend.siptis.model.repository.project_management;
 
 import backend.siptis.model.entity.project_management.Area;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +28,7 @@ class AreaRepositoryTest {
     void givenAreas_whenFindAll_thenEmptyAreasList() {
         assertTrue(areaRepository.findAll().isEmpty());
     }
+
     @Test
     @DisplayName("Test for list of areas success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -41,6 +41,7 @@ class AreaRepositoryTest {
     void givenAreaId_ExistsByAreaId_thenFalse() {
         assertFalse(areaRepository.existsAreaById(123456L));
     }
+
     @Test
     @DisplayName("Test for verify if exist area by id success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -54,6 +55,7 @@ class AreaRepositoryTest {
         startArea();
         assertFalse(areaRepository.existsAreaByName(area.getName()));
     }
+
     @Test
     @DisplayName("Test for verify if exist area by name success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -68,8 +70,9 @@ class AreaRepositoryTest {
     @DisplayName("Test for find area by name")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void givenSubAreaId_FindById_thenAreaObject() {
-        assertNotNull(areaRepository.findById(101l).get());
+        assertNotNull(areaRepository.findById(101L).get());
     }
+
     @Test
     @DisplayName("Test for find area by non existing name")
     void givenSubAreaId_FindById_thenNull() {

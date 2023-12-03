@@ -12,6 +12,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.jdbc.Sql;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 @SpringBootTest
 @Transactional
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -41,6 +42,7 @@ class UserAreaServiceTest {
         ServiceAnswer answer = userAreaService.createUserArea(createAreaDTO);
         assertEquals(ServiceMessage.AREA_CREATED, answer.getServiceMessage());
     }
+
     @Test
     @DisplayName("Test for create user area with already existing name")
     void givenCreateAreaDTOWhenCreateUserAreaThenServiceMessageAREA_ALREADY_EXIST() {
@@ -56,6 +58,7 @@ class UserAreaServiceTest {
         ServiceAnswer answer = userAreaService.deleteUserArea(1L);
         assertEquals(ServiceMessage.AREA_NOT_FOUND, answer.getServiceMessage());
     }
+
     @Test
     @DisplayName("Test for success delete user area")
     void givenNoArea_WhenDeleteUserArea_ThenServiceMessageAREA_DELETED() {
@@ -70,6 +73,7 @@ class UserAreaServiceTest {
     void givenId_WhenGetUserAreaById_ThenNull() {
         assertNull(userAreaService.getUserAreaById(123));
     }
+
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     @DisplayName("Test for get user area by id")
@@ -84,6 +88,7 @@ class UserAreaServiceTest {
     void givenId_WhenUserAreaExistById_ThenFalse() {
         assertFalse(userAreaService.userAreaExistById(123));
     }
+
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     @DisplayName("Test for verify if exist user area by id")

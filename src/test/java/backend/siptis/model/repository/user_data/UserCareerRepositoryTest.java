@@ -21,6 +21,7 @@ class UserCareerRepositoryTest {
     void givenUserCareer_whenFindAll_thenEmptyUserCareerList() {
         assertTrue(userCareerRepository.findAll().isEmpty());
     }
+
     @Test
     @DisplayName("Test for list of careers success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -33,6 +34,7 @@ class UserCareerRepositoryTest {
     void givenUserCareerName_ExistsByName_thenFalse() {
         assertFalse(userCareerRepository.existsByName("wrong name"));
     }
+
     @Test
     @DisplayName("Test for verify if exist user career by name success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -46,6 +48,7 @@ class UserCareerRepositoryTest {
     void givenUserCareerName_FindByName_thenUserCareerObject() {
         assertFalse(userCareerRepository.findByName("INFORMATICA").isEmpty());
     }
+
     @Test
     @DisplayName("Test for find user career by non existing name")
     void givenUserCareerName_FindByName_thenNull() {
@@ -58,6 +61,7 @@ class UserCareerRepositoryTest {
     void givenUserCareerName_FindUserCareerByName_thenUserCareerObject() {
         assertNotNull(userCareerRepository.findUserCareerByName("INFORMATICA"));
     }
+
     @Test
     @DisplayName("Test for find user career by non existing name")
     void givenUserCareerName_FindUserCareerByName_thenNull() {

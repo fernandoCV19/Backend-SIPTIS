@@ -35,21 +35,25 @@ class SiptisUserServiceModifyUserOperationsTest {
         registerUserDTO.setBirthDate(new Date());
         registerUserDTO.setCi("4565656");
     }
-    private void createUserSelectedAreasDTO(){
+
+    private void createUserSelectedAreasDTO() {
         userSelectedAreasDTO = new UserSelectedAreasDTO();
         userSelectedAreasDTO.setIds(List.of(100L));
     }
-    private void createUserEditInformationDTO(){
+
+    private void createUserEditInformationDTO() {
         userEditInformationDTO = new UserEditInformationDTO();
         userEditInformationDTO.setEmail("newemail@mail.com");
         userEditInformationDTO.setCelNumber("3454534544");
         userEditInformationDTO.setBirthDate(new Date());
     }
+
     @Test
     @DisplayName("test update user areas id does not exist")
     void givenWrongUserIdWhenUpdateAreasThenServiceMessageID_DOES_NOT_EXIST() {
         assertEquals(ServiceMessage.ID_DOES_NOT_EXIST, siptisUserServiceModifyUserOperations.updateAreas(123123L, null).getServiceMessage());
     }
+
     @Test
     @DisplayName("test update user areas")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -63,6 +67,7 @@ class SiptisUserServiceModifyUserOperationsTest {
     void givenWrongUserIdWhenEditPersonalInformationThenServiceMessageNOT_FOUND() {
         assertEquals(ServiceMessage.NOT_FOUND, siptisUserServiceModifyUserOperations.userEditPersonalInformation(123123L, null).getServiceMessage());
     }
+
     @Test
     @DisplayName("test user edit personal information success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -78,6 +83,7 @@ class SiptisUserServiceModifyUserOperationsTest {
         createRegisterUserDTO();
         assertEquals(ServiceMessage.EMAIL_ALREADY_EXIST, siptisUserServiceModifyUserOperations.registerUser("dilan.est@mail.com", "").getServiceMessage());
     }
+
     @Test
     @DisplayName("test register user only credentials")
     void givenBadEmailWhenRegisterUserThenServiceMessageOK() {
@@ -92,6 +98,7 @@ class SiptisUserServiceModifyUserOperationsTest {
         createRegisterUserDTO();
         assertEquals(ServiceMessage.EMAIL_ALREADY_EXIST, siptisUserServiceModifyUserOperations.registerUser(registerUserDTO).getServiceMessage());
     }
+
     @Test
     @DisplayName("test register user")
     void givenRegisterUserDTOWhenRegisterUserThenServiceMessageSUCCESSFUL_REGISTER() {

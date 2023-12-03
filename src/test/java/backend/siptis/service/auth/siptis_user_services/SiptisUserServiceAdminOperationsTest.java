@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.util.Date;
@@ -31,7 +30,8 @@ class SiptisUserServiceAdminOperationsTest {
         registerAdminDTO.setEmail("dilan.est@mail.com");
         registerAdminDTO.setPassword("12121212");
     }
-    private void startAdminEditUserInformationDTO(){
+
+    private void startAdminEditUserInformationDTO() {
         adminEditUserInformationDTO = new AdminEditUserInformationDTO();
         adminEditUserInformationDTO.setNames("StudentName");
         adminEditUserInformationDTO.setLastnames("StudentLastName");
@@ -49,6 +49,7 @@ class SiptisUserServiceAdminOperationsTest {
         ServiceAnswer answer = siptisUserServiceAdminOperations.registerAdmin(registerAdminDTO);
         assertEquals(ServiceMessage.EMAIL_ALREADY_EXIST, answer.getServiceMessage());
     }
+
     @Test
     @DisplayName("test register admin success")
     void givenAdminDTOWhenRegisterAdminThenServiceMessageEMAIL_OK() {
@@ -71,6 +72,7 @@ class SiptisUserServiceAdminOperationsTest {
         ServiceAnswer answer = siptisUserServiceAdminOperations.adminEditUserInformation(123456L, null);
         assertEquals(ServiceMessage.ID_DOES_NOT_EXIST, answer.getServiceMessage());
     }
+
     @Test
     @DisplayName("test admin edit user success")
     void givenWrongUserIdWhenEditUserInformationThenServiceMessageOK() {

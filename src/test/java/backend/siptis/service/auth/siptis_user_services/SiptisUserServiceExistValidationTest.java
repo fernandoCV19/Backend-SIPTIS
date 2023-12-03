@@ -19,14 +19,16 @@ class SiptisUserServiceExistValidationTest {
     @Autowired
     private SiptisUserServiceCareerDirectorOperations siptisUserServiceCareerDirectorOperations;
 
-    private void registerDirector(){
+    private void registerDirector() {
         siptisUserServiceCareerDirectorOperations.registerUserAsCareerDirector(120L, "INF_DIRECTOR");
     }
+
     @Test
     @DisplayName("test for check if exist user by id false")
     void givenIdWhenExistsUserByIdThenFalse() {
         assertFalse(siptisUserServiceExistValidation.existsUserById(123456L));
     }
+
     @Test
     @DisplayName("test for check if exist user by id true")
     void givenIdWhenExistsUserByIdThenTrue() {
@@ -38,6 +40,7 @@ class SiptisUserServiceExistValidationTest {
     void givenEmailWhenExistUserByEmailThenFalse() {
         assertFalse(siptisUserServiceExistValidation.existsUserByEmail("fake email"));
     }
+
     @Test
     @DisplayName("test for check if exist user by email true")
     void givenEmailWhenExistUserByEmailThenTrue() {
@@ -50,6 +53,7 @@ class SiptisUserServiceExistValidationTest {
     void givenDirectorRoleWhenExistCareerDirectorFalse() {
         assertFalse(siptisUserServiceExistValidation.existCareerDirector("INF_DIRECTOR"));
     }
+
     @Test
     @DisplayName("test for check if exist director role")
     void givenDirectorRoleWhenExistCareerDirectorTrue() {

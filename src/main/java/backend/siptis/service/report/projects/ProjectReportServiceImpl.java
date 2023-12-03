@@ -3,7 +3,6 @@ package backend.siptis.service.report.projects;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
 import backend.siptis.model.entity.editors_and_reviewers.ProjectStudent;
-import backend.siptis.model.entity.project_management.Area;
 import backend.siptis.model.entity.project_management.Project;
 import backend.siptis.model.entity.user_data.UserCareer;
 import backend.siptis.model.pjo.dto.project_management.ProjectAreaDTO;
@@ -64,6 +63,7 @@ public class ProjectReportServiceImpl implements ProjectReportService {
         String key = cloud.uploadReportToCloud(fileName);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
     }
+
     @Override
     public ServiceAnswer getProjectSubAreaReport() {
         List<Project> projectList = projectRepository.findAll();

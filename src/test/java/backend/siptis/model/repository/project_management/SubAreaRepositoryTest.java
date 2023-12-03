@@ -30,6 +30,7 @@ class SubAreaRepositoryTest {
     void givenSubAreas_whenFindAll_thenEmptySubAreasList() {
         assertTrue(subAreaRepository.findAll().isEmpty());
     }
+
     @Test
     @DisplayName("Test for list of subareas")
     void givenSubAreas_whenFindAll_thenSubAreasList() {
@@ -42,6 +43,7 @@ class SubAreaRepositoryTest {
     void givenSubAreaId_existsSubAreaById_thenNULL() {
         assertFalse(subAreaRepository.existsSubAreaById(1234567L));
     }
+
     @Test
     @DisplayName("Test for exist subarea by id")
     void givenSubAreaId_existsSubAreaById_thenUserCareerObject() {
@@ -55,6 +57,7 @@ class SubAreaRepositoryTest {
         subAreaRepository.save(subArea);
         assertFalse(subAreaRepository.existsSubAreaByName("wrong name"));
     }
+
     @Test
     @DisplayName("Test for verify if exist subarea by name success")
     void givenSubAreaName_ExistsBySubAreaName_thenTrue() {

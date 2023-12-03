@@ -21,6 +21,7 @@ class UserAreaRepositoryTest {
     void givenUserAreas_whenFindAll_thenEmptyUserAreasList() {
         assertTrue(userAreaRepository.findAll().isEmpty());
     }
+
     @Test
     @DisplayName("Test for list of areas success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -33,6 +34,7 @@ class UserAreaRepositoryTest {
     void givenId_ExistsUserAreaById_thenFalse() {
         assertFalse(userAreaRepository.existsUserAreaById(123456L));
     }
+
     @Test
     @DisplayName("Test for verify if exist user area by id success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -45,6 +47,7 @@ class UserAreaRepositoryTest {
     void givenName_ExistsUserAreaByName_thenFalse() {
         assertFalse(userAreaRepository.existsUserAreaByName("USER AREA EXAMPLE"));
     }
+
     @Test
     @DisplayName("Test for verify if exist user area by non existing name success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)

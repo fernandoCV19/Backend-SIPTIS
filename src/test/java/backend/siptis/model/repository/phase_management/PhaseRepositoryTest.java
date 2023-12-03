@@ -25,6 +25,7 @@ public class PhaseRepositoryTest {
         List<Phase> list = phaseRepository.findByModality_IdOrderByNumberPhaseAsc(13L);
         assertTrue(list.isEmpty());
     }
+
     @Test
     @DisplayName("Test for empty list of phases by id success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)

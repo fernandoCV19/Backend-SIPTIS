@@ -48,6 +48,7 @@ class SemesterInformationServiceTest {
         ServiceAnswer answer = startSemester();
         assertEquals(ServiceMessage.SEMESTER_STARTED, answer.getServiceMessage());
     }
+
     @Test
     @Rollback
     @DisplayName("Test for create semester with invalid dates")
@@ -58,6 +59,7 @@ class SemesterInformationServiceTest {
         ServiceAnswer answer = semesterInformationService.startSemester(dto);
         assertEquals(ServiceMessage.ERROR_SEMESTER_DATES, answer.getServiceMessage());
     }
+
     @Test
     @Rollback
     @DisplayName("Test for create semester fail")
@@ -76,6 +78,7 @@ class SemesterInformationServiceTest {
         ServiceAnswer answer = semesterInformationService.editSemester(editDto);
         assertEquals(ServiceMessage.ERROR_SEMESTER_DATES, answer.getServiceMessage());
     }
+
     @Test
     @DisplayName("Test for edit semester when no current semester")
     void givenEditSemesterDTO_whenEditSemesterInformation_thenServiceMessageNO_CURRENT_SEMESTER() {
@@ -83,6 +86,7 @@ class SemesterInformationServiceTest {
         ServiceAnswer answer = editSemester();
         assertEquals(ServiceMessage.NO_CURRENT_SEMESTER, answer.getServiceMessage());
     }
+
     @Test
     @DisplayName("Test for edit semester id does not exist")
     void givenEditSemesterDTO_whenEditSemesterInformationthenServiceMessageID_DOES_NOT_EXIST() {
@@ -92,6 +96,7 @@ class SemesterInformationServiceTest {
         ServiceAnswer answer = semesterInformationService.editSemester(editDto);
         assertEquals(ServiceMessage.ID_DOES_NOT_EXIST, answer.getServiceMessage());
     }
+
     @Test
     @DisplayName("Test for edit semester id does not exist")
     void givenEditSemesterDTO_whenEditSemesterInformationthenServiceMessageSEMESTER_INFO_EDITED() {
@@ -109,6 +114,7 @@ class SemesterInformationServiceTest {
         ServiceAnswer answer = semesterInformationService.existActiveSemester();
         assertEquals(ServiceMessage.SEMESTER_INFORMATION, answer.getServiceMessage());
     }
+
     @Test
     @DisplayName("Test for check if exist active semester false")
     void givenSemester_whenExistActiveSemester_thenServiceMessageSEMESTER_INFORMATION() {

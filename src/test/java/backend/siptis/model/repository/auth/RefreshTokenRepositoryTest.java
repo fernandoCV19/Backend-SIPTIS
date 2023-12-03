@@ -25,7 +25,7 @@ class RefreshTokenRepositoryTest {
     private SiptisUserRepository siptisUserRepository;
     private SiptisUser siptisUser;
 
-    private void createRefreshToken(){
+    private void createRefreshToken() {
         RefreshToken refreshToken = new RefreshToken();
         refreshToken.setToken("token");
         siptisUser = siptisUserRepository.findById(100L).get();
@@ -33,11 +33,13 @@ class RefreshTokenRepositoryTest {
         refreshToken.setExpireDate(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
         refreshTokenRepository.save(refreshToken);
     }
+
     @Test
     @DisplayName("Test for exist by Token")
     void givenBadToken_whenExistByToken_thenFalse() {
         assertFalse(refreshTokenRepository.existsByToken("bad token"));
     }
+
     @Test
     @DisplayName("Test for exist by Token")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -51,6 +53,7 @@ class RefreshTokenRepositoryTest {
     void givenBadSiptisUser_whenExistBySiptisUser_thenFalse() {
         assertFalse(refreshTokenRepository.existsBySiptisUser(siptisUser));
     }
+
     @Test
     @DisplayName("Test for exist by Siptis User true")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -64,6 +67,7 @@ class RefreshTokenRepositoryTest {
     void givenBadSiptisUser_whenFindBySiptisUser_thenNull() {
         assertNull(refreshTokenRepository.findBySiptisUser(siptisUser));
     }
+
     @Test
     @DisplayName("Test for find by Siptis User Refresh Token")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -77,6 +81,7 @@ class RefreshTokenRepositoryTest {
     void givenBadToken_whenFindByToken_thenNull() {
         assertTrue(refreshTokenRepository.findByToken("bad token").isEmpty());
     }
+
     @Test
     @DisplayName("Test for find by token Refresh Token")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)

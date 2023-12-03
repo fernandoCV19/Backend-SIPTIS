@@ -11,7 +11,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @Transactional
@@ -31,6 +31,7 @@ class UserCareerServiceTest {
         ServiceAnswer answer = userCareerService.getCareerByName("TESIS");
         assertEquals(ServiceMessage.NOT_FOUND, answer.getServiceMessage());
     }
+
     @Test
     @DisplayName("Test for success get career by name")
     void givenNonExistingCareerName_WhenGetCareerByName_ThenServiceMessageOK() {

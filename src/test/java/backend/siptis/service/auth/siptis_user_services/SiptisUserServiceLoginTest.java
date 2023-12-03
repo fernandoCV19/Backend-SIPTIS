@@ -32,6 +32,7 @@ class SiptisUserServiceLoginTest {
         createLoginDTO();
         assertEquals(ServiceMessage.ERROR_BAD_CREDENTIALS, serviceLogin.logIn(logInDTO).getServiceMessage());
     }
+
     @Test
     @DisplayName("test logIn success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)

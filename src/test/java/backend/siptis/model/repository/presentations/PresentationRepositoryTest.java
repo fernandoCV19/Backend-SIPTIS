@@ -2,7 +2,6 @@ package backend.siptis.model.repository.presentations;
 
 import backend.siptis.model.entity.presentations.Presentation;
 import backend.siptis.model.repository.project_management.ProjectRepository;
-import org.joda.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,7 @@ class PresentationRepositoryTest {
     private ProjectRepository projectRepository;
     private Presentation presentation;
 
-    private void createPresentation(){
+    private void createPresentation() {
         presentation = new Presentation();
         presentation.setDate(LocalDateTime.now());
         presentation.setBlueBookPath("path");
@@ -39,6 +38,7 @@ class PresentationRepositoryTest {
     void givenIdWhenFindByIdThenEmpty() {
         assertTrue(presentationRepository.findById(123123L).isEmpty());
     }
+
     @Test
     @DisplayName("test find by id success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)

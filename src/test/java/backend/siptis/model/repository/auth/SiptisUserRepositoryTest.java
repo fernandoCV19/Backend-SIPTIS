@@ -14,7 +14,6 @@ import org.springframework.test.context.jdbc.Sql;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -53,6 +52,7 @@ class SiptisUserRepositoryTest {
         List<SiptisUser> userList = siptisUserRepository.findAll();
         assertTrue(userList.isEmpty());
     }
+
     @Test
     @DisplayName("Test for get all user list")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -71,6 +71,7 @@ class SiptisUserRepositoryTest {
         SiptisUser getUser = siptisUserRepository.findOneByEmail("dilan.est@mail.com").get();
         assertNotNull(getUser);
     }
+
     @Test
     @DisplayName("Test for find user using wrong email")
     void givenSiptisUserEmail_whenFindOneByEmail_thenNull() {
@@ -85,6 +86,7 @@ class SiptisUserRepositoryTest {
         SiptisUser getUser = siptisUserRepository.findByTokenPassword("abcd1234").get();
         assertNotNull(getUser);
     }
+
     @Test
     @DisplayName("Test for find user using wrong token password")
     void givenSiptisUser_whenFindByTokenPassword_thenNull() {
@@ -98,6 +100,7 @@ class SiptisUserRepositoryTest {
     void givenSiptisUserEmail_whenExistSiptisUserByEmail_thenTrue() {
         assertTrue(siptisUserRepository.existsByEmail("dilan.est@mail.com"));
     }
+
     @Test
     @DisplayName("Test for verify if exist user by not existing email")
     void givenNoSiptisUser_whenExistSiptisUserByEmail_thenFalse() {
@@ -110,6 +113,7 @@ class SiptisUserRepositoryTest {
     void givenAdminSiptisUser_whenExistsByRolesName_thenTrue() {
         assertTrue(siptisUserRepository.existsByRolesName("ADMIN"));
     }
+
     @Test
     @DisplayName("Test for verify if exist users with not existing role name")
     void givenStudentSiptisUser_whenExistsByRolesName_thenFalse() {
@@ -130,6 +134,7 @@ class SiptisUserRepositoryTest {
         siptisUserRepository.save(siptisUser);
         assertFalse(siptisUserRepository.existsById(123456789L));
     }
+
     @Test
     @DisplayName("Test for verify if exist user using id")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -144,6 +149,7 @@ class SiptisUserRepositoryTest {
         siptisUserRepository.save(createNewUser());
         assertTrue(siptisUserRepository.existsByTokenPassword("abcd1234"));
     }
+
     @Test
     @DisplayName("Test for verify if exist user token password")
     void givenSiptisUser_whenExistByTokenPassword_thenFalse() {
@@ -157,6 +163,7 @@ class SiptisUserRepositoryTest {
         siptisUserRepository.save(siptisUser);
         assertTrue(siptisUserRepository.findById(123456789L).isEmpty());
     }
+
     @Test
     @DisplayName("Test for find user using id")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -171,6 +178,7 @@ class SiptisUserRepositoryTest {
     void givenNoSiptisUser_whenFindByRolesName_theNotNull() {
         assertFalse(siptisUserRepository.findByRolesName("ADMIN").isEmpty());
     }
+
     @Test
     @DisplayName("Test find not existing user with role name")
     void givenNoSiptisUser_whenFindByRolesName_thenNull() {
@@ -184,6 +192,7 @@ class SiptisUserRepositoryTest {
         siptisUserRepository.save(siptisUser);
         assertFalse(siptisUserRepository.findByRoles_NameOrderByUserInformation_LastNamesAsc("ADMIN").isEmpty());
     }
+
     @Test
     @DisplayName("Test find not existing user with role name")
     void givenNoSiptisUser_whenFindByRoles_NameOrderByUserInformation_LastNamesAsc_thenEmpty() {
@@ -197,6 +206,7 @@ class SiptisUserRepositoryTest {
     void givenSiptisUser_whenFindOneById_thenSiptisUserObject() {
         assertNotNull(siptisUserRepository.findOneById(100L));
     }
+
     @Test
     @DisplayName("Test for verify if one exist user by id null")
     void givenSiptisUser_whenFindOneById_thenNull() {
@@ -208,6 +218,7 @@ class SiptisUserRepositoryTest {
     void givenSiptisUser_whenFindAllPersonalActivities_thenSiptisUserObject() {
         assertNotNull(siptisUserRepository.findAllPersonalActivities(123L, LocalDate.now(), Pageable.ofSize(12)));
     }
+
     @Test
     @DisplayName("Test for find all personal activities")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -220,6 +231,7 @@ class SiptisUserRepositoryTest {
     void givenSiptisUser_whenFindProjectById_thenEmpty() {
         assertTrue(siptisUserRepository.findProjectById(123L).isEmpty());
     }
+
     @Test
     @DisplayName("Test for find project by id")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)

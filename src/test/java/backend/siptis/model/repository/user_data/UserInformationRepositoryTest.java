@@ -9,7 +9,8 @@ import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -23,6 +24,7 @@ class UserInformationRepositoryTest {
     void givenUserInformationCi_whenExistByCi_thenTrue() {
         assertTrue(userInformationRepository.existsByCi("9364073"));
     }
+
     @Test
     @DisplayName("Test for verify if exist user information by non existing ci")
     void givenUserInformationCi_whenExistByCi_thenFalse() {
@@ -35,6 +37,7 @@ class UserInformationRepositoryTest {
     void givenUserInformationCodSIS_whenExistByCodSIS_thenTrue() {
         assertTrue(userInformationRepository.existsByCodSIS("201900520"));
     }
+
     @Test
     @DisplayName("Test for verify if exist user information by non existing codSIS")
     void givenUserInformationCodSIS_whenExistByCodSIS_thenFalse() {
@@ -47,6 +50,7 @@ class UserInformationRepositoryTest {
     void givenUserInformationCodSIS_whenFindById_thenTrue() {
         assertFalse(userInformationRepository.findById(100L).isEmpty());
     }
+
     @Test
     @DisplayName("Test for verify if exist user information by non existing codSIS")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -60,6 +64,7 @@ class UserInformationRepositoryTest {
         List<String> names = userInformationRepository.getTeachersNames(1L);
         assertTrue(names.isEmpty());
     }
+
     @Test
     @DisplayName("Test for get names of teachers in charge of project")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -74,6 +79,7 @@ class UserInformationRepositoryTest {
         List<String> names = userInformationRepository.getTutorsNames(1L);
         assertTrue(names.isEmpty());
     }
+
     @Test
     @DisplayName("Test for get names of tutors in charge of project success")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)

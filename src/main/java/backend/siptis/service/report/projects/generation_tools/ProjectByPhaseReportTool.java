@@ -19,6 +19,7 @@ public class ProjectByPhaseReportTool {
 
     private ProjectByPhaseReportTool() {
     }
+
     public static String generateReport(List<Project> projects) {
 
         LocalDate today = LocalDate.now();
@@ -56,7 +57,7 @@ public class ProjectByPhaseReportTool {
                 Long value = values.getValue();
                 rowIndex++;
                 row = sheet.createRow(rowIndex);
-                ReportFunctions.addCellInRow(2, key +" "+value, ReportFunctions.getHeaderCellStyle(report), row);
+                ReportFunctions.addCellInRow(2, key + " " + value, ReportFunctions.getHeaderCellStyle(report), row);
 
             }
 
@@ -83,7 +84,6 @@ public class ProjectByPhaseReportTool {
 
         return rowIndex;
     }
-
 
 
 }

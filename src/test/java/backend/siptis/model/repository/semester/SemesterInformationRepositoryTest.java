@@ -42,6 +42,7 @@ class SemesterInformationRepositoryTest {
     void givenSemesterInformation_whenFindFirstByInProgressTrueOrderByEndDateDesc_thenNotNull() {
         assertFalse(semesterInformationRepository.findFirstByInProgressTrueOrderByEndDateDesc().isEmpty());
     }
+
     @Test
     @DisplayName("Test for find first by in progress true and id order by end date desc")
     void givenSemesterInformation_whenFindFirstByInProgressTrueOrderByEndDateDesc_thenNull() {
@@ -57,6 +58,7 @@ class SemesterInformationRepositoryTest {
         assertNotNull(period);
         assertEquals("2-2023", period);
     }
+
     @Test
     @DisplayName("Test for get current period from non existing semester")
     void givenSemesterInformation_whenGetCurrentPeriod_thenNull() {
@@ -69,6 +71,7 @@ class SemesterInformationRepositoryTest {
     void givenSemesterInformation_whenFindFirstByInProgressTrueAndIdOrderByEndDateDesc_thenNull() {
         assertTrue(semesterInformationRepository.findFirstByInProgressTrueAndIdOrderByEndDateDesc(123456L).isEmpty());
     }
+
     @Test
     @DisplayName("Test for find first by in progress true and id order by end date desc success")
     void givenSemesterInformation_whenFindFirstByInProgressTrueAndIdOrderByEndDateDesc_thenNotNull() {
@@ -82,6 +85,7 @@ class SemesterInformationRepositoryTest {
         semesterInformationRepository.save(semesterInformation);
         assertTrue(semesterInformationRepository.existsSemesterInformationByInProgressIsTrue());
     }
+
     @Test
     @DisplayName("Test for verify if exist non existing semester in progress")
     void givenSemesterInformation_whenExistsSemesterInformationByInProgressIsTrue_thenFalse() {
@@ -94,6 +98,7 @@ class SemesterInformationRepositoryTest {
         semesterInformationRepository.save(semesterInformation);
         assertFalse(semesterInformationRepository.findById(semesterInformation.getId()).isEmpty());
     }
+
     @Test
     @DisplayName("Test for find semester by non existing id")
     void givenSemesterInformationId_whenFindById_thenSemesterNull() {
@@ -106,6 +111,7 @@ class SemesterInformationRepositoryTest {
         semesterInformationRepository.save(semesterInformation);
         assertTrue(semesterInformationRepository.existsSemesterInformationById(semesterInformation.getId()));
     }
+
     @Test
     @DisplayName("Test for verify if exist semester information by non existing id")
     void givenSemesterInformationId_whenExistsSemesterInformationById_thenSemesterFalse() {

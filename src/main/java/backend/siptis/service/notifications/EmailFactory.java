@@ -57,7 +57,7 @@ public class EmailFactory {
         }
     }
 
-    public void sendDocument(){
+    public void sendDocument() {
         MimeMessagePreparator message = mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true);
             messageHelper.setFrom(new InternetAddress(fromMail, from));

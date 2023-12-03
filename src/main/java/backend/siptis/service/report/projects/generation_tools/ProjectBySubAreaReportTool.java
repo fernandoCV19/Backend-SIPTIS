@@ -54,7 +54,7 @@ public class ProjectBySubAreaReportTool {
                 Long value = values.getValue();
                 rowIndex++;
                 row = sheet.createRow(rowIndex);
-                ReportFunctions.addCellInRow(2, key +" "+value, ReportFunctions.getHeaderCellStyle(report), row);
+                ReportFunctions.addCellInRow(2, key + " " + value, ReportFunctions.getHeaderCellStyle(report), row);
 
             }
 
