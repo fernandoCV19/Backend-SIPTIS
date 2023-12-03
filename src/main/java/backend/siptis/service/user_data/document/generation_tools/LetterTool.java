@@ -2,11 +2,13 @@ package backend.siptis.service.user_data.document.generation_tools;
 
 
 import backend.siptis.model.entity.editors_and_reviewers.ProjectTribunal;
+import backend.siptis.service.notifications.notification_senders.DocumentSenderService;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -27,13 +29,19 @@ public class LetterTool {
     private final String[] unitNumber = {"", "uno", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve"};
     String[] espNumber = {"diez", "once", "doce", "trece", "catorce", "quince", "dieciséis", "diecisiete", "dieciocho", "diecinueve"};
     String[] decNumber = {"", "", "veinte", "treinta", "cuarenta", "cincuenta", "sesenta", "setenta", "ochenta", "noventa"};
+    DocumentSenderService documentSenderService;
 
-    public String generateTribunalRequest(String student, String directorName, String career, String projectName, String teacherName) {
+    public LetterTool(DocumentSenderService documentSenderService){
+        this.documentSenderService = documentSenderService;
+    }
+
+
+    public String generateTribunalRequest(String student, String email, String directorName, String career, String projectName, String teacherName) {
         String fileName = projectName + "_" + student + "_CartaConformidadDocente.pdf";
         fileName = fileName.replace(" ", "");
         Document document = new Document(PageSize.LETTER, 85, 85, 70, 70);
+        File file = new File(fileName);
         try {
-            File file = new File(fileName);
             OutputStream outFile = new FileOutputStream(file);
             PdfWriter.getInstance(document, outFile);
             document.open();
@@ -67,16 +75,19 @@ public class LetterTool {
             fileName = null;
         } finally {
             document.close();
+            documentSenderService.sendDocument(fileName, email, file);
         }
         return fileName;
     }
 
-    public String generateStudentTribunalRequest(String student, String directorName, String career, String projectName, String studentCi) {
+    public String generateStudentTribunalRequest(String student, String email, String directorName, String career, String projectName, String studentCi) {
         String fileName = projectName + "_" + student + "_SolicitudTribunalEstudiante.pdf";
         fileName = fileName.replace(" ", "");
         Document document = new Document(PageSize.LETTER, 85, 85, 70, 70);
+        File file = new File(fileName);
         try {
-            PdfWriter.getInstance(document, new FileOutputStream(fileName));
+            OutputStream outFile = new FileOutputStream(file);
+            PdfWriter.getInstance(document, outFile);
             document.open();
             createWithHeader(document, directorName, career, DOC_TITLE);
 
@@ -87,7 +98,7 @@ public class LetterTool {
 
             Paragraph bodyContent = new Paragraph();
             bodyContent.setAlignment(Element.ALIGN_JUSTIFIED);
-            bodyContent.add(new Phrase("Mediante la presente, solicito respetuosamente y por su intermedió, " +
+            bodyContent.add(new Phrase("Mediante la presente, solicito respetuosamente y por su intermedio, " +
                     "la designación de tribunal de defensa, ya que mi persona cumplió con todo el procedimiento y requisitos " +
                     "para la defensa del trabajo de grado titulado “ " + projectName + " ”, El mismo fue revisado por mi tutor y " +
                     "docente de taller. De tal forma, expongo a vuestra consideración para su aprobación.\n", FontFactory.getFont(FontFactory.HELVETICA, 10)));
@@ -108,21 +119,25 @@ public class LetterTool {
             footer.add(new Phrase("C.I. " + studentCi + "\n", FontFactory.getFont(FontFactory.HELVETICA, 10)));
             footer.setSpacingBefore(70);
             document.add(footer);
+
         } catch (Exception e) {
             fileName = null;
         } finally {
-
             document.close();
+            documentSenderService.sendDocument(fileName, email, file);
+
         }
         return fileName;
     }
 
-    public String generateTutorTribunalRequest(String tutor, String student, String directorName, String career, String projectName, String studentCi) throws FileNotFoundException {
+    public String generateTutorTribunalRequest(String tutor, String student, String email, String directorName, String career, String projectName, String studentCi) throws FileNotFoundException {
         String fileName = projectName + "_" + student + "_" + tutor + "_CartaConformidadTutor.pdf";
         fileName = fileName.replace(" ", "");
         Document document = new Document(PageSize.LETTER, 85, 85, 70, 70);
+        File file = new File(fileName);
         try {
-            PdfWriter.getInstance(document, new FileOutputStream(fileName));
+            OutputStream outFile = new FileOutputStream(file);
+            PdfWriter.getInstance(document, outFile);
             document.open();
             createWithHeader(document, directorName, career, DOC_TITLE);
 
@@ -157,16 +172,19 @@ public class LetterTool {
             fileName = null;
         } finally {
             document.close();
+            documentSenderService.sendDocument(fileName, email, file);
         }
         return fileName;
     }
 
-    public String generateSupervisorTribunalRequest(String tutor, String student, String directorName, String career, String projectName, String studentCi) throws FileNotFoundException {
+    public String generateSupervisorTribunalRequest(String tutor, String student, String email, String directorName, String career, String projectName, String studentCi) throws FileNotFoundException {
         String fileName = projectName + "_" + student + "_" + tutor + "_CartaConformidadTutor.pdf";
         fileName = fileName.replace(" ", "");
         Document document = new Document(PageSize.LETTER, 85, 85, 70, 70);
+        File file = new File(fileName);
         try {
-            PdfWriter.getInstance(document, new FileOutputStream(fileName));
+            OutputStream outFile = new FileOutputStream(file);
+            PdfWriter.getInstance(document, outFile);
             document.open();
             createWithHeader(document, directorName, career, DOC_TITLE);
 
@@ -201,15 +219,19 @@ public class LetterTool {
             fileName = null;
         } finally {
             document.close();
+            documentSenderService.sendDocument(fileName, email, file);
         }
         return fileName;
     }
 
-    public String generateTribunalApproval(String student, String directorName, String career, String projectName, String tribunalName) {
+    public String generateTribunalApproval(String student, String email, String directorName, String career, String projectName, String tribunalName) {
         String fileName = projectName + "_" + student + "_" + tribunalName + "_CartaConformidadTribunal.pdf";
         fileName = fileName.replace(" ", "");
-        try (Document document = new Document(PageSize.LETTER, 85, 85, 70, 70)) {
-            PdfWriter.getInstance(document, new FileOutputStream(fileName));
+        Document document = new Document(PageSize.LETTER, 85, 85, 70, 70);
+        File file = new File(fileName);
+        try {
+            OutputStream outFile = new FileOutputStream(file);
+            PdfWriter.getInstance(document, outFile);
             document.open();
             createWithHeader(document, directorName, career, "REF: Proyecto final concluido\n");
 
@@ -239,11 +261,14 @@ public class LetterTool {
             document.add(footer);
         } catch (Exception e) {
             fileName = null;
+        }finally {
+            document.close();
+            documentSenderService.sendDocument(fileName, email, file);
         }
         return fileName;
     }
 
-    public String generateDefenseAct(String student, String president, String career, String projectName,
+    public String generateDefenseAct(String student, String email, String president, String career, String projectName,
                                      Collection<ProjectTribunal> tribunals, String deanName, LocalDate date,
                                      LocalTime startTime, LocalTime endTime, String defensePlace, int calification) {
         String fileName = projectName + "_" + student + "_ActaDefensa.pdf";
@@ -252,8 +277,11 @@ public class LetterTool {
         for (ProjectTribunal tribunal : tribunals) {
             tribunalsListed += " Lic. " + tribunal.getTribunal().getFullName().toUpperCase() + ",";
         }
-        try (Document document = new Document(PageSize.LETTER, 85, 85, 70, 70)) {
-            PdfWriter.getInstance(document, new FileOutputStream(fileName));
+        Document document = new Document(PageSize.LETTER, 85, 85, 70, 70);
+        File file = new File(fileName);
+        try {
+            OutputStream outFile = new FileOutputStream(file);
+            PdfWriter.getInstance(document, outFile);
             document.open();
             createActWithHeader(document, student, president, career, tribunals);
 
@@ -331,6 +359,9 @@ public class LetterTool {
             document.add(paragraph2);
         } catch (Exception e) {
             fileName = null;
+        }finally {
+            document.close();
+            documentSenderService.sendDocument(fileName, email, file);
         }
         return fileName;
     }
@@ -413,4 +444,6 @@ public class LetterTool {
             }
         }
     }
+
+
 }

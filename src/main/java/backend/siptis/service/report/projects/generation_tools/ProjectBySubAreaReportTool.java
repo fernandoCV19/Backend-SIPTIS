@@ -22,13 +22,13 @@ public class ProjectBySubAreaReportTool {
         LocalDate today = LocalDate.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String date = today.format(dateTimeFormatter);
-        String fileName = "reporte-proyecto-sub-áreas" + date + ".xlsx";
+        String fileName = "reporte-proyectos-subáreas" + date + ".xlsx";
 
         try (Workbook report = new XSSFWorkbook()) {
-            Sheet sheet = report.createSheet("Reporte sub áreas");
+            Sheet sheet = report.createSheet("Reporte subáreas");
             Row row = sheet.createRow(2);
 
-            String title = "Reporte proyecto por sub áreas";
+            String title = "Reporte proyecto por subáreas";
             ReportFunctions.addCellInRow(2, title, ReportFunctions.getContentStyle(report), row);
             ReportFunctions.addCellInRow(3, "Fecha " + date, ReportFunctions.getContentStyle(report), row);
 

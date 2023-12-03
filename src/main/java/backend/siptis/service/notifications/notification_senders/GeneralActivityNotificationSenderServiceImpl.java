@@ -8,11 +8,14 @@ import backend.siptis.service.notifications.general_activity_services.GeneralAct
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
+
+@Service
 @RequiredArgsConstructor
 public class GeneralActivityNotificationSenderServiceImpl implements GeneralActivityNotificationSenderService {
     private final GeneralActivityServiceFindOperations generalActivityServiceFindOperations;
