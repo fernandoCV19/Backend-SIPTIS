@@ -21,6 +21,15 @@ public class GeneralActivityServiceModifyOperations {
     private final GeneralActivityRepository generalActivityRepository;
 
     public ServiceAnswer persistGeneralActivity(GeneralActivityDTO generalActivityDTO) {
+        if(generalActivityDTO.getActivityDate()==null &&
+                generalActivityDTO.getActivityName()==null || generalActivityDTO.getActivityName().isEmpty() ||
+                generalActivityDTO.getActivityDescription()==null || generalActivityDTO.getActivityDescription().isEmpty()){
+            return ServiceAnswer.builder()
+                    .serviceMessage(ServiceMessage.ERROR)
+                    .data("")
+                    .build();
+        }
+
         GeneralActivity generalActivity = new GeneralActivity();
         generalActivity.setActivityDescription(generalActivityDTO.getActivityDescription());
         generalActivity.setActivityDate(generalActivityDTO.getActivityDate());

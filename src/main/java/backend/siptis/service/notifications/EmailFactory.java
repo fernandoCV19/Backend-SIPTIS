@@ -56,7 +56,6 @@ public class EmailFactory {
             e.printStackTrace();
         }
     }
-
     public void sendDocument() {
         MimeMessagePreparator message = mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true);
