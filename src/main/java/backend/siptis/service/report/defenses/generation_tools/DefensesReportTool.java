@@ -1,4 +1,4 @@
-package backend.siptis.service.report.defenses.general_tools;
+package backend.siptis.service.report.defenses.generation_tools;
 
 import backend.siptis.model.entity.defense_management.Defense;
 import backend.siptis.utils.functions.ReportFunctions;
@@ -72,7 +72,7 @@ public class DefensesReportTool {
             ReportFunctions.addCellInRow(9, score, contentStyle, row);
             rowIndex++;
         }
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 10; i++) {
             sheet.autoSizeColumn(i);
         }
     }

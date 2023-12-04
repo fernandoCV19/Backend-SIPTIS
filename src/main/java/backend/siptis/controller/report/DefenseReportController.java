@@ -1,7 +1,7 @@
 package backend.siptis.controller.report;
 
 import backend.siptis.commons.ControllerAnswer;
-import backend.siptis.service.report.activities.ActivitiesReportService;
+import backend.siptis.service.report.defenses.DefensesReportService;
 import backend.siptis.utils.constant.controller_constans.ControllerConstants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -17,23 +17,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(ControllerConstants.Report.BASE_PATH)
 @RequiredArgsConstructor
 @CrossOrigin
-public class ActivitiesReportController {
+public class DefenseReportController {
 
-    private final ActivitiesReportService activitiesReportService;
+    private final DefensesReportService defensesReportService;
 
-    @Operation(summary = "Get activites report")
-    @GetMapping("/activities/general")
-    public ResponseEntity<ControllerAnswer> getGeneralActivitiesReport() {
+    @Operation(summary = "Get defenses report")
+    @GetMapping("/defenses")
+    public ResponseEntity<ControllerAnswer> getDefensesReport() {
         return new ResponseEntity<>(ControllerAnswer.builder()
-                .data(activitiesReportService.getGeneralActivitesReport())
-                .message("REPORT_GENERATED").build(), null, 200);
-    }
-
-    @Operation(summary = "Get activities by project")
-    @GetMapping("/activities/project")
-    public ResponseEntity<ControllerAnswer> getActivitiesByProject() {
-        return new ResponseEntity<>(ControllerAnswer.builder()
-                .data(activitiesReportService.getActivitiesByProject())
+                .data(defensesReportService.getDefensesReport())
                 .message("REPORT_GENERATED").build(), null, 200);
     }
 }

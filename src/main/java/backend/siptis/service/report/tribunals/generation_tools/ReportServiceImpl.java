@@ -1,15 +1,12 @@
-package backend.siptis.service.report.tribunals.general_tools;
+package backend.siptis.service.report.tribunals.generation_tools;
 
 import backend.siptis.auth.entity.SiptisUser;
 import backend.siptis.commons.ServiceAnswer;
 import backend.siptis.commons.ServiceMessage;
-import backend.siptis.model.entity.defense_management.Defense;
 import backend.siptis.model.repository.auth.SiptisUserRepository;
 import backend.siptis.model.repository.defense_management.DefenseRepository;
 import backend.siptis.model.repository.project_management.ProjectRepository;
 import backend.siptis.service.cloud.CloudManagementService;
-import backend.siptis.service.report.geneartion_tools.DefensesReportTool;
-import backend.siptis.service.report.geneartion_tools.GeneralTribunalReportTool;
 import backend.siptis.service.report.tribunals.GeneralTribunalReportTool;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,15 +29,6 @@ public class ReportServiceImpl implements ReportService {
         String key = cloud.uploadReportToCloud(fileName);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
     }
-
-    @Override
-    public ServiceAnswer getDefensesReport() {
-        List<Defense> defenses = defenseRepository.findAll();
-        String fileName = DefensesReportTool.generateReport(defenses);
-        String key = cloud.uploadReportToCloud(fileName);
-        return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
-    }
-
 
 }
 

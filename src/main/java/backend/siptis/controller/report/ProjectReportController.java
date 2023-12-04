@@ -2,7 +2,7 @@ package backend.siptis.controller.report;
 
 import backend.siptis.commons.ControllerAnswer;
 import backend.siptis.service.report.projects.ProjectReportService;
-import backend.siptis.service.report.tribunals.general_tools.ReportService;
+import backend.siptis.service.report.tribunals.generation_tools.ReportService;
 import backend.siptis.utils.constant.controller_constans.ControllerConstants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -33,7 +33,7 @@ public class ProjectReportController {
 
     @Operation(summary = "Get project report about tribunals")
     @GetMapping("/project/tribunal")
-    public ResponseEntity<ControllerAnswer> getProjectTribunalReport(){
+    public ResponseEntity<ControllerAnswer> getProjectTribunalReport() {
         return new ResponseEntity<>(ControllerAnswer.builder()
                 .data(projectReportService.getProjectTribunalReport())
                 .message("REPORT_GENERATED").build(), null, 200);
@@ -41,7 +41,7 @@ public class ProjectReportController {
 
     @Operation(summary = "Get projects filter by career report")
     @GetMapping("/project/career")
-    public ResponseEntity<ControllerAnswer> getProjectFilterByCareerReport(){
+    public ResponseEntity<ControllerAnswer> getProjectFilterByCareerReport() {
         return new ResponseEntity<>(ControllerAnswer.builder()
                 .data(projectReportService.getProjectCareerReport())
                 .message("REPORT_GENERATED").build(), null, 200);

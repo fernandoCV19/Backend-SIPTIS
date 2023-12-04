@@ -17,11 +17,12 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class ActivitiesReportServiceImpl implements ActivitiesReportService{
+public class ActivitiesReportServiceImpl implements ActivitiesReportService {
 
     private final GeneralActivityRepository generalActivityRepository;
     private final ActivityRepository activityRepository;
     private final CloudManagementService cloud;
+
     @Override
     public ServiceAnswer getGeneralActivitesReport() {
         List<GeneralActivity> activityList = generalActivityRepository.findAll();
@@ -34,7 +35,7 @@ public class ActivitiesReportServiceImpl implements ActivitiesReportService{
     }
 
     @Override
-    public ServiceAnswer getActivitiesByProject(){
+    public ServiceAnswer getActivitiesByProject() {
         List<Activity> activityList = activityRepository.findAll();
         activityList = activityList.stream()
                 .sorted((a1, a2) -> a1.getActivityDate()
