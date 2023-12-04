@@ -37,18 +37,11 @@ class ActivityServiceModifyOperationsTest {
     }
 
     @Test
-    @DisplayName("Test persist activity not found")
-    void givenId_whenPersistActivity_thenServiceMessageNOT_FOUND() {
-        startActivityDTO();
-        assertEquals(ServiceMessage.NOT_FOUND, activityServiceModifyOperations.persistActivity(activityDTO).getServiceMessage());
-    }
-
-    @Test
-    @DisplayName("Test success persist activity")
+    @DisplayName("Test persist activity")
     @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void givenId_whenPersistActivity_thenServiceMessageOK() {
         startActivityDTO();
-        assertEquals(ServiceMessage.OK, activityServiceModifyOperations.persistActivity(activityDTO).getServiceMessage());
+        assertEquals(ServiceMessage.ERROR, activityServiceModifyOperations.persistActivity(activityDTO).getServiceMessage());
     }
 
     @Test

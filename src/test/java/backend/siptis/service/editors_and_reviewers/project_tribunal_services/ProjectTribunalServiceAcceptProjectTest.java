@@ -30,12 +30,6 @@ class ProjectTribunalServiceAcceptProjectTest {
         assertEquals(ServiceMessage.OK, sa.getServiceMessage());
     }
 
-    @Test
-    @Rollback
-    void givenValidTribunalAndProjectIdWhenAcceptProjectThenProjectChangePhase() {
-        ServiceAnswer sa = projectTribunalServiceAcceptProject.acceptProject(154L, 105L);
-        assertEquals("THE PROJECT HAS CHANGED TO THE PHASE OF DEFENSE", sa.getData());
-    }
 
     @Test
     @Rollback

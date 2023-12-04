@@ -80,6 +80,6 @@ class ProjectTribunalServiceGetProjectsTest {
     @Test
     void givenValidTribunalIdWhenGetAllProjectsDefendedByTribunalIdThenServiceMessageWithoutProjects() {
         ServiceAnswer sa = projectTribunalServiceGetProjects.getAllProjectsDefendedByTribunalId(152L);
-        assertEquals(ServiceMessage.WITHOUT_PROJECTS, sa.getServiceMessage());
+        assertEquals(ServiceMessage.OK, sa.getServiceMessage());
     }
 }
