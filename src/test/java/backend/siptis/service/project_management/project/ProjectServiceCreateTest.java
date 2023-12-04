@@ -17,7 +17,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @Transactional
-@Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 class ProjectServiceCreateTest {
 
     private final ProjectServiceCreate projectServiceCreate;
@@ -60,12 +59,17 @@ class ProjectServiceCreateTest {
 
     @Test
     @Rollback
+    @Sql(scripts = {"/testDB.sql", "/custom_imports/create_users.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void givenNewProjectDTOWhenCreateProjectThenServiceMessageOk() {
+        List<Long> studentsId = new ArrayList<>();
+        studentsId.add(1L);
+        NEW_PROJECT_DTO.setStudentsId(studentsId);
         assertEquals(ServiceMessage.SUCCESSFUL_PROJECT_REGISTER, projectServiceCreate.createProject(NEW_PROJECT_DTO).getServiceMessage());
     }
 
     @Test
     @Rollback
+    @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void givenInvalidModalityIdWhenCreateProjectThenServiceMessageModalityDoesNotExist() {
         NEW_PROJECT_DTO.setModalityId(999L);
         assertEquals(ServiceMessage.MODALITY_DOES_NOT_EXIST, projectServiceCreate.createProject(NEW_PROJECT_DTO).getServiceMessage());
@@ -73,6 +77,7 @@ class ProjectServiceCreateTest {
 
     @Test
     @Rollback
+    @Sql(scripts = {"/testDB.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void givenInvalidStudentsIdsWhenCreateProjectThenServiceMessageInvalidProjectStudentsValue() {
         NEW_PROJECT_DTO.setStudentsId(List.of(999L));
         assertEquals(ServiceMessage.USER_ID_DOES_NOT_EXIST, projectServiceCreate.createProject(NEW_PROJECT_DTO).getServiceMessage());

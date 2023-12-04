@@ -25,13 +25,13 @@ public class ProjectByPhaseReportTool {
         LocalDate today = LocalDate.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String date = today.format(dateTimeFormatter);
-        String fileName = "reporte-proyecto-fases" + date + ".xlsx";
+        String fileName = "proyectos-fases" + date + ".xlsx";
 
         try (Workbook report = new XSSFWorkbook()) {
             Sheet sheet = report.createSheet("Reporte fases");
             Row row = sheet.createRow(2);
 
-            String title = "Reporte proyecto por fases";
+            String title = "Reporte proyectos por fases";
             ReportFunctions.addCellInRow(2, title, ReportFunctions.getContentStyle(report), row);
             ReportFunctions.addCellInRow(3, "Fecha " + date, ReportFunctions.getContentStyle(report), row);
 

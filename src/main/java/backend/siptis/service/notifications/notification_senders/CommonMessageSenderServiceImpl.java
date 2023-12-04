@@ -8,7 +8,7 @@ import org.thymeleaf.context.Context;
 
 @Service
 @RequiredArgsConstructor
-public class CommonMessageSenderServiceImpl implements CommonMessageSenderService{
+public class CommonMessageSenderServiceImpl implements CommonMessageSenderService {
     private final TemplateEngine templateEngine;
     private final EmailFactory emailFactory;
 

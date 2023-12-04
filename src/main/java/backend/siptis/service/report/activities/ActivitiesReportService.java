@@ -6,4 +6,6 @@ public interface ActivitiesReportService {
     ServiceAnswer getGeneralActivitesReport();
 
     ServiceAnswer getActivitiesByProject();
+
+    ServiceAnswer getActivitiesByProjectId(Long id);
 }

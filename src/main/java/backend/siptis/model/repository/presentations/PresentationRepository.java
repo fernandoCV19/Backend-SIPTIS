@@ -10,6 +10,8 @@ import java.util.Optional;
 public interface PresentationRepository extends JpaRepository<Presentation, Long> {
     Optional<Presentation> findById(long id);
 
+    Optional<Presentation> findByIdAndReviewedTrue(Long id);
+
     Optional<Presentation> findTopByProjectIdAndReviewed(long projectId, boolean reviewed);
 
     Optional<Presentation> findByProjectIdAndReviewed(long projectId, boolean reviewed);

@@ -21,7 +21,7 @@ public class StudentReportTool {
         LocalDate today = LocalDate.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String date = today.format(dateTimeFormatter);
-        String fileName = "reporte-estudiantes" + date + ".xlsx";
+        String fileName = "estudiantes" + date + ".xlsx";
 
         try (Workbook report = new XSSFWorkbook()) {
             Sheet sheet = report.createSheet("Reporte estudiantes");
@@ -38,9 +38,10 @@ public class StudentReportTool {
             ReportFunctions.addCellInRow(1, "N°", ReportFunctions.getHeaderCellStyle(report), row);
             ReportFunctions.addCellInRow(2, "Apellidos", ReportFunctions.getHeaderCellStyle(report), row);
             ReportFunctions.addCellInRow(3, "Nombres", ReportFunctions.getHeaderCellStyle(report), row);
-            ReportFunctions.addCellInRow(4, "Ci", ReportFunctions.getHeaderCellStyle(report), row);
-            ReportFunctions.addCellInRow(5, "Código SIS", ReportFunctions.getHeaderCellStyle(report), row);
-            ReportFunctions.addCellInRow(6, "Carrera", ReportFunctions.getHeaderCellStyle(report), row);
+            ReportFunctions.addCellInRow(4, "Correo electrónico", ReportFunctions.getHeaderCellStyle(report), row);
+            ReportFunctions.addCellInRow(5, "Ci", ReportFunctions.getHeaderCellStyle(report), row);
+            ReportFunctions.addCellInRow(6, "Código SIS", ReportFunctions.getHeaderCellStyle(report), row);
+            ReportFunctions.addCellInRow(7, "Carrera", ReportFunctions.getHeaderCellStyle(report), row);
 
             rowIndex = addUsers(usersSIS, report, rowIndex, sheet, row);
             rowIndex = addUsers(usersINF, report, rowIndex, sheet, row);
@@ -72,6 +73,7 @@ public class StudentReportTool {
         String lastNames;
         String ci;
         String codSIS;
+        String email;
         String career = "";
 
         for (SiptisUser student : users) {
@@ -80,6 +82,7 @@ public class StudentReportTool {
             names = userInformation.getNames();
             lastNames = userInformation.getLastNames();
             ci = userInformation.getCi();
+            email = student.getEmail();
             codSIS = userInformation.getCodSIS();
             if (!student.getCareer().stream().findFirst().isEmpty()) {
                 career = student.getCareer().stream().findFirst().get().getName();
@@ -89,9 +92,10 @@ public class StudentReportTool {
             ReportFunctions.addCellInRow(1, "" + (rowIndex - 4), ReportFunctions.getContentStyle(report), row);
             ReportFunctions.addCellInRow(2, lastNames, ReportFunctions.getContentStyle(report), row);
             ReportFunctions.addCellInRow(3, names, ReportFunctions.getContentStyle(report), row);
-            ReportFunctions.addCellInRow(4, ci, ReportFunctions.getContentStyle(report), row);
-            ReportFunctions.addCellInRow(5, codSIS, ReportFunctions.getContentStyle(report), row);
-            ReportFunctions.addCellInRow(6, career, ReportFunctions.getContentStyle(report), row);
+            ReportFunctions.addCellInRow(4, email, ReportFunctions.getContentStyle(report), row);
+            ReportFunctions.addCellInRow(5, ci, ReportFunctions.getContentStyle(report), row);
+            ReportFunctions.addCellInRow(6, codSIS, ReportFunctions.getContentStyle(report), row);
+            ReportFunctions.addCellInRow(7, career, ReportFunctions.getContentStyle(report), row);
 
 
             rowIndex++;

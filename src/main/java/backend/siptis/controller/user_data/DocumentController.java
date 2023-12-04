@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -50,6 +51,15 @@ public class DocumentController {
     @PreAuthorize("hasAuthority('STUDENT')")
     ResponseEntity<ControllerAnswer> deleteDocument(@PathVariable("id") long documentId) {
         return createResponseEntity(documentGeneratorService.deleteDocument(documentId));
+    }
+
+    @Operation(summary = "Upload summary sheet")
+    @PostMapping("/upload-sheet")
+    @PreAuthorize("hasAuthority('STUDENT')")
+    ResponseEntity<ControllerAnswer> uploadSheet(@RequestHeader(name = "Authorization") String token, @RequestPart("sheet") MultipartFile sheet) {
+        List<?> projects = siptisUserServiceTokenOperations.getProjectsFromToken(token);
+        int projectId = (int) projects.get(0);
+        return createResponseEntity(documentGeneratorService.uploadSheet((long) projectId, sheet));
     }
 
     @Operation(summary = "Create student report document")
@@ -134,7 +144,10 @@ public class DocumentController {
         if (message == ServiceMessage.CANNOT_GENERATE_LETTER ||
                 message == ServiceMessage.ERROR ||
                 message == ServiceMessage.NOT_APPROVED ||
-                message == ServiceMessage.NO_CURRENT_DIRECTOR)
+                message == ServiceMessage.NO_CURRENT_DIRECTOR ||
+                message == ServiceMessage.DEFENSE_NOT_FOUND ||
+                message == ServiceMessage.NO_DEFENSE_POINTS ||
+                message == ServiceMessage.SHEET_ALREADY_EXISTS)
             httpStatus = HttpStatus.BAD_REQUEST;
 
         ControllerAnswer controllerAnswer = ControllerAnswer.builder().data(data).message(message.toString()).build();

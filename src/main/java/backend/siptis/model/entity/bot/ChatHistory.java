@@ -25,6 +25,6 @@ public class ChatHistory {
     @Column(name = ChatHistoryTable.Prompt.NAME)
     private String prompt;
 
-    @Column(name = ChatHistoryTable.Completion.NAME)
+    @Column(name = ChatHistoryTable.Completion.NAME, length = 1024)
     private String completion;
 }

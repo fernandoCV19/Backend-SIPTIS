@@ -67,6 +67,10 @@ public final class ProjectManagementConstants {
             public static final String NAME = "project_path_";
         }
 
+        public static class SummarySheetPath {
+            public static final String NAME = "summary_sheet_path_";
+        }
+
         public static class Phase {
             public static final String NAME = "phase_";
         }

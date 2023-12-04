@@ -47,14 +47,6 @@ class UserInformationServiceTest {
         registerStudentDTO.setCareer("INFORMATICA");
     }
 
-    private void createUserEditInformationDTO() {
-        userEditInformationDTO = new UserEditInformationDTO();
-        userEditInformationDTO.setEmail("user@gmail.com");
-        userEditInformationDTO.setBirthDate(new Date());
-        userEditInformationDTO.setCelNumber("234345345");
-    }
-
-
     @Test
     @DisplayName("Test for find by id")
     void givenNoUserInformation_WhenFindById_ThenServiceMessageOK() {

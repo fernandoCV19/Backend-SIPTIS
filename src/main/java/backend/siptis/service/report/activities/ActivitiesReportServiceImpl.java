@@ -48,4 +48,16 @@ public class ActivitiesReportServiceImpl implements ActivitiesReportService {
         String key = cloud.uploadReportToCloud(fileName);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
     }
+
+    @Override
+    public ServiceAnswer getActivitiesByProjectId(Long id) {
+        List<Activity> activityList = activityRepository.findByProjectId(id);
+        activityList = activityList.stream()
+                .sorted((a1, a2) -> a1.getActivityDate()
+                        .compareTo(a2.getActivityDate())).toList();
+
+        String fileName = ActivitiesByProjectReportTool.generateReport(activityList);
+        String key = cloud.uploadReportToCloud(fileName);
+        return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
+    }
 }

@@ -21,7 +21,7 @@ public class GeneralUserReportTool {
         LocalDate today = LocalDate.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String date = today.format(dateTimeFormatter);
-        String fileName = "reporte-usuarios-" + role.toLowerCase() + date + ".xlsx";
+        String fileName = "usuarios-" + role.toLowerCase() + date + ".xlsx";
 
         try (Workbook report = new XSSFWorkbook()) {
             Sheet sheet = report.createSheet("Reporte usuarios " + role);
@@ -38,8 +38,9 @@ public class GeneralUserReportTool {
             ReportFunctions.addCellInRow(1, "N°", ReportFunctions.getHeaderCellStyle(report), row);
             ReportFunctions.addCellInRow(2, "Apellidos", ReportFunctions.getHeaderCellStyle(report), row);
             ReportFunctions.addCellInRow(3, "Nombres", ReportFunctions.getHeaderCellStyle(report), row);
-            ReportFunctions.addCellInRow(4, "Ci", ReportFunctions.getHeaderCellStyle(report), row);
-            ReportFunctions.addCellInRow(5, "Rol", ReportFunctions.getHeaderCellStyle(report), row);
+            ReportFunctions.addCellInRow(4, "Correo electrónico", ReportFunctions.getHeaderCellStyle(report), row);
+            ReportFunctions.addCellInRow(5, "Ci", ReportFunctions.getHeaderCellStyle(report), row);
+            ReportFunctions.addCellInRow(6, "Rol", ReportFunctions.getHeaderCellStyle(report), row);
 
             rowIndex = addUsers(users, report, rowIndex, sheet, row, role);
 
@@ -66,19 +67,22 @@ public class GeneralUserReportTool {
         String names;
         String lastNames;
         String ci;
+        String email;
 
-        for (SiptisUser student : users) {
-            userInformation = student.getUserInformation();
+        for (SiptisUser user : users) {
+            userInformation = user.getUserInformation();
             names = userInformation.getNames();
             lastNames = userInformation.getLastNames();
             ci = userInformation.getCi();
+            email = user.getEmail();
 
             row = sheet.createRow(rowIndex);
             ReportFunctions.addCellInRow(1, "" + (rowIndex - 4), ReportFunctions.getContentStyle(report), row);
             ReportFunctions.addCellInRow(2, lastNames, ReportFunctions.getContentStyle(report), row);
             ReportFunctions.addCellInRow(3, names, ReportFunctions.getContentStyle(report), row);
-            ReportFunctions.addCellInRow(4, ci, ReportFunctions.getContentStyle(report), row);
-            ReportFunctions.addCellInRow(5, role, ReportFunctions.getContentStyle(report), row);
+            ReportFunctions.addCellInRow(4, email, ReportFunctions.getContentStyle(report), row);
+            ReportFunctions.addCellInRow(5, ci, ReportFunctions.getContentStyle(report), row);
+            ReportFunctions.addCellInRow(6, role, ReportFunctions.getContentStyle(report), row);
 
             rowIndex++;
         }

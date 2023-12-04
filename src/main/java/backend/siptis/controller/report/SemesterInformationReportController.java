@@ -29,4 +29,5 @@ public class SemesterInformationReportController {
                 .data(semesterInformationServiceReport.getAllSemesterInformation())
                 .message("REPORT_GENERATED").build(), null, 200);
     }
+
 }
