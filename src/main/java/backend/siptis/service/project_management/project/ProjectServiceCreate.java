@@ -136,7 +136,7 @@ public class ProjectServiceCreate {
         }
 
         Optional<State> state = stateRepository.findByName("IN_PROGRESS");
-        if(state.isEmpty())
+        if (state.isEmpty())
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).build();
         newProject.setName(dto.getName());
         newProject.setModality(modalityRepository.findModalityById(dto.getModalityId()));
