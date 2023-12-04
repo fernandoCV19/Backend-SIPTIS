@@ -25,7 +25,7 @@ public class GeneralActivityReportTool {
         String fileName = "actividades-generales-" + date + ".xlsx";
 
         try (Workbook report = new XSSFWorkbook()) {
-            Sheet sheet = report.createSheet("Proyecto por tribunales");
+            Sheet sheet = report.createSheet("Actividades Generales");
             Row row = sheet.createRow(2);
 
             String title = "Reporte de actividades generales";

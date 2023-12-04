@@ -28,7 +28,7 @@ public class ActivitiesByProjectReportTool {
             Sheet sheet = report.createSheet("Actividades por proyecto");
             Row row = sheet.createRow(2);
 
-            String title = "Report de proyectos por carreras";
+            String title = "Reporte de actividades por proyecto";
             ReportFunctions.addCellInRow(2, title, ReportFunctions.getContentStyle(report), row);
             ReportFunctions.addCellInRow(3, "Fecha " + date, ReportFunctions.getContentStyle(report), row);
 

@@ -26,10 +26,10 @@ public class ProjectByCareerReportTool {
         String fileName = "proyectos-por-carrera" + date + ".xlsx";
 
         try (Workbook report = new XSSFWorkbook()) {
-            Sheet sheet = report.createSheet("Proyecto por tribunales");
+            Sheet sheet = report.createSheet("Proyecto por carrera");
             Row row = sheet.createRow(2);
 
-            String title = "Report de proyectos por carreras";
+            String title = "Reporte de proyectos por carreras";
             ReportFunctions.addCellInRow(2, title, ReportFunctions.getContentStyle(report), row);
             ReportFunctions.addCellInRow(3, "Fecha " + date, ReportFunctions.getContentStyle(report), row);
 
