@@ -43,9 +43,9 @@ public class ProjectsByStateReportTool {
                 String projectName = project.getName();
                 String projectState = "";
                 State state = project.getState();
-                if(state == null){
+                if (state == null) {
                     projectState = "IN_PROGRESS";
-                }else{
+                } else {
                     projectState = state.getName();
                 }
                 row = sheet.createRow(rowIndex);
