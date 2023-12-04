@@ -22,7 +22,7 @@ public class ProjectTutorController {
 
     private final ProjectTutorService projectTutorService;
 
-    @Operation(summary = "Get all projects without review y tutor id")
+    @Operation(summary = "Get all projects without review by tutor id")
     @GetMapping("/notReviewedProjects/{id}")
     @PreAuthorize("hasAnyAuthority('TUTOR')")
     public ResponseEntity<ControllerAnswer> getProjectsWithoutReview(@PathVariable("id") Long id) {
@@ -30,7 +30,7 @@ public class ProjectTutorController {
         return createResponseEntity(serviceAnswer);
     }
 
-    @Operation(summary = "Get all projects with review y tutor id")
+    @Operation(summary = "Get all projects with review by tutor id")
     @GetMapping("/reviewedProjects/{id}")
     @PreAuthorize("hasAnyAuthority('TUTOR')")
     public ResponseEntity<ControllerAnswer> getReviewedProjects(@PathVariable("id") Long id) {

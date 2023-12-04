@@ -41,7 +41,7 @@ public class StudentOperationsController {
         return createResponseEntity(student);
     }
 
-    @Operation(summary = "get number of students in career")
+    @Operation(summary = "Get number of students in career")
     @GetMapping("/studentsInCareer/{careerName}")
     public ResponseEntity<ControllerAnswer> getStudentsInCareer(@PathVariable String careerName) {
         ServiceAnswer answerService =
@@ -49,7 +49,7 @@ public class StudentOperationsController {
         return createResponseEntity(answerService);
     }
 
-    @Operation(summary = "get available students for register a new project")
+    @Operation(summary = "Get available students for register a new project")
     @GetMapping("/list/availableStudents")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<ControllerAnswer> getAvailableStudents(String search, Pageable pageable) {
@@ -58,7 +58,7 @@ public class StudentOperationsController {
         return createResponseEntity(answerService);
     }
 
-    @Operation(summary = "get own career")
+    @Operation(summary = "Get own career")
     @GetMapping("/userCareer")
     @PreAuthorize("hasAuthority('STUDENT')")
     public ResponseEntity<ControllerAnswer> getCareer(@RequestHeader(name = "Authorization") String token) {
@@ -68,7 +68,7 @@ public class StudentOperationsController {
         return createResponseEntity(answerService);
     }
 
-    @Operation(summary = "get career from other user")
+    @Operation(summary = "Get career from other user")
     @GetMapping("/userCareer/{userId}")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'INF_DIRECTOR', 'SIS_DIRECTOR')")
     public ResponseEntity<ControllerAnswer> getCareer(@PathVariable int userId) {
@@ -78,7 +78,7 @@ public class StudentOperationsController {
         return createResponseEntity(answerService);
     }
 
-    @Operation(summary = "get number of students by year and career")
+    @Operation(summary = "Get number of students by year and career")
     @GetMapping("/studentsByYear/{careerName}")
     public ResponseEntity<ControllerAnswer> getNumberOfStudentsByYearAndCareer(@PathVariable String careerName) {
         ServiceAnswer answerService =

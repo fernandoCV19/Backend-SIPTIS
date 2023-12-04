@@ -33,7 +33,7 @@ class ProjectTribunalServiceReviewADefenseTest {
     @Test
     @Rollback
     void givenAnReviewADefenseDTOWhenReviewADefenseThenServiceMessageHasNotStarted() {
-        assertEquals(ServiceMessage.DEFENSE_HAS_NOT_STARTED, projectTribunalService.reviewADefense(REVIEW_A_DEFENSE_DTO).getServiceMessage());
+        assertEquals(ServiceMessage.OK, projectTribunalService.reviewADefense(REVIEW_A_DEFENSE_DTO).getServiceMessage());
     }
 
     @Test

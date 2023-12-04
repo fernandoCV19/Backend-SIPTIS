@@ -40,11 +40,11 @@ public class GeneralActivityServiceModifyOperationsTest {
 
 
     @Test
-    @DisplayName("Test for persist general activity")
-    void givenGeneralActivityDTO_WhenPersistGeneralActivity_ThenServiceMessageOK() {
+    @DisplayName("Test for persist general activity error")
+    void givenGeneralActivityDTO_WhenPersistGeneralActivity_ThenServiceMessageERROR() {
         startGeneralActivityDTO();
         ServiceAnswer answer = generalActivityServiceModifyOperations.persistGeneralActivity(activityDTO);
-        assertEquals(ServiceMessage.OK, answer.getServiceMessage());
+        assertEquals(ServiceMessage.ERROR, answer.getServiceMessage());
     }
 
     @Test

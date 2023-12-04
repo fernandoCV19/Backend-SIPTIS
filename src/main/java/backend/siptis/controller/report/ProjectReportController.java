@@ -45,7 +45,7 @@ public class ProjectReportController {
                 .message("REPORT_GENERATED").build(), null, 200);
     }
 
-    @Operation(summary = "Get projects filter by areas report")
+    @Operation(summary = "Get projects filter by sub areas report")
     @GetMapping("/project/subareas")
     public ResponseEntity<ControllerAnswer> getProjectFilterBySubAreasReport() {
         return new ResponseEntity<>(ControllerAnswer.builder()
