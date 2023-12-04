@@ -19,7 +19,7 @@ public class TribunalsReportServiceImpl implements TribunalsReportService {
     private final CloudManagementService cloud;
 
     @Override
-    public ServiceAnswer getTribunals() {
+    public ServiceAnswer getTribunalsReport() {
         List<SiptisUser> tribunals = siptisUserRepository.findByRolesName("TRIBUNAL");
         String fileName = TribunalsReportTool.generateReport(tribunals);
         String key = cloud.uploadReportToCloud(fileName);

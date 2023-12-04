@@ -4,5 +4,5 @@ import backend.siptis.commons.ServiceAnswer;
 
 public interface TribunalsReportService {
 
-    ServiceAnswer getTribunals();
+    ServiceAnswer getTribunalsReport();
 }

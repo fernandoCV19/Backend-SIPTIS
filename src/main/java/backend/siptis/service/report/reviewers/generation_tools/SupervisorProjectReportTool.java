@@ -1,7 +1,7 @@
 package backend.siptis.service.report.reviewers.generation_tools;
 
 import backend.siptis.commons.Modality;
-import backend.siptis.model.entity.editors_and_reviewers.ProjectTeacher;
+import backend.siptis.model.entity.editors_and_reviewers.ProjectSupervisor;
 import backend.siptis.model.entity.project_management.Project;
 import backend.siptis.utils.functions.ReportFunctions;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -17,16 +17,16 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class TeacherProjectReport {
+public class SupervisorProjectReportTool {
 
     private static int rowIndex = 4;
     private static int projectCounter = 1;
 
-    public static String generateReport(List<ProjectTeacher> toReview, List<ProjectTeacher> reviewed, List<ProjectTeacher> accepted) {
+    public static String generateReport(List<ProjectSupervisor> toReview, List<ProjectSupervisor> reviewed, List<ProjectSupervisor> accepted) {
         LocalDate today = LocalDate.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String date = today.format(dateTimeFormatter);
-        String fileName = "Report-teacher" + date + ".xlsx";
+        String fileName = "Report-supervisor" + date + ".xlsx";
 
         try (Workbook report = new XSSFWorkbook()) {
             CellStyle headerStyle = ReportFunctions.getHeaderCellStyle(report);
@@ -47,7 +47,7 @@ public class TeacherProjectReport {
         }
     }
 
-    private static void addBody(Sheet sheet, CellStyle contentStyle, CellStyle headerStyle, List<ProjectTeacher> projects) {
+    private static void addBody(Sheet sheet, CellStyle contentStyle, CellStyle headerStyle, List<ProjectSupervisor> projects) {
         Row row = sheet.createRow(rowIndex);
         ReportFunctions.addCellInRow(1, "N°", headerStyle, row);
         ReportFunctions.addCellInRow(2, "Proyecto", headerStyle, row);
@@ -58,17 +58,17 @@ public class TeacherProjectReport {
         ReportFunctions.addCellInRow(7, "Tribunales", headerStyle, row);
         rowIndex++;
 
-        for (ProjectTeacher projectTeacher : projects) {
-            String project = projectTeacher.getProject().getName();
-            String modality = projectTeacher.getProject().getModality().getName();
-            String teachers = getTeachers(projectTeacher.getProject());
-            String tutors = getTutors(projectTeacher.getProject());
-            String supervisors = getSupervisors(projectTeacher.getProject());
-            String tribunals = getTribunal(projectTeacher.getProject());
+        for (ProjectSupervisor projectSupervisor : projects) {
+            String project = projectSupervisor.getProject().getName();
+            String modality = projectSupervisor.getProject().getModality().getName();
+            String teachers = getTeachers(projectSupervisor.getProject());
+            String tutors = getTutors(projectSupervisor.getProject());
+            String supervisors = getSupervisors(projectSupervisor.getProject());
+            String tribunals = getTribunal(projectSupervisor.getProject());
 
             row = sheet.createRow(rowIndex);
 
-            ReportFunctions.addCellInRow(1, String.valueOf(projectCounter), contentStyle, row);
+            ReportFunctions.addCellInRow(1, projectCounter + "", contentStyle, row);
             ReportFunctions.addCellInRow(2, project, contentStyle, row);
             ReportFunctions.addCellInRow(3, modality, contentStyle, row);
             ReportFunctions.addCellInRow(4, teachers, contentStyle, row);
@@ -81,10 +81,11 @@ public class TeacherProjectReport {
         for (int i = 0; i < 8; i++) {
             sheet.autoSizeColumn(i);
         }
+        rowIndex++;
     }
 
 
-    private static void addAccepted(Sheet sheet, CellStyle contentStyle, CellStyle headerStyle, List<ProjectTeacher> accepted) {
+    private static void addAccepted(Sheet sheet, CellStyle contentStyle, CellStyle headerStyle, List<ProjectSupervisor> accepted) {
         Row row = sheet.createRow(rowIndex);
         ReportFunctions.addCellInRow(1, "PROYECTOS ACEPTADOS", headerStyle, row);
         rowIndex++;
@@ -93,7 +94,7 @@ public class TeacherProjectReport {
 
     }
 
-    private static void addReviewed(Sheet sheet, CellStyle contentStyle, CellStyle headerStyle, List<ProjectTeacher> reviewed) {
+    private static void addReviewed(Sheet sheet, CellStyle contentStyle, CellStyle headerStyle, List<ProjectSupervisor> reviewed) {
         Row row = sheet.createRow(rowIndex);
         ReportFunctions.addCellInRow(1, "PROYECTOS REVISADOS", headerStyle, row);
         rowIndex++;
@@ -101,7 +102,7 @@ public class TeacherProjectReport {
         addBody(sheet, contentStyle, headerStyle, reviewed);
     }
 
-    private static void addToReview(Sheet sheet, CellStyle contentStyle, CellStyle headerStyle, List<ProjectTeacher> toReview) {
+    private static void addToReview(Sheet sheet, CellStyle contentStyle, CellStyle headerStyle, List<ProjectSupervisor> toReview) {
         Row row = sheet.createRow(rowIndex);
         ReportFunctions.addCellInRow(1, "PROYECTOS POR REVISAR", headerStyle, row);
         rowIndex++;

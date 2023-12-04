@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Tag(name = ControllerConstants.SiptisUser.TAG_NAME, description = ControllerConstants.SiptisUser.TAG_DESCRIPTION)
@@ -36,7 +37,7 @@ public class DeleteController {
     ResponseEntity<ControllerAnswer> deleteUser(@RequestHeader(name = "Authorization") String token, @PathVariable int userId) {
         Long id = Long.valueOf(userId);
         Long adminId = siptisUserServiceTokenOperations.getIdFromToken(token);
-        if (id == adminId) {
+        if (Objects.equals(id, adminId)) {
             ServiceAnswer answer = new ServiceAnswer();
             answer.setServiceMessage(ServiceMessage.ERROR_CANNOT_DELETE_USER);
             return createResponseEntity(answer);

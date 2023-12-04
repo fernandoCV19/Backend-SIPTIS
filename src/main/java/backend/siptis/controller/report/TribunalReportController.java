@@ -25,7 +25,7 @@ public class TribunalReportController {
     @GetMapping("/tribunals")
     public ResponseEntity<ControllerAnswer> getDefensesReport() {
         return new ResponseEntity<>(ControllerAnswer.builder()
-                .data(tribunalsReportService.getTribunals())
+                .data(tribunalsReportService.getTribunalsReport())
                 .message("REPORT_GENERATED").build(), null, 200);
     }
 }

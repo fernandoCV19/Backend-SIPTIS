@@ -18,7 +18,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class TribunalProjectReport {
+public class TribunalProjectReportTool {
 
     private static int rowIndex = 4;
     private static int projectCounter = 1;

@@ -1,7 +1,6 @@
 package backend.siptis.service.report.siptis_user.generation_tools;
 
 import backend.siptis.auth.entity.SiptisUser;
-import backend.siptis.model.entity.user_data.UserInformation;
 import backend.siptis.utils.functions.ReportFunctions;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -52,7 +51,6 @@ public class AdminReportTool {
     }
 
     private static int addUsers(List<SiptisUser> users, Workbook report, int rowIndex, Sheet sheet, Row row) {
-        UserInformation userInformation;
         String email;
 
         for (SiptisUser admin : users) {

@@ -17,7 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class TutorProjectReport {
+public class TutorProjectReportTool {
 
     private static int rowIndex = 4;
     private static int projectCounter = 1;

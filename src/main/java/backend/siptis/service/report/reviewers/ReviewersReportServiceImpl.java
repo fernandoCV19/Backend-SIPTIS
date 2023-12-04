@@ -11,10 +11,10 @@ import backend.siptis.model.repository.editors_and_reviewers.ProjectTeacherRepos
 import backend.siptis.model.repository.editors_and_reviewers.ProjectTribunalRepository;
 import backend.siptis.model.repository.editors_and_reviewers.ProjectTutorRepository;
 import backend.siptis.service.cloud.CloudManagementService;
-import backend.siptis.service.report.reviewers.generation_tools.SupervisorProjectReport;
-import backend.siptis.service.report.reviewers.generation_tools.TeacherProjectReport;
-import backend.siptis.service.report.reviewers.generation_tools.TribunalProjectReport;
-import backend.siptis.service.report.reviewers.generation_tools.TutorProjectReport;
+import backend.siptis.service.report.reviewers.generation_tools.SupervisorProjectReportTool;
+import backend.siptis.service.report.reviewers.generation_tools.TeacherProjectReportTool;
+import backend.siptis.service.report.reviewers.generation_tools.TribunalProjectReportTool;
+import backend.siptis.service.report.reviewers.generation_tools.TutorProjectReportTool;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +36,7 @@ public class ReviewersReportServiceImpl implements ReviewersReportService {
         List<ProjectTribunal> reviewed = projectTribunalRepository.findByTribunalIdAndAcceptedIsFalseAndReviewedIsTrue(tribunalId);
         List<ProjectTribunal> accepted = projectTribunalRepository.findByTribunalIdAndAcceptedIsTrueAndDefensePointsIsNull(tribunalId);
         List<ProjectTribunal> defended = projectTribunalRepository.findByTribunalIdAndDefensePointsIsNotNull(tribunalId);
-        String fileName = TribunalProjectReport.generateReport(toReview, reviewed, accepted, defended);
+        String fileName = TribunalProjectReportTool.generateReport(toReview, reviewed, accepted, defended);
         String key = cloud.uploadReportToCloud(fileName);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
     }
@@ -46,7 +46,7 @@ public class ReviewersReportServiceImpl implements ReviewersReportService {
         List<ProjectSupervisor> toReview = projectSupervisorRepository.findBySupervisorIdAndAcceptedIsFalseAndReviewedIsFalse(supervisorId);
         List<ProjectSupervisor> reviewed = projectSupervisorRepository.findBySupervisorIdAndAcceptedIsFalseAndReviewedIsTrue(supervisorId);
         List<ProjectSupervisor> accepted = projectSupervisorRepository.findBySupervisorIdAndAcceptedIsTrue(supervisorId);
-        String fileName = SupervisorProjectReport.generateReport(toReview, reviewed, accepted);
+        String fileName = SupervisorProjectReportTool.generateReport(toReview, reviewed, accepted);
         String key = cloud.uploadReportToCloud(fileName);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
     }
@@ -56,7 +56,7 @@ public class ReviewersReportServiceImpl implements ReviewersReportService {
         List<ProjectTeacher> toReview = projectTeacherRepository.findByTeacherIdAndAcceptedIsFalseAndReviewedIsFalse(teacherId);
         List<ProjectTeacher> reviewed = projectTeacherRepository.findByTeacherIdAndAcceptedIsFalseAndReviewedIsTrue(teacherId);
         List<ProjectTeacher> accepted = projectTeacherRepository.findByTeacherIdAndAcceptedIsTrue(teacherId);
-        String fileName = TeacherProjectReport.generateReport(toReview, reviewed, accepted);
+        String fileName = TeacherProjectReportTool.generateReport(toReview, reviewed, accepted);
         String key = cloud.uploadReportToCloud(fileName);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
     }
@@ -66,7 +66,7 @@ public class ReviewersReportServiceImpl implements ReviewersReportService {
         List<ProjectTutor> toReview = projectTutorRepository.findByTutorIdAndAcceptedIsFalseAndReviewedIsFalse(tutorId);
         List<ProjectTutor> reviewed = projectTutorRepository.findByTutorIdAndAcceptedIsFalseAndReviewedIsTrue(tutorId);
         List<ProjectTutor> accepted = projectTutorRepository.findByTutorIdAndAcceptedIsTrue(tutorId);
-        String fileName = TutorProjectReport.generateReport(toReview, reviewed, accepted);
+        String fileName = TutorProjectReportTool.generateReport(toReview, reviewed, accepted);
         String key = cloud.uploadReportToCloud(fileName);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.DOCUMENT_GENERATED).data(key).build();
     }
