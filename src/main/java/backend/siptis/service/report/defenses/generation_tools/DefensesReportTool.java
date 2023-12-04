@@ -1,4 +1,4 @@
-package backend.siptis.service.report.defenses.general_tools;
+package backend.siptis.service.report.defenses.generation_tools;
 
 import backend.siptis.model.entity.defense_management.Defense;
 import backend.siptis.utils.functions.ReportFunctions;
@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DefensesReportTool {
 
@@ -42,14 +43,22 @@ public class DefensesReportTool {
     private static void addBodyValues(Sheet sheet, CellStyle contentStyle, List<Defense> defenses) {
         int rowIndex = 5;
         for (Defense defense : defenses) {
-            String environment = null;
-            String location = null;
-            String project = null;
-            String students = null;
-            String tribunals = null;
-            String date = null;
-            String hour = null;
-            String score = null;
+            String environment = defense.getPlaceToDefense().getName();
+            String location = defense.getPlaceToDefense().getLocation();
+            String project = defense.getProject().getName();
+            String students = defense.getProject().getStudents()
+                    .stream()
+                    .map(projectStudent -> projectStudent.getStudent().getFullName())
+                    .collect(Collectors.joining(", "));
+            String tribunals = defense.getProject().getTribunals()
+                    .stream()
+                    .map(projectTribunal -> projectTribunal.getTribunal().getFullName())
+                    .collect(Collectors.joining(", "));
+            String date = defense.getDate().toString();
+            String hour = defense.getStartTime() + " : " + defense.getEndTime();
+            Double possibleScore = defense.getProject().getTotalDefensePoints();
+            String score = possibleScore != null ? possibleScore.toString() : "Aun no defendido";
+
             Row row = sheet.createRow(rowIndex);
 
             ReportFunctions.addCellInRow(1, String.valueOf(rowIndex - 4), contentStyle, row);
@@ -63,7 +72,7 @@ public class DefensesReportTool {
             ReportFunctions.addCellInRow(9, score, contentStyle, row);
             rowIndex++;
         }
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 10; i++) {
             sheet.autoSizeColumn(i);
         }
     }
