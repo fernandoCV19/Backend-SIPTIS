@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 public class TutorProjectReport {
 
     private static int rowIndex = 4;
+    private static int projectCounter = 1;
 
     public static String generateReport(List<ProjectTutor> toReview, List<ProjectTutor> reviewed, List<ProjectTutor> accepted) {
         LocalDate today = LocalDate.now();
@@ -67,7 +68,7 @@ public class TutorProjectReport {
 
             row = sheet.createRow(rowIndex);
 
-            ReportFunctions.addCellInRow(1, String.valueOf(rowIndex - 4), contentStyle, row);
+            ReportFunctions.addCellInRow(1, String.valueOf(projectCounter), contentStyle, row);
             ReportFunctions.addCellInRow(2, project, contentStyle, row);
             ReportFunctions.addCellInRow(3, modality, contentStyle, row);
             ReportFunctions.addCellInRow(4, teachers, contentStyle, row);
@@ -75,6 +76,7 @@ public class TutorProjectReport {
             ReportFunctions.addCellInRow(6, supervisors, contentStyle, row);
             ReportFunctions.addCellInRow(7, tribunals, contentStyle, row);
             rowIndex++;
+            projectCounter++;
         }
         for (int i = 0; i < 8; i++) {
             sheet.autoSizeColumn(i);
