@@ -54,7 +54,7 @@ public class PresentationReportTool {
                 String blueBook = "No disponible";
                 if (presentation.getBlueBookPath() != null) blueBook = "Disponible en el sistema";
                 String projectPath = "No disponible";
-                if (presentation.getProjectPath() != null) blueBook = "Disponible en el sistema";
+                if (presentation.getProjectPath() != null) projectPath = "Disponible en el sistema";
                 String reviewed = "No revisado";
                 String reviewQuantity = "0";
                 String authors = "";
