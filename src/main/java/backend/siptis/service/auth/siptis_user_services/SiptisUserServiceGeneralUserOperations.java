@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -65,11 +64,7 @@ public class SiptisUserServiceGeneralUserOperations {
     }
 
     public ServiceAnswer getPersonalActivities(Long id, Pageable pageable) {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDate actual = LocalDate.of(now.getYear() - 1900, now.getMonthValue() - 1, now.getDayOfMonth() - 1);
-
-        Page<Activity> activities = siptisUserRepository.findAllPersonalActivities(id, actual, pageable);
-
+        Page<Activity> activities = siptisUserRepository.findAllPersonalActivities(id, LocalDate.now(), pageable);
         return ServiceAnswer.builder().serviceMessage(ServiceMessage.OK).data(activities).build();
     }
 
