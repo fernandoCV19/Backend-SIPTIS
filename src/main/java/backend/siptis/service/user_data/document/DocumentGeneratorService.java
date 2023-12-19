@@ -35,4 +35,5 @@ public interface DocumentGeneratorService {
     ServiceAnswer generateTribunalApproval(LetterGenerationRequestDTO dto) throws IOException;
 
     ServiceAnswer generateDefenseAct(ActRequestDTO dto);
+
 }

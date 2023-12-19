@@ -11,16 +11,14 @@ import backend.siptis.model.entity.project_management.Project;
 import backend.siptis.model.entity.user_data.Document;
 import backend.siptis.model.entity.user_data.UserCareer;
 import backend.siptis.model.entity.user_data.UserInformation;
-import backend.siptis.model.pjo.dto.document.ActRequestDTO;
-import backend.siptis.model.pjo.dto.document.DocumentaryRecordDto;
-import backend.siptis.model.pjo.dto.document.LetterGenerationRequestDTO;
-import backend.siptis.model.pjo.dto.document.ReportDocumentDTO;
+import backend.siptis.model.pjo.dto.document.*;
 import backend.siptis.model.repository.auth.SiptisUserRepository;
 import backend.siptis.model.repository.editors_and_reviewers.*;
 import backend.siptis.model.repository.project_management.ProjectRepository;
 import backend.siptis.model.repository.user_data.DocumentRepository;
 import backend.siptis.model.repository.user_data.UserInformationRepository;
 import backend.siptis.service.auth.siptis_user_services.SiptisUserServiceCareerDirectorOperations;
+import backend.siptis.service.auth.siptis_user_services.SiptisUserServiceExistValidation;
 import backend.siptis.service.cloud.CloudManagementService;
 import backend.siptis.service.notifications.notification_senders.DocumentSenderService;
 import backend.siptis.service.user_data.document.generation_tools.DocumentaryRecordTool;
@@ -557,4 +555,5 @@ public class DocumentGeneratorServiceImpl implements DocumentGeneratorService {
             return ServiceAnswer.builder().serviceMessage(ServiceMessage.ERROR).data(null).build();
         }
     }
+
 }
