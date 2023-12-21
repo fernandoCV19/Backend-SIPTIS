@@ -86,6 +86,8 @@ public class ProjectServiceCreate {
                 return ServiceAnswer.builder().serviceMessage(ServiceMessage.CANNOT_ASSIGN_TUTOR).build();
             projectTutor.setTutor(user);
             projectTutor.setProject(newProject);
+            projectTutor.setAccepted(false);
+            projectTutor.setReviewed(false);
             tutors.add(projectTutor);
         }
 
@@ -102,6 +104,8 @@ public class ProjectServiceCreate {
                 ProjectSupervisor projectSupervisor = new ProjectSupervisor();
                 projectSupervisor.setSupervisor(supervisorOptional.get());
                 projectSupervisor.setProject(newProject);
+                projectSupervisor.setAccepted(false);
+                projectSupervisor.setReviewed(false);
                 supervisors.add(projectSupervisor);
             }
         }
@@ -114,6 +118,8 @@ public class ProjectServiceCreate {
             ProjectTeacher projectTeacher = new ProjectTeacher();
             projectTeacher.setTeacher(teacherOptional.get());
             projectTeacher.setProject(newProject);
+            projectTeacher.setAccepted(false);
+            projectTeacher.setReviewed(false);
             teachers.add(projectTeacher);
         }
 
